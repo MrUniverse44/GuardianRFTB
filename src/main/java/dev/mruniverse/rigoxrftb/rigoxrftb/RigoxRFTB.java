@@ -11,7 +11,13 @@ public final class RigoxRFTB extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
+        // * Files Setup
+
         fileManager = new FileManager(this);
+        getFiles().loadFiles();
+        getFiles().loadConfiguration();
+
+
 
         // * Listener Setup
 
