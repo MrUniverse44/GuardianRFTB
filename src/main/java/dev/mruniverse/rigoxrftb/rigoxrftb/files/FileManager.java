@@ -3,7 +3,6 @@ package dev.mruniverse.rigoxrftb.rigoxrftb.files;
 import dev.mruniverse.rigoxrftb.rigoxrftb.RigoxRFTB;
 import dev.mruniverse.rigoxrftb.rigoxrftb.enums.Files;
 import dev.mruniverse.rigoxrftb.rigoxrftb.enums.SaveMode;
-import dev.mruniverse.rigoxrftb.rigoxrftb.utils.Logger;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -50,10 +49,10 @@ public class FileManager {
             try {
                 result = fileToLoad.createNewFile();
             } catch (IOException exception) {
-                Logger.info("The plugin can't load or save configuration files!");
+                plugin.getLogs().info("The plugin can't load or save configuration files!");
             }
             if(result) {
-                Logger.info("File: &b" + fileName + "&f created!");
+                plugin.getLogs().info("File: &b" + fileName + "&f created!");
             }
         }
     }
@@ -61,7 +60,7 @@ public class FileManager {
         boolean result = false;
         if(!folderToLoad.exists()) result = folderToLoad.mkdir();
         if(result) {
-            Logger.info("Folder: &b" + folderName + "&f created!");
+            plugin.getLogs().info("Folder: &b" + folderName + "&f created!");
         }
     }
     public void loadConfiguration() {
@@ -396,7 +395,7 @@ public class FileManager {
                 getControl(Files.SETTINGS).save(Settings);
             }
         } catch(IOException exception) {
-            Logger.info("The plugin can't load or save configuration files! (Spigot Control Issue - Caused by: One plugin is using bad the <getControl() from FileManager.class>)");
+            plugin.getLogs().info("The plugin can't load or save configuration files! (Spigot Control Issue - Caused by: One plugin is using bad the <getControl() from FileManager.class>)");
         }
     }
 
