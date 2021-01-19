@@ -1,6 +1,6 @@
 package dev.mruniverse.rigoxrftb.rigoxrftb.utils;
 
-import org.bukkit.Bukkit;
+import dev.mruniverse.rigoxrftb.rigoxrftb.RigoxRFTB;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
@@ -20,7 +20,7 @@ public class Logger {
      * @param message message to send.
      */
     public static void error(String message) {
-        sendMessage("&f[&cERROR &7| &fPixel MOTD] " + message);
+        sendMessage("&f[&cERROR &7| &fRigox RFTB] " + message);
     }
 
     /**
@@ -28,7 +28,7 @@ public class Logger {
      * @param message message to send.
      */
     public static void warn(String message) {
-        sendMessage("&f[&eWARN &7| &fPixel MOTD] " + message);
+        sendMessage("&f[&eWARN &7| &fRigox RFTB] " + message);
     }
 
     /**
@@ -36,7 +36,7 @@ public class Logger {
      * @param message message to send.
      */
     public static void debug(String message) {
-        sendMessage("&f[&9DEBUG &7| &fPixel MOTD] " + message);
+        sendMessage("&f[&9DEBUG &7| &fRigox RFTB] " + message);
     }
 
     /**
@@ -44,7 +44,7 @@ public class Logger {
      * @param message message to send.
      */
     public static void info(String message) {
-        sendMessage("&f[&bINFO &7| &fPixel MOTD] " + message);
+        sendMessage("&f[&bINFO &7| &fRigox RFTB] " + message);
     }
 
     /**
@@ -65,6 +65,6 @@ public class Logger {
      * @param message Provided message
      */
     private static void sendMessage(String message) {
-        Bukkit.getConsoleSender().sendMessage(color(message));
+        RigoxRFTB.getInstance().getServer().getConsoleSender().sendMessage(color(message));
     }
 }
