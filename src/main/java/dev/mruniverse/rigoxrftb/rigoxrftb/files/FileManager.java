@@ -68,6 +68,12 @@ public class FileManager {
         addConfig(Files.SETTINGS,"settings.maxTime",500);
         addConfig(Files.SETTINGS,"settings.lobbyLocation","notSet");
         addConfig(Files.SETTINGS,"settings.options.joinLobbyTeleport",false);
+        addConfig(Files.SETTINGS,"settings.options.joinHeal",true);
+        addConfig(Files.SETTINGS,"settings.options.joinAdventureGamemode",true);
+        addConfig(Files.SETTINGS,"settings.options.hideServerJoinMessage",true);
+        addConfig(Files.SETTINGS,"settings.options.hideServerQuitMessage",true);
+        addConfig(Files.SETTINGS,"settings.options.lobby-bossBar",true);
+        addConfig(Files.SETTINGS,"settings.options.lobby-actionBar",true);
         addConfig(Files.SETTINGS,"settings.dateFormat","dd/MM/yyyy");
         addConfig(Files.SETTINGS,"settings.lobbyScoreboard-only-in-lobby-world",true);
         addConfig(Files.SETTINGS,"settings.options.pluginChat",true);

@@ -18,7 +18,6 @@ public class PlayerListeners implements Listener {
         plugin = main;
         main.getLogs().info("PlayerListener registered!");
     }
-    @SuppressWarnings("deprecation")
     @EventHandler
     public void joinScoreboard(PlayerJoinEvent event) {
         try {
