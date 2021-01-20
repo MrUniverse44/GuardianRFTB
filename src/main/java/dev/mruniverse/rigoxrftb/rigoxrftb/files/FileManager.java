@@ -73,6 +73,8 @@ public class FileManager {
         addConfig(Files.SETTINGS,"settings.options.hideServerJoinMessage",true);
         addConfig(Files.SETTINGS,"settings.options.hideServerQuitMessage",true);
         addConfig(Files.SETTINGS,"settings.options.lobby-bossBar",true);
+        addConfig(Files.SETTINGS,"settings.options.lobby-noDamage",true);
+        addConfig(Files.SETTINGS,"settings.options.lobby-noHunger",true);
         addConfig(Files.SETTINGS,"settings.options.lobby-actionBar",true);
         addConfig(Files.SETTINGS,"settings.dateFormat","dd/MM/yyyy");
         addConfig(Files.SETTINGS,"settings.lobbyScoreboard-only-in-lobby-world",true);

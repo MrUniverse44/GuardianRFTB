@@ -9,9 +9,12 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -30,6 +33,7 @@ public class PlayerListeners implements Listener {
         }
         if(file.getBoolean("settings.options.joinHeal")) {
             player.setHealth(20.0D);
+            player.setFoodLevel(20);
             player.setLevel(0);
             player.setExp(0.0F);
         }
@@ -83,6 +87,30 @@ public class PlayerListeners implements Listener {
         }
     }
     @EventHandler
+    public void lobbyDamage(EntityDamageEvent event) {
+        if(event.getEntity().getType().equals(EntityType.PLAYER)) {
+            if (!plugin.getFiles().getControl(Files.SETTINGS).getString("settings.lobbyLocation").equalsIgnoreCase("notSet")) {
+                String[] loc = plugin.getFiles().getControl(Files.SETTINGS).getString("settings.lobbyLocation").split(",");
+                World w = Bukkit.getWorld(loc[0]);
+                if (event.getEntity().getWorld().equals(w)) {
+                    event.setCancelled(true);
+                }
+            }
+        }
+    }
+    @EventHandler
+    public void lobbyHunger(FoodLevelChangeEvent event) {
+        if(event.getEntity().getType().equals(EntityType.PLAYER)) {
+            if (!plugin.getFiles().getControl(Files.SETTINGS).getString("settings.lobbyLocation").equalsIgnoreCase("notSet")) {
+                String[] loc = plugin.getFiles().getControl(Files.SETTINGS).getString("settings.lobbyLocation").split(",");
+                World w = Bukkit.getWorld(loc[0]);
+                if (event.getEntity().getWorld().equals(w)) {
+                    event.setFoodLevel(20);
+                }
+            }
+        }
+    }
+    @EventHandler
     public void joinTeleport(PlayerJoinEvent event) {
         try {
             FileConfiguration file = plugin.getFiles().getControl(Files.SETTINGS);
@@ -107,6 +135,7 @@ public class PlayerListeners implements Listener {
                     if(file.getBoolean("settings.options.joinHeal")) {
                         event.getPlayer().setHealth(20.0D);
                         event.getPlayer().setLevel(0);
+                        event.getPlayer().setFoodLevel(20);
                         event.getPlayer().setExp(0.0F);
                     }
                     if(file.getBoolean("settings.options.lobby-bossBar")) {
