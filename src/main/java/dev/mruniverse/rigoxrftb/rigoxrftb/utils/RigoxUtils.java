@@ -115,26 +115,6 @@ public class RigoxUtils {
         }
     }
 
-
-    //public void lobbyBoard(Player player) {
-    //    Scoreboard sb = player.getScoreboard();
-    //    Objective o = sb.getObjective(DisplaySlot.SIDEBAR);
-    //    o.unregister();
-    //    o = sb.registerNewObjective("RigoxRFTB", "Lobby");
-    //    o.setDisplaySlot(DisplaySlot.SIDEBAR);
-    //    String title = plugin.getFiles().getControl(Files.SCOREBOARD).getString("scoreboards.lobby.title");
-     //   if (title.contains("%player%"))
-    //        title = title.replace("%player%", player.getName());
-    //    o.setDisplayName(title);
-    //    List<String> lines = plugin.getFiles().getControl(Files.SCOREBOARD).getStringList("scoreboards.lobby.title");
-    //    int numbers = lines.size();
-    //    for (String line : lines) {
-    //        line = replaceVariables(line,player);
-    //        line = ChatColor.translateAlternateColorCodes('&', line);
-    //        o.getScore(line).setScore(numbers);
-    //        numbers--;
-    //    }
-    //}
     public String getTitle(RigoxBoard board) {
         if(board.equals(RigoxBoard.LOBBY)) {
             if (plugin.getFiles().getControl(Files.SCOREBOARD).getString("scoreboards.lobby.title") != null) {
