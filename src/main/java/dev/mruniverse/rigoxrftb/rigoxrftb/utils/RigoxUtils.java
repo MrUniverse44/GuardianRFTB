@@ -2,19 +2,17 @@ package dev.mruniverse.rigoxrftb.rigoxrftb.utils;
 
 import dev.mruniverse.rigoxrftb.rigoxrftb.RigoxRFTB;
 import dev.mruniverse.rigoxrftb.rigoxrftb.enums.Files;
+import dev.mruniverse.rigoxrftb.rigoxrftb.enums.RigoxBoard;
 import me.clip.placeholderapi.PlaceholderAPI;
-import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Scoreboard;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 
 public class RigoxUtils {
@@ -112,24 +110,129 @@ public class RigoxUtils {
     }
 
 
-    public void lobbyBoard(Player player) {
-        Scoreboard sb = player.getScoreboard();
-        Objective o = sb.getObjective(DisplaySlot.SIDEBAR);
-        o.unregister();
-        o = sb.registerNewObjective("RigoxRFTB", "Lobby","RFTB");
-        o.setDisplaySlot(DisplaySlot.SIDEBAR);
-        String title = plugin.getFiles().getControl(Files.SCOREBOARD).getString("scoreboards.lobby.title");
-        if (title.contains("%player%"))
-            title = title.replace("%player%", player.getName());
-        o.setDisplayName(title);
-        List<String> lines = plugin.getFiles().getControl(Files.SCOREBOARD).getStringList("scoreboards.lobby.title");
-        int numbers = lines.size();
-        for (String line : lines) {
-            line = replaceVariables(line,player);
-            line = ChatColor.translateAlternateColorCodes('&', line);
-            o.getScore(line).setScore(numbers);
-            numbers--;
+    //public void lobbyBoard(Player player) {
+    //    Scoreboard sb = player.getScoreboard();
+    //    Objective o = sb.getObjective(DisplaySlot.SIDEBAR);
+    //    o.unregister();
+    //    o = sb.registerNewObjective("RigoxRFTB", "Lobby");
+    //    o.setDisplaySlot(DisplaySlot.SIDEBAR);
+    //    String title = plugin.getFiles().getControl(Files.SCOREBOARD).getString("scoreboards.lobby.title");
+     //   if (title.contains("%player%"))
+    //        title = title.replace("%player%", player.getName());
+    //    o.setDisplayName(title);
+    //    List<String> lines = plugin.getFiles().getControl(Files.SCOREBOARD).getStringList("scoreboards.lobby.title");
+    //    int numbers = lines.size();
+    //    for (String line : lines) {
+    //        line = replaceVariables(line,player);
+    //        line = ChatColor.translateAlternateColorCodes('&', line);
+    //        o.getScore(line).setScore(numbers);
+    //        numbers--;
+    //    }
+    //}
+    public String getTitle(RigoxBoard board) {
+        if(board.equals(RigoxBoard.LOBBY)) {
+            if (plugin.getFiles().getControl(Files.SCOREBOARD).getString("scoreboards.lobby.title") != null) {
+                return plugin.getFiles().getControl(Files.SCOREBOARD).getString("scoreboards.lobby.title");
+            }
+            return "";
         }
+        if(board.equals(RigoxBoard.WAITING) || board.equals(RigoxBoard.STARTING)) {
+            if (plugin.getFiles().getControl(Files.SCOREBOARD).getString("scoreboards.waiting.title") != null) {
+                return plugin.getFiles().getControl(Files.SCOREBOARD).getString("scoreboards.waiting.title");
+            }
+            return "";
+        }
+        if(board.equals(RigoxBoard.WIN_BEAST_FOR_BEAST)) {
+            if (plugin.getFiles().getControl(Files.SCOREBOARD).getString("scoreboards.beastWin.forBeast.title") != null) {
+                return plugin.getFiles().getControl(Files.SCOREBOARD).getString("scoreboards.beastWin.forBeast.title");
+            }
+            return "";
+        }
+        if(board.equals(RigoxBoard.WIN_BEAST_FOR_RUNNERS)) {
+            if (plugin.getFiles().getControl(Files.SCOREBOARD).getString("scoreboards.beastWin.forRunners.title") != null) {
+                return plugin.getFiles().getControl(Files.SCOREBOARD).getString("scoreboards.beastWin.forRunners.title");
+            }
+            return "";
+        }
+        if(board.equals(RigoxBoard.WIN_RUNNERS_FOR_BEAST)) {
+            if (plugin.getFiles().getControl(Files.SCOREBOARD).getString("scoreboards.runnersWin.forBeast.title") != null) {
+                return plugin.getFiles().getControl(Files.SCOREBOARD).getString("scoreboards.runnersWin.forBeast.title");
+            }
+            return "";
+        }
+        if(board.equals(RigoxBoard.WIN_RUNNERS_FOR_RUNNERS)) {
+            if (plugin.getFiles().getControl(Files.SCOREBOARD).getString("scoreboards.runnersWin.forRunners.title") != null) {
+                return plugin.getFiles().getControl(Files.SCOREBOARD).getString("scoreboards.runnersWin.forRunners.title");
+            }
+            return "";
+        }
+        return "";
+    }
+    public List<String> getLines(RigoxBoard board,Player player) {
+        List<String> lines = new ArrayList<>();
+        if(board.equals(RigoxBoard.LOBBY)) {
+            for(String line : plugin.getFiles().getControl(Files.SCOREBOARD).getStringList("scoreboards.lobby.lines")) {
+                line = replaceVariables(line,player);
+                lines.add(line);
+            }
+            return lines;
+        }
+        if(board.equals(RigoxBoard.WAITING)) {
+            for(String line : plugin.getFiles().getControl(Files.SCOREBOARD).getStringList("scoreboards.waiting.lines")) {
+                if(!line.contains("<isStarting>")) {
+                    if(line.contains("<isWaiting>")) line = line.replace("<isWaiting>","");
+                    line = replaceVariables(line, player);
+                    lines.add(line);
+                }
+            }
+            return lines;
+        }
+        if(board.equals(RigoxBoard.STARTING)) {
+            for(String line : plugin.getFiles().getControl(Files.SCOREBOARD).getStringList("scoreboards.waiting.lines")) {
+                if(!line.contains("<isWaiting>")) {
+                    if(line.contains("<isStarting>")) line = line.replace("<isStarting>","");
+                    line = replaceVariables(line, player);
+                    lines.add(line);
+                }
+            }
+            return lines;
+        }
+        if(board.equals(RigoxBoard.PLAYING)) {
+            for(String line : plugin.getFiles().getControl(Files.SCOREBOARD).getStringList("scoreboards.playing.lines")) {
+                line = replaceVariables(line,player);
+                lines.add(line);
+            }
+            return lines;
+        }
+        if(board.equals(RigoxBoard.WIN_BEAST_FOR_BEAST)) {
+            for(String line : plugin.getFiles().getControl(Files.SCOREBOARD).getStringList("scoreboards.beastWin.forBeast.lines")) {
+                line = replaceVariables(line,player);
+                lines.add(line);
+            }
+            return lines;
+        }
+        if(board.equals(RigoxBoard.WIN_BEAST_FOR_RUNNERS)) {
+            for(String line : plugin.getFiles().getControl(Files.SCOREBOARD).getStringList("scoreboards.beastWin.forRunners.lines")) {
+                line = replaceVariables(line,player);
+                lines.add(line);
+            }
+            return lines;
+        }
+        if(board.equals(RigoxBoard.WIN_RUNNERS_FOR_BEAST)) {
+            for(String line : plugin.getFiles().getControl(Files.SCOREBOARD).getStringList("scoreboards.runnersWin.forBeast.lines")) {
+                line = replaceVariables(line,player);
+                lines.add(line);
+            }
+            return lines;
+        }
+        if(board.equals(RigoxBoard.WIN_RUNNERS_FOR_RUNNERS)) {
+            for(String line : plugin.getFiles().getControl(Files.SCOREBOARD).getStringList("scoreboards.runnersWin.forRunners.lines")) {
+                line = replaceVariables(line,player);
+                lines.add(line);
+            }
+            return lines;
+        }
+        return new ArrayList<>();
     }
     public String replaceVariables(String text,Player player) {
         if(text.contains("<player_name>")) text = text.replace("<player_name>",player.getName());

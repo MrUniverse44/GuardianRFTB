@@ -34,21 +34,21 @@ public class PlayerListeners implements Listener {
                     World w = Bukkit.getWorld(loc[0]);
                     if (event.getPlayer().getWorld().equals(w)) {
                         if(plugin.getFiles().getControl(Files.SCOREBOARD).getBoolean("scoreboards.lobby.toggle")) {
-                            Scoreboard sb = Bukkit.getScoreboardManager().getNewScoreboard();
-                            Objective o = sb.registerNewObjective("RigoxRFTB", "Lobby");
-                            o.setDisplaySlot(DisplaySlot.SIDEBAR);
-                            event.getPlayer().setScoreboard(sb);
-                            plugin.getUtils().lobbyBoard(event.getPlayer());
+                            //Scoreboard sb = Bukkit.getScoreboardManager().getNewScoreboard();
+                            //Objective o = sb.registerNewObjective("RigoxRFTB", "Lobby");
+                            //o.setDisplaySlot(DisplaySlot.SIDEBAR);
+                            //event.getPlayer().setScoreboard(sb);
+                            //plugin.getUtils().lobbyBoard(event.getPlayer());
                         }
                     }
                 }
             } else {
                 if(plugin.getFiles().getControl(Files.SCOREBOARD).getBoolean("scoreboards.lobby.toggle")) {
-                    Scoreboard sb = Bukkit.getScoreboardManager().getNewScoreboard();
-                    Objective o = sb.registerNewObjective("RigoxRFTB", "Lobby");
-                    o.setDisplaySlot(DisplaySlot.SIDEBAR);
-                    event.getPlayer().setScoreboard(sb);
-                    plugin.getUtils().lobbyBoard(event.getPlayer());
+                    //Scoreboard sb = Bukkit.getScoreboardManager().getNewScoreboard();
+                    //Objective o = sb.registerNewObjective("RigoxRFTB", "Lobby");
+                    //o.setDisplaySlot(DisplaySlot.SIDEBAR);
+                    //event.getPlayer().setScoreboard(sb);
+                    //plugin.getUtils().lobbyBoard(event.getPlayer());
                 }
             }
         } catch (Throwable throwable) {
@@ -84,11 +84,11 @@ public class PlayerListeners implements Listener {
                     Location location = new Location(w, x, y, z, yaw, pitch);
                     event.getPlayer().teleport(location);
                     if(plugin.getFiles().getControl(Files.SCOREBOARD).getBoolean("scoreboards.lobby.toggle")) {
-                        Scoreboard sb = Bukkit.getScoreboardManager().getNewScoreboard();
-                        Objective o = sb.registerNewObjective("RigoxRFTB", "Lobby");
-                        o.setDisplaySlot(DisplaySlot.SIDEBAR);
-                        event.getPlayer().setScoreboard(sb);
-                        plugin.getUtils().lobbyBoard(event.getPlayer());
+                        //Scoreboard sb = Bukkit.getScoreboardManager().getNewScoreboard();
+                        //Objective o = sb.registerNewObjective("RigoxRFTB", "Lobby");
+                        //o.setDisplaySlot(DisplaySlot.SIDEBAR);
+                        //event.getPlayer().setScoreboard(sb);
+                        //plugin.getUtils().lobbyBoard(event.getPlayer());
                     }
                 }
             }
