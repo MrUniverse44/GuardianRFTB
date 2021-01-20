@@ -5,8 +5,8 @@ import dev.mruniverse.rigoxrftb.rigoxrftb.files.FileManager;
 import dev.mruniverse.rigoxrftb.rigoxrftb.listeners.ListenerUtil;
 import dev.mruniverse.rigoxrftb.rigoxrftb.utils.Logger;
 import dev.mruniverse.rigoxrftb.rigoxrftb.utils.RigoxBossBar;
-import dev.mruniverse.rigoxrftb.rigoxrftb.utils.RigoxScoreboards.BoardManager;
-import dev.mruniverse.rigoxrftb.rigoxrftb.utils.RigoxScoreboards.BoardRunnable;
+import dev.mruniverse.rigoxrftb.rigoxrftb.utils.rigoxscoreboards.BoardManager;
+import dev.mruniverse.rigoxrftb.rigoxrftb.utils.rigoxscoreboards.BoardRunnable;
 import dev.mruniverse.rigoxrftb.rigoxrftb.utils.RigoxUtils;
 import org.bukkit.plugin.java.JavaPlugin;
 

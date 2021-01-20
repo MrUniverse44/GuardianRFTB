@@ -1,7 +1,6 @@
-package dev.mruniverse.rigoxrftb.rigoxrftb.utils.RigoxScoreboards;
+package dev.mruniverse.rigoxrftb.rigoxrftb.utils.rigoxscoreboards;
 
 import dev.mruniverse.rigoxrftb.rigoxrftb.RigoxRFTB;
-import dev.mruniverse.rigoxrftb.rigoxrftb.enums.Files;
 import dev.mruniverse.rigoxrftb.rigoxrftb.enums.RigoxBoard;
 import org.bukkit.entity.Player;
 
