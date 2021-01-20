@@ -1,14 +1,21 @@
 package dev.mruniverse.rigoxrftb.rigoxrftb.utils;
 
 import dev.mruniverse.rigoxrftb.rigoxrftb.RigoxRFTB;
+import dev.mruniverse.rigoxrftb.rigoxrftb.enums.Files;
+import me.clip.placeholderapi.PlaceholderAPI;
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.DisplaySlot;
+import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Scoreboard;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.List;
 
 public class RigoxUtils {
     private RigoxRFTB plugin;
@@ -36,6 +43,10 @@ public class RigoxUtils {
     }
     public void sendTitle(Player player, int fadeInTime, int showTime, int fadeOutTime, String title, String subtitle) {
         try {
+            if(plugin.hasPAPI()) {
+                title = PlaceholderAPI.setPlaceholders(player,title);
+                subtitle = PlaceholderAPI.setPlaceholders(player,subtitle);
+            }
             Object chatTitle = getNMSClass("IChatBaseComponent").getDeclaredClasses()[0].getMethod("a", String.class)
                     .invoke(null, "{\"text\": \"" + title + "\"}");
             Constructor<?> titleConstructor = getNMSClass("PacketPlayOutTitle").getConstructor(
@@ -62,6 +73,7 @@ public class RigoxUtils {
     }
     public void sendActionbar(Player player, String message) {
         if (player == null || message == null) return;
+        if(plugin.hasPAPI()) { message = PlaceholderAPI.setPlaceholders(player,message); }
         String nmsVersion = Bukkit.getServer().getClass().getPackage().getName();
         nmsVersion = nmsVersion.substring(nmsVersion.lastIndexOf(".") + 1);
 
@@ -95,8 +107,40 @@ public class RigoxUtils {
             Method sendPacket = playerConnection.getClass().getDeclaredMethod("sendPacket", packet);
             sendPacket.invoke(playerConnection, packetPlayOutChat);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            plugin.getLogs().error("Can't send action bar for " + player.getName() + " with message: " + message);
         }
+    }
+
+
+    public void lobbyBoard(Player player) {
+        Scoreboard sb = player.getScoreboard();
+        Objective o = sb.getObjective(DisplaySlot.SIDEBAR);
+        o.unregister();
+        o = sb.registerNewObjective("RigoxRFTB", "Lobby","RFTB");
+        o.setDisplaySlot(DisplaySlot.SIDEBAR);
+        String title = plugin.getFiles().getControl(Files.SCOREBOARD).getString("scoreboards.lobby.title");
+        if (title.contains("%player%"))
+            title = title.replace("%player%", player.getName());
+        o.setDisplayName(title);
+        List<String> lines = plugin.getFiles().getControl(Files.SCOREBOARD).getStringList("scoreboards.lobby.title");
+        int numbers = lines.size();
+        for (String line : lines) {
+            line = replaceVariables(line,player);
+            line = ChatColor.translateAlternateColorCodes('&', line);
+            o.getScore(line).setScore(numbers);
+            numbers--;
+        }
+    }
+    public String replaceVariables(String text,Player player) {
+        if(text.contains("<player_name>")) text = text.replace("<player_name>",player.getName());
+        if(text.contains("<player_coins>")) text = text.replace("<player_coins>","" + 0);
+        if(text.contains("<player_wins>")) text = text.replace("<player_wins>","" + 0);
+        if(text.contains("<player_beast_kit>")) text = text.replace("<player_beast_kit>","Not selected");
+        if(text.contains("<player_runner_kit>")) text = text.replace("<player_runner_kit>","Not selected");
+        if(text.contains("<server_online>")) text = text.replace("<server_online>",plugin.getServer().getOnlinePlayers().size() + "");
+        if(plugin.hasPAPI()) { text = PlaceholderAPI.setPlaceholders(player,text);
+        }
+        return text;
     }
 
 }
