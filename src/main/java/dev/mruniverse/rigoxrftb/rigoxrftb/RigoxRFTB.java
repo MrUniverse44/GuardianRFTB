@@ -14,6 +14,7 @@ public final class RigoxRFTB extends JavaPlugin {
     private static RigoxRFTB instance;
     private Logger logger;
     private RigoxUtils rigoxUtils;
+    private ListenerUtil rigoxListeners;
     private RigoxBossBar rigoxBossBar;
     @Override
     public void onEnable() {
@@ -38,7 +39,8 @@ public final class RigoxRFTB extends JavaPlugin {
 
         // * Listener Setup
 
-        new ListenerUtil(this);
+        rigoxListeners = new ListenerUtil(this);
+        rigoxListeners.registerListeners();
 
         // * Game Setup
     }
@@ -48,6 +50,7 @@ public final class RigoxRFTB extends JavaPlugin {
         // disabled
     }
     public boolean hasPAPI() { return hasPAPI; }
+    public ListenerUtil getListener() { return rigoxListeners; }
     public static RigoxRFTB getInstance() {
         return instance;
     }

@@ -14,9 +14,10 @@ import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 
 public class PlayerListeners implements Listener {
-    private RigoxRFTB plugin;
+    private final RigoxRFTB plugin;
     public PlayerListeners(RigoxRFTB main) {
         plugin = main;
+        main.getLogs().info("PlayerListener registered!");
     }
     @EventHandler
     public void joinScoreboard(PlayerJoinEvent event) {
@@ -51,6 +52,15 @@ public class PlayerListeners implements Listener {
             }
         } catch (Throwable throwable) {
             plugin.getLogs().error("Can't generate lobby scoreboard for " + event.getPlayer().getName() +"!");
+            plugin.getLogs().error("-------------------------");
+            plugin.getLogs().error("Class: " + throwable.getClass().getName() +".class");
+            if(throwable.getStackTrace() != null) {
+                plugin.getLogs().error("StackTrace: ");
+                for(StackTraceElement line : throwable.getStackTrace()) {
+                    plugin.getLogs().error("(" + line.getLineNumber() + ") " + line.toString());
+                }
+            }
+            plugin.getLogs().error("-------------------------");
         }
     }
     @EventHandler
@@ -76,6 +86,15 @@ public class PlayerListeners implements Listener {
             }
         } catch (Throwable throwable) {
             plugin.getLogs().error("Can't teleport " + event.getPlayer().getName() +" to the lobby!");
+            plugin.getLogs().error("-------------------------");
+            plugin.getLogs().error("Class: " + throwable.getClass().getName() +".class");
+            if(throwable.getStackTrace() != null) {
+                plugin.getLogs().error("StackTrace: ");
+                for(StackTraceElement line : throwable.getStackTrace()) {
+                    plugin.getLogs().error("(" + line.getLineNumber() + ") " + line.toString());
+                }
+            }
+            plugin.getLogs().error("-------------------------");
         }
     }
 }

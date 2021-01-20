@@ -299,30 +299,37 @@ public class FileManager {
                 if(!getControl(Files.MESSAGES).contains(path)) {
                     getControl(Files.MESSAGES).set(path,value);
                 }
+                return;
             case ITEMS:
                 if(!getControl(Files.ITEMS).contains(path)) {
                     getControl(Files.ITEMS).set(path,value);
                 }
+                return;
             case MYSQL:
                 if(!getControl(Files.MYSQL).contains(path)) {
                     getControl(Files.MYSQL).set(path, value);
                 }
+                return;
             case GAMES:
                 if(!getControl(Files.GAMES).contains(path)) {
                     getControl(Files.GAMES).set(path,value);
                 }
+                return;
             case MENUS:
                 if(!getControl(Files.MENUS).contains(path)) {
                     getControl(Files.MENUS).set(path,value);
                 }
+                return;
             case SCOREBOARD:
                 if(!getControl(Files.SCOREBOARD).contains(path)) {
                     getControl(Files.SCOREBOARD).set(path,value);
                 }
+                return;
             default:
                 if(!getControl(Files.SETTINGS).contains(path)) {
                     getControl(Files.SETTINGS).set(path,value);
                 }
+                return;
         }
     }
     public FileConfiguration getControl(Files fileToGet) {
