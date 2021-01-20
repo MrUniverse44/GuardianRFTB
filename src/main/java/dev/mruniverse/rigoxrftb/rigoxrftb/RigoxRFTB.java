@@ -6,6 +6,7 @@ import dev.mruniverse.rigoxrftb.rigoxrftb.listeners.ListenerUtil;
 import dev.mruniverse.rigoxrftb.rigoxrftb.utils.Logger;
 import dev.mruniverse.rigoxrftb.rigoxrftb.utils.RigoxBossBar;
 import dev.mruniverse.rigoxrftb.rigoxrftb.utils.RigoxScoreboards.BoardManager;
+import dev.mruniverse.rigoxrftb.rigoxrftb.utils.RigoxScoreboards.BoardRunnable;
 import dev.mruniverse.rigoxrftb.rigoxrftb.utils.RigoxUtils;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -23,15 +24,6 @@ public final class RigoxRFTB extends JavaPlugin {
         instance = this;
         logger = new Logger(this);
 
-        // * Utils Setup
-
-        rigoxUtils = new RigoxUtils(this);
-        rigoxBossBar = new RigoxBossBar("&7");
-
-        // * Scoreboard Setup
-
-        rigoxScoreboards = new BoardManager(this);
-
         // * Files Setup
 
         fileManager = new FileManager(this);
@@ -48,7 +40,16 @@ public final class RigoxRFTB extends JavaPlugin {
         rigoxListeners = new ListenerUtil(this);
         rigoxListeners.registerListeners();
 
-        // * Game Setup
+        // * Utils Setup
+
+        rigoxUtils = new RigoxUtils(this);
+        rigoxBossBar = new RigoxBossBar("&7");
+
+        // * Scoreboard Setup
+
+        rigoxScoreboards = new BoardManager(this);
+        getServer().getScheduler().runTaskTimerAsynchronously(this,new BoardRunnable(this),0L,20L);
+        getServer().getScheduler().runTaskTimerAsynchronously(this,getBar(),0L,20L);
     }
 
     @Override

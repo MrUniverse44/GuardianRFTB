@@ -273,6 +273,8 @@ public class FileManager {
         addConfig(Files.MESSAGES,"messages.inGame.others.titles.Winner.subtitle","&b%winner_name%&f won the game!");
         addConfig(Files.MESSAGES,"messages.inGame.others.titles.Looser.title","&c&lGAME OVER!");
         addConfig(Files.MESSAGES,"messages.inGame.others.titles.Looser.subtitle","&8%attacker_name%&f kill you!");
+        addConfig(Files.MESSAGES,"messages.lobby.actionBar","&bYou are playing &e&lRFTB &bwith &e&lRigoxRFTB");
+        addConfig(Files.MESSAGES,"messages.lobby.bossBar","&bYou are playing on &e&nRigox Network&b.");
         addConfig(Files.MESSAGES,"messages.others.topFormat.top","&b================[&lTOP 10&b]================");
         addConfig(Files.MESSAGES,"messages.others.topFormat.format","&a%number% &6%player% &7- Score: &b%score%");
         addConfig(Files.MESSAGES,"messages.others.topFormat.bot","&b================[&lTOP 10&b]================");
@@ -336,7 +338,6 @@ public class FileManager {
                 if(!getControl(Files.SETTINGS).contains(path)) {
                     getControl(Files.SETTINGS).set(path,value);
                 }
-                return;
         }
     }
     public FileConfiguration getControl(Files fileToGet) {

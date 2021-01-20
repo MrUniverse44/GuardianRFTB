@@ -3,10 +3,13 @@ package dev.mruniverse.rigoxrftb.rigoxrftb.listeners;
 import dev.mruniverse.rigoxrftb.rigoxrftb.RigoxRFTB;
 import dev.mruniverse.rigoxrftb.rigoxrftb.enums.Files;
 import dev.mruniverse.rigoxrftb.rigoxrftb.enums.RigoxBoard;
+import dev.mruniverse.rigoxrftb.rigoxrftb.utils.RigoxBossBar;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -17,6 +20,23 @@ public class PlayerListeners implements Listener {
     public PlayerListeners(RigoxRFTB main) {
         plugin = main;
         main.getLogs().info("PlayerListener registered!");
+    }
+    @EventHandler
+    public void joinOptions(PlayerJoinEvent event) {
+        FileConfiguration file = plugin.getFiles().getControl(Files.SETTINGS);
+        Player player = event.getPlayer();
+        if(file.getBoolean("settings.options.hideServerJoinMessage")) {
+            event.setJoinMessage(null);
+        }
+        if(file.getBoolean("settings.options.joinHeal")) {
+            player.setHealth(20.0D);
+            player.setLevel(0);
+            player.setExp(0.0F);
+        }
+        if(file.getBoolean("settings.options.joinAdventureGamemode")) {
+            player.setGameMode(GameMode.ADVENTURE);
+        }
+
     }
     @EventHandler
     public void joinScoreboard(PlayerJoinEvent event) {
@@ -57,6 +77,7 @@ public class PlayerListeners implements Listener {
     @EventHandler
     public void onDisconnect(PlayerQuitEvent event) {
         plugin.getScoreboards().removeScore(event.getPlayer());
+        RigoxBossBar.removePlayer(event.getPlayer());
     }
     @EventHandler
     public void joinTeleport(PlayerJoinEvent event) {
@@ -79,6 +100,22 @@ public class PlayerListeners implements Listener {
                     event.getPlayer().teleport(location);
                     if(plugin.getFiles().getControl(Files.SCOREBOARD).getBoolean("scoreboards.lobby.toggle")) {
                         plugin.getScoreboards().setScoreboard(RigoxBoard.LOBBY,event.getPlayer());
+                    }
+                    if(file.getBoolean("settings.options.joinHeal")) {
+                        event.getPlayer().setHealth(20.0D);
+                        event.getPlayer().setLevel(0);
+                        event.getPlayer().setExp(0.0F);
+                    }
+                    if(file.getBoolean("settings.options.lobby-bossBar")) {
+                        RigoxBossBar.addPlayer(event.getPlayer());
+                        RigoxBossBar.setProgress(100);
+                        RigoxBossBar.setTitle(plugin.getFiles().getControl(Files.MESSAGES).getString("messages.lobby.bossBar"));
+                    }
+                    if(file.getBoolean("settings.options.lobby-actionBar")) {
+                        plugin.getUtils().sendActionbar(event.getPlayer(),plugin.getFiles().getControl(Files.MESSAGES).getString("messages.lobby.actionBar"));
+                    }
+                    if(file.getBoolean("settings.options.joinAdventureGamemode")) {
+                        event.getPlayer().setGameMode(GameMode.ADVENTURE);
                     }
                 }
             }
