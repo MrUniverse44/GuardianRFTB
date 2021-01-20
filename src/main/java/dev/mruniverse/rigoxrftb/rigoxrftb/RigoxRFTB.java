@@ -4,16 +4,22 @@ import dev.mruniverse.rigoxrftb.rigoxrftb.enums.SaveMode;
 import dev.mruniverse.rigoxrftb.rigoxrftb.files.FileManager;
 import dev.mruniverse.rigoxrftb.rigoxrftb.listeners.ListenerUtil;
 import dev.mruniverse.rigoxrftb.rigoxrftb.utils.Logger;
+import dev.mruniverse.rigoxrftb.rigoxrftb.utils.RigoxUtils;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class RigoxRFTB extends JavaPlugin {
     private FileManager fileManager;
     private static RigoxRFTB instance;
     private Logger logger;
+    private RigoxUtils rigoxUtils;
     @Override
     public void onEnable() {
         instance = this;
         logger = new Logger(this);
+
+        // * Utils Setup
+
+        rigoxUtils = new RigoxUtils(this);
 
         // * Files Setup
 
@@ -41,4 +47,5 @@ public final class RigoxRFTB extends JavaPlugin {
         return fileManager;
     }
     public Logger getLogs() { return logger; }
+    public RigoxUtils getUtils() { return rigoxUtils; }
 }
