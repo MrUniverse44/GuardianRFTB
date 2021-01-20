@@ -12,7 +12,9 @@ import org.bukkit.entity.Player;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class RigoxUtils {
@@ -234,6 +236,12 @@ public class RigoxUtils {
         }
         return new ArrayList<>();
     }
+    public String getDateFormat() {
+        String dateFormat = plugin.getFiles().getControl(Files.SETTINGS).getString("settings.dateFormat");
+        if(dateFormat == null) dateFormat = "dd/MM/yyyy";
+        return "" + (new SimpleDateFormat(dateFormat).format(Calendar.getInstance().getTime()));
+
+    }
     public String replaceVariables(String text,Player player) {
         if(text.contains("<player_name>")) text = text.replace("<player_name>",player.getName());
         if(text.contains("<player_coins>")) text = text.replace("<player_coins>","" + 0);
@@ -241,6 +249,7 @@ public class RigoxUtils {
         if(text.contains("<player_beast_kit>")) text = text.replace("<player_beast_kit>","Not selected");
         if(text.contains("<player_runner_kit>")) text = text.replace("<player_runner_kit>","Not selected");
         if(text.contains("<server_online>")) text = text.replace("<server_online>",plugin.getServer().getOnlinePlayers().size() + "");
+        if(text.contains("<timeFormat>")) text = text.replace("<timeFormat>",getDateFormat());
         if(plugin.hasPAPI()) { text = PlaceholderAPI.setPlaceholders(player,text);
         }
         return text;

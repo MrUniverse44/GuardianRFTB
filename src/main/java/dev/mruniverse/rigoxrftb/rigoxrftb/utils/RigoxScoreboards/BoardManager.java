@@ -38,7 +38,7 @@ public class BoardManager {
             String title;
             title = plugin.getUtils().replaceVariables(plugin.getUtils().getTitle(RigoxBoard.LOBBY),player);
             scoreboard.setTitle(title);
-
+            scoreboard.updateLines(plugin.getUtils().getLines(RigoxBoard.LOBBY,player));
         }
     }
     private boolean existPlayer(Player player) {

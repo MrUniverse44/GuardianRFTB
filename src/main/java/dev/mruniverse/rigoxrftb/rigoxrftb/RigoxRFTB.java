@@ -5,6 +5,7 @@ import dev.mruniverse.rigoxrftb.rigoxrftb.files.FileManager;
 import dev.mruniverse.rigoxrftb.rigoxrftb.listeners.ListenerUtil;
 import dev.mruniverse.rigoxrftb.rigoxrftb.utils.Logger;
 import dev.mruniverse.rigoxrftb.rigoxrftb.utils.RigoxBossBar;
+import dev.mruniverse.rigoxrftb.rigoxrftb.utils.RigoxScoreboards.BoardManager;
 import dev.mruniverse.rigoxrftb.rigoxrftb.utils.RigoxUtils;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -16,6 +17,7 @@ public final class RigoxRFTB extends JavaPlugin {
     private RigoxUtils rigoxUtils;
     private ListenerUtil rigoxListeners;
     private RigoxBossBar rigoxBossBar;
+    private BoardManager rigoxScoreboards;
     @Override
     public void onEnable() {
         instance = this;
@@ -25,6 +27,10 @@ public final class RigoxRFTB extends JavaPlugin {
 
         rigoxUtils = new RigoxUtils(this);
         rigoxBossBar = new RigoxBossBar("&7");
+
+        // * Scoreboard Setup
+
+        rigoxScoreboards = new BoardManager(this);
 
         // * Files Setup
 
@@ -59,5 +65,6 @@ public final class RigoxRFTB extends JavaPlugin {
     }
     public Logger getLogs() { return logger; }
     public RigoxUtils getUtils() { return rigoxUtils; }
+    public BoardManager getScoreboards() { return rigoxScoreboards; }
     public RigoxBossBar getBar() { return rigoxBossBar; }
 }

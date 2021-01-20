@@ -2,6 +2,7 @@ package dev.mruniverse.rigoxrftb.rigoxrftb.listeners;
 
 import dev.mruniverse.rigoxrftb.rigoxrftb.RigoxRFTB;
 import dev.mruniverse.rigoxrftb.rigoxrftb.enums.Files;
+import dev.mruniverse.rigoxrftb.rigoxrftb.enums.RigoxBoard;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -9,9 +10,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 public class PlayerListeners implements Listener {
     private final RigoxRFTB plugin;
@@ -34,21 +33,13 @@ public class PlayerListeners implements Listener {
                     World w = Bukkit.getWorld(loc[0]);
                     if (event.getPlayer().getWorld().equals(w)) {
                         if(plugin.getFiles().getControl(Files.SCOREBOARD).getBoolean("scoreboards.lobby.toggle")) {
-                            //Scoreboard sb = Bukkit.getScoreboardManager().getNewScoreboard();
-                            //Objective o = sb.registerNewObjective("RigoxRFTB", "Lobby");
-                            //o.setDisplaySlot(DisplaySlot.SIDEBAR);
-                            //event.getPlayer().setScoreboard(sb);
-                            //plugin.getUtils().lobbyBoard(event.getPlayer());
+                            plugin.getScoreboards().setScoreboard(RigoxBoard.LOBBY,event.getPlayer());
                         }
                     }
                 }
             } else {
                 if(plugin.getFiles().getControl(Files.SCOREBOARD).getBoolean("scoreboards.lobby.toggle")) {
-                    //Scoreboard sb = Bukkit.getScoreboardManager().getNewScoreboard();
-                    //Objective o = sb.registerNewObjective("RigoxRFTB", "Lobby");
-                    //o.setDisplaySlot(DisplaySlot.SIDEBAR);
-                    //event.getPlayer().setScoreboard(sb);
-                    //plugin.getUtils().lobbyBoard(event.getPlayer());
+                    plugin.getScoreboards().setScoreboard(RigoxBoard.LOBBY,event.getPlayer());
                 }
             }
         } catch (Throwable throwable) {
@@ -63,6 +54,10 @@ public class PlayerListeners implements Listener {
             }
             plugin.getLogs().error("-------------------------");
         }
+    }
+    @EventHandler
+    public void onDisconnect(PlayerQuitEvent event) {
+        plugin.getScoreboards().removeScore(event.getPlayer());
     }
     @EventHandler
     public void joinTeleport(PlayerJoinEvent event) {
@@ -84,11 +79,7 @@ public class PlayerListeners implements Listener {
                     Location location = new Location(w, x, y, z, yaw, pitch);
                     event.getPlayer().teleport(location);
                     if(plugin.getFiles().getControl(Files.SCOREBOARD).getBoolean("scoreboards.lobby.toggle")) {
-                        //Scoreboard sb = Bukkit.getScoreboardManager().getNewScoreboard();
-                        //Objective o = sb.registerNewObjective("RigoxRFTB", "Lobby");
-                        //o.setDisplaySlot(DisplaySlot.SIDEBAR);
-                        //event.getPlayer().setScoreboard(sb);
-                        //plugin.getUtils().lobbyBoard(event.getPlayer());
+                        plugin.getScoreboards().setScoreboard(RigoxBoard.LOBBY,event.getPlayer());
                     }
                 }
             }
