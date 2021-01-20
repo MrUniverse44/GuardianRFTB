@@ -7,6 +7,7 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Constructor;
@@ -47,6 +48,8 @@ public class RigoxUtils {
                 title = PlaceholderAPI.setPlaceholders(player,title);
                 subtitle = PlaceholderAPI.setPlaceholders(player,subtitle);
             }
+            title = color(title);
+            subtitle = color(subtitle);
             Object chatTitle = getNMSClass("IChatBaseComponent").getDeclaredClasses()[0].getMethod("a", String.class)
                     .invoke(null, "{\"text\": \"" + title + "\"}");
             Constructor<?> titleConstructor = getNMSClass("PacketPlayOutTitle").getConstructor(
@@ -74,6 +77,7 @@ public class RigoxUtils {
     public void sendActionbar(Player player, String message) {
         if (player == null || message == null) return;
         if(plugin.hasPAPI()) { message = PlaceholderAPI.setPlaceholders(player,message); }
+        message = color(message);
         String nmsVersion = Bukkit.getServer().getClass().getPackage().getName();
         nmsVersion = nmsVersion.substring(nmsVersion.lastIndexOf(".") + 1);
 
@@ -169,6 +173,9 @@ public class RigoxUtils {
             return "";
         }
         return "";
+    }
+    public String color(String message) {
+        return ChatColor.translateAlternateColorCodes('&',message);
     }
     public List<String> getLines(RigoxBoard board,Player player) {
         List<String> lines = new ArrayList<>();

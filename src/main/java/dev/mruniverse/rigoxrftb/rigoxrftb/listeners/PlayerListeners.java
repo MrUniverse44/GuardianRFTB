@@ -78,6 +78,9 @@ public class PlayerListeners implements Listener {
     public void onDisconnect(PlayerQuitEvent event) {
         plugin.getScoreboards().removeScore(event.getPlayer());
         RigoxBossBar.removePlayer(event.getPlayer());
+        if(plugin.getFiles().getControl(Files.SETTINGS).getBoolean("settings.options.hideServerQuitMessage")) {
+            event.setQuitMessage(null);
+        }
     }
     @EventHandler
     public void joinTeleport(PlayerJoinEvent event) {
