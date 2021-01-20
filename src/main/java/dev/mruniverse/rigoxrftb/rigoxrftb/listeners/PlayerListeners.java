@@ -19,6 +19,7 @@ public class PlayerListeners implements Listener {
         plugin = main;
         main.getLogs().info("PlayerListener registered!");
     }
+    @SuppressWarnings("deprecation")
     @EventHandler
     public void joinScoreboard(PlayerJoinEvent event) {
         try {
@@ -34,7 +35,7 @@ public class PlayerListeners implements Listener {
                     if (event.getPlayer().getWorld().equals(w)) {
                         if(plugin.getFiles().getControl(Files.SCOREBOARD).getBoolean("scoreboards.lobby.toggle")) {
                             Scoreboard sb = Bukkit.getScoreboardManager().getNewScoreboard();
-                            Objective o = sb.registerNewObjective("RigoxRFTB", "Lobby", "RFTB");
+                            Objective o = sb.registerNewObjective("RigoxRFTB", "Lobby");
                             o.setDisplaySlot(DisplaySlot.SIDEBAR);
                             event.getPlayer().setScoreboard(sb);
                             plugin.getUtils().lobbyBoard(event.getPlayer());
@@ -44,7 +45,7 @@ public class PlayerListeners implements Listener {
             } else {
                 if(plugin.getFiles().getControl(Files.SCOREBOARD).getBoolean("scoreboards.lobby.toggle")) {
                     Scoreboard sb = Bukkit.getScoreboardManager().getNewScoreboard();
-                    Objective o = sb.registerNewObjective("RigoxRFTB", "Lobby", "RFTB");
+                    Objective o = sb.registerNewObjective("RigoxRFTB", "Lobby");
                     o.setDisplaySlot(DisplaySlot.SIDEBAR);
                     event.getPlayer().setScoreboard(sb);
                     plugin.getUtils().lobbyBoard(event.getPlayer());
@@ -82,6 +83,13 @@ public class PlayerListeners implements Listener {
                     float pitch = Float.parseFloat(loc[5]);
                     Location location = new Location(w, x, y, z, yaw, pitch);
                     event.getPlayer().teleport(location);
+                    if(plugin.getFiles().getControl(Files.SCOREBOARD).getBoolean("scoreboards.lobby.toggle")) {
+                        Scoreboard sb = Bukkit.getScoreboardManager().getNewScoreboard();
+                        Objective o = sb.registerNewObjective("RigoxRFTB", "Lobby");
+                        o.setDisplaySlot(DisplaySlot.SIDEBAR);
+                        event.getPlayer().setScoreboard(sb);
+                        plugin.getUtils().lobbyBoard(event.getPlayer());
+                    }
                 }
             }
         } catch (Throwable throwable) {
