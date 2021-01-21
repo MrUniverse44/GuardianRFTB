@@ -1,4 +1,4 @@
-package dev.mruniverse.rigoxrftb.utils.rigoxbossbars;
+package dev.mruniverse.rigoxrftb.utils.bossbars;
 
 import dev.mruniverse.rigoxrftb.RigoxRFTB;
 import org.bukkit.entity.Player;
@@ -12,27 +12,18 @@ public class BossManager {
         plugin = main;
     }
     private HashMap<UUID, PlayerBoard> players = new HashMap<>();
-    private HashMap<UUID, Player> playerName = new HashMap<>();
-    public boolean hasScore(Player player) {
-        return players.containsKey(player.getUniqueId());
-    }
 
     public PlayerBoard getBossOfPlayer(Player player) {
         return players.get(player.getUniqueId());
     }
 
-    public void removeScore(Player player) {
+    public void removeBossBar(Player player) {
         players.remove(player.getUniqueId());
-        playerName.remove(player.getUniqueId());
-    }
-    public Player getPlayer(UUID uuid) {
-        return playerName.get(uuid);
     }
 
     public void setBossBar(Player player,String message) {
         if(!existPlayer(player)) {
             players.put(player.getUniqueId(), new PlayerBoard(player, message));
-            playerName.put(player.getUniqueId(), player);
         }
         updateBossBar(player, message);
     }

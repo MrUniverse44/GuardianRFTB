@@ -9,6 +9,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.omg.DynamicAny.DynAnyFactoryPackage.InconsistentTypeCodeHelper;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -21,10 +22,37 @@ import java.util.List;
 public class RigoxUtils {
     private final RigoxRFTB plugin;
     private String NameVersion;
+    private final Class<?> PacketPlayOutChat;
+    private final Class<?> PacketPlayOutTitle;
+    private final Class<?> Packet;
+    private final Class<?> Chat;
+    private final Class<?> IChatBaseComponent;
+    //private Class<?> CraftPlayer;
     public RigoxUtils(RigoxRFTB main) {
         plugin = main;
+
+        // * Version Setup
+
         NameVersion = plugin.getServer().getClass().getPackage().getName();
         NameVersion = NameVersion.substring(NameVersion.lastIndexOf(".") + 1);
+
+        // * Class Setup
+
+        PacketPlayOutChat = getRClass("net.minecraft.server." + NameVersion + ".PacketPlayOutChat");
+        PacketPlayOutTitle = getRClass("net.minecraft.server." + NameVersion + ".PacketPlayOutTitle");
+        Packet = getRClass("net.minecraft.server." + NameVersion + ".Packet");
+        Chat = getRClass("net.minecraft.server." + NameVersion + (NameVersion.equalsIgnoreCase("v1_8_R1") ? ".ChatSerializer" : ".ChatComponentText"));
+        IChatBaseComponent = getRClass("net.minecraft.server." + NameVersion + ".IChatBaseComponent");
+        //CraftPlayer = getRClass("org.bukkit.craftbukkit." + NameVersion + ".entity.CraftPlayer");
+    }
+    public Class<?> getRClass(String classDir) {
+        try {
+            return Class.forName(classDir);
+        }catch (Throwable throwable) {
+            plugin.getLogs().error("Can't load class: " + classDir);
+            plugin.getLogs().error(throwable);
+        }
+        return null;
     }
     public void sendPacket(Player player, Object packet) {
         try {
@@ -50,31 +78,42 @@ public class RigoxUtils {
     public void sendTitle(Player player, int fadeInTime, int showTime, int fadeOutTime, String title, String subtitle) {
         try {
             if(plugin.hasPAPI()) {
-                title = PlaceholderAPI.setPlaceholders(player,title);
-                subtitle = PlaceholderAPI.setPlaceholders(player,subtitle);
+                if(title != null) {
+                    title = PlaceholderAPI.setPlaceholders(player, title);
+                }
+                if(subtitle != null) {
+                    subtitle = PlaceholderAPI.setPlaceholders(player, subtitle);
+                }
             }
-            title = color(title);
-            subtitle = color(subtitle);
-            Object chatTitle = getNMSClass("IChatBaseComponent").getDeclaredClasses()[0].getMethod("a", String.class)
-                    .invoke(null, "{\"text\": \"" + title + "\"}");
-            Constructor<?> titleConstructor = getNMSClass("PacketPlayOutTitle").getConstructor(
-                    getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0], getNMSClass("IChatBaseComponent"),
-                    int.class, int.class, int.class);
-            Object packet = titleConstructor.newInstance(
-                    getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0].getField("TITLE").get(null), chatTitle,
-                    fadeInTime, showTime, fadeOutTime);
+            if(title != null) {
+                title = color(title);
+            }
+            if(subtitle != null) {
+                subtitle = color(subtitle);
+            }
 
-            Object chatsTitle = getNMSClass("IChatBaseComponent").getDeclaredClasses()[0].getMethod("a", String.class)
-                    .invoke(null, "{\"text\": \"" + subtitle + "\"}");
-            Constructor<?> stitleConstructor = getNMSClass("PacketPlayOutTitle").getConstructor(
-                    getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0], getNMSClass("IChatBaseComponent"),
-                    int.class, int.class, int.class);
-            Object spacket = stitleConstructor.newInstance(
-                    getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0].getField("SUBTITLE").get(null), chatsTitle,
-                    fadeInTime, showTime, fadeOutTime);
-
-            sendPacket(player, packet);
-            sendPacket(player, spacket);
+            if(title != null) {
+                Object chatTitle = IChatBaseComponent.getDeclaredClasses()[0].getMethod("a", String.class)
+                        .invoke(null, "{\"text\": \"" + title + "\"}");
+                Constructor<?> titleConstructor = PacketPlayOutTitle.getConstructor(
+                        PacketPlayOutTitle.getDeclaredClasses()[0], IChatBaseComponent,
+                        int.class, int.class, int.class);
+                Object packet = titleConstructor.newInstance(
+                        PacketPlayOutTitle.getDeclaredClasses()[0].getField("TITLE").get(null), chatTitle,
+                        fadeInTime, showTime, fadeOutTime);
+                sendPacket(player, packet);
+            }
+            if(subtitle != null) {
+                Object chatsTitle = IChatBaseComponent.getDeclaredClasses()[0].getMethod("a", String.class)
+                        .invoke(null, "{\"text\": \"" + subtitle + "\"}");
+                Constructor<?> stitleConstructor = PacketPlayOutTitle.getConstructor(
+                        PacketPlayOutTitle.getDeclaredClasses()[0], IChatBaseComponent,
+                        int.class, int.class, int.class);
+                Object spacket = stitleConstructor.newInstance(
+                        PacketPlayOutTitle.getDeclaredClasses()[0].getField("SUBTITLE").get(null), chatsTitle,
+                        fadeInTime, showTime, fadeOutTime);
+                sendPacket(player, spacket);
+            }
         } catch (Throwable throwable) {
             plugin.getLogs().error("Can't send title for " + player.getName() + ".");
             plugin.getLogs().error(throwable);
@@ -93,27 +132,12 @@ public class RigoxUtils {
 
         //1.8.x and 1.9.x
         try {
-            Class<?> craftPlayerClass = Class.forName("org.bukkit.craftbukkit." + NameVersion + ".entity.CraftPlayer");
-            Object craftPlayer = craftPlayerClass.cast(player);
-
-            Class<?> ppoc = Class.forName("net.minecraft.server." + NameVersion + ".PacketPlayOutChat");
-            Class<?> packet = Class.forName("net.minecraft.server." + NameVersion + ".Packet");
             Object packetPlayOutChat;
-            Class<?> chat = Class.forName("net.minecraft.server." + NameVersion + (NameVersion.equalsIgnoreCase("v1_8_R1") ? ".ChatSerializer" : ".ChatComponentText"));
-            Class<?> chatBaseComponent = Class.forName("net.minecraft.server." + NameVersion + ".IChatBaseComponent");
-
             Method method = null;
-            if (NameVersion.equalsIgnoreCase("v1_8_R1")) method = chat.getDeclaredMethod("a", String.class);
-
-            Object object = NameVersion.equalsIgnoreCase("v1_8_R1") ? chatBaseComponent.cast(method.invoke(chat, "{'text': '" + message + "'}")) : chat.getConstructor(new Class[]{String.class}).newInstance(message);
-            packetPlayOutChat = ppoc.getConstructor(new Class[]{chatBaseComponent, Byte.TYPE}).newInstance(object, (byte) 2);
-
-            Method handle = craftPlayerClass.getDeclaredMethod("getHandle");
-            Object iCraftPlayer = handle.invoke(craftPlayer);
-            Field playerConnectionField = iCraftPlayer.getClass().getDeclaredField("playerConnection");
-            Object playerConnection = playerConnectionField.get(iCraftPlayer);
-            Method sendPacket = playerConnection.getClass().getDeclaredMethod("sendPacket", packet);
-            sendPacket.invoke(playerConnection, packetPlayOutChat);
+            if (NameVersion.equalsIgnoreCase("v1_8_R1")) method = Chat.getDeclaredMethod("a", String.class);
+            Object object = NameVersion.equalsIgnoreCase("v1_8_R1") ? IChatBaseComponent.cast(method.invoke(Chat, "{'text': '" + message + "'}")) : Chat.getConstructor(new Class[]{String.class}).newInstance(message);
+            packetPlayOutChat = PacketPlayOutChat.getConstructor(new Class[]{IChatBaseComponent, Byte.TYPE}).newInstance(object, (byte) 2);
+            sendPacket(player,packetPlayOutChat);
         } catch (Throwable throwable) {
             plugin.getLogs().error("Can't send action bar for " + player.getName() + " with message: " + message);
             plugin.getLogs().error(throwable);

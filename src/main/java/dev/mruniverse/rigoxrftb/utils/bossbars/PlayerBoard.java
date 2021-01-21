@@ -1,4 +1,4 @@
-package dev.mruniverse.rigoxrftb.utils.rigoxbossbars;
+package dev.mruniverse.rigoxrftb.utils.bossbars;
 
 import org.bukkit.entity.Player;
 
@@ -8,6 +8,9 @@ public class PlayerBoard {
     }
     public void setPercentage(Integer percentage) {
         // change percentage
+    }
+    public void setMessage(String message) {
+
     }
 
 }

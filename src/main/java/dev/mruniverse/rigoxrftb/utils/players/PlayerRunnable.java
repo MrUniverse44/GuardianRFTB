@@ -1,4 +1,4 @@
-package dev.mruniverse.rigoxrftb.utils.rigoxplayers;
+package dev.mruniverse.rigoxrftb.utils.players;
 
 import dev.mruniverse.rigoxrftb.RigoxRFTB;
 import dev.mruniverse.rigoxrftb.enums.Files;

@@ -1,4 +1,4 @@
-package dev.mruniverse.rigoxrftb.utils.rigoxscoreboards;
+package dev.mruniverse.rigoxrftb.utils.scoreboards;
 
 import dev.mruniverse.rigoxrftb.RigoxRFTB;
 import dev.mruniverse.rigoxrftb.enums.RigoxBoard;

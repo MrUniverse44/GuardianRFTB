@@ -1,4 +1,4 @@
-package dev.mruniverse.rigoxrftb.utils.rigoxscoreboards;
+package dev.mruniverse.rigoxrftb.utils.scoreboards;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

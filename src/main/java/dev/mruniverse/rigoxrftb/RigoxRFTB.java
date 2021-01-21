@@ -4,11 +4,11 @@ import dev.mruniverse.rigoxrftb.files.FileManager;
 import dev.mruniverse.rigoxrftb.listeners.ListenerUtil;
 import dev.mruniverse.rigoxrftb.enums.SaveMode;
 import dev.mruniverse.rigoxrftb.utils.Logger;
-import dev.mruniverse.rigoxrftb.utils.rigoxbossbars.BossManager;
-import dev.mruniverse.rigoxrftb.utils.rigoxplayers.PlayerRunnable;
-import dev.mruniverse.rigoxrftb.utils.rigoxscoreboards.BoardManager;
+import dev.mruniverse.rigoxrftb.utils.bossbars.BossManager;
+import dev.mruniverse.rigoxrftb.utils.players.PlayerRunnable;
+import dev.mruniverse.rigoxrftb.utils.scoreboards.BoardManager;
 import dev.mruniverse.rigoxrftb.utils.RigoxUtils;
-import dev.mruniverse.rigoxrftb.utils.rigoxplayers.PlayerManager;
+import dev.mruniverse.rigoxrftb.utils.players.PlayerManager;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
