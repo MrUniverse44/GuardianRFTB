@@ -1,6 +1,6 @@
 name: RigoxRFTB
 version: 1.0.0-SNAPSHOT
-main: dev.mruniverse.rigoxrftb.rigoxrftb.RigoxRFTB
+main: dev.mruniverse.rigoxrftb.RigoxRFTB
 authors: [ MrUniverse44, Sebastnchan ]
 description: Run From the Beast Minigame but with new Features and Original systems.
 website: rigox.club
