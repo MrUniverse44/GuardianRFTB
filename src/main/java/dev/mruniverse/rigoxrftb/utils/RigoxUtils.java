@@ -1,8 +1,8 @@
-package dev.mruniverse.rigoxrftb.rigoxrftb.utils;
+package dev.mruniverse.rigoxrftb.utils;
 
-import dev.mruniverse.rigoxrftb.rigoxrftb.RigoxRFTB;
-import dev.mruniverse.rigoxrftb.rigoxrftb.enums.Files;
-import dev.mruniverse.rigoxrftb.rigoxrftb.enums.RigoxBoard;
+import dev.mruniverse.rigoxrftb.enums.Files;
+import dev.mruniverse.rigoxrftb.enums.RigoxBoard;
+import dev.mruniverse.rigoxrftb.RigoxRFTB;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;

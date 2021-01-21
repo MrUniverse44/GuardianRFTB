@@ -1,7 +1,7 @@
-package dev.mruniverse.rigoxrftb.rigoxrftb.utils.rigoxscoreboards;
+package dev.mruniverse.rigoxrftb.utils.rigoxscoreboards;
 
-import dev.mruniverse.rigoxrftb.rigoxrftb.RigoxRFTB;
-import dev.mruniverse.rigoxrftb.rigoxrftb.enums.RigoxBoard;
+import dev.mruniverse.rigoxrftb.RigoxRFTB;
+import dev.mruniverse.rigoxrftb.enums.RigoxBoard;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;

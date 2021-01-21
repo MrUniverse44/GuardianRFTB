@@ -1,8 +1,8 @@
-package dev.mruniverse.rigoxrftb.rigoxrftb.utils.rigoxplayers;
+package dev.mruniverse.rigoxrftb.utils.rigoxplayers;
 
-import dev.mruniverse.rigoxrftb.rigoxrftb.RigoxRFTB;
-import dev.mruniverse.rigoxrftb.rigoxrftb.enums.Files;
-import dev.mruniverse.rigoxrftb.rigoxrftb.enums.PlayerStatus;
+import dev.mruniverse.rigoxrftb.RigoxRFTB;
+import dev.mruniverse.rigoxrftb.enums.Files;
+import dev.mruniverse.rigoxrftb.enums.PlayerStatus;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.UUID;

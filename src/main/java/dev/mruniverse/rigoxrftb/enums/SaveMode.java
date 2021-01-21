@@ -1,4 +1,4 @@
-package dev.mruniverse.rigoxrftb.rigoxrftb.enums;
+package dev.mruniverse.rigoxrftb.enums;
 
 public enum SaveMode {
     ALL,

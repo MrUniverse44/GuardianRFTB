@@ -1,6 +1,6 @@
-package dev.mruniverse.rigoxrftb.rigoxrftb.utils.rigoxbossbars;
+package dev.mruniverse.rigoxrftb.utils.rigoxbossbars;
 
-import dev.mruniverse.rigoxrftb.rigoxrftb.RigoxRFTB;
+import dev.mruniverse.rigoxrftb.RigoxRFTB;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;

@@ -1,4 +1,4 @@
-package dev.mruniverse.rigoxrftb.rigoxrftb.utils;
+package dev.mruniverse.rigoxrftb.utils;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.UUID;
 
-import dev.mruniverse.rigoxrftb.rigoxrftb.RigoxRFTB;
+import dev.mruniverse.rigoxrftb.RigoxRFTB;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;

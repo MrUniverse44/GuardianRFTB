@@ -1,14 +1,14 @@
-package dev.mruniverse.rigoxrftb.rigoxrftb;
+package dev.mruniverse.rigoxrftb;
 
-import dev.mruniverse.rigoxrftb.rigoxrftb.enums.SaveMode;
-import dev.mruniverse.rigoxrftb.rigoxrftb.files.FileManager;
-import dev.mruniverse.rigoxrftb.rigoxrftb.listeners.ListenerUtil;
-import dev.mruniverse.rigoxrftb.rigoxrftb.utils.Logger;
-import dev.mruniverse.rigoxrftb.rigoxrftb.utils.rigoxbossbars.BossManager;
-import dev.mruniverse.rigoxrftb.rigoxrftb.utils.rigoxplayers.PlayerRunnable;
-import dev.mruniverse.rigoxrftb.rigoxrftb.utils.rigoxscoreboards.BoardManager;
-import dev.mruniverse.rigoxrftb.rigoxrftb.utils.RigoxUtils;
-import dev.mruniverse.rigoxrftb.rigoxrftb.utils.rigoxplayers.PlayerManager;
+import dev.mruniverse.rigoxrftb.files.FileManager;
+import dev.mruniverse.rigoxrftb.listeners.ListenerUtil;
+import dev.mruniverse.rigoxrftb.enums.SaveMode;
+import dev.mruniverse.rigoxrftb.utils.Logger;
+import dev.mruniverse.rigoxrftb.utils.rigoxbossbars.BossManager;
+import dev.mruniverse.rigoxrftb.utils.rigoxplayers.PlayerRunnable;
+import dev.mruniverse.rigoxrftb.utils.rigoxscoreboards.BoardManager;
+import dev.mruniverse.rigoxrftb.utils.RigoxUtils;
+import dev.mruniverse.rigoxrftb.utils.rigoxplayers.PlayerManager;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 

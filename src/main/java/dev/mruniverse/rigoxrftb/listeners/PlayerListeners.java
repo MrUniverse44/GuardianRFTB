@@ -1,9 +1,9 @@
-package dev.mruniverse.rigoxrftb.rigoxrftb.listeners;
+package dev.mruniverse.rigoxrftb.listeners;
 
-import dev.mruniverse.rigoxrftb.rigoxrftb.RigoxRFTB;
-import dev.mruniverse.rigoxrftb.rigoxrftb.enums.Files;
-import dev.mruniverse.rigoxrftb.rigoxrftb.enums.RigoxBoard;
-import dev.mruniverse.rigoxrftb.rigoxrftb.utils.RigoxBossBar;
+import dev.mruniverse.rigoxrftb.enums.Files;
+import dev.mruniverse.rigoxrftb.enums.RigoxBoard;
+import dev.mruniverse.rigoxrftb.RigoxRFTB;
+import dev.mruniverse.rigoxrftb.utils.RigoxBossBar;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;

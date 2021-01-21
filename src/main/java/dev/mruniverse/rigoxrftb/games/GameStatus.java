@@ -1,4 +1,4 @@
-package dev.mruniverse.rigoxrftb.rigoxrftb.games;
+package dev.mruniverse.rigoxrftb.games;
 
 public enum GameStatus {
     WAITING,

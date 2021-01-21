@@ -1,7 +1,7 @@
-package dev.mruniverse.rigoxrftb.rigoxrftb.utils.rigoxplayers;
+package dev.mruniverse.rigoxrftb.utils.rigoxplayers;
 
-import dev.mruniverse.rigoxrftb.rigoxrftb.enums.PlayerStatus;
-import dev.mruniverse.rigoxrftb.rigoxrftb.enums.RigoxBoard;
+import dev.mruniverse.rigoxrftb.enums.PlayerStatus;
+import dev.mruniverse.rigoxrftb.enums.RigoxBoard;
 import org.bukkit.entity.Player;
 
 public class PlayerManager {

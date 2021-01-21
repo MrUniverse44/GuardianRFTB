@@ -1,13 +1,12 @@
-package dev.mruniverse.rigoxrftb.rigoxrftb.files;
+package dev.mruniverse.rigoxrftb.files;
 
-import dev.mruniverse.rigoxrftb.rigoxrftb.RigoxRFTB;
-import dev.mruniverse.rigoxrftb.rigoxrftb.enums.Files;
-import dev.mruniverse.rigoxrftb.rigoxrftb.enums.SaveMode;
+import dev.mruniverse.rigoxrftb.enums.Files;
+import dev.mruniverse.rigoxrftb.RigoxRFTB;
+import dev.mruniverse.rigoxrftb.enums.SaveMode;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 

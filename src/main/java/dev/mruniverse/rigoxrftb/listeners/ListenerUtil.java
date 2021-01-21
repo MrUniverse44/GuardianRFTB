@@ -1,6 +1,6 @@
-package dev.mruniverse.rigoxrftb.rigoxrftb.listeners;
+package dev.mruniverse.rigoxrftb.listeners;
 
-import dev.mruniverse.rigoxrftb.rigoxrftb.RigoxRFTB;
+import dev.mruniverse.rigoxrftb.RigoxRFTB;
 
 public class ListenerUtil {
     private RigoxRFTB plugin;

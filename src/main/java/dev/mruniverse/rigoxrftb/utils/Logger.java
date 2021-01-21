@@ -1,6 +1,6 @@
-package dev.mruniverse.rigoxrftb.rigoxrftb.utils;
+package dev.mruniverse.rigoxrftb.utils;
 
-import dev.mruniverse.rigoxrftb.rigoxrftb.RigoxRFTB;
+import dev.mruniverse.rigoxrftb.RigoxRFTB;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 

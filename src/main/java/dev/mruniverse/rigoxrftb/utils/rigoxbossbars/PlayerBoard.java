@@ -1,4 +1,4 @@
-package dev.mruniverse.rigoxrftb.rigoxrftb.utils.rigoxbossbars;
+package dev.mruniverse.rigoxrftb.utils.rigoxbossbars;
 
 import org.bukkit.entity.Player;
 
