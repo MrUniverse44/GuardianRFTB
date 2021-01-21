@@ -55,23 +55,13 @@ public class RigoxUtils {
         try {
             Object handle = player.getClass().getMethod("getHandle").invoke(player);
             Object playerConnection = handle.getClass().getField("playerConnection").get(handle);
-            playerConnection.getClass().getMethod("sendPacket", getNMSClass("Packet")).invoke(playerConnection, packet);
+            playerConnection.getClass().getMethod("sendPacket", Packet).invoke(playerConnection, packet);
         } catch (Throwable throwable) {
             plugin.getLogs().error("Can't send packet for " + player.getName() + ".");
             plugin.getLogs().error(throwable);
         }
     }
 
-    public  Class<?> getNMSClass(String name) {
-        try {
-            return Class.forName("net.minecraft.server"
-                    + Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3] + "." + name);
-        } catch (Throwable throwable) {
-            plugin.getLogs().error("Can't load this Minecraft version for Titles :(");
-            plugin.getLogs().error(throwable);
-        }
-        return null;
-    }
     public void sendTitle(Player player, int fadeInTime, int showTime, int fadeOutTime, String title, String subtitle) {
         try {
             if(plugin.hasPAPI()) {

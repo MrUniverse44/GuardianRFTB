@@ -11,6 +11,7 @@ public class PlayerManager {
     public PlayerManager(Player p) {
         player = p;
         rigoxBoard = RigoxBoard.LOBBY;
+        playerStatus = PlayerStatus.IN_LOBBY;
     }
     public void setStatus(PlayerStatus status) {
         playerStatus = status;
