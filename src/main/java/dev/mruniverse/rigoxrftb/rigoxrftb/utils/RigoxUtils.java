@@ -19,17 +19,21 @@ import java.util.Calendar;
 import java.util.List;
 
 public class RigoxUtils {
-    private RigoxRFTB plugin;
+    private final RigoxRFTB plugin;
+    private String NameVersion;
     public RigoxUtils(RigoxRFTB main) {
         plugin = main;
+        NameVersion = plugin.getServer().getClass().getPackage().getName();
+        NameVersion = NameVersion.substring(NameVersion.lastIndexOf(".") + 1);
     }
     public void sendPacket(Player player, Object packet) {
         try {
             Object handle = player.getClass().getMethod("getHandle").invoke(player);
             Object playerConnection = handle.getClass().getField("playerConnection").get(handle);
             playerConnection.getClass().getMethod("sendPacket", getNMSClass("Packet")).invoke(playerConnection, packet);
-        } catch (Exception ex) {
+        } catch (Throwable throwable) {
             plugin.getLogs().error("Can't send packet for " + player.getName() + ".");
+            plugin.getLogs().error(throwable);
         }
     }
 
@@ -37,8 +41,9 @@ public class RigoxUtils {
         try {
             return Class.forName("net.minecraft.server"
                     + Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3] + "." + name);
-        } catch (ClassNotFoundException ex) {
+        } catch (Throwable throwable) {
             plugin.getLogs().error("Can't load this Minecraft version for Titles :(");
+            plugin.getLogs().error(throwable);
         }
         return null;
     }
@@ -70,38 +75,37 @@ public class RigoxUtils {
 
             sendPacket(player, packet);
             sendPacket(player, spacket);
-        } catch (Exception ex) {
+        } catch (Throwable throwable) {
             plugin.getLogs().error("Can't send title for " + player.getName() + ".");
+            plugin.getLogs().error(throwable);
         }
     }
     public void sendActionbar(Player player, String message) {
         if (player == null || message == null) return;
         if(plugin.hasPAPI()) { message = PlaceholderAPI.setPlaceholders(player,message); }
         message = color(message);
-        String nmsVersion = Bukkit.getServer().getClass().getPackage().getName();
-        nmsVersion = nmsVersion.substring(nmsVersion.lastIndexOf(".") + 1);
 
         //1.10 and up
-        if (!nmsVersion.startsWith("v1_9_R") && !nmsVersion.startsWith("v1_8_R")) {
+        if (!NameVersion.startsWith("v1_9_R") && !NameVersion.startsWith("v1_8_R")) {
             player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(message));
             return;
         }
 
         //1.8.x and 1.9.x
         try {
-            Class<?> craftPlayerClass = Class.forName("org.bukkit.craftbukkit." + nmsVersion + ".entity.CraftPlayer");
+            Class<?> craftPlayerClass = Class.forName("org.bukkit.craftbukkit." + NameVersion + ".entity.CraftPlayer");
             Object craftPlayer = craftPlayerClass.cast(player);
 
-            Class<?> ppoc = Class.forName("net.minecraft.server." + nmsVersion + ".PacketPlayOutChat");
-            Class<?> packet = Class.forName("net.minecraft.server." + nmsVersion + ".Packet");
+            Class<?> ppoc = Class.forName("net.minecraft.server." + NameVersion + ".PacketPlayOutChat");
+            Class<?> packet = Class.forName("net.minecraft.server." + NameVersion + ".Packet");
             Object packetPlayOutChat;
-            Class<?> chat = Class.forName("net.minecraft.server." + nmsVersion + (nmsVersion.equalsIgnoreCase("v1_8_R1") ? ".ChatSerializer" : ".ChatComponentText"));
-            Class<?> chatBaseComponent = Class.forName("net.minecraft.server." + nmsVersion + ".IChatBaseComponent");
+            Class<?> chat = Class.forName("net.minecraft.server." + NameVersion + (NameVersion.equalsIgnoreCase("v1_8_R1") ? ".ChatSerializer" : ".ChatComponentText"));
+            Class<?> chatBaseComponent = Class.forName("net.minecraft.server." + NameVersion + ".IChatBaseComponent");
 
             Method method = null;
-            if (nmsVersion.equalsIgnoreCase("v1_8_R1")) method = chat.getDeclaredMethod("a", String.class);
+            if (NameVersion.equalsIgnoreCase("v1_8_R1")) method = chat.getDeclaredMethod("a", String.class);
 
-            Object object = nmsVersion.equalsIgnoreCase("v1_8_R1") ? chatBaseComponent.cast(method.invoke(chat, "{'text': '" + message + "'}")) : chat.getConstructor(new Class[]{String.class}).newInstance(message);
+            Object object = NameVersion.equalsIgnoreCase("v1_8_R1") ? chatBaseComponent.cast(method.invoke(chat, "{'text': '" + message + "'}")) : chat.getConstructor(new Class[]{String.class}).newInstance(message);
             packetPlayOutChat = ppoc.getConstructor(new Class[]{chatBaseComponent, Byte.TYPE}).newInstance(object, (byte) 2);
 
             Method handle = craftPlayerClass.getDeclaredMethod("getHandle");
@@ -110,8 +114,9 @@ public class RigoxUtils {
             Object playerConnection = playerConnectionField.get(iCraftPlayer);
             Method sendPacket = playerConnection.getClass().getDeclaredMethod("sendPacket", packet);
             sendPacket.invoke(playerConnection, packetPlayOutChat);
-        } catch (Exception ex) {
+        } catch (Throwable throwable) {
             plugin.getLogs().error("Can't send action bar for " + player.getName() + " with message: " + message);
+            plugin.getLogs().error(throwable);
         }
     }
 

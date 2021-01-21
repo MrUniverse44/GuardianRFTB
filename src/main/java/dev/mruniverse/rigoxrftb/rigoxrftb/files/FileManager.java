@@ -48,8 +48,9 @@ public class FileManager {
         if(!fileToLoad.exists()) {
             try {
                 result = fileToLoad.createNewFile();
-            } catch (IOException exception) {
-                plugin.getLogs().info("The plugin can't load or save configuration files!");
+            } catch (Throwable throwable) {
+                plugin.getLogs().error("The plugin can't load or save configuration files!");
+                plugin.getLogs().error(throwable);
             }
             if(result) {
                 plugin.getLogs().info("File: &b" + fileName + "&f created!");
@@ -411,8 +412,9 @@ public class FileManager {
             if(Mode.equals(SaveMode.SETTINGS) || Mode.equals(SaveMode.ALL)) {
                 getControl(Files.SETTINGS).save(Settings);
             }
-        } catch(IOException exception) {
-            plugin.getLogs().info("The plugin can't load or save configuration files! (Spigot Control Issue - Caused by: One plugin is using bad the <getControl() from FileManager.class>)");
+        } catch(Throwable throwable) {
+            plugin.getLogs().error("The plugin can't load or save configuration files! (Spigot Control Issue - Caused by: One plugin is using bad the <getControl() from FileManager.class>)");
+            plugin.getLogs().error(throwable);
         }
     }
 

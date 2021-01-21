@@ -26,6 +26,21 @@ public class Logger {
     public void error(String message) {
         sendMessage("&f[&cERROR &7| &fRigox RFTB] " + message);
     }
+    /**
+     * Send a error message to console.
+     * @param throwable throwable to send.
+     */
+    public void error(Throwable throwable) {
+        sendMessage("&f[&cERROR &7| &fRigox RFTB] -------------------------");
+        sendMessage("&f[&cERROR &7| &fRigox RFTB] Class: " + throwable.getClass().getName() +".class");
+        if(throwable.getStackTrace() != null) {
+            sendMessage("&f[&cERROR &7| &fRigox RFTB] StackTrace: ");
+            for(StackTraceElement line : throwable.getStackTrace()) {
+                sendMessage("&f[&cERROR &7| &fRigox RFTB] (" + line.getLineNumber() + ") " + line.toString());
+            }
+        }
+        sendMessage("&f[&cERROR &7| &fRigox RFTB]  -------------------------");
+    }
 
     /**
      * Send a warn message to console.

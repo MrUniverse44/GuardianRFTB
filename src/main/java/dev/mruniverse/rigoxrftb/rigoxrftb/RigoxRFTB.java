@@ -4,11 +4,16 @@ import dev.mruniverse.rigoxrftb.rigoxrftb.enums.SaveMode;
 import dev.mruniverse.rigoxrftb.rigoxrftb.files.FileManager;
 import dev.mruniverse.rigoxrftb.rigoxrftb.listeners.ListenerUtil;
 import dev.mruniverse.rigoxrftb.rigoxrftb.utils.Logger;
-import dev.mruniverse.rigoxrftb.rigoxrftb.utils.RigoxBossBar;
+import dev.mruniverse.rigoxrftb.rigoxrftb.utils.rigoxbossbars.BossManager;
+import dev.mruniverse.rigoxrftb.rigoxrftb.utils.rigoxplayers.PlayerRunnable;
 import dev.mruniverse.rigoxrftb.rigoxrftb.utils.rigoxscoreboards.BoardManager;
-import dev.mruniverse.rigoxrftb.rigoxrftb.utils.rigoxscoreboards.BoardRunnable;
 import dev.mruniverse.rigoxrftb.rigoxrftb.utils.RigoxUtils;
+import dev.mruniverse.rigoxrftb.rigoxrftb.utils.rigoxplayers.PlayerManager;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.HashMap;
+import java.util.UUID;
 
 public final class RigoxRFTB extends JavaPlugin {
     private FileManager fileManager;
@@ -17,8 +22,9 @@ public final class RigoxRFTB extends JavaPlugin {
     private Logger logger;
     private RigoxUtils rigoxUtils;
     private ListenerUtil rigoxListeners;
-    private RigoxBossBar rigoxBossBar;
     private BoardManager rigoxScoreboards;
+    private BossManager rigoxBoss;
+    private final HashMap<UUID, PlayerManager> rigoxPlayers = new HashMap<>();
     @Override
     public void onEnable() {
         instance = this;
@@ -43,13 +49,15 @@ public final class RigoxRFTB extends JavaPlugin {
         // * Utils Setup
 
         rigoxUtils = new RigoxUtils(this);
-        rigoxBossBar = new RigoxBossBar("&7");
+
+        // * BossBar Setup
+
+        rigoxBoss = new BossManager(this);
 
         // * Scoreboard Setup
 
         rigoxScoreboards = new BoardManager(this);
-        getServer().getScheduler().runTaskTimerAsynchronously(this,new BoardRunnable(this),0L,20L);
-        getServer().getScheduler().runTaskTimerAsynchronously(this,getBar(),0L,20L);
+        getServer().getScheduler().runTaskTimerAsynchronously(this,new PlayerRunnable(this),0L,20L);
     }
 
     @Override
@@ -67,5 +75,25 @@ public final class RigoxRFTB extends JavaPlugin {
     public Logger getLogs() { return logger; }
     public RigoxUtils getUtils() { return rigoxUtils; }
     public BoardManager getScoreboards() { return rigoxScoreboards; }
-    public RigoxBossBar getBar() { return rigoxBossBar; }
+    public BossManager getBossBar() { return rigoxBoss; }
+    public void addPlayer(Player player){
+        if(!existPlayer(player)) {
+            rigoxPlayers.put(player.getUniqueId(),new PlayerManager(player));
+        }
+    }
+    public boolean existPlayer(Player player) {
+        return rigoxPlayers.containsKey(player.getUniqueId());
+    }
+    public void removePlayer(Player player) {
+        rigoxPlayers.remove(player.getUniqueId());
+    }
+    public PlayerManager getPlayerData(Player player) {
+        return rigoxPlayers.get(player.getUniqueId());
+    }
+    public HashMap<UUID, PlayerManager> getRigoxPlayers() {
+        return rigoxPlayers;
+    }
+    public PlayerManager getPlayerData(UUID uuid) {
+        return rigoxPlayers.get(uuid);
+    }
 }

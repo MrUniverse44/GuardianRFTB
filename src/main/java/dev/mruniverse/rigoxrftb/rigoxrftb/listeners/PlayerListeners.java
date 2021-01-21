@@ -26,6 +26,7 @@ public class PlayerListeners implements Listener {
     }
     @EventHandler
     public void joinOptions(PlayerJoinEvent event) {
+        plugin.addPlayer(event.getPlayer());
         FileConfiguration file = plugin.getFiles().getControl(Files.SETTINGS);
         Player player = event.getPlayer();
         if(file.getBoolean("settings.options.hideServerJoinMessage")) {
@@ -67,15 +68,7 @@ public class PlayerListeners implements Listener {
             }
         } catch (Throwable throwable) {
             plugin.getLogs().error("Can't generate lobby scoreboard for " + event.getPlayer().getName() +"!");
-            plugin.getLogs().error("-------------------------");
-            plugin.getLogs().error("Class: " + throwable.getClass().getName() +".class");
-            if(throwable.getStackTrace() != null) {
-                plugin.getLogs().error("StackTrace: ");
-                for(StackTraceElement line : throwable.getStackTrace()) {
-                    plugin.getLogs().error("(" + line.getLineNumber() + ") " + line.toString());
-                }
-            }
-            plugin.getLogs().error("-------------------------");
+            plugin.getLogs().error(throwable);
         }
     }
     @EventHandler
@@ -85,6 +78,7 @@ public class PlayerListeners implements Listener {
         if(plugin.getFiles().getControl(Files.SETTINGS).getBoolean("settings.options.hideServerQuitMessage")) {
             event.setQuitMessage(null);
         }
+        plugin.removePlayer(event.getPlayer());
     }
     @EventHandler
     public void lobbyDamage(EntityDamageEvent event) {
@@ -153,15 +147,7 @@ public class PlayerListeners implements Listener {
             }
         } catch (Throwable throwable) {
             plugin.getLogs().error("Can't teleport " + event.getPlayer().getName() +" to the lobby!");
-            plugin.getLogs().error("-------------------------");
-            plugin.getLogs().error("Class: " + throwable.getClass().getName() +".class");
-            if(throwable.getStackTrace() != null) {
-                plugin.getLogs().error("StackTrace: ");
-                for(StackTraceElement line : throwable.getStackTrace()) {
-                    plugin.getLogs().error("(" + line.getLineNumber() + ") " + line.toString());
-                }
-            }
-            plugin.getLogs().error("-------------------------");
+            plugin.getLogs().error(throwable);
         }
     }
 }
