@@ -171,14 +171,17 @@ public class RigoxUtils {
 
     }
     public Location getLocationFromString(String location) {
-        String[] loc = location.split(",");
-        World w = Bukkit.getWorld(loc[0]);
-        double x = Double.parseDouble(loc[1]);
-        double y = Double.parseDouble(loc[2]);
-        double z = Double.parseDouble(loc[3]);
-        float yaw = Float.parseFloat(loc[4]);
-        float pitch = Float.parseFloat(loc[5]);
-        return new Location(w, x, y, z, yaw, pitch);
+        if(!location.equalsIgnoreCase("notSet")) {
+            String[] loc = location.split(",");
+            World w = Bukkit.getWorld(loc[0]);
+            double x = Double.parseDouble(loc[1]);
+            double y = Double.parseDouble(loc[2]);
+            double z = Double.parseDouble(loc[3]);
+            float yaw = Float.parseFloat(loc[4]);
+            float pitch = Float.parseFloat(loc[5]);
+            return new Location(w, x, y, z, yaw, pitch);
+        }
+        return null;
     }
     public String replaceVariables(String text,Player player) {
         if(text.contains("<player_name>")) text = text.replace("<player_name>",player.getName());
