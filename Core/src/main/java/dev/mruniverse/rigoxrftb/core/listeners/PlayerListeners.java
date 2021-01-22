@@ -3,10 +3,7 @@ package dev.mruniverse.rigoxrftb.core.listeners;
 import dev.mruniverse.rigoxrftb.core.enums.Files;
 import dev.mruniverse.rigoxrftb.core.enums.RigoxBoard;
 import dev.mruniverse.rigoxrftb.core.RigoxRFTB;
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -16,6 +13,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.ItemStack;
 
 public class PlayerListeners implements Listener {
     private final RigoxRFTB plugin;
@@ -40,7 +38,14 @@ public class PlayerListeners implements Listener {
         if(file.getBoolean("settings.options.joinAdventureGamemode")) {
             player.setGameMode(GameMode.ADVENTURE);
         }
-
+        if(file.getBoolean("settings.options.clearInventory-onJoin")) {
+            for (int f = 0; f < player.getInventory().getSize(); f++) {
+                player.getInventory().setItem(f, new ItemStack(Material.AIR));
+            }
+        }
+        for(ItemStack item : plugin.getLobbyItems().keySet()) {
+            player.getInventory().setItem(plugin.getSlot(item),item);
+        }
     }
     @EventHandler
     public void joinScoreboard(PlayerJoinEvent event) {

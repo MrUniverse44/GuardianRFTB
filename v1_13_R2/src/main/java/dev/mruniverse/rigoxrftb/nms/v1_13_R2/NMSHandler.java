@@ -4,11 +4,16 @@ import dev.mruniverse.rigoxrftb.core.nms.NMS;
 import net.md_5.bungee.api.ChatColor;
 import net.minecraft.server.v1_13_R2.*;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_13_R2.CraftWorld;
 import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.HashMap;
+import java.util.List;
 
 public final class NMSHandler implements NMS {
     private final HashMap<Player, EntityWither> bossBar = new HashMap<Player, EntityWither>();
@@ -72,6 +77,22 @@ public final class NMSHandler implements NMS {
         PacketPlayOutEntityDestroy packet = new PacketPlayOutEntityDestroy(wither.getId());
         ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
     }
+
+    public ItemStack getItemStack(Material material, String itemName, List<String> lore) {
+        ItemStack addItem = new ItemStack(material, 1);
+        ItemMeta addItemMeta = addItem.getItemMeta();
+        addItemMeta.setDisplayName(itemName);
+        addItemMeta.setLore(lore);
+        addItemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        addItemMeta.addItemFlags(ItemFlag.HIDE_DESTROYS);
+        addItemMeta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
+        addItemMeta.addItemFlags(ItemFlag.HIDE_PLACED_ON);
+        addItemMeta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
+        addItemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        addItem.setItemMeta(addItemMeta);
+        return addItem;
+    }
+
     public boolean BossHasPlayer(Player player) {
         return bossBar.containsKey(player);
     }

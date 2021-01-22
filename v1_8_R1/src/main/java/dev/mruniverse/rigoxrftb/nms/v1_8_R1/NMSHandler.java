@@ -4,11 +4,15 @@ import dev.mruniverse.rigoxrftb.core.nms.NMS;
 import net.md_5.bungee.api.ChatColor;
 import net.minecraft.server.v1_8_R1.*;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_8_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.HashMap;
+import java.util.List;
 
 public final class NMSHandler implements NMS {
     private final HashMap<Player,EntityWither> bossBar = new HashMap<Player, EntityWither>();
@@ -77,6 +81,16 @@ public final class NMSHandler implements NMS {
     public boolean BossHasPlayer(Player player) {
         return bossBar.containsKey(player);
     }
+
+    public ItemStack getItemStack(Material material, String itemName, List<String> lore) {
+        ItemStack addItem = new ItemStack(material, 1);
+        ItemMeta addItemMeta = addItem.getItemMeta();
+        addItemMeta.setDisplayName(itemName);
+        addItemMeta.setLore(lore);
+        addItem.setItemMeta(addItemMeta);
+        return addItem;
+    }
+
     private EntityWither getBossBar(Player player) {
         return bossBar.get(player);
     }

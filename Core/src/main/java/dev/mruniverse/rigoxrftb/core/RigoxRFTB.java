@@ -1,5 +1,6 @@
 package dev.mruniverse.rigoxrftb.core;
 
+import dev.mruniverse.rigoxrftb.core.enums.Files;
 import dev.mruniverse.rigoxrftb.core.enums.NMSenum;
 import dev.mruniverse.rigoxrftb.core.files.FileManager;
 import dev.mruniverse.rigoxrftb.core.listeners.ListenerUtil;
@@ -10,10 +11,14 @@ import dev.mruniverse.rigoxrftb.core.utils.players.PlayerRunnable;
 import dev.mruniverse.rigoxrftb.core.utils.scoreboards.BoardManager;
 import dev.mruniverse.rigoxrftb.core.utils.RigoxUtils;
 import dev.mruniverse.rigoxrftb.core.utils.players.PlayerManager;
+import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 public final class RigoxRFTB extends JavaPlugin {
@@ -26,6 +31,8 @@ public final class RigoxRFTB extends JavaPlugin {
     private ListenerUtil rigoxListeners;
     private BoardManager rigoxScoreboards;
     private final HashMap<UUID, PlayerManager> rigoxPlayers = new HashMap<>();
+    private final HashMap<ItemStack, Integer> lobbyItems = new HashMap<>();
+    private final HashMap<ItemStack, List<String>> lobbyItemCommands = new HashMap<>();
     @Override
     public void onEnable() {
         instance = this;
@@ -52,6 +59,27 @@ public final class RigoxRFTB extends JavaPlugin {
         // * NMS Setup
 
         nmsSetup();
+        try {
+            FileConfiguration items = getFiles().getControl(Files.ITEMS);
+            for (String lItems : items.getConfigurationSection("lobby").getKeys(false)) {
+                if(items.getBoolean("lobby." + lItems + ".toggle")) {
+                    String material = items.getString("lobby." + lItems + ".item");
+                    if(material == null) material = "BED";
+                    if(Material.getMaterial(material) != null) {
+                        String itemName = items.getString("lobby." + lItems + ".name");
+                        Integer slot = items.getInt("lobby." + lItems + ".slot");
+                        List<String> lore = items.getStringList("lobby." + lItems + ".lore");
+                        List<String> actions = items.getStringList("lobby." + lItems + ".actions");
+                        ItemStack item = getNMSHandler().getItemStack(Material.getMaterial(material), itemName, lore);
+                        lobbyItems.put(item, slot);
+                        lobbyItemCommands.put(item, actions);
+                    }
+                }
+            }
+        } catch (Throwable throwable) {
+            getLogs().error("Can't get lobby items on startup");
+            getLogs().error(throwable);
+        }
 
         // * Scoreboard Setup
 
@@ -70,6 +98,10 @@ public final class RigoxRFTB extends JavaPlugin {
             getLogs().error(throwable);
         }
     }
+    public HashMap<ItemStack,Integer> getLobbyItems() { return lobbyItems; }
+    public HashMap<ItemStack,List<String>> getLobbyItemCommands() { return lobbyItemCommands; }
+    public List<String> getCommands(ItemStack itemStack) { return lobbyItemCommands.get(itemStack); }
+    public int getSlot(ItemStack itemStack) { return lobbyItems.get(itemStack); }
     public NMS getNMSHandler() { return nmsHandler; }
     public boolean hasPAPI() { return hasPAPI; }
     public ListenerUtil getListener() { return rigoxListeners; }

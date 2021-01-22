@@ -16,6 +16,13 @@ public class RigoxUtils {
     public RigoxUtils(RigoxRFTB main) {
         plugin = main;
     }
+    public void sendMessage(Player player,String message) {
+        if(plugin.hasPAPI()) {
+            message = PlaceholderAPI.setPlaceholders(player,message);
+        }
+        message = ChatColor.translateAlternateColorCodes('&',message);
+        player.sendMessage(message);
+    }
     public void sendTitle(Player player, int fadeInTime, int showTime, int fadeOutTime, String title, String subtitle) {
         try {
             if(plugin.hasPAPI()) {

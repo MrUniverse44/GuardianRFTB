@@ -70,6 +70,7 @@ public class FileManager {
         addConfig(Files.SETTINGS,"settings.options.joinLobbyTeleport",false);
         addConfig(Files.SETTINGS,"settings.options.joinHeal",true);
         addConfig(Files.SETTINGS,"settings.options.joinAdventureGamemode",true);
+        addConfig(Files.SETTINGS,"settings.options.clearInventory-onJoin",true);
         addConfig(Files.SETTINGS,"settings.options.hideServerJoinMessage",true);
         addConfig(Files.SETTINGS,"settings.options.hideServerQuitMessage",true);
         addConfig(Files.SETTINGS,"settings.options.lobby-bossBar",true);

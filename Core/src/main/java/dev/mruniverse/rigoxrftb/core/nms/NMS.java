@@ -1,6 +1,10 @@
 package dev.mruniverse.rigoxrftb.core.nms;
 
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.List;
 
 public interface NMS {
     void sendTitle(Player player, int fadeIn, int stay, int fadeOut, String title, String subtitle);
@@ -9,4 +13,5 @@ public interface NMS {
     void sendBossBar(Player player, String message,float percentage);
     void deleteBossBar(Player player);
     boolean BossHasPlayer(Player player);
+    ItemStack getItemStack(Material material, String itemName, List<String> lore);
 }
