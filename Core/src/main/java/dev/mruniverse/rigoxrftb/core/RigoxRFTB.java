@@ -64,6 +64,7 @@ public final class RigoxRFTB extends JavaPlugin {
     private void nmsSetup() {
         try {
             nmsHandler = (NMS) Class.forName("dev.mruniverse.rigoxrftb.nms." + NMSenum.getCurrent() + ".NMSHandler").getConstructor(new Class[0]).newInstance(new Object[0]);
+            getLogs().info("Successfully connected with version: " + NMSenum.getCurrent() + ", the plugin can work correctly. If you found an issue please report to the developer.");
         }catch (Throwable throwable) {
             getLogs().error("Can't initialize NMS, unsupported version: " + NMSenum.getCurrent());
             getLogs().error(throwable);
