@@ -33,6 +33,12 @@ public class RigoxUtils {
             plugin.getLogs().error(throwable);
         }
     }
+    public void sendBossBar(Player player, String message) {
+        if (player == null || message == null) return;
+        if(plugin.hasPAPI()) { message = PlaceholderAPI.setPlaceholders(player,message); }
+        message = ChatColor.translateAlternateColorCodes('&',message);
+        plugin.getNMSHandler().sendBossBar(player,message);
+    }
     public void sendActionbar(Player player, String message) {
         if (player == null || message == null) return;
         if(plugin.hasPAPI()) { message = PlaceholderAPI.setPlaceholders(player,message); }

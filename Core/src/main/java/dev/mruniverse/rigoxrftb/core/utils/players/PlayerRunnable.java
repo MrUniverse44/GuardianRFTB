@@ -3,6 +3,7 @@ package dev.mruniverse.rigoxrftb.core.utils.players;
 import dev.mruniverse.rigoxrftb.core.RigoxRFTB;
 import dev.mruniverse.rigoxrftb.core.enums.Files;
 import dev.mruniverse.rigoxrftb.core.enums.PlayerStatus;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.UUID;
@@ -29,13 +30,14 @@ public class PlayerRunnable extends BukkitRunnable {
         for (UUID uuid : plugin.getRigoxPlayers().keySet()) {
             PlayerManager playerManager = plugin.getPlayerData(uuid);
             PlayerStatus playerStatus = playerManager.getStatus();
+            Player player = playerManager.getPlayer();
             plugin.getScoreboards().setScoreboard(playerManager.getBoard(),playerManager.getPlayer());
             if (playerStatus.equals(PlayerStatus.IN_LOBBY)) {
                 if(bossLb) {
-                    //bossBar
+                    plugin.getUtils().sendBossBar(player, bossLobby);
                 }
                 if(actionLb) {
-                    plugin.getUtils().sendActionbar(playerManager.getPlayer(), actionLobby);
+                    plugin.getUtils().sendActionbar(player, actionLobby);
                 }
             }
 

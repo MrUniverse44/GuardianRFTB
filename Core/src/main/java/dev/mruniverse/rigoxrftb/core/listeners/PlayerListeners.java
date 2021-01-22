@@ -73,10 +73,11 @@ public class PlayerListeners implements Listener {
     @EventHandler
     public void onDisconnect(PlayerQuitEvent event) {
         plugin.getScoreboards().removeScore(event.getPlayer());
+        plugin.removePlayer(event.getPlayer());
+        plugin.getNMSHandler().deleteBossBar(event.getPlayer());
         if(plugin.getFiles().getControl(Files.SETTINGS).getBoolean("settings.options.hideServerQuitMessage")) {
             event.setQuitMessage(null);
         }
-        plugin.removePlayer(event.getPlayer());
     }
     @EventHandler
     public void lobbyDamage(EntityDamageEvent event) {

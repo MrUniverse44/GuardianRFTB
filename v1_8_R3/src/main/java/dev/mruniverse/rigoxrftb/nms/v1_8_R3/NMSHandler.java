@@ -2,15 +2,16 @@ package dev.mruniverse.rigoxrftb.nms.v1_8_R3;
 
 import dev.mruniverse.rigoxrftb.core.nms.NMS;
 import net.md_5.bungee.api.ChatColor;
-import net.minecraft.server.v1_8_R3.IChatBaseComponent;
-import net.minecraft.server.v1_8_R3.PacketPlayOutChat;
-import net.minecraft.server.v1_8_R3.PacketPlayOutTitle;
-import net.minecraft.server.v1_8_R3.PlayerConnection;
+import net.minecraft.server.v1_8_R3.*;
+import org.bukkit.Location;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
-public final class NMSHandler implements NMS {
+import java.util.HashMap;
 
+public final class NMSHandler implements NMS {
+    private HashMap<Player,EntityWither> bossBar = new HashMap<Player, EntityWither>();
     public void sendTitle(Player player, int fadeIn, int stay, int fadeOut, String title, String subtitle) {
         PlayerConnection pConn = ((CraftPlayer) player).getHandle().playerConnection;
         PacketPlayOutTitle pTitleInfo = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.TIMES, null, fadeIn, stay, fadeOut);
@@ -37,12 +38,46 @@ public final class NMSHandler implements NMS {
         PacketPlayOutChat bar = new PacketPlayOutChat(icbc, (byte)2);
         ((CraftPlayer)player).getHandle().playerConnection.sendPacket(bar);
     }
-
     public void sendBossBar(Player player, String message) {
-
+        if(!BossHasPlayer(player)) {
+            bossBar.put(player,new EntityWither(((CraftWorld)player.getWorld()).getHandle()));
+        }
+        Location witherLocation = getWitherLocation(player.getLocation());
+        getBossBar(player).setCustomName(message);
+        getBossBar(player).setHealth(100);
+        getBossBar(player).setInvisible(true);
+        getBossBar(player).setLocation(witherLocation.getX(), witherLocation.getY(), witherLocation.getZ(), 0, 0);
+        PacketPlayOutSpawnEntityLiving packet = new PacketPlayOutSpawnEntityLiving(getBossBar(player));
+        ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
     }
 
-    public void sendBossBar(Player player, String message, Integer percentage) {
-
+    public void sendBossBar(Player player, String message,float percentage) {
+        if(!BossHasPlayer(player)) {
+            bossBar.put(player,new EntityWither(((CraftWorld)player.getWorld()).getHandle()));
+        }
+        if (percentage <= 0) {
+            percentage = (float) 0.001;
+        }
+        Location witherLocation = getWitherLocation(player.getLocation());
+        getBossBar(player).setCustomName(message);
+        getBossBar(player).setHealth(percentage);
+        getBossBar(player).setInvisible(true);
+        getBossBar(player).setLocation(witherLocation.getX(), witherLocation.getY(), witherLocation.getZ(), 0, 0);
+        PacketPlayOutSpawnEntityLiving packet = new PacketPlayOutSpawnEntityLiving(getBossBar(player));
+        ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
+    }
+    public void deleteBossBar(Player player) {
+        EntityWither wither = bossBar.remove(player);
+        PacketPlayOutEntityDestroy packet = new PacketPlayOutEntityDestroy(wither.getId());
+        ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
+    }
+    public boolean BossHasPlayer(Player player) {
+        return bossBar.containsKey(player);
+    }
+    private EntityWither getBossBar(Player player) {
+        return bossBar.get(player);
+    }
+    private Location getWitherLocation(Location playerLocation) {
+        return playerLocation.add(playerLocation.getDirection().multiply(60));
     }
 }

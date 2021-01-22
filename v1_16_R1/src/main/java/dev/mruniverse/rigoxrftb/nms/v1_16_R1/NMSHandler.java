@@ -33,12 +33,19 @@ public class NMSHandler implements NMS {
         PacketPlayOutTitle bar = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.ACTIONBAR, iChatMutableComponent);
         (((CraftPlayer)player).getHandle()).playerConnection.sendPacket(bar);
     }
-
     public void sendBossBar(Player player, String message) {
 
     }
 
-    public void sendBossBar(Player player, String message, Integer percentage) {
+    public void sendBossBar(Player player, String message, float percentage) {
 
+    }
+
+    public void deleteBossBar(Player player) {
+
+    }
+
+    public boolean BossHasPlayer(Player player) {
+        return false;
     }
 }

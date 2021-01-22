@@ -36,12 +36,19 @@ public final class NMSHandler implements NMS {
         PacketPlayOutChat bar = new PacketPlayOutChat(icbc);
         ((CraftPlayer)player).getHandle().playerConnection.sendPacket(bar);
     }
-
     public void sendBossBar(Player player, String message) {
 
     }
 
-    public void sendBossBar(Player player, String message, Integer percentage) {
+    public void sendBossBar(Player player, String message, float percentage) {
 
+    }
+
+    public void deleteBossBar(Player player) {
+
+    }
+
+    public boolean BossHasPlayer(Player player) {
+        return false;
     }
 }

@@ -41,7 +41,15 @@ public final class NMSHandler implements NMS {
 
     }
 
-    public void sendBossBar(Player player, String message, Integer percentage) {
+    public void sendBossBar(Player player, String message, float percentage) {
 
+    }
+
+    public void deleteBossBar(Player player) {
+
+    }
+
+    public boolean BossHasPlayer(Player player) {
+        return false;
     }
 }
