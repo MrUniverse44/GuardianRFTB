@@ -73,8 +73,8 @@ public class Game {
     }
 
     private void loadGame() {
-        this.timer = gameFile.getInt("games." + gameName + ".time");
-        this.time = gameFile.getInt("games." + gameName + ".worldTime");
+        this.time = gameFile.getInt("games." + gameName + ".time");
+        this.worldTime = gameFile.getInt("games." + gameName + ".worldTime");
         this.max = gameFile.getInt("games." + gameName + ".max");
         this.min = gameFile.getInt("games." + gameName + ".min");
         String bL = gameFile.getString("games." + gameName + ".locations.beast");
