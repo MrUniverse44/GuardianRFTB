@@ -4,7 +4,10 @@ import dev.mruniverse.rigoxrftb.core.enums.Files;
 import dev.mruniverse.rigoxrftb.core.enums.RigoxBoard;
 import dev.mruniverse.rigoxrftb.core.RigoxRFTB;
 import me.clip.placeholderapi.PlaceholderAPI;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -166,6 +169,16 @@ public class RigoxUtils {
         if(dateFormat == null) dateFormat = "dd/MM/yyyy";
         return "" + (new SimpleDateFormat(dateFormat).format(Calendar.getInstance().getTime()));
 
+    }
+    public Location getLocationFromString(String location) {
+        String[] loc = location.split(",");
+        World w = Bukkit.getWorld(loc[0]);
+        double x = Double.parseDouble(loc[1]);
+        double y = Double.parseDouble(loc[2]);
+        double z = Double.parseDouble(loc[3]);
+        float yaw = Float.parseFloat(loc[4]);
+        float pitch = Float.parseFloat(loc[5]);
+        return new Location(w, x, y, z, yaw, pitch);
     }
     public String replaceVariables(String text,Player player) {
         if(text.contains("<player_name>")) text = text.replace("<player_name>",player.getName());
