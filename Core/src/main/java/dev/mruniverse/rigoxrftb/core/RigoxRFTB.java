@@ -33,7 +33,6 @@ public final class RigoxRFTB extends JavaPlugin {
     private BoardManager rigoxScoreboards;
     private final HashMap<UUID, PlayerManager> rigoxPlayers = new HashMap<>();
     private final HashMap<ItemStack, Integer> lobbyItems = new HashMap<>();
-    private final HashMap<ItemStack, List<String>> lobbyItemCommands = new HashMap<>();
     @Override
     public void onEnable() {
         instance = this;
@@ -70,10 +69,8 @@ public final class RigoxRFTB extends JavaPlugin {
                         String itemName = items.getString("lobby." + lItems + ".name");
                         Integer slot = items.getInt("lobby." + lItems + ".slot");
                         List<String> lore = items.getStringList("lobby." + lItems + ".lore");
-                        List<String> actions = items.getStringList("lobby." + lItems + ".actions");
                         ItemStack item = getNMSHandler().getItemStack(Material.getMaterial(material), TextUtilities.recolor(itemName), TextUtilities.recolorLore(lore));
                         lobbyItems.put(item, slot);
-                        lobbyItemCommands.put(item, actions);
                     }
                 }
             }
@@ -100,8 +97,6 @@ public final class RigoxRFTB extends JavaPlugin {
         }
     }
     public HashMap<ItemStack,Integer> getLobbyItems() { return lobbyItems; }
-    public HashMap<ItemStack,List<String>> getLobbyItemCommands() { return lobbyItemCommands; }
-    public List<String> getCommands(ItemStack itemStack) { return lobbyItemCommands.get(itemStack); }
     public int getSlot(ItemStack itemStack) { return lobbyItems.get(itemStack); }
     public NMS getNMSHandler() { return nmsHandler; }
     public boolean hasPAPI() { return hasPAPI; }
