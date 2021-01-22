@@ -44,7 +44,8 @@ public final class NMSHandler implements NMS {
         }
         Location witherLocation = getWitherLocation(player.getLocation());
         getBossBar(player).setCustomName(message);
-        getBossBar(player).setHealth(100);
+        float life = (100 * getBossBar(player).getMaxHealth());
+        getBossBar(player).setHealth(life);
         getBossBar(player).setInvisible(true);
         getBossBar(player).setLocation(witherLocation.getX(), witherLocation.getY(), witherLocation.getZ(), 0, 0);
         PacketPlayOutSpawnEntityLiving packet = new PacketPlayOutSpawnEntityLiving(getBossBar(player));
@@ -60,7 +61,8 @@ public final class NMSHandler implements NMS {
         }
         Location witherLocation = getWitherLocation(player.getLocation());
         getBossBar(player).setCustomName(message);
-        getBossBar(player).setHealth(percentage);
+        float life = (percentage * getBossBar(player).getMaxHealth());
+        getBossBar(player).setHealth(life);
         getBossBar(player).setInvisible(true);
         getBossBar(player).setLocation(witherLocation.getX(), witherLocation.getY(), witherLocation.getZ(), 0, 0);
         PacketPlayOutSpawnEntityLiving packet = new PacketPlayOutSpawnEntityLiving(getBossBar(player));
