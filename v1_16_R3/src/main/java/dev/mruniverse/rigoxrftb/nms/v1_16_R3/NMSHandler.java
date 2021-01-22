@@ -1,12 +1,13 @@
-package dev.mruniverse.rigoxrftb.nms.v1_16_R2;
+package dev.mruniverse.rigoxrftb.nms.v1_16_R3;
 
 import dev.mruniverse.rigoxrftb.core.nms.NMS;
 import net.md_5.bungee.api.ChatColor;
-import net.minecraft.server.v1_16_R2.*;
-import org.bukkit.craftbukkit.v1_16_R2.entity.CraftPlayer;
+import net.minecraft.server.v1_16_R3.*;
+import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 public final class NMSHandler implements NMS {
+
     public void sendTitle(Player player, int fadeIn, int stay, int fadeOut, String title, String subtitle) {
         PlayerConnection pConn = (((CraftPlayer)player).getHandle()).playerConnection;
         PacketPlayOutTitle pTitleInfo = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.TIMES, null, fadeIn, stay, fadeOut);
