@@ -58,16 +58,14 @@ public final class RigoxRFTB extends JavaPlugin {
         // * Scoreboard Setup
 
         rigoxScoreboards = new BoardManager(this);
+
+        // * Tasks
+
         getServer().getScheduler().runTaskTimerAsynchronously(this,new PlayerRunnable(this),0L,20L);
     }
-
-    @Override
-    public void onDisable() {
-        // disabled
-    }//aggregated
     private void nmsSetup() {
         try {
-            nmsHandler = (NMS) Class.forName("dev.mruniverse.rigoxrftb.nms." + NMSenum.getCurrent() + ".NMSHandler").getConstructor(new Class[0]).newInstance(new Object[0]);;
+            nmsHandler = (NMS) Class.forName("dev.mruniverse.rigoxrftb.nms." + NMSenum.getCurrent() + ".NMSHandler").getConstructor(new Class[0]).newInstance(new Object[0]);
         }catch (Throwable throwable) {
             getLogs().error("Can't initialize NMS, unsupported version: " + NMSenum.getCurrent());
             getLogs().error(throwable);
@@ -95,9 +93,6 @@ public final class RigoxRFTB extends JavaPlugin {
     }
     public void removePlayer(Player player) {
         rigoxPlayers.remove(player.getUniqueId());
-    }
-    public PlayerManager getPlayerData(Player player) {
-        return rigoxPlayers.get(player.getUniqueId());
     }
     public HashMap<UUID, PlayerManager> getRigoxPlayers() {
         return rigoxPlayers;
