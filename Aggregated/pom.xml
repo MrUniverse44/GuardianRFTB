@@ -66,6 +66,11 @@
             <artifactId>RigoxRFTB-NMS-v1_14_R1</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>RigoxRFTB-NMS-v1_15_R1</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
 </project>
