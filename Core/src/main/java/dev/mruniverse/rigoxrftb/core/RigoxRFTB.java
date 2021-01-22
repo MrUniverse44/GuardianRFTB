@@ -38,9 +38,7 @@ public final class RigoxRFTB extends JavaPlugin {
         fileManager.loadConfiguration();
         fileManager.save(SaveMode.ALL);
 
-        if(getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-            hasPAPI = true;
-        }
+        hasPAPI = getServer().getPluginManager().isPluginEnabled("PlaceholderAPI");
 
         // * Listener Setup
 
