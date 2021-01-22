@@ -7,6 +7,7 @@ import dev.mruniverse.rigoxrftb.core.listeners.ListenerUtil;
 import dev.mruniverse.rigoxrftb.core.enums.SaveMode;
 import dev.mruniverse.rigoxrftb.core.nms.NMS;
 import dev.mruniverse.rigoxrftb.core.utils.Logger;
+import dev.mruniverse.rigoxrftb.core.utils.TextUtilities;
 import dev.mruniverse.rigoxrftb.core.utils.players.PlayerRunnable;
 import dev.mruniverse.rigoxrftb.core.utils.scoreboards.BoardManager;
 import dev.mruniverse.rigoxrftb.core.utils.RigoxUtils;
@@ -70,7 +71,7 @@ public final class RigoxRFTB extends JavaPlugin {
                         Integer slot = items.getInt("lobby." + lItems + ".slot");
                         List<String> lore = items.getStringList("lobby." + lItems + ".lore");
                         List<String> actions = items.getStringList("lobby." + lItems + ".actions");
-                        ItemStack item = getNMSHandler().getItemStack(Material.getMaterial(material), itemName, lore);
+                        ItemStack item = getNMSHandler().getItemStack(Material.getMaterial(material), TextUtilities.recolor(itemName), TextUtilities.recolorLore(lore));
                         lobbyItems.put(item, slot);
                         lobbyItemCommands.put(item, actions);
                     }
