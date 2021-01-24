@@ -30,9 +30,13 @@ public class GameManager {
         try {
             if(plugin.getFiles().getControl(Files.GAMES).contains("games")) {
                 for (String gameName : plugin.getFiles().getControl(Files.GAMES).getConfigurationSection("games").getKeys(false)) {
-                    Game game = new Game(plugin, gameName);
-                    this.games.add(game);
-                    plugin.getLogs().debug("Game " + gameName + " loaded!");
+                    if(plugin.getFiles().getControl(Files.GAMES).getBoolean("games." + gameName + ".enabled")) {
+                        Game game = new Game(plugin, gameName);
+                        this.games.add(game);
+                        plugin.getLogs().debug("Game " + gameName + " loaded!");
+                    } else {
+                        plugin.getLogs().debug("Game " + gameName + " is not enabled in games.yml, this game wasn't loaded.");
+                    }
                 }
                 plugin.getLogs().info(this.games.size() + " game(s) loaded!");
             } else {
@@ -43,6 +47,20 @@ public class GameManager {
             plugin.getLogs().error("Can't load games plugin games :(");
             plugin.getLogs().error(throwable);
         }
+    }
+    public void addGame(String gameName) {
+        if(getGame(gameName) != null) {
+            return;
+        }
+        Game game = new Game(plugin,gameName);
+        this.games.add(game);
+        plugin.getLogs().debug("Game " + gameName + " loaded!");
+    }
+    public void delGame(String gameName) {
+        if(getGame(gameName) != null) {
+            this.games.remove(getGame(gameName));
+        }
+        plugin.getLogs().debug("Game " + gameName + " unloaded!");
     }
     public ArrayList<Game> getGames() {
         return games;
@@ -72,6 +90,7 @@ public class GameManager {
     }
     public void createGameFiles(String gameName) {
         FileConfiguration gameFiles = plugin.getFiles().getControl(Files.GAMES);
+        gameFiles.set("games." + gameName + ".enabled", false);
         gameFiles.set("games." + gameName + ".time", 500);
         gameFiles.set("games." + gameName + ".max", 10);
         gameFiles.set("games." + gameName + ".min", 2);
