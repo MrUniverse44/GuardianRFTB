@@ -201,19 +201,26 @@ public class RigoxUtils {
         if(text.contains("<player_runner_kit>")) text = text.replace("<player_runner_kit>","Not selected");
         if(text.contains("<server_online>")) text = text.replace("<server_online>",plugin.getServer().getOnlinePlayers().size() + "");
         if(text.contains("<timeFormat>")) text = text.replace("<timeFormat>",getDateFormat());
-        if(plugin.getPlayerData(player.getUniqueId()).getGame() != null) {
-            Game playerGame = plugin.getPlayerData(player.getUniqueId()).getGame();
-            if(text.contains("<arena_name>")) text = text.replace("<arena_name>",playerGame.getName());
-            if(text.contains("<arena_online>")) text = text.replace("<arena_online>",playerGame.players.size()+"");
-            if(text.contains("<arena_max>")) text = text.replace("<arena_max>",playerGame.max+"");
-            if(text.contains("<arena_need>")) text = text.replace("<arena_need>",playerGame.getNeedPlayers()+"");
-            if(text.contains("<arena_time_number>")) text = text.replace("<arena_time_number>",playerGame.starting+"");
-            if(text.contains("<arena_time_text>")) text = text.replace("<arena_time_text>",getSecondsLeft(playerGame.starting));
-            if(text.contains("<arena_beast>")) text = text.replace("<arena_beast>",getBeast(playerGame));
-            if(text.contains("<arena_runners>")) text = text.replace("<arena_runners>",playerGame.runners.size()+"");
-            if(text.contains("<arena_mode>")) text = text.replace("<arena_mode>",playerGame.gameType.name());
-            if(text.contains("<arena_timeLeft>")) text = text.replace("<arena_timeLeft>",playerGame.timer+"");
-            if(text.contains("<player_role>")) text = text.replace("<player_role>",getRole(playerGame,player));
+        if(plugin.getPlayerData(player.getUniqueId()) != null) {
+            if (plugin.getPlayerData(player.getUniqueId()).getGame() != null) {
+                Game playerGame = plugin.getPlayerData(player.getUniqueId()).getGame();
+                if (text.contains("<arena_name>")) text = text.replace("<arena_name>", playerGame.getName());
+                if (text.contains("<arena_online>"))
+                    text = text.replace("<arena_online>", playerGame.players.size() + "");
+                if (text.contains("<arena_max>")) text = text.replace("<arena_max>", playerGame.max + "");
+                if (text.contains("<arena_need>"))
+                    text = text.replace("<arena_need>", playerGame.getNeedPlayers() + "");
+                if (text.contains("<arena_time_number>"))
+                    text = text.replace("<arena_time_number>", playerGame.starting + "");
+                if (text.contains("<arena_time_text>"))
+                    text = text.replace("<arena_time_text>", getSecondsLeft(playerGame.starting));
+                if (text.contains("<arena_beast>")) text = text.replace("<arena_beast>", getBeast(playerGame));
+                if (text.contains("<arena_runners>"))
+                    text = text.replace("<arena_runners>", playerGame.runners.size() + "");
+                if (text.contains("<arena_mode>")) text = text.replace("<arena_mode>", playerGame.gameType.name());
+                if (text.contains("<arena_timeLeft>")) text = text.replace("<arena_timeLeft>", playerGame.timer + "");
+                if (text.contains("<player_role>")) text = text.replace("<player_role>", getRole(playerGame, player));
+            }
         }
         if(plugin.hasPAPI()) { text = PlaceholderAPI.setPlaceholders(player,text);
         }
