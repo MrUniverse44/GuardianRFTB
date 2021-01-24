@@ -4,3 +4,10 @@ main: dev.mruniverse.rigoxrftb.core.RigoxRFTB
 authors: [ MrUniverse44, Sebastnchan ]
 description: Run From the Beast Minigame but with new Features and Original systems.
 website: rigox.club
+commands:
+  rRFTB:
+    description: Main command of the plugin
+  RigoxRFTB:
+    description: Main command of the plugin
+  rftb:
+    description: Main command of the plugin

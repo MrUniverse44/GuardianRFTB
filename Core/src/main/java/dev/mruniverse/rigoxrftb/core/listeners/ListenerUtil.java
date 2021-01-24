@@ -3,6 +3,8 @@ package dev.mruniverse.rigoxrftb.core.listeners;
 import dev.mruniverse.rigoxrftb.core.RigoxRFTB;
 import dev.mruniverse.rigoxrftb.core.commands.MainCMD;
 
+import java.util.Objects;
+
 public class ListenerUtil {
     private RigoxRFTB plugin;
     public ListenerUtil(RigoxRFTB main){
@@ -16,9 +18,9 @@ public class ListenerUtil {
     public void registerCommands() {
         plugin.getLogs().info("Registering commands..");
         try {
-            plugin.getCommand("RigoxRFTB").setExecutor(new MainCMD("RigoxRFTB", plugin));
-            plugin.getCommand("rRFTB").setExecutor(new MainCMD("rRFTB", plugin));
-            plugin.getCommand("rftb").setExecutor(new MainCMD("rftb", plugin));
+            Objects.requireNonNull(plugin.getCommand("RigoxRFTB")).setExecutor(new MainCMD("RigoxRFTB", plugin));
+            Objects.requireNonNull(plugin.getCommand("rRFTB")).setExecutor(new MainCMD("rRFTB", plugin));
+            Objects.requireNonNull(plugin.getCommand("rftb")).setExecutor(new MainCMD("rftb", plugin));
             plugin.getLogs().info("Command: RigoxRFTB, registered!");
         } catch (Throwable throwable) {
             plugin.getLogs().error("Can't register commands.");
