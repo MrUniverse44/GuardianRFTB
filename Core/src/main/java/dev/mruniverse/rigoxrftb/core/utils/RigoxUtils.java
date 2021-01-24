@@ -177,6 +177,9 @@ public class RigoxUtils {
         return "" + (new SimpleDateFormat(dateFormat).format(Calendar.getInstance().getTime()));
 
     }
+    public String getStringFromLocation(Location location) {
+        return location.getWorld()+","+location.getX()+","+location.getY()+","+location.getZ()+","+location.getYaw()+","+location.getPitch();
+    }
     public Location getLocationFromString(String location) {
         if(!location.equalsIgnoreCase("notSet")) {
             String[] loc = location.split(",");

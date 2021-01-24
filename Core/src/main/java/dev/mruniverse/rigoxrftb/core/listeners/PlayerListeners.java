@@ -3,17 +3,24 @@ package dev.mruniverse.rigoxrftb.core.listeners;
 import dev.mruniverse.rigoxrftb.core.enums.Files;
 import dev.mruniverse.rigoxrftb.core.enums.RigoxBoard;
 import dev.mruniverse.rigoxrftb.core.RigoxRFTB;
+import dev.mruniverse.rigoxrftb.core.games.Game;
 import org.bukkit.*;
+import org.bukkit.block.Sign;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.List;
 
 public class PlayerListeners implements Listener {
     private final RigoxRFTB plugin;
@@ -107,6 +114,49 @@ public class PlayerListeners implements Listener {
                 }
             }
         }
+    }
+    @EventHandler
+    public void onSignCreate(SignChangeEvent event) {
+        Player player = event.getPlayer();
+        if (!player.hasPermission("RigoxRFTB.admin.signCreate"))
+            return;
+        try {
+            if (event.getLine(0).equalsIgnoreCase("[RFTB]")) {
+                String name = event.getLine(1);
+                if(name == null) name = "null";
+                final Game game = plugin.getGameManager().getGame(name);
+                if (game == null) {
+                    String errorMsg = plugin.getFiles().getControl(Files.MESSAGES).getString("messages.admin.arenaError");
+                    if(errorMsg == null) errorMsg = "&c%arena_id% don't exists";
+                    errorMsg = errorMsg.replace("%arena_id%", name);
+                    plugin.getUtils().sendMessage(player,errorMsg);
+                    return;
+                }
+                List<String> signs = plugin.getFiles().getControl(Files.GAMES).getStringList("games." + name + ".signs");
+                signs.add(plugin.getUtils().getStringFromLocation(event.getBlock().getLocation()));
+                plugin.getFiles().getControl(Files.GAMES).set("games." + name + ".signs",signs);
+                game.loadSigns();
+            }
+        }catch (Throwable throwable) {
+            plugin.getLogs().error("Can't create plugin sign");
+            plugin.getLogs().error(throwable);
+        }
+    }
+    @EventHandler
+    public void SignInteract(PlayerInteractEvent e) {
+        if (e.getAction() != Action.RIGHT_CLICK_BLOCK)
+            return;
+        Player player = e.getPlayer();
+        try {
+            if (e.getClickedBlock().getState() instanceof Sign) {
+                for (Game game : plugin.getGameManager().getGames()) {
+                    if (game.signs.contains(e.getClickedBlock().getLocation())) {
+                        game.join(player);
+                        return;
+                    }
+                }
+            }
+        }catch (Throwable ignored) {}
     }
     @EventHandler
     public void joinTeleport(PlayerJoinEvent event) {

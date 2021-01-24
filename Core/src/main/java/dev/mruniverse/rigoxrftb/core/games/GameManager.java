@@ -80,6 +80,7 @@ public class GameManager {
         gameFiles.set("games." + gameName + ".locations.selected-beast", "notSet");
         gameFiles.set("games." + gameName + ".locations.beast", "notSet");
         gameFiles.set("games." + gameName + ".locations.runners", "notSet");
+        gameFiles.set("games." + gameName + ".signs", new ArrayList<>());
         plugin.getFiles().save(SaveMode.GAMES_FILES);
     }
     public void setWaiting(String gameName, Location location) {

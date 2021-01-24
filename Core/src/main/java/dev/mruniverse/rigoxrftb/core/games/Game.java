@@ -123,6 +123,7 @@ public class Game {
     }
 
     public void loadSigns() {
+        this.signs.clear();
         for(String signs : gameFile.getStringList(gamePath + "signs")) {
             Location signLocation = plugin.getUtils().getLocationFromString(signs);
             if(signLocation != null) {
