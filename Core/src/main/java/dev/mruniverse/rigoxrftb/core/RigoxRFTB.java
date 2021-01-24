@@ -3,6 +3,7 @@ package dev.mruniverse.rigoxrftb.core;
 import dev.mruniverse.rigoxrftb.core.enums.Files;
 import dev.mruniverse.rigoxrftb.core.enums.NMSenum;
 import dev.mruniverse.rigoxrftb.core.files.FileManager;
+import dev.mruniverse.rigoxrftb.core.games.GameEquip;
 import dev.mruniverse.rigoxrftb.core.games.GameManager;
 import dev.mruniverse.rigoxrftb.core.listeners.ListenerUtil;
 import dev.mruniverse.rigoxrftb.core.enums.SaveMode;
@@ -130,6 +131,9 @@ public final class RigoxRFTB extends JavaPlugin {
         if(!existPlayer(player)) {
             rigoxPlayers.put(player.getUniqueId(),new PlayerManager(player));
         }
+    }
+    public void getItems(GameEquip gameEquipment, Player player) {
+
     }
     public boolean existPlayer(Player player) {
         return rigoxPlayers.containsKey(player.getUniqueId());

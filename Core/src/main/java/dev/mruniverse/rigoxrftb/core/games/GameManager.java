@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class GameManager {
-    private ArrayList<Game> games = new ArrayList<>();
+    private final ArrayList<Game> games = new ArrayList<>();
     private final RigoxRFTB plugin;
     public GameManager(RigoxRFTB main) {
         plugin = main;
@@ -24,6 +24,23 @@ public class GameManager {
                 return game;
         }
         return null;
+    }
+
+    public void loadGames() {
+        try {
+            for (String gameName : plugin.getFiles().getControl(Files.GAMES).getConfigurationSection("games").getKeys(false)) {
+                Game game = new Game(plugin,gameName);
+                this.games.add(game);
+                plugin.getLogs().debug("Game " + gameName + " loaded!");
+            }
+            plugin.getLogs().info(this.games.size() + " game(s) loaded!");
+        }catch (Throwable throwable) {
+            plugin.getLogs().error("Can't load games plugin games :(");
+            plugin.getLogs().error(throwable);
+        }
+    }
+    public ArrayList<Game> getGames() {
+        return games;
     }
 
     public Game getGame(Player player) {

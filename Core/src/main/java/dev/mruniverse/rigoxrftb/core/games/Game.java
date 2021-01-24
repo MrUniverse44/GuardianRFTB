@@ -7,11 +7,12 @@ import dev.mruniverse.rigoxrftb.core.enums.RigoxBoard;
 import org.bukkit.*;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 
 import java.util.ArrayList;
+import java.util.Objects;
+import java.util.Random;
 
 public class Game {
     private final String gameName;
@@ -286,6 +287,7 @@ public class Game {
                             this.beasts = new ArrayList<>();
                             if (!this.runners.contains(player))
                                 this.runners.add(player);
+                            plugin.getPlayerData(player.getUniqueId()).setBoard(RigoxBoard.WAITING);
                             plugin.getUtils().sendMessage(player, messagesFile.getString("messages.inGame.cantStartGame"));
                             //RFTB.main.ama.inventarioLobby(player);
                             //RFTB.main.ama.scoreboardLobby(player);
@@ -316,22 +318,24 @@ public class Game {
                     for (Player runner : this.runners) {
                         plugin.getTeams().addRunner(runner);
                         runner.teleport(runnersLocation);
+                        plugin.getPlayerData(runner.getUniqueId()).setBoard(RigoxBoard.PLAYING);
                         plugin.getUtils().sendTitle(runner, 0, 20, 10, messagesFile.getString("messages.inGame.others.titles.runnersGo.toRunners.title"), messagesFile.getString("messages.inGame.others.titles.runnersGo.toRunners.subtitle"));
-                        //TitleBar.sendTitle(pl, Integer.valueOf(0), Integer.valueOf(20), Integer.valueOf(10), "", Messages.tbtprunners);
                     }
                     for (Player beasts : this.beasts) {
+                        plugin.getPlayerData(beasts.getUniqueId()).setBoard(RigoxBoard.PLAYING);
                         plugin.getUtils().sendTitle(beasts, 0, 20, 10, messagesFile.getString("messages.inGame.others.titles.runnersGo.toBeasts.title"), messagesFile.getString("messages.inGame.others.titles.runnersGo.toBeasts.subtitle"));
                     }
                 }
                 if (this.starting == 0) {
                     this.inGameStage = true;
                     this.gameStatus = GameStatus.IN_GAME;
-                    this.runnersLocation.getWorld().setTime(this.worldTime);
+                    Objects.requireNonNull(this.runnersLocation.getWorld()).setTime(this.worldTime);
                     this.runnersLocation.getWorld().setThundering(false);
                     this.runnersLocation.getWorld().setStorm(false);
                     this.runnersLocation.getWorld().setSpawnFlags(false, false);
                     this.endingStage = false;
                     for (Player player : this.players) {
+                        plugin.getPlayerData(player.getUniqueId()).setBoard(RigoxBoard.PLAYING);
                         plugin.getUtils().sendTitle(player, 5, 40, 5, messagesFile.getString("messages.inGame.others.titles.gameStart.title"), messagesFile.getString("messages.inGame.others.titles.gameStart.subtitle"));
                     }
                 }
@@ -344,7 +348,7 @@ public class Game {
                     }
                 if (this.starting == 30) {
                     this.endingStage = false;
-                    waiting.getWorld().setTime(this.time);
+                    Objects.requireNonNull(waiting.getWorld()).setTime(this.time);
                     waiting.getWorld().setThundering(false);
                     waiting.getWorld().setStorm(false);
                     waiting.getWorld().setDifficulty(Difficulty.PEACEFUL);
@@ -382,18 +386,106 @@ public class Game {
         }
     }
     public void selectBeast() {
+        if(this.gameType.equals(GameType.CLASSIC) || this.gameType.equals(GameType.INFECTED)) {
+            Random random = new Random();
+            this.times++;
+            int beast = random.nextInt(this.runners.size());
+            Player nextBeast = this.runners.get(beast);
+            this.beasts.add(nextBeast);
+            plugin.getItems(GameEquip.BEAST_KIT,nextBeast);
+            nextBeast.teleport(selectedBeast);
+            this.times = 0;
+            return;
+        }
+        Random random = new Random();
+        int beast = random.nextInt(this.runners.size());
+        Player nextBeast = this.runners.get(beast);
+        this.beasts.add(nextBeast);
+        plugin.getItems(GameEquip.BEAST_KIT,nextBeast);
+        nextBeast.teleport(selectedBeast);
+        this.runners.remove(nextBeast);
+        int Beast = random.nextInt(this.runners.size());
+        Player NextBeast = this.runners.get(Beast);
+        this.beasts.add(NextBeast);
+        plugin.getItems(GameEquip.BEAST_KIT,NextBeast);
+        nextBeast.teleport(selectedBeast);
+        this.runners.remove(nextBeast);
+        this.times = 0;
 
     }
     public void winRunners() {
-
+        this.invincible = true;
+        this.gameTimer = 0;
+        this.endingStage = true;
+        this.gameStatus = GameStatus.RESTARTING;
+        for (Player runner : this.runners) {
+            leave(runner);
+            runner.playSound(runner.getLocation(), gameSound3, 3.0F, 1.0F);
+        }
+        for (Player beasts : this.beasts) {
+            leave(beasts);
+            beasts.playSound(beasts.getLocation(), gameSound1, 3.0F, 1.0F);
+        }
+        restart();
     }
     public void winBeasts() {
-
+        this.invincible = true;
+        this.gameTimer = 0;
+        this.endingStage = true;
+        this.gameStatus = GameStatus.RESTARTING;
+        for (Player runner : this.runners) {
+            leave(runner);
+            runner.playSound(runner.getLocation(), gameSound3, 3.0F, 1.0F);
+        }
+        for (Player beasts : this.beasts) {
+            leave(beasts);
+            beasts.playSound(beasts.getLocation(), gameSound1, 3.0F, 1.0F);
+        }
+        restart();
     }
     public void leave(Player player) {
-
+        this.players.remove(player);
+        this.runners.remove(player);
+        this.beasts.remove(player);
+        String LST = settingsFile.getString("settings.lobbyLocation");
+        if(LST == null) LST = "notSet";
+        Location location = plugin.getUtils().getLocationFromString(LST);
+        if(location != null) {
+            player.teleport(location);
+        }
+        plugin.getPlayerData(player.getUniqueId()).setStatus(PlayerStatus.IN_LOBBY);
+        plugin.getPlayerData(player.getUniqueId()).setGame(null);
+        plugin.getPlayerData(player.getUniqueId()).setBoard(RigoxBoard.LOBBY);
+        updateSigns();
+        plugin.getTeams().addLobby(player);
     }
     public void restart() {
-
+        for (Player players : this.players)
+            plugin.getTeams().addLobby(players);
+        this.players.clear();
+        this.gameTimer = 0;
+        this.timer = 500;
+        this.min = 2;
+        this.max = 10;
+        this.runners.clear();
+        this.beasts.clear();
+        this.playingStage = false;
+        this.endingStage = false;
+        this.preparingStage = true;
+        this.startingStage = false;
+        this.inGameStage = false;
+        this.gameStatus = GameStatus.PREPARING;
+        this.starting = 30;
+        this.ending = 150;
+        loadGame();
+        updateSigns();
+    }
+    @SuppressWarnings("unused")
+    public void reload() {
+        for(Player player : this.players) {
+            leave(player);
+        }
+        restart();
+        loadGame();
     }
 }
