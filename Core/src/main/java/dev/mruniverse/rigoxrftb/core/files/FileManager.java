@@ -92,14 +92,6 @@ public class FileManager {
         addConfig(Files.SETTINGS,"settings.pointSystem.onBeastWin",4);
         addConfig(Files.SETTINGS,"settings.pointSystem.onKillBeast",4);
         addConfig(Files.SETTINGS,"settings.pointSystem.onBeastKill",1);
-        //public static String sign0 = "%arena%";
-
-        //public static String sign1 = "%players%";
-
-        //public static String sign2 = "%state%";
-
-        //public static String sign3 = "Click to Join";
-
         addConfig(Files.SETTINGS,"settings.signs.line1","&l%arena%");
         addConfig(Files.SETTINGS,"settings.signs.line2","%gameStatus%");
         addConfig(Files.SETTINGS,"settings.signs.line3","%on%/%max%");

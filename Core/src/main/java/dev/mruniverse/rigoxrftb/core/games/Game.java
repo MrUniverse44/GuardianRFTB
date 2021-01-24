@@ -156,6 +156,13 @@ public class Game {
         }
     }
 
+    public void deathBeast(Player beast) {
+        this.beasts.remove(beast);
+        if(beasts.size() == 0) {
+            winRunners();
+        }
+    }
+
     public String replaceGameVariable(String message) {
         if(message.contains("%arena%")) message = message.replace("%arena%",gameName);
         if(message.contains("%gameStatus%")) message = message.replace("%gameStatus%",getStatus());
