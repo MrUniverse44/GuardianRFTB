@@ -19,9 +19,11 @@ public class ListenerUtil {
         plugin.getLogs().info("Registering commands..");
         try {
             Objects.requireNonNull(plugin.getCommand("RigoxRFTB")).setExecutor(new MainCMD("RigoxRFTB", plugin));
-            Objects.requireNonNull(plugin.getCommand("rRFTB")).setExecutor(new MainCMD("rRFTB", plugin));
-            Objects.requireNonNull(plugin.getCommand("rftb")).setExecutor(new MainCMD("rftb", plugin));
             plugin.getLogs().info("Command: RigoxRFTB, registered!");
+            Objects.requireNonNull(plugin.getCommand("rRFTB")).setExecutor(new MainCMD("rRFTB", plugin));
+            plugin.getLogs().info("Command: rRFTB, registered!");
+            Objects.requireNonNull(plugin.getCommand("rftb")).setExecutor(new MainCMD("rftb", plugin));
+            plugin.getLogs().info("Command: rftb, registered!");
         } catch (Throwable throwable) {
             plugin.getLogs().error("Can't register commands.");
         }
