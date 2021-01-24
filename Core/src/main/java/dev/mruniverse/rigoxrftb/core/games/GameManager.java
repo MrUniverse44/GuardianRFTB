@@ -34,6 +34,7 @@ public class GameManager {
                 plugin.getLogs().debug("Game " + gameName + " loaded!");
             }
             plugin.getLogs().info(this.games.size() + " game(s) loaded!");
+            plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin,new GameRunnable(plugin),0L,20L);
         }catch (Throwable throwable) {
             plugin.getLogs().error("Can't load games plugin games :(");
             plugin.getLogs().error(throwable);

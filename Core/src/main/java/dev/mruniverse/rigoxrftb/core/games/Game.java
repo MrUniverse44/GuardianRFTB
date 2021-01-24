@@ -188,7 +188,12 @@ public class Game {
                 return settingsFile.getString("settings.gameStatus.preparing");
         }
     }
-
+    public int getNeedPlayers() {
+        if(this.players.size() < min) {
+            return (min - this.players.size());
+        }
+        return 0;
+    }
     public String getName() {
         return gameName;
     }

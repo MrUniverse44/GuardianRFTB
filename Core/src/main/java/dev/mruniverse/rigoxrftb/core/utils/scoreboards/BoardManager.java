@@ -30,12 +30,10 @@ public class BoardManager {
     }
     public void updateScoreboard(RigoxBoard board,Player player) {
         PlayerManager scoreboard = getBoardOfPlayer(player);
-        if(board.equals(RigoxBoard.LOBBY)) {
-            String title;
-            title = plugin.getUtils().replaceVariables(plugin.getUtils().getTitle(RigoxBoard.LOBBY),player);
-            scoreboard.setTitle(title);
-            scoreboard.updateLines(plugin.getUtils().getLines(RigoxBoard.LOBBY,player));
-        }
+        String title;
+        title = plugin.getUtils().replaceVariables(plugin.getUtils().getTitle(board),player);
+        scoreboard.setTitle(title);
+        scoreboard.updateLines(plugin.getUtils().getLines(board,player));
     }
     private boolean existPlayer(Player player) {
         return players.containsKey(player.getUniqueId());

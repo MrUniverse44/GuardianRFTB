@@ -102,6 +102,12 @@ public class FileManager {
         addConfig(Files.SETTINGS,"settings.gameStatus.playing","&cPlaying");
         addConfig(Files.SETTINGS,"settings.gameStatus.InGame","&4InGame");
         addConfig(Files.SETTINGS,"settings.gameStatus.ending","&9Restarting");
+        addConfig(Files.SETTINGS,"roles.beast","Beast");
+        addConfig(Files.SETTINGS,"roles.runner","Runner");
+        addConfig(Files.SETTINGS,"times.minutes","minutes");
+        addConfig(Files.SETTINGS,"times.minute","minute");
+        addConfig(Files.SETTINGS,"times.seconds","seconds");
+        addConfig(Files.SETTINGS,"times.second","second");
         List<String> lore = new ArrayList<>();
         lore.add("&7Here your lore");
         lore.add("&erigox.club");
