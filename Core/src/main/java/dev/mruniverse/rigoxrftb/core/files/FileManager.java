@@ -67,6 +67,9 @@ public class FileManager {
         addConfig(Files.SETTINGS,"settings.update-check",true);
         addConfig(Files.SETTINGS,"settings.maxTime",500);
         addConfig(Files.SETTINGS,"settings.lobbyLocation","notSet");
+        addConfig(Files.SETTINGS,"settings.defaultSounds.sound1","BLOCK_NOTE_BLOCK_HARP");
+        addConfig(Files.SETTINGS,"settings.defaultSounds.sound2","ENTITY_ENDER_DRAGON_GROWL");
+        addConfig(Files.SETTINGS,"settings.defaultSounds.sound3","ENTITY_EXPERIENCE_ORB_PICKUP");
         addConfig(Files.SETTINGS,"settings.options.joinLobbyTeleport",false);
         addConfig(Files.SETTINGS,"settings.options.joinHeal",true);
         addConfig(Files.SETTINGS,"settings.options.joinAdventureGamemode",true);

@@ -99,9 +99,6 @@ public class Game {
         this.max = gameFile.getInt(gamePath + "max");
         this.min = gameFile.getInt(gamePath + "min");
         this.gameType = GameType.valueOf(gameFile.getString(gamePath + "gameType"));
-        this.gameSound1 = Sound.valueOf(gameFile.getString(gamePath + "gameSound1"));
-        this.gameSound2 = Sound.valueOf(gameFile.getString(gamePath + "gameSound2"));
-        this.gameSound3 = Sound.valueOf(gameFile.getString(gamePath + "gameSound3"));
         String bL = gameFile.getString(gamePath + "locations.beast");
         if(bL == null) bL = "notSet";
         this.beastLocation = plugin.getUtils().getLocationFromString(bL);
@@ -120,6 +117,13 @@ public class Game {
         }
         this.gameStatus = GameStatus.WAITING;
         loadSigns();
+        try {
+            this.gameSound1 = Sound.valueOf(gameFile.getString(gamePath + "gameSound1"));
+            this.gameSound2 = Sound.valueOf(gameFile.getString(gamePath + "gameSound2"));
+            this.gameSound3 = Sound.valueOf(gameFile.getString(gamePath + "gameSound3"));
+        }catch (Throwable throwable) {
+            plugin.getLogs().error("Can't load game Sounds! Please verify if the sound works in your current version!");
+        }
     }
 
     public void loadSigns() {
