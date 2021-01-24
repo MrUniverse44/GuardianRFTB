@@ -70,7 +70,7 @@ public class MainCMD implements CommandExecutor {
                 return true;
             }
             if(args[0].equalsIgnoreCase("admin")) {
-                if(args.length == 1 | args[1].equalsIgnoreCase("help")) {
+                if(args.length == 1 || args[1].equalsIgnoreCase("help")) {
                     if(hasPermission(sender,"RigoxRFTB.admin.help")) {
                         plugin.getUtils().sendMessage(sender, "&8» &7/" + command + " &cadmin create (gameName) &b- &eCreate arena.");
                         plugin.getUtils().sendMessage(sender, "&8» &7/" + command + " &cadmin delete (gameName) &b- &eDelete arena.");
