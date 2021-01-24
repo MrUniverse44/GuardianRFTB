@@ -3,6 +3,7 @@ package dev.mruniverse.rigoxrftb.core.utils.players;
 import dev.mruniverse.rigoxrftb.core.RigoxRFTB;
 import dev.mruniverse.rigoxrftb.core.enums.Files;
 import dev.mruniverse.rigoxrftb.core.enums.PlayerStatus;
+import dev.mruniverse.rigoxrftb.core.enums.RigoxBoard;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -38,6 +39,12 @@ public class PlayerRunnable extends BukkitRunnable {
                 }
                 if(actionLb) {
                     plugin.getUtils().sendActionbar(player, actionLobby);
+                }
+            } else {
+                if(playerManager.getBoard().equals(RigoxBoard.WAITING) || playerManager.getBoard().equals(RigoxBoard.STARTING)) {
+                    if(bossLb) {
+                        plugin.getUtils().sendBossBar(player, bossLobby);
+                    }
                 }
             }
 

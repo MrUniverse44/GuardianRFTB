@@ -86,6 +86,9 @@ public class PlayerListeners implements Listener {
     @EventHandler
     public void onDisconnect(PlayerQuitEvent event) {
         plugin.getScoreboards().removeScore(event.getPlayer());
+        if(plugin.getPlayerData(event.getPlayer().getUniqueId()).getGame() != null) {
+            plugin.getPlayerData(event.getPlayer().getUniqueId()).getGame().leave(event.getPlayer());
+        }
         plugin.removePlayer(event.getPlayer());
         plugin.getNMSHandler().deleteBossBar(event.getPlayer());
         if(plugin.getFiles().getControl(Files.SETTINGS).getBoolean("settings.options.hideServerQuitMessage")) {
@@ -102,6 +105,13 @@ public class PlayerListeners implements Listener {
                     event.setCancelled(true);
                 }
             }
+            Player player = (Player)event.getEntity();
+            if(plugin.getPlayerData(player.getUniqueId()).getGame() != null) {
+                RigoxBoard board = plugin.getPlayerData(player.getUniqueId()).getBoard();
+                if(board.equals(RigoxBoard.WAITING) || board.equals(RigoxBoard.STARTING) || board.equals(RigoxBoard.WIN_BEAST_FOR_BEAST) || board.equals(RigoxBoard.WIN_BEAST_FOR_RUNNERS) || board.equals(RigoxBoard.WIN_RUNNERS_FOR_BEAST) || board.equals(RigoxBoard.WIN_RUNNERS_FOR_RUNNERS)) {
+                    event.setCancelled(true);
+                }
+            }
         }
     }
     @EventHandler
@@ -113,6 +123,10 @@ public class PlayerListeners implements Listener {
                 if (event.getEntity().getWorld().equals(w)) {
                     event.setFoodLevel(20);
                 }
+            }
+            Player player = (Player)event.getEntity();
+            if(plugin.getPlayerData(player.getUniqueId()).getGame() != null) {
+                event.setFoodLevel(20);
             }
         }
     }
