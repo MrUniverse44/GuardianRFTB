@@ -77,6 +77,10 @@ public class FileManager {
         addConfig(Files.SETTINGS,"settings.options.lobby-noDamage",true);
         addConfig(Files.SETTINGS,"settings.options.lobby-noHunger",true);
         addConfig(Files.SETTINGS,"settings.options.lobby-actionBar",true);
+        addConfig(Files.SETTINGS,"settings.tags.runners.toggle",true);
+        addConfig(Files.SETTINGS,"settings.tags.runners.tag","&b&lRUNNER");
+        addConfig(Files.SETTINGS,"settings.tags.beasts.toggle",true);
+        addConfig(Files.SETTINGS,"settings.tags.beasts.tag","&c&lBEAST");
         addConfig(Files.SETTINGS,"settings.dateFormat","dd/MM/yyyy");
         addConfig(Files.SETTINGS,"settings.lobbyScoreboard-only-in-lobby-world",true);
         addConfig(Files.SETTINGS,"settings.options.pluginChat",true);
@@ -88,6 +92,24 @@ public class FileManager {
         addConfig(Files.SETTINGS,"settings.pointSystem.onBeastWin",4);
         addConfig(Files.SETTINGS,"settings.pointSystem.onKillBeast",4);
         addConfig(Files.SETTINGS,"settings.pointSystem.onBeastKill",1);
+        //public static String sign0 = "%arena%";
+
+        //public static String sign1 = "%players%";
+
+        //public static String sign2 = "%state%";
+
+        //public static String sign3 = "Click to Join";
+
+        addConfig(Files.SETTINGS,"settings.signs.line1","&l%arena%");
+        addConfig(Files.SETTINGS,"settings.signs.line2","%gameStatus%");
+        addConfig(Files.SETTINGS,"settings.signs.line3","%on%/%max%");
+        addConfig(Files.SETTINGS,"settings.signs.line4","&nClick to join");
+        addConfig(Files.SETTINGS,"settings.gameStatus.preparing","&5Config");
+        addConfig(Files.SETTINGS,"settings.gameStatus.waiting","&aWaiting");
+        addConfig(Files.SETTINGS,"settings.gameStatus.starting","&eStarting");
+        addConfig(Files.SETTINGS,"settings.gameStatus.playing","&cPlaying");
+        addConfig(Files.SETTINGS,"settings.gameStatus.InGame","&4InGame");
+        addConfig(Files.SETTINGS,"settings.gameStatus.ending","&9Restarting");
         List<String> lore = new ArrayList<>();
         lore.add("&7Here your lore");
         lore.add("&erigox.club");
@@ -235,6 +257,8 @@ public class FileManager {
         addConfig(Files.MESSAGES,"messages.inGame.quit","&7%player% &ehas quit!");
         addConfig(Files.MESSAGES,"messages.inGame.already","&cYou're already in an arena!");
         addConfig(Files.MESSAGES,"messages.inGame.starting","&eThe game starts in &c%time% &e%seconds%!");
+        addConfig(Files.MESSAGES,"messages.inGame.beastsAppear","&eThe beasts spawns in &c%time% &e%seconds%!");
+        addConfig(Files.MESSAGES,"messages.inGame.chosenBeast","&eThe player &b%player% &enow is a beast!");
         lists.add("&a[bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx]");
         lists.add("<center>&e&lMode: %gameType% - %map_name%");
         lists.add(" ");
@@ -266,14 +290,27 @@ public class FileManager {
         addConfig(Files.MESSAGES,"messages.inGame.deathMessages.lava","&7%victim% was on fire!");
         addConfig(Files.MESSAGES,"messages.inGame.deathMessages.bow","&7%attacker% is the best with the bow vs %victim%");
         addConfig(Files.MESSAGES,"messages.inGame.deathMessages.otherCause","&7%victim% died");
+        addConfig(Files.MESSAGES,"messages.inGame.cantStartGame","&cThis game can't start, not enough players");
         addConfig(Files.MESSAGES,"messages.inGame.others.winCoins","&6+%winCoins% coins (Win)!");
         addConfig(Files.MESSAGES,"messages.inGame.others.playAgainWin","&a&lYOU WON! &e&lWant to play again? <clickText>");
         addConfig(Files.MESSAGES,"messages.inGame.others.playAgainLoose","&c&lYOU LOOSE! &e&lWant to play again? <clickText>");
         addConfig(Files.MESSAGES,"messages.inGame.others.playAgainClickText","&6&lCLICK HERE");
+        addConfig(Files.MESSAGES,"messages.inGame.others.titles.gameStart.title","&a");
+        addConfig(Files.MESSAGES,"messages.inGame.others.titles.gameStart.subtitle","&aGame Started!");
+        addConfig(Files.MESSAGES,"messages.inGame.others.titles.runnersGo.toRunners.title","&a");
+        addConfig(Files.MESSAGES,"messages.inGame.others.titles.runnersGo.toRunners.subtitle","&aYou has been released, GO!");
+        addConfig(Files.MESSAGES,"messages.inGame.others.titles.runnersGo.toBeasts.title","&a");
+        addConfig(Files.MESSAGES,"messages.inGame.others.titles.runnersGo.toBeasts.subtitle","&aThe runners has been released!");
+        addConfig(Files.MESSAGES,"messages.inGame.others.titles.beastsGo.toRunners.title","&a");
+        addConfig(Files.MESSAGES,"messages.inGame.others.titles.beastsGo.toRunners.subtitle","&cThe beasts has been released!");
+        addConfig(Files.MESSAGES,"messages.inGame.others.titles.beastsGo.toBeasts.title","&a");
+        addConfig(Files.MESSAGES,"messages.inGame.others.titles.beastsGo.toBeasts.subtitle","&aYou has been released, GO!");
         addConfig(Files.MESSAGES,"messages.inGame.others.titles.Winner.title","&6&lVICTORY!");
         addConfig(Files.MESSAGES,"messages.inGame.others.titles.Winner.subtitle","&b%winner_name%&f won the game!");
         addConfig(Files.MESSAGES,"messages.inGame.others.titles.Looser.title","&c&lGAME OVER!");
         addConfig(Files.MESSAGES,"messages.inGame.others.titles.Looser.subtitle","&8%attacker_name%&f kill you!");
+        addConfig(Files.MESSAGES,"messages.inGame.others.bossBar.toRunners","&bDistance between you and &e&lBEAST &f%beastName%");
+        addConfig(Files.MESSAGES,"messages.inGame.others.bossBar.toBeasts","&bRunners with life: &e&l%runners%");
         addConfig(Files.MESSAGES,"messages.lobby.actionBar","&bYou are playing &e&lRFTB &bwith &e&lRigoxRFTB");
         addConfig(Files.MESSAGES,"messages.lobby.bossBar","&bYou are playing on &e&nRigox Network&b.");
         addConfig(Files.MESSAGES,"messages.others.topFormat.top","&b================[&lTOP 10&b]================");
@@ -284,6 +321,7 @@ public class FileManager {
         addConfig(Files.MESSAGES,"messages.others.gameTypes.Double","Double Beast");
         addConfig(Files.MESSAGES,"messages.others.no-perms","&cYou need permission &7%permission% &cfor this action.");
         addConfig(Files.MESSAGES,"messages.others.full","&cThis game is full!");
+        addConfig(Files.MESSAGES,"messages.others.gamePlaying","&cThis arena is in game.");
         addConfig(Files.MESSAGES,"messages.others.restarting","&cThis game is in restarting mode!");
         addConfig(Files.MESSAGES,"messages.others.playerError","&7%player% &cis not online.");
         addConfig(Files.MESSAGES,"messages.others.customChat.inGame","&a[%player_role%] &7<player_name>&8: &f%message%");

@@ -2,18 +2,25 @@ package dev.mruniverse.rigoxrftb.core.games;
 
 import dev.mruniverse.rigoxrftb.core.RigoxRFTB;
 import dev.mruniverse.rigoxrftb.core.enums.Files;
-import org.bukkit.Location;
+import dev.mruniverse.rigoxrftb.core.enums.PlayerStatus;
+import dev.mruniverse.rigoxrftb.core.enums.RigoxBoard;
+import org.bukkit.*;
+import org.bukkit.block.Sign;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
 
 import java.util.ArrayList;
 
 public class Game {
     private final String gameName;
-
+    private final String gamePath;
+    public GameType gameType;
     public ArrayList<Player> players;
     public ArrayList<Location> signs;
     public ArrayList<Player> runners;
+    public ArrayList<Player> beasts;
 
     int times;
     public int gameTimer;
@@ -26,14 +33,21 @@ public class Game {
     public int ending;
     public int inventoryNumber;
 
+    public Sound gameSound1;
+    public Sound gameSound2;
+    public Sound gameSound3;
+
     public Location waiting;
     public Location selectedBeast;
     public Location beastLocation;
     public Location runnersLocation;
 
-    public Player beast;
-    public FileConfiguration gameFile = RigoxRFTB.getInstance().getFiles().getControl(Files.GAMES);
+    private final FileConfiguration gameFile;
+    private final FileConfiguration settingsFile;
+    private final FileConfiguration messagesFile;
+    private final RigoxRFTB plugin;
 
+    public GameStatus gameStatus;
     public boolean invincible = true;
     public boolean preparingStage;
     public boolean startingStage;
@@ -41,8 +55,12 @@ public class Game {
     public boolean playingStage;
     public boolean endingStage;
 
-    public Game(String name) {
+    public Game(RigoxRFTB main, String name) {
         this.gameTimer = 0;
+        this.gameFile = main.getFiles().getControl(Files.GAMES);
+        this.settingsFile = main.getFiles().getControl(Files.SETTINGS);
+        this.messagesFile = main.getFiles().getControl(Files.MESSAGES);
+        this.plugin = main;
         this.players = new ArrayList<>();
         this.signs = new ArrayList<>();
         this.timer = 500;
@@ -52,7 +70,7 @@ public class Game {
         this.beastLocation = null;
         this.runnersLocation = null;
         this.runners = new ArrayList<>();
-        this.beast = null;
+        this.beasts = new ArrayList<>();
         this.preparingStage = true;
         this.startingStage = false;
         this.inGameStage = false;
@@ -63,44 +81,319 @@ public class Game {
         this.times = 0;
         this.inventoryNumber = -1;
         this.gameName = name;
+        this.gamePath = "games." + name + ".";
         try {
             loadGame();
         } catch (Throwable throwable) {
             RigoxRFTB.getInstance().getLogs().error("Can't load arena: " + gameName);
             RigoxRFTB.getInstance().getLogs().error(throwable);
             this.preparingStage = false;
+            this.gameStatus = GameStatus.PREPARING;
         }
     }
 
     private void loadGame() {
-        this.time = gameFile.getInt("games." + gameName + ".time");
-        this.worldTime = gameFile.getInt("games." + gameName + ".worldTime");
-        this.max = gameFile.getInt("games." + gameName + ".max");
-        this.min = gameFile.getInt("games." + gameName + ".min");
-        String bL = gameFile.getString("games." + gameName + ".locations.beast");
+        this.timer = gameFile.getInt(gamePath + "time");
+        this.worldTime = gameFile.getInt(gamePath + "worldTime");
+        this.max = gameFile.getInt(gamePath + "max");
+        this.min = gameFile.getInt(gamePath + "min");
+        this.gameType = GameType.valueOf(gameFile.getString(gamePath + "gameType"));
+        this.gameSound1 = Sound.valueOf(gameFile.getString(gamePath + "gameSound1"));
+        this.gameSound2 = Sound.valueOf(gameFile.getString(gamePath + "gameSound2"));
+        this.gameSound3 = Sound.valueOf(gameFile.getString(gamePath + "gameSound3"));
+        String bL = gameFile.getString(gamePath + "locations.beast");
         if(bL == null) bL = "notSet";
-        this.beastLocation = RigoxRFTB.getInstance().getUtils().getLocationFromString(bL);
-        String sbL = gameFile.getString("games." + gameName + ".locations.selected-beast");
+        this.beastLocation = plugin.getUtils().getLocationFromString(bL);
+        String sbL = gameFile.getString(gamePath + "locations.selected-beast");
         if(sbL == null) sbL = "notSet";
-        this.selectedBeast = RigoxRFTB.getInstance().getUtils().getLocationFromString(sbL);
-        String rL = gameFile.getString("games." + gameName + ".locations.runners");
+        this.selectedBeast = plugin.getUtils().getLocationFromString(sbL);
+        String rL = gameFile.getString(gamePath + "locations.runners");
         if(rL == null) rL = "notSet";
-        this.runnersLocation = RigoxRFTB.getInstance().getUtils().getLocationFromString(rL);
-        String wL = gameFile.getString("games." + gameName + ".locations.waiting");
+        this.runnersLocation = plugin.getUtils().getLocationFromString(rL);
+        String wL = gameFile.getString(gamePath + "locations.waiting");
         if(wL == null) wL = "notSet";
-        this.waiting = RigoxRFTB.getInstance().getUtils().getLocationFromString(wL);
-        if (this.beastLocation == null || this.runnersLocation == null || this.selectedBeast == null || this.waiting == null)
+        this.waiting = plugin.getUtils().getLocationFromString(wL);
+        if (this.beastLocation == null || this.runnersLocation == null || this.selectedBeast == null || this.waiting == null) {
             this.preparingStage = false;
-        //loadSigns();
+            this.gameStatus = GameStatus.PREPARING;
+        }
+        this.gameStatus = GameStatus.WAITING;
+        loadSigns();
     }
 
+    public void loadSigns() {
+        for(String signs : gameFile.getStringList(gamePath + "signs")) {
+            Location signLocation = plugin.getUtils().getLocationFromString(signs);
+            if(signLocation != null) {
+                if(signLocation.getBlock().getState() instanceof Sign) {
+                    this.signs.add(signLocation);
+                }
+            }
+        }
+        updateSigns();
+    }
 
+    public void updateSigns() {
+        for(Location signLocation : this.signs) {
+            String line1,line2,line3,line4;
+            line1 = settingsFile.getString("settings.signs.line1");
+            line2 = settingsFile.getString("settings.signs.line2");
+            line3 = settingsFile.getString("settings.signs.line3");
+            line4 = settingsFile.getString("settings.signs.line4");
+            if(line1 == null) line1 = "&l%arena%";
+            if(line2 == null) line2 = "%gameStatus%";
+            if(line3 == null) line3 = "%on%/%max%";
+            if(line4 == null) line4 = "&nClick to join";
+            if(signLocation.getBlock().getState() instanceof Sign) {
+                Sign currentSign = (Sign)signLocation.getBlock().getState();
+                currentSign.setLine(1,replaceGameVariable(line1));
+                currentSign.setLine(2,replaceGameVariable(line2));
+                currentSign.setLine(3,replaceGameVariable(line3));
+                currentSign.setLine(4,replaceGameVariable(line4));
+                currentSign.update();
+            }
+        }
+    }
+
+    public String replaceGameVariable(String message) {
+        if(message.contains("%arena%")) message = message.replace("%arena%",gameName);
+        if(message.contains("%gameStatus%")) message = message.replace("%gameStatus%",getStatus());
+        if(message.contains("%on%")) message = message.replace("%on%",players.size() + "");
+        if(message.contains("%max%")) message = message.replace("%max%", max + "");
+        return ChatColor.translateAlternateColorCodes('&',message);
+    }
+
+    public String getStatus() {
+        switch (gameStatus) {
+            case WAITING:
+                return settingsFile.getString("settings.gameStatus.waiting");
+            case PLAYING:
+                return settingsFile.getString("settings.gameStatus.playing");
+            case STARTING:
+                return settingsFile.getString("settings.gameStatus.starting");
+            case RESTARTING:
+                return settingsFile.getString("settings.gameStatus.ending");
+            case IN_GAME:
+                return settingsFile.getString("settings.gameStatus.InGame");
+            case PREPARING:
+            default:
+                return settingsFile.getString("settings.gameStatus.preparing");
+        }
+    }
 
     public String getName() {
         return gameName;
     }
 
     public void join(Player player) {
+        if(plugin.getPlayerData(player.getUniqueId()).getGame() != null) {
+            plugin.getUtils().sendMessage(player, messagesFile.getString("messages.inGame.already"));
+            return;
+        }
+        if(!this.gameStatus.equals(GameStatus.WAITING) && !this.gameStatus.equals(GameStatus.STARTING)) {
+            if(!this.gameStatus.equals(GameStatus.RESTARTING)) {
+                plugin.getUtils().sendMessage(player, messagesFile.getString("messages.others.gamePlaying"));
+                return;
+            }
+            plugin.getUtils().sendMessage(player, messagesFile.getString("messages.others.restarting"));
+            return;
+        }
+        if(this.players.size() >= max) {
+            plugin.getUtils().sendMessage(player, messagesFile.getString("messages.others.full"));
+            return;
+        }
+        player.teleport(this.waiting);
+        this.players.add(player);
+        this.runners.add(player);
+        plugin.getPlayerData(player.getUniqueId()).setGame(this);
+        plugin.getPlayerData(player.getUniqueId()).setBoard(RigoxBoard.WAITING);
+        plugin.getPlayerData(player.getUniqueId()).setStatus(PlayerStatus.IN_GAME);
+        checkPlayers();
+        player.setGameMode(GameMode.ADVENTURE);
+        player.setFlying(false);
+        player.setAllowFlight(false);
+        player.setHealth(20.0D);
+        player.setFireTicks(0);
+        for (PotionEffect effect : player.getActivePotionEffects()) {
+            player.removePotionEffect(effect.getType());
+        }
+        updateSigns();
+        player.updateInventory();
+    }
+    public void checkPlayers() {
+        this.endingStage = false;
+        if (this.players.size() == this.min && !this.startingStage && !gameStatus.equals(GameStatus.STARTING)) {
+            this.gameStatus = GameStatus.STARTING;
+            this.startingStage = true;
+            this.gameTimer = 1;
+        }
+    }
+    public void gameCount(GameCountType gameCountType) {
+        try {
+            if (gameCountType.equals(GameCountType.START_COUNT)) {
+                if (this.starting < -25) {
+                    this.gameTimer = 2;
+                    return;
+                }
+                if (this.starting <= 5 && this.starting >= 0)
+                    if (gameSound1 != null) {
+                        for (Player members : this.players) {
+                            members.playSound(members.getLocation(), gameSound1, 1.0F, 0.5F);
+                        }
+                    }
+                if (this.starting <= -20 && this.starting >= -25) {
+                    if (gameSound2 != null) {
+                        for (Player runner : this.runners) {
+                            runner.playSound(runner.getLocation(), gameSound2, 1.0F, 0.8F);
+                        }
+                    }
+                    if (gameSound1 != null) {
+                        for (Player beast : this.beasts) {
+                            beast.playSound(beast.getLocation(), gameSound1, 1.0F, 0.5F);
+                        }
+                    }
+                }
+                if (this.starting == -25) {
+                    this.starting--;
+                    this.invincible = false;
+                    this.gameTimer = 2;
+                    if (this.beasts.size() <= 0) {
+                        winRunners();
+                        return;
+                    }
+                    for (Player beast : this.beasts) {
+                        beast.teleport(this.beastLocation);
+                        beast.setFoodLevel(20);
+                        beast.setHealth(20.0D);
+                        beast.setExp(0.0F);
+                        beast.setLevel(0);
+                        beast.setFireTicks(0);
+                    }
+                    if (gameSound3 != null) {
+                        for (Player runner : this.players)
+                            runner.playSound(runner.getLocation(), gameSound3, 10.0F, 1.0F);
+                    }
+                }
+                if (this.runners.size() < 1 || this.runners.size() < 2) {
+                    if (!this.inGameStage) {
+                        this.startingStage = false;
+                        this.gameStatus = GameStatus.WAITING;
+                        this.starting = 30;
+                        for (Player player : this.players) {
+                            player.teleport(waiting);
+                            player.getInventory().clear();
+                            player.getInventory().setArmorContents(null);
+                            this.beasts = new ArrayList<>();
+                            if (!this.runners.contains(player))
+                                this.runners.add(player);
+                            plugin.getUtils().sendMessage(player, messagesFile.getString("messages.inGame.cantStartGame"));
+                            //RFTB.main.ama.inventarioLobby(player);
+                            //RFTB.main.ama.scoreboardLobby(player);
+                        }
+                        this.gameTimer = 0;
+                        return;
+                    }
+                    if (!this.playingStage) {
+                        for (Player player : this.players) {
+                            leave(player);
+                            plugin.getUtils().sendMessage(player, messagesFile.getString("messages.inGame.cantStartGame"));
+                        }
+                        restart();
+                    } else {
+                        if (this.beasts.size() == 0) {
+                            winRunners();
+                            this.gameTimer = 0;
+                            return;
+                        }
+                        winBeasts();
+                        this.gameTimer = 0;
+                        return;
+                    }
+                }
+                if (this.starting == -10) {
+                    this.playingStage = true;
+                    this.gameStatus = GameStatus.PLAYING;
+                    for (Player runner : this.runners) {
+                        plugin.getTeams().addRunner(runner);
+                        runner.teleport(runnersLocation);
+                        plugin.getUtils().sendTitle(runner, 0, 20, 10, messagesFile.getString("messages.inGame.others.titles.runnersGo.toRunners.title"), messagesFile.getString("messages.inGame.others.titles.runnersGo.toRunners.subtitle"));
+                        //TitleBar.sendTitle(pl, Integer.valueOf(0), Integer.valueOf(20), Integer.valueOf(10), "", Messages.tbtprunners);
+                    }
+                    for (Player beasts : this.beasts) {
+                        plugin.getUtils().sendTitle(beasts, 0, 20, 10, messagesFile.getString("messages.inGame.others.titles.runnersGo.toBeasts.title"), messagesFile.getString("messages.inGame.others.titles.runnersGo.toBeasts.subtitle"));
+                    }
+                }
+                if (this.starting == 0) {
+                    this.inGameStage = true;
+                    this.gameStatus = GameStatus.IN_GAME;
+                    this.runnersLocation.getWorld().setTime(this.worldTime);
+                    this.runnersLocation.getWorld().setThundering(false);
+                    this.runnersLocation.getWorld().setStorm(false);
+                    this.runnersLocation.getWorld().setSpawnFlags(false, false);
+                    this.endingStage = false;
+                    for (Player player : this.players) {
+                        plugin.getUtils().sendTitle(player, 5, 40, 5, messagesFile.getString("messages.inGame.others.titles.gameStart.title"), messagesFile.getString("messages.inGame.others.titles.gameStart.subtitle"));
+                    }
+                }
+                if (this.starting == -2)
+                    selectBeast();
+                if (this.starting == -2)
+                    for (Player runner : this.runners) {
+                        runner.getInventory().clear();
+                        runner.getInventory().setArmorContents(null);
+                    }
+                if (this.starting == 30) {
+                    this.endingStage = false;
+                    waiting.getWorld().setTime(this.time);
+                    waiting.getWorld().setThundering(false);
+                    waiting.getWorld().setStorm(false);
+                    waiting.getWorld().setDifficulty(Difficulty.PEACEFUL);
+                    waiting.getWorld().setSpawnFlags(false, false);
+                    for (Player player : this.players) {
+                        player.closeInventory();
+                        player.setHealth(20.0D);
+                    }
+                }
+                this.starting--;
+                updateSigns();
+                return;
+            }
+            updateSigns();
+            if(this.beasts.size() == 0) {
+                if(!this.endingStage && !gameStatus.equals(GameStatus.RESTARTING)) {
+                    winRunners();
+                }
+                return;
+            }
+            if(this.runners.size() == 0) {
+                if(!this.endingStage && !gameStatus.equals(GameStatus.RESTARTING)) {
+                    winBeasts();
+                }
+                return;
+            }
+            if (this.timer == 0) {
+                winRunners();
+                return;
+            }
+            this.timer--;
+        }catch (Throwable throwable) {
+            plugin.getLogs().error("Can't play in " + gameName + ", because an error occurred in the principal Game-Count");
+            plugin.getLogs().error(throwable);
+        }
+    }
+    public void selectBeast() {
+
+    }
+    public void winRunners() {
+
+    }
+    public void winBeasts() {
+
+    }
+    public void leave(Player player) {
+
+    }
+    public void restart() {
 
     }
 }

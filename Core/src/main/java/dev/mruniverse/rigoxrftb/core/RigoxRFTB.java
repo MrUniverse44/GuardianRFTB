@@ -3,10 +3,12 @@ package dev.mruniverse.rigoxrftb.core;
 import dev.mruniverse.rigoxrftb.core.enums.Files;
 import dev.mruniverse.rigoxrftb.core.enums.NMSenum;
 import dev.mruniverse.rigoxrftb.core.files.FileManager;
+import dev.mruniverse.rigoxrftb.core.games.GameManager;
 import dev.mruniverse.rigoxrftb.core.listeners.ListenerUtil;
 import dev.mruniverse.rigoxrftb.core.enums.SaveMode;
 import dev.mruniverse.rigoxrftb.core.nms.NMS;
 import dev.mruniverse.rigoxrftb.core.utils.Logger;
+import dev.mruniverse.rigoxrftb.core.utils.Teams;
 import dev.mruniverse.rigoxrftb.core.utils.TextUtilities;
 import dev.mruniverse.rigoxrftb.core.utils.players.PlayerRunnable;
 import dev.mruniverse.rigoxrftb.core.utils.scoreboards.BoardManager;
@@ -31,6 +33,8 @@ public final class RigoxRFTB extends JavaPlugin {
     private NMS nmsHandler;
     private ListenerUtil rigoxListeners;
     private BoardManager rigoxScoreboards;
+    private GameManager rigoxGameManager;
+    private Teams rigoxTeams;
     private final HashMap<UUID, PlayerManager> rigoxPlayers = new HashMap<>();
     private final HashMap<ItemStack, Integer> lobbyItems = new HashMap<>();
     @Override
@@ -52,9 +56,15 @@ public final class RigoxRFTB extends JavaPlugin {
         rigoxListeners = new ListenerUtil(this);
         rigoxListeners.registerListeners();
 
+        // * Game Setup
+
+        rigoxGameManager = new GameManager(this);
+
         // * Utils Setup
 
+
         rigoxUtils = new RigoxUtils(this);
+        rigoxTeams = new Teams(this);
 
         // * NMS Setup
 
@@ -106,6 +116,12 @@ public final class RigoxRFTB extends JavaPlugin {
     }
     public FileManager getFiles() {
         return fileManager;
+    }
+    public Teams getTeams() {
+        return rigoxTeams;
+    }
+    public GameManager getGameManager() {
+        return rigoxGameManager;
     }
     public Logger getLogs() { return logger; }
     public RigoxUtils getUtils() { return rigoxUtils; }
