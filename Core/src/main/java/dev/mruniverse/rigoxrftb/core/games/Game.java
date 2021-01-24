@@ -152,10 +152,10 @@ public class Game {
         for(Location signLocation : this.signs) {
             if(signLocation.getBlock().getState() instanceof Sign) {
                 Sign currentSign = (Sign)signLocation.getBlock().getState();
-                currentSign.setLine(1,replaceGameVariable(line1));
-                currentSign.setLine(2,replaceGameVariable(line2));
-                currentSign.setLine(3,replaceGameVariable(line3));
-                currentSign.setLine(4,replaceGameVariable(line4));
+                currentSign.setLine(0,replaceGameVariable(line1));
+                currentSign.setLine(1,replaceGameVariable(line2));
+                currentSign.setLine(2,replaceGameVariable(line3));
+                currentSign.setLine(3,replaceGameVariable(line4));
                 currentSign.update();
             }
         }
