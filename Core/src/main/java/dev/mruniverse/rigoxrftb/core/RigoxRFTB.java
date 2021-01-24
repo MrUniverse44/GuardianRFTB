@@ -56,6 +56,7 @@ public final class RigoxRFTB extends JavaPlugin {
 
         rigoxListeners = new ListenerUtil(this);
         rigoxListeners.registerListeners();
+        getListener().registerCommands();
 
         // * Game Setup
 
