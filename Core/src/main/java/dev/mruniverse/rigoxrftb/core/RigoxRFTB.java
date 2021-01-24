@@ -60,6 +60,7 @@ public final class RigoxRFTB extends JavaPlugin {
         // * Game Setup
 
         rigoxGameManager = new GameManager(this);
+        rigoxGameManager.loadGames();
 
         // * Utils Setup
 
