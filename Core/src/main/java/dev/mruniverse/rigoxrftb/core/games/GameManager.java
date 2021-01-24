@@ -28,12 +28,16 @@ public class GameManager {
 
     public void loadGames() {
         try {
-            for (String gameName : plugin.getFiles().getControl(Files.GAMES).getConfigurationSection("games").getKeys(false)) {
-                Game game = new Game(plugin,gameName);
-                this.games.add(game);
-                plugin.getLogs().debug("Game " + gameName + " loaded!");
+            if(plugin.getFiles().getControl(Files.GAMES).contains("games")) {
+                for (String gameName : plugin.getFiles().getControl(Files.GAMES).getConfigurationSection("games").getKeys(false)) {
+                    Game game = new Game(plugin, gameName);
+                    this.games.add(game);
+                    plugin.getLogs().debug("Game " + gameName + " loaded!");
+                }
+                plugin.getLogs().info(this.games.size() + " game(s) loaded!");
+            } else {
+                plugin.getLogs().info("You don't have games created yet.");
             }
-            plugin.getLogs().info(this.games.size() + " game(s) loaded!");
             plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin,new GameRunnable(plugin),0L,20L);
         }catch (Throwable throwable) {
             plugin.getLogs().error("Can't load games plugin games :(");
