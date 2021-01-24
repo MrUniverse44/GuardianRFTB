@@ -58,16 +58,16 @@ public final class RigoxRFTB extends JavaPlugin {
         rigoxListeners.registerListeners();
         getListener().registerCommands();
 
-        // * Game Setup
-
-        rigoxGameManager = new GameManager(this);
-        rigoxGameManager.loadGames();
-
         // * Utils Setup
 
 
         rigoxUtils = new RigoxUtils(this);
         rigoxTeams = new Teams(this);
+
+        // * Game Setup
+
+        rigoxGameManager = new GameManager(this);
+        rigoxGameManager.loadGames();
 
         // * NMS Setup
 
