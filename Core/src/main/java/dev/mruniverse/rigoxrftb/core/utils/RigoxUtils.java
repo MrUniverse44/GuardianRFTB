@@ -178,12 +178,18 @@ public class RigoxUtils {
 
     }
     public String getStringFromLocation(Location location) {
-        return location.getWorld()+","+location.getX()+","+location.getY()+","+location.getZ()+","+location.getYaw()+","+location.getPitch();
+        try {
+            return location.getWorld().getName() + "," + location.getX() + "," + location.getY() + "," + location.getZ() + "," + location.getYaw() + "," + location.getPitch();
+        }catch (Throwable throwable) {
+            plugin.getLogs().error("Can't get String from location " + location.toString());
+            plugin.getLogs().error(throwable);
+        }
+        return null;
     }
     public Location getLocationFromString(String location) {
         if(!location.equalsIgnoreCase("notSet")) {
             String[] loc = location.split(",");
-            World w = Bukkit.getWorld(loc[0]);
+            World w = plugin.getServer().getWorld(loc[0]);
             double x = Double.parseDouble(loc[1]);
             double y = Double.parseDouble(loc[2]);
             double z = Double.parseDouble(loc[3]);

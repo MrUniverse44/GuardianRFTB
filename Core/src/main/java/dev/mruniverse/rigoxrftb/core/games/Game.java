@@ -131,7 +131,7 @@ public class Game {
         for(String signs : gameFile.getStringList(gamePath + "signs")) {
             Location signLocation = plugin.getUtils().getLocationFromString(signs);
             if(signLocation != null) {
-                if(signLocation.getBlock().getState() instanceof Sign) {
+                if (signLocation.getBlock().getState() instanceof Sign) {
                     this.signs.add(signLocation);
                 }
             }
@@ -140,16 +140,16 @@ public class Game {
     }
 
     public void updateSigns() {
+        String line1,line2,line3,line4;
+        line1 = settingsFile.getString("settings.signs.line1");
+        line2 = settingsFile.getString("settings.signs.line2");
+        line3 = settingsFile.getString("settings.signs.line3");
+        line4 = settingsFile.getString("settings.signs.line4");
+        if(line1 == null) line1 = "&l%arena%";
+        if(line2 == null) line2 = "%gameStatus%";
+        if(line3 == null) line3 = "%on%/%max%";
+        if(line4 == null) line4 = "&nClick to join";
         for(Location signLocation : this.signs) {
-            String line1,line2,line3,line4;
-            line1 = settingsFile.getString("settings.signs.line1");
-            line2 = settingsFile.getString("settings.signs.line2");
-            line3 = settingsFile.getString("settings.signs.line3");
-            line4 = settingsFile.getString("settings.signs.line4");
-            if(line1 == null) line1 = "&l%arena%";
-            if(line2 == null) line2 = "%gameStatus%";
-            if(line3 == null) line3 = "%on%/%max%";
-            if(line4 == null) line4 = "&nClick to join";
             if(signLocation.getBlock().getState() instanceof Sign) {
                 Sign currentSign = (Sign)signLocation.getBlock().getState();
                 currentSign.setLine(1,replaceGameVariable(line1));

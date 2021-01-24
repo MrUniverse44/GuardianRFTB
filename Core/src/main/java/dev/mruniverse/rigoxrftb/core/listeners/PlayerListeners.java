@@ -3,6 +3,7 @@ package dev.mruniverse.rigoxrftb.core.listeners;
 import dev.mruniverse.rigoxrftb.core.enums.Files;
 import dev.mruniverse.rigoxrftb.core.enums.RigoxBoard;
 import dev.mruniverse.rigoxrftb.core.RigoxRFTB;
+import dev.mruniverse.rigoxrftb.core.enums.SaveMode;
 import dev.mruniverse.rigoxrftb.core.games.Game;
 import org.bukkit.*;
 import org.bukkit.block.Sign;
@@ -135,6 +136,7 @@ public class PlayerListeners implements Listener {
                 List<String> signs = plugin.getFiles().getControl(Files.GAMES).getStringList("games." + name + ".signs");
                 signs.add(plugin.getUtils().getStringFromLocation(event.getBlock().getLocation()));
                 plugin.getFiles().getControl(Files.GAMES).set("games." + name + ".signs",signs);
+                plugin.getFiles().save(SaveMode.GAMES_FILES);
                 game.loadSigns();
             }
         }catch (Throwable throwable) {
