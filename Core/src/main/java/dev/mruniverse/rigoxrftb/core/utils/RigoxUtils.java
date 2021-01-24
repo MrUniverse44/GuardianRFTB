@@ -10,6 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -27,6 +28,10 @@ public class RigoxUtils {
         }
         message = ChatColor.translateAlternateColorCodes('&',message);
         player.sendMessage(message);
+    }
+    public void sendMessage(CommandSender sender, String message) {
+        message = ChatColor.translateAlternateColorCodes('&',message);
+        sender.sendMessage(message);
     }
     public void sendTitle(Player player, int fadeInTime, int showTime, int fadeOutTime, String title, String subtitle) {
         try {

@@ -63,12 +63,19 @@ public class GameManager {
         Game game = getGame(gameName);
         game.join(player);
     }
+    public void openMenu(Player player) {
+
+    }
     public void createGameFiles(String gameName) {
         FileConfiguration gameFiles = plugin.getFiles().getControl(Files.GAMES);
         gameFiles.set("games." + gameName + ".time", 500);
         gameFiles.set("games." + gameName + ".max", 10);
         gameFiles.set("games." + gameName + ".min", 2);
         gameFiles.set("games." + gameName + ".worldTime", 0);
+        gameFiles.set("games." + gameName + ".gameType","CLASSIC");
+        gameFiles.set("games." + gameName + ".gameSound1","BLOCK_NOTE_BLOCK_HARP");
+        gameFiles.set("games." + gameName + ".gameSound2","ENTITY_ENDER_DRAGON_GROWL");
+        gameFiles.set("games." + gameName + ".gameSound3","ENTITY_EXPERIENCE_ORB_PICKUP");
         gameFiles.set("games." + gameName + ".locations.waiting", "notSet");
         gameFiles.set("games." + gameName + ".locations.selected-beast", "notSet");
         gameFiles.set("games." + gameName + ".locations.beast", "notSet");
