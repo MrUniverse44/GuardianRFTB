@@ -33,6 +33,7 @@ public class PlayerRunnable extends BukkitRunnable {
             PlayerStatus playerStatus = playerManager.getStatus();
             Player player = playerManager.getPlayer();
             plugin.getScoreboards().setScoreboard(playerManager.getBoard(),playerManager.getPlayer());
+            plugin.getLogs().debug("board: " + playerManager.getBoard().toString() + " of " + playerManager.getPlayer().getName());
             if (playerStatus.equals(PlayerStatus.IN_LOBBY)) {
                 if(bossLb) {
                     plugin.getUtils().sendBossBar(player, bossLobby);

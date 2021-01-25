@@ -279,6 +279,12 @@ public class Game {
             this.gameStatus = GameStatus.STARTING;
             this.startingStage = true;
             this.gameTimer = 1;
+            for(Player runner : this.runners) {
+                plugin.getPlayerData(runner.getUniqueId()).setBoard(RigoxBoard.STARTING);
+            }
+            for(Player beast : this.beasts) {
+                plugin.getPlayerData(beast.getUniqueId()).setBoard(RigoxBoard.STARTING);
+            }
         }
     }
     public void gameCount(GameCountType gameCountType) {
@@ -342,6 +348,11 @@ public class Game {
                         beast.setLevel(0);
                         beast.setFireTicks(0);
                     }
+                    for (Player beasts : this.beasts) {
+                        plugin.getPlayerData(beasts.getUniqueId()).setBoard(RigoxBoard.PLAYING);
+                        plugin.getUtils().sendList(beasts,messagesFile.getStringList("messages.inGame.infoList.startInfo"));
+                        plugin.getUtils().sendTitle(beasts, 0, 20, 10, messagesFile.getString("messages.inGame.others.titles.runnersGo.toBeasts.title"), messagesFile.getString("messages.inGame.others.titles.runnersGo.toBeasts.subtitle"));
+                    }
                     if (gameSound3 != null) {
                         for (Player runner : this.players)
                             runner.playSound(runner.getLocation(), gameSound3, 10.0F, 1.0F);
@@ -391,11 +402,6 @@ public class Game {
                         plugin.getUtils().sendList(runner,messagesFile.getStringList("messages.inGame.infoList.startInfo"));
                         plugin.getUtils().sendTitle(runner, 0, 20, 10, messagesFile.getString("messages.inGame.others.titles.runnersGo.toRunners.title"), messagesFile.getString("messages.inGame.others.titles.runnersGo.toRunners.subtitle"));
                     }
-                    for (Player beasts : this.beasts) {
-                        plugin.getPlayerData(beasts.getUniqueId()).setBoard(RigoxBoard.PLAYING);
-                        plugin.getUtils().sendList(beasts,messagesFile.getStringList("messages.inGame.infoList.startInfo"));
-                        plugin.getUtils().sendTitle(beasts, 0, 20, 10, messagesFile.getString("messages.inGame.others.titles.runnersGo.toBeasts.title"), messagesFile.getString("messages.inGame.others.titles.runnersGo.toBeasts.subtitle"));
-                    }
                 }
                 if (this.starting == 0) {
                     this.inGameStage = true;
@@ -434,36 +440,33 @@ public class Game {
                     if(this.starting > 1) {
                         String startMsg = messagesFile.getString("messages.inGame.selectingBeast");
                         String seconds = messagesFile.getString("times.seconds");
-                        String second = messagesFile.getString("times.second");
                         if(startMsg == null) startMsg = "&eThe beast will be selected in &c%time% &e%seconds%!";
                         if(seconds == null) seconds = "seconds";
-                        if(second == null) second = "second";
                         if(this.starting == 15 || this.starting == 10 || this.starting == 5 || this.starting == 4 || this.starting == 3 || this.starting == 2) {
                             for(Player player : this.players) {
                                 plugin.getUtils().sendMessage(player,startMsg.replace("%time%",starting+"").replace("%seconds%",seconds));
                             }
-                        } else if(this.starting == 1){
-                            for(Player player : this.players) {
-                                plugin.getUtils().sendMessage(player,startMsg.replace("%time%",starting+"").replace("%seconds%",second));
-                            }
+                        }
+                    }  else {
+                        String startMsg = messagesFile.getString("messages.inGame.selectingBeast");
+                        String second = messagesFile.getString("times.second");
+                        if(startMsg == null) startMsg = "&eThe beast will be selected in &c%time% &e%seconds%!";
+                        if(second == null) second = "second";
+                        for(Player player : this.players) {
+                            plugin.getUtils().sendMessage(player,startMsg.replace("%time%",starting+"").replace("%seconds%",second));
                         }
                     }
                 }
-                if(this.starting <= 0) {
+                if(this.starting <= -5) {
                     if(this.starting > -9) {
                         String startMsg = messagesFile.getString("messages.inGame.starting");
                         String seconds = messagesFile.getString("times.seconds");
                         if(startMsg == null) startMsg = "&eThe game starts in &c%time% &e%seconds%!";
                         if(seconds == null) seconds = "seconds";
-                        int perfectTime = 10;
+                        int perfectTime = 5;
                         if(starting == -8) perfectTime = 2;
                         if(starting == -7) perfectTime = 3;
                         if(starting == -6) perfectTime = 4;
-                        if(starting == -5) perfectTime = 5;
-                        if(starting == -4) perfectTime = 6;
-                        if(starting == -3) perfectTime = 7;
-                        if(starting == -2) perfectTime = 8;
-                        if(starting == -1) perfectTime = 9;
                         for(Player player : this.players) {
                             plugin.getUtils().sendMessage(player,startMsg.replace("%time%",perfectTime+"").replace("%seconds%",seconds));
                         }

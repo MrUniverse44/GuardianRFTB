@@ -253,17 +253,7 @@ public class RigoxUtils {
                 if (text.contains("<arena_online>"))
                     text = text.replace("<arena_online>", playerGame.players.size() + "");
                 if (text.contains("<arena_max>")) text = text.replace("<arena_max>", playerGame.max + "");
-                if (text.contains("<arena_need>")) {
-                    if(playerGame.getNeedPlayers() != 0) {
-                        text = text.replace("<arena_need>", playerGame.getNeedPlayers() + "");
-                    } else {
-                        if(playerGame.gameStatus.equals(GameStatus.WAITING)) {
-                            playerGame.gameStatus = GameStatus.STARTING;
-                            for(Player pl : playerGame.players) {
-                                plugin.getPlayerData(pl.getUniqueId()).setBoard(RigoxBoard.STARTING);
-                            }
-                        }
-                    }
+                if (text.contains("<arena_need>")) { text = text.replace("<arena_need>", playerGame.getNeedPlayers() + "");
                 }
                 if (text.contains("<arena_time_number>"))
                     text = text.replace("<arena_time_number>", playerGame.starting + "");
