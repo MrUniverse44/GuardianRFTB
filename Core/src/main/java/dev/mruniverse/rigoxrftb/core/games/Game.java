@@ -308,7 +308,7 @@ public class Game {
                             runner.playSound(runner.getLocation(), gameSound3, 10.0F, 1.0F);
                     }
                 }
-                if (this.runners.size() < 1 || this.runners.size() < 2) {
+                if (this.runners.size() < 1) {
                     if (!this.inGameStage) {
                         this.startingStage = false;
                         this.gameStatus = GameStatus.WAITING;
@@ -322,8 +322,6 @@ public class Game {
                                 this.runners.add(player);
                             plugin.getPlayerData(player.getUniqueId()).setBoard(RigoxBoard.WAITING);
                             plugin.getUtils().sendMessage(player, messagesFile.getString("messages.inGame.cantStartGame"));
-                            //RFTB.main.ama.inventarioLobby(player);
-                            //RFTB.main.ama.scoreboardLobby(player);
                         }
                         this.gameTimer = 0;
                         return;
@@ -404,7 +402,7 @@ public class Game {
                             for(Player player : this.players) {
                                 plugin.getUtils().sendMessage(player,startMsg.replace("%time%",starting+"").replace("%seconds%",seconds));
                             }
-                        } else {
+                        } else if(this.starting == 1){
                             for(Player player : this.players) {
                                 plugin.getUtils().sendMessage(player,startMsg.replace("%time%",starting+"").replace("%seconds%",second));
                             }
