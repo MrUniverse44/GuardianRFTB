@@ -690,10 +690,12 @@ public class Game {
         this.spectators.remove(player);
         String LST = settingsFile.getString("settings.lobbyLocation");
         if(LST == null) LST = "notSet";
-        Location location = plugin.getUtils().getLocationFromString(LST);
-        if(location != null) {
-            player.teleport(location);
-            player.setGameMode(GameMode.ADVENTURE);
+        if(player.isOnline()) {
+            Location location = plugin.getUtils().getLocationFromString(LST);
+            if (location != null) {
+                player.teleport(location);
+                player.setGameMode(GameMode.ADVENTURE);
+            }
         }
         String quitMsg = messagesFile.getString("messages.inGame.quit");
         if(quitMsg == null) quitMsg = "&7%player% &ehas quit!";
@@ -702,14 +704,16 @@ public class Game {
                     .replace("%online%",this.players.size()+"")
                     .replace("%max%",this.max+""));
         }
-        plugin.getPlayerData(player.getUniqueId()).setStatus(PlayerStatus.IN_LOBBY);
-        plugin.getPlayerData(player.getUniqueId()).setGame(null);
-        plugin.getPlayerData(player.getUniqueId()).setBoard(RigoxBoard.LOBBY);
-        player.getInventory().clear();
-        for(ItemStack item : plugin.getLobbyItems().keySet()) {
-            player.getInventory().setItem(plugin.getSlot(item),item);
+        if(player.isOnline()) {
+            plugin.getPlayerData(player.getUniqueId()).setStatus(PlayerStatus.IN_LOBBY);
+            plugin.getPlayerData(player.getUniqueId()).setGame(null);
+            plugin.getPlayerData(player.getUniqueId()).setBoard(RigoxBoard.LOBBY);
+            player.getInventory().clear();
+            for (ItemStack item : plugin.getLobbyItems().keySet()) {
+                player.getInventory().setItem(plugin.getSlot(item), item);
+            }
+            player.updateInventory();
         }
-        player.updateInventory();
         updateSigns();
     }
     public void restart() {
