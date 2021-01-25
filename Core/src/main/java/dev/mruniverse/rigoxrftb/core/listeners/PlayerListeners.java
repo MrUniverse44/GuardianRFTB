@@ -51,9 +51,7 @@ public class PlayerListeners implements Listener {
             player.setGameMode(GameMode.ADVENTURE);
         }
         if(file.getBoolean("settings.options.clearInventory-onJoin")) {
-            for (int f = 0; f < player.getInventory().getSize(); f++) {
-                player.getInventory().setItem(f, new ItemStack(Material.AIR));
-            }
+            player.getInventory().clear();
         }
         for(ItemStack item : plugin.getLobbyItems().keySet()) {
             player.getInventory().setItem(plugin.getSlot(item),item);

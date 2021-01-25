@@ -8,6 +8,7 @@ import org.bukkit.*;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 
 import java.util.ArrayList;
@@ -507,6 +508,9 @@ public class Game {
         plugin.getPlayerData(player.getUniqueId()).setStatus(PlayerStatus.IN_LOBBY);
         plugin.getPlayerData(player.getUniqueId()).setGame(null);
         plugin.getPlayerData(player.getUniqueId()).setBoard(RigoxBoard.LOBBY);
+        for(ItemStack item : plugin.getLobbyItems().keySet()) {
+            player.getInventory().setItem(plugin.getSlot(item),item);
+        }
         updateSigns();
     }
     public void restart() {
