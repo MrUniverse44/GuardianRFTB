@@ -204,6 +204,13 @@ public class Game {
         }
     }
     public int getNeedPlayers() {
+        if((min - this.players.size()) <= 0 && this.gameStatus.equals(GameStatus.WAITING)) {
+            this.gameStatus = GameStatus.STARTING;
+            for(Player player : this.players) {
+                PlayerManager playerData = plugin.getPlayerData(player.getUniqueId());
+                playerData.setBoard(RigoxBoard.STARTING);
+            }
+        }
         if(this.players.size() < min) {
             return (min - this.players.size());
         }
