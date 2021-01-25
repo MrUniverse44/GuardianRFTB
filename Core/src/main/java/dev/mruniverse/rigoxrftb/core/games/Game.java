@@ -362,11 +362,9 @@ public class Game {
                         beast.setExp(0.0F);
                         beast.setLevel(0);
                         beast.setFireTicks(0);
-                    }
-                    for (Player beasts : this.beasts) {
-                        plugin.getPlayerData(beasts.getUniqueId()).setBoard(RigoxBoard.PLAYING);
-                        plugin.getUtils().sendList(beasts,messagesFile.getStringList("messages.inGame.infoList.startInfo"));
-                        plugin.getUtils().sendTitle(beasts, 0, 20, 10, messagesFile.getString("messages.inGame.others.titles.runnersGo.toBeasts.title"), messagesFile.getString("messages.inGame.others.titles.runnersGo.toBeasts.subtitle"));
+                        plugin.getPlayerData(beast.getUniqueId()).setBoard(RigoxBoard.PLAYING);
+                        plugin.getUtils().sendList(beast,messagesFile.getStringList("messages.inGame.infoList.startInfo"));
+                        plugin.getUtils().sendTitle(beast, 0, 20, 10, messagesFile.getString("messages.inGame.others.titles.runnersGo.toBeasts.title"), messagesFile.getString("messages.inGame.others.titles.runnersGo.toBeasts.subtitle"));
                     }
                     if (gameSound3 != null) {
                         for (Player runner : this.players)
@@ -416,6 +414,9 @@ public class Game {
                         plugin.getPlayerData(runner.getUniqueId()).setBoard(RigoxBoard.PLAYING);
                         plugin.getUtils().sendList(runner,messagesFile.getStringList("messages.inGame.infoList.startInfo"));
                         plugin.getUtils().sendTitle(runner, 0, 20, 10, messagesFile.getString("messages.inGame.others.titles.runnersGo.toRunners.title"), messagesFile.getString("messages.inGame.others.titles.runnersGo.toRunners.subtitle"));
+                    }
+                    for(Player beast : this.beasts) {
+                        plugin.getPlayerData(beast.getUniqueId()).setBoard(RigoxBoard.BEAST_SPAWN);
                     }
                 }
                 if (this.starting == 0) {
