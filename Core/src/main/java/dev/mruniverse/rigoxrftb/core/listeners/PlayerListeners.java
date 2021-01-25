@@ -145,14 +145,16 @@ public class PlayerListeners implements Listener {
             event.setDeathMessage(null);
             event.setDroppedExp(0);
             if(game.beasts.contains(player)) {
+                player.spigot().respawn();
+                player.setGameMode(GameMode.SPECTATOR);
                 game.deathBeast(player);
                 game.spectators.add(player);
-                player.spigot().respawn();
                 player.teleport(game.beastLocation);
             } else {
+                player.spigot().respawn();
+                player.setGameMode(GameMode.SPECTATOR);
                 game.deathRunner(player);
                 game.spectators.add(player);
-                player.spigot().respawn();
                 player.teleport(game.runnersLocation);
 
             }
