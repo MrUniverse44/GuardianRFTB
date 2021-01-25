@@ -206,6 +206,9 @@ public class Game {
         if(this.players.size() < min) {
             return (min - this.players.size());
         }
+        if(this.gameStatus.equals(GameStatus.WAITING)) {
+            this.gameStatus = GameStatus.STARTING;
+        }
         return 0;
     }
     public String getName() {
@@ -366,7 +369,9 @@ public class Game {
                     for (Player player : this.players) {
                         plugin.getPlayerData(player.getUniqueId()).setBoard(RigoxBoard.PLAYING);
                         plugin.getUtils().sendTitle(player, 5, 40, 5, messagesFile.getString("messages.inGame.others.titles.gameStart.title"), messagesFile.getString("messages.inGame.others.titles.gameStart.subtitle"));
+                        plugin.getUtils().sendList(player,messagesFile.getStringList("messages.inGame.infoList.startInfo"));
                     }
+
                 }
                 if (this.starting == -2)
                     selectBeast();
@@ -385,6 +390,25 @@ public class Game {
                     for (Player player : this.players) {
                         player.closeInventory();
                         player.setHealth(20.0D);
+                    }
+                }
+                if(this.starting >= 1) {
+                    if(this.starting > 1) {
+                        String startMsg = messagesFile.getString("messages.inGame.starting");
+                        String seconds = messagesFile.getString("times.seconds");
+                        String second = messagesFile.getString("times.second");
+                        if(startMsg == null) startMsg = "&eThe game starts in &c%time% &e%seconds%!";
+                        if(seconds == null) seconds = "seconds";
+                        if(second == null) second = "second";
+                        if(this.starting == 15 || this.starting == 10 || this.starting == 5 || this.starting == 4 || this.starting == 3 || this.starting == 2) {
+                            for(Player player : this.players) {
+                                plugin.getUtils().sendMessage(player,startMsg.replace("%time%",starting+"").replace("%seconds%",seconds));
+                            }
+                        } else {
+                            for(Player player : this.players) {
+                                plugin.getUtils().sendMessage(player,startMsg.replace("%time%",starting+"").replace("%seconds%",second));
+                            }
+                        }
                     }
                 }
                 this.starting--;
@@ -421,6 +445,7 @@ public class Game {
             int beast = random.nextInt(this.runners.size());
             Player nextBeast = this.runners.get(beast);
             this.beasts.add(nextBeast);
+            this.runners.remove(nextBeast);
             nextBeast.getInventory().clear();
             nextBeast.getInventory().setItem(plugin.beastSlot,plugin.kitBeast);
             nextBeast.getInventory().setItem(plugin.exitSlot,plugin.exitItem);
@@ -444,6 +469,7 @@ public class Game {
         int Beast = random.nextInt(this.runners.size());
         Player NextBeast = this.runners.get(Beast);
         this.beasts.add(NextBeast);
+        this.runners.remove(NextBeast);
         this.spectators.remove(NextBeast);
         NextBeast.getInventory().clear();
         NextBeast.getInventory().setItem(plugin.beastSlot,plugin.kitBeast);
@@ -472,6 +498,10 @@ public class Game {
             leave(beasts);
             beasts.playSound(beasts.getLocation(), gameSound1, 3.0F, 1.0F);
         }
+        for (Player players : this.players) {
+            leave(players);
+            players.playSound(players.getLocation(), gameSound1, 3.0F, 1.0F);
+        }
         restart();
     }
     public void winBeasts() {
@@ -482,14 +512,18 @@ public class Game {
         for (Player runner : this.runners) {
             leave(runner);
             runner.playSound(runner.getLocation(), gameSound3, 3.0F, 1.0F);
-        }for (Player spectator : this.spectators) {
+        }
+        for (Player spectator : this.spectators) {
             leave(spectator);
             spectator.playSound(spectator.getLocation(), gameSound3, 3.0F, 1.0F);
         }
-
         for (Player beasts : this.beasts) {
             leave(beasts);
             beasts.playSound(beasts.getLocation(), gameSound1, 3.0F, 1.0F);
+        }
+        for (Player players : this.players) {
+            leave(players);
+            players.playSound(players.getLocation(), gameSound3, 3.0F, 1.0F);
         }
         restart();
     }

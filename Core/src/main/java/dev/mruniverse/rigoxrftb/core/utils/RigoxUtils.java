@@ -6,7 +6,6 @@ import dev.mruniverse.rigoxrftb.core.RigoxRFTB;
 import dev.mruniverse.rigoxrftb.core.games.Game;
 import dev.mruniverse.rigoxrftb.core.games.GameType;
 import me.clip.placeholderapi.PlaceholderAPI;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -50,6 +49,39 @@ public class RigoxUtils {
             plugin.getLogs().error(throwable);
         }
     }
+    public void sendList(Player player,List<String> list) {
+        if(list == null) list = new ArrayList<>();
+        if(plugin.getPlayerData(player.getUniqueId()).getGame() != null) {
+            if(plugin.getPlayerData(player.getUniqueId()).getGame().beasts.contains(player)) {
+                for(String line : list) {
+                    line = line.replace("<isBeast>","")
+                            .replace("<center>","             ")
+                            .replace("%gameType%",plugin.getPlayerData(player.getUniqueId()).getGame().gameType.toString())
+                            .replace("%map_name%",plugin.getPlayerData(player.getUniqueId()).getGame().getName())
+                            .replace("[bx]","▄");
+                    if(!line.contains("<isRunner>")) {
+                        sendMessage(player, line);
+                    }
+                }
+            } else {
+                for(String line : list) {
+                    line = line.replace("<isRunner>","")
+                            .replace("<center>","             ")
+                            .replace("%gameType%",plugin.getPlayerData(player.getUniqueId()).getGame().gameType.toString())
+                            .replace("%map_name%",plugin.getPlayerData(player.getUniqueId()).getGame().getName())
+                            .replace("[bx]","▄");
+                    if(!line.contains("<isBeast>")) {
+                        sendMessage(player, line);
+                    }
+                }
+            }
+        } else {
+            for(String line : list) {
+                line = line.replace("[bx]","▄");
+                sendMessage(player,line);
+            }
+        }
+    }
     public void sendBossBar(Player player, String message) {
         if (player == null || message == null) return;
         if(plugin.hasPAPI()) { message = PlaceholderAPI.setPlaceholders(player,message); }
@@ -73,6 +105,12 @@ public class RigoxUtils {
         if(board.equals(RigoxBoard.WAITING) || board.equals(RigoxBoard.STARTING)) {
             if (plugin.getFiles().getControl(Files.SCOREBOARD).getString("scoreboards.waiting.title") != null) {
                 return plugin.getFiles().getControl(Files.SCOREBOARD).getString("scoreboards.waiting.title");
+            }
+            return "";
+        }
+        if(board.equals(RigoxBoard.PLAYING)) {
+            if (plugin.getFiles().getControl(Files.SCOREBOARD).getString("scoreboards.playing.title") != null) {
+                return plugin.getFiles().getControl(Files.SCOREBOARD).getString("scoreboards.playing.title");
             }
             return "";
         }
