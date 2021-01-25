@@ -4,7 +4,6 @@ import dev.mruniverse.rigoxrftb.core.enums.Files;
 import dev.mruniverse.rigoxrftb.core.enums.RigoxBoard;
 import dev.mruniverse.rigoxrftb.core.RigoxRFTB;
 import dev.mruniverse.rigoxrftb.core.games.Game;
-import dev.mruniverse.rigoxrftb.core.games.GameStatus;
 import dev.mruniverse.rigoxrftb.core.games.GameType;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.ChatColor;
@@ -103,7 +102,7 @@ public class RigoxUtils {
             }
             return "";
         }
-        if(board.equals(RigoxBoard.WAITING) || board.equals(RigoxBoard.STARTING) || board.equals(RigoxBoard.SELECTING)) {
+        if(board.equals(RigoxBoard.WAITING) || board.equals(RigoxBoard.STARTING) || board.equals(RigoxBoard.SELECTING) || board.equals(RigoxBoard.BEAST_SPAWN)) {
             if (plugin.getFiles().getControl(Files.SCOREBOARD).getString("scoreboards.waiting.title") != null) {
                 return plugin.getFiles().getControl(Files.SCOREBOARD).getString("scoreboards.waiting.title");
             }
@@ -155,7 +154,7 @@ public class RigoxUtils {
         }
         if(board.equals(RigoxBoard.WAITING)) {
             for(String line : plugin.getFiles().getControl(Files.SCOREBOARD).getStringList("scoreboards.waiting.lines")) {
-                if(!line.contains("<isStarting>") && !line.contains("<isSelecting>")) {
+                if(!line.contains("<isStarting>") && !line.contains("<isSelecting>") && !line.contains("<BeastAppear>")) {
                     if(line.contains("<isWaiting>")) line = line.replace("<isWaiting>","");
                     line = replaceVariables(line, player);
                     lines.add(line);
@@ -165,7 +164,7 @@ public class RigoxUtils {
         }
         if(board.equals(RigoxBoard.SELECTING)) {
             for(String line : plugin.getFiles().getControl(Files.SCOREBOARD).getStringList("scoreboards.waiting.lines")) {
-                if(!line.contains("<isWaiting>") && !line.contains("<isStarting>")) {
+                if(!line.contains("<isWaiting>") && !line.contains("<isStarting>") && !line.contains("<BeastAppear>")) {
                     if(line.contains("<isSelecting>")) line = line.replace("<isSelecting>","");
                     line = replaceVariables(line, player);
                     lines.add(line);
@@ -175,8 +174,18 @@ public class RigoxUtils {
         }
         if(board.equals(RigoxBoard.STARTING)) {
             for(String line : plugin.getFiles().getControl(Files.SCOREBOARD).getStringList("scoreboards.waiting.lines")) {
-                if(!line.contains("<isWaiting>") && !line.contains("<isSelecting>")) {
+                if(!line.contains("<isWaiting>") && !line.contains("<isSelecting>") && !line.contains("<BeastAppear>")) {
                     if(line.contains("<isStarting>")) line = line.replace("<isStarting>","");
+                    line = replaceVariables(line, player);
+                    lines.add(line);
+                }
+            }
+            return lines;
+        }
+        if(board.equals(RigoxBoard.BEAST_SPAWN)) {
+            for(String line : plugin.getFiles().getControl(Files.SCOREBOARD).getStringList("scoreboards.waiting.lines")) {
+                if(!line.contains("<isWaiting>") && !line.contains("<isSelecting>") && !line.contains("<isStarting>")) {
+                    if(line.contains("<BeastAppear>")) line = line.replace("<BeastAppear>","");
                     line = replaceVariables(line, player);
                     lines.add(line);
                 }
@@ -228,7 +237,10 @@ public class RigoxUtils {
     }
     public String getStringFromLocation(Location location) {
         try {
-            return location.getWorld().getName() + "," + location.getX() + "," + location.getY() + "," + location.getZ() + "," + location.getYaw() + "," + location.getPitch();
+            World currentWorld = location.getWorld();
+            String worldName = "world";
+            if(currentWorld != null) worldName = location.getWorld().getName();
+            return worldName + "," + location.getX() + "," + location.getY() + "," + location.getZ() + "," + location.getYaw() + "," + location.getPitch();
         }catch (Throwable throwable) {
             plugin.getLogs().error("Can't get String from location " + location.toString());
             plugin.getLogs().error(throwable);
@@ -298,7 +310,7 @@ public class RigoxUtils {
             return game.beasts.size()+"";
         }
         if(game.beasts.size() != 0) {
-            return game.beasts.get(1).getName();
+            return game.beasts.get(0).getName();
         }
         return "none";
     }

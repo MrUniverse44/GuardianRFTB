@@ -5,6 +5,7 @@ public enum RigoxBoard {
     WAITING,
     SELECTING,
     STARTING,
+    BEAST_SPAWN,
     PLAYING,
     WIN_BEAST_FOR_BEAST,
     WIN_BEAST_FOR_RUNNERS,

@@ -191,6 +191,7 @@ public class FileManager {
         lists.add("<isWaiting>&a<arena_need> &fplayers to start");
         lists.add("<isSelecting>&fSelecting beast in &a<arena_time_number>");
         lists.add("<isStarting>&fStarting in &a<arena_time_number> &f<arena_time_text>.");
+        lists.add("<BeastAppear>&fYou will spawn in &a<arena_time_number>&f!");
         lists.add(" ");
         lists.add("&erigox.club");
         addConfig(Files.SCOREBOARD,"scoreboards.waiting.lines",lists);

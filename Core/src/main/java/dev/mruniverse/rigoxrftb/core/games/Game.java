@@ -33,6 +33,7 @@ public class Game {
     public int min;
     public int worldTime;
     public int max;
+    public int fakeStarting;
     public int starting;
     public int ending;
     public int inventoryNumber;
@@ -72,6 +73,7 @@ public class Game {
         this.min = 2;
         this.time = 0;
         this.max = 10;
+        this.fakeStarting = 0;
         this.beastLocation = null;
         this.runnersLocation = null;
         this.runners = new ArrayList<>();
@@ -315,16 +317,29 @@ public class Game {
                 if(this.starting == -24 || this.starting == -23 || this.starting == -22 || this.starting == -21 || this.starting == -20) {
                     for(Player player : this.players) {
                         int s = 5;
+                        fakeStarting = 5;
                         String seconds = messagesFile.getString("times.seconds");
                         String second = messagesFile.getString("times.seconds");
                         String beastSpawn = messagesFile.getString("messages.inGame.beastsAppear");
                         if(beastSpawn == null) beastSpawn = "&eThe beasts spawns in &c%time% &e%seconds%!";
                         if(second == null) second = "second";
                         if(seconds == null) seconds = "seconds";
-                        if(this.starting == -21) s = 4;
-                        if(this.starting == -22) s = 3;
-                        if(this.starting == -23) s = 2;
-                        if(this.starting == -24) s = 1;
+                        if(this.starting == -21) {
+                            fakeStarting = 4;
+                            s = 4;
+                        }
+                        if(this.starting == -22) {
+                            fakeStarting = 3;
+                            s = 3;
+                        }
+                        if(this.starting == -23) {
+                            fakeStarting = 2;
+                            s = 2;
+                        }
+                        if(this.starting == -24) {
+                            fakeStarting = 1;
+                            s = 1;
+                        }
                         if(s != 1) {
                             plugin.getUtils().sendMessage(player, beastSpawn.replace("%time%", s + "").replace("%seconds%",seconds));
                         } else {
@@ -464,9 +479,19 @@ public class Game {
                         if(startMsg == null) startMsg = "&eThe game starts in &c%time% &e%seconds%!";
                         if(seconds == null) seconds = "seconds";
                         int perfectTime = 5;
-                        if(starting == -8) perfectTime = 2;
-                        if(starting == -7) perfectTime = 3;
-                        if(starting == -6) perfectTime = 4;
+                        fakeStarting = 5;
+                        if(starting == -8) {
+                            perfectTime = 2;
+                            fakeStarting = 2;
+                        }
+                        if(starting == -7) {
+                            perfectTime = 3;
+                            fakeStarting = 3;
+                        }
+                        if(starting == -6) {
+                            perfectTime = 4;
+                            fakeStarting = 4;
+                        }
                         for(Player player : this.players) {
                             plugin.getUtils().sendMessage(player,startMsg.replace("%time%",perfectTime+"").replace("%seconds%",seconds));
                         }
@@ -595,16 +620,16 @@ public class Game {
             }
             if (this.beasts != null) {
                 if(this.beasts.size() != 0) {
-                    for (Player beasts : this.beasts) {
-                        leave(beasts);
-                        beasts.playSound(beasts.getLocation(), gameSound1, 3.0F, 1.0F);
+                    for (Player beast : this.beasts) {
+                        leave(beast);
+                        beast.playSound(beast.getLocation(), gameSound1, 3.0F, 1.0F);
                     }
                 }
             }
             if (this.players != null) {
-                for (Player players : this.players) {
-                    leave(players);
-                    players.playSound(players.getLocation(), gameSound3, 3.0F, 1.0F);
+                for (Player player : this.players) {
+                    leave(player);
+                    player.playSound(player.getLocation(), gameSound3, 3.0F, 1.0F);
                 }
             }
             restart();
@@ -638,16 +663,16 @@ public class Game {
             }
             if (this.beasts != null) {
                 if(this.beasts.size() != 0) {
-                    for (Player beasts : this.beasts) {
-                        leave(beasts);
-                        beasts.playSound(beasts.getLocation(), gameSound1, 3.0F, 1.0F);
+                    for (Player beast : this.beasts) {
+                        leave(beast);
+                        beast.playSound(beast.getLocation(), gameSound1, 3.0F, 1.0F);
                     }
                 }
             }
             if (this.players != null) {
-                for (Player players : this.players) {
-                    leave(players);
-                    players.playSound(players.getLocation(), gameSound3, 3.0F, 1.0F);
+                for (Player player : this.players) {
+                    leave(player);
+                    player.playSound(player.getLocation(), gameSound3, 3.0F, 1.0F);
                 }
             }
             restart();
@@ -695,6 +720,7 @@ public class Game {
         this.timer = 500;
         this.min = 2;
         this.max = 10;
+        this.fakeStarting = 0;
         this.beasts.clear();
         this.playingStage = false;
         this.endingStage = false;
