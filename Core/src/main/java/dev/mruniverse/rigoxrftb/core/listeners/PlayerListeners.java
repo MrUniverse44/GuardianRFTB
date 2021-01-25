@@ -148,13 +148,11 @@ public class PlayerListeners implements Listener {
                 player.spigot().respawn();
                 player.setGameMode(GameMode.SPECTATOR);
                 game.deathBeast(player);
-                game.spectators.add(player);
                 player.teleport(game.beastLocation);
             } else {
                 player.spigot().respawn();
                 player.setGameMode(GameMode.SPECTATOR);
                 game.deathRunner(player);
-                game.spectators.add(player);
                 player.teleport(game.runnersLocation);
 
             }

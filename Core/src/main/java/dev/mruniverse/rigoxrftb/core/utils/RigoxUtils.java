@@ -4,6 +4,7 @@ import dev.mruniverse.rigoxrftb.core.enums.Files;
 import dev.mruniverse.rigoxrftb.core.enums.RigoxBoard;
 import dev.mruniverse.rigoxrftb.core.RigoxRFTB;
 import dev.mruniverse.rigoxrftb.core.games.Game;
+import dev.mruniverse.rigoxrftb.core.games.GameTeam;
 import dev.mruniverse.rigoxrftb.core.games.GameType;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.ChatColor;
@@ -47,6 +48,60 @@ public class RigoxUtils {
         } catch (Throwable throwable) {
             plugin.getLogs().error("Can't send title for " + player.getName() + ".");
             plugin.getLogs().error(throwable);
+        }
+    }
+    public void sendGameList(Player player, List<String> list, GameTeam winnerTeam) {
+        if(list == null) list = new ArrayList<>();
+        if(plugin.getPlayerData(player.getUniqueId()).getGame() != null) {
+            String runnerRole = plugin.getFiles().getControl(Files.SETTINGS).getString("roles.runners");
+            String beastRole = plugin.getFiles().getControl(Files.SETTINGS).getString("roles.beasts");
+            String wT,lT;
+            if(runnerRole == null) runnerRole = "Runners";
+            if(beastRole == null) beastRole = "Beasts";
+            if(winnerTeam.equals(GameTeam.RUNNERS)) {
+                wT = runnerRole;
+                lT = beastRole;
+            } else {
+                wT = beastRole;
+                lT = runnerRole;
+            }
+            if(plugin.getPlayerData(player.getUniqueId()).getGame().beasts.contains(player)) {
+                for(String line : list) {
+                    line = line.replace("<isBeast>","")
+                            .replace("<center>","             ")
+                            .replace("%gameType%",plugin.getPlayerData(player.getUniqueId()).getGame().gameType.toString())
+                            .replace("%map_name%",plugin.getPlayerData(player.getUniqueId()).getGame().getName())
+                            .replace("[bx]","▄")
+                            .replace("%winner_team%",wT)
+                            .replace("[px]","⚫")
+                            .replace("%game%","+5")
+                            .replace("%looser_team%",lT);
+                    if(!line.contains("<isRunner>")) {
+                        sendMessage(player, line);
+                    }
+                }
+            } else {
+                for(String line : list) {
+                    line = line.replace("<isRunner>","")
+                            .replace("<center>","             ")
+                            .replace("%gameType%",plugin.getPlayerData(player.getUniqueId()).getGame().gameType.toString())
+                            .replace("%map_name%",plugin.getPlayerData(player.getUniqueId()).getGame().getName())
+                            .replace("[bx]","▄")
+                            .replace("%winner_team%",wT)
+                            .replace("[px]","⚫")
+                            .replace("%game%","+5")
+                            .replace("%looser_team%",lT);
+                    if(!line.contains("<isBeast>")) {
+                        sendMessage(player, line);
+                    }
+                }
+            }
+        } else {
+            for(String line : list) {
+                line = line.replace("[bx]","▄")
+                        .replace("[px]","⚫");
+                sendMessage(player,line);
+            }
         }
     }
     public void sendList(Player player,List<String> list) {

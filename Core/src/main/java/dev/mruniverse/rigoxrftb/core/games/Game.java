@@ -8,8 +8,10 @@ import dev.mruniverse.rigoxrftb.core.utils.players.PlayerManager;
 import org.bukkit.*;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.potion.PotionEffect;
 
 import java.util.ArrayList;
@@ -164,19 +166,6 @@ public class Game {
                 currentSign.setLine(3,replaceGameVariable(line4));
                 currentSign.update();
             }
-        }
-    }
-
-    public void deathBeast(Player beast) {
-        this.beasts.remove(beast);
-        if(beasts.size() == 0) {
-            winRunners();
-        }
-    }
-    public void deathRunner(Player runner) {
-        this.runners.remove(runner);
-        if(runners.size() == 0) {
-            winBeasts();
         }
     }
 
@@ -597,91 +586,156 @@ public class Game {
             plugin.getPlayerData(beast.getUniqueId()).setBoard(RigoxBoard.STARTING);
         }
     }
-    public void winRunners() {
-        this.invincible = true;
-        this.gameTimer = 0;
-        this.endingStage = true;
-        this.gameStatus = GameStatus.RESTARTING;
-        try {
-            if (this.runners != null) {
-                if(this.runners.size() != 0) {
-                    for (Player runner : this.runners) {
-                        leave(runner);
-                        runner.playSound(runner.getLocation(), gameSound3, 3.0F, 1.0F);
-                    }
-                }
-            }
-            if (this.spectators != null) {
-                if(this.spectators.size() != 0) {
-                    for (Player spectator : this.spectators) {
-                        leave(spectator);
-                        spectator.playSound(spectator.getLocation(), gameSound3, 3.0F, 1.0F);
-                    }
-                }
-            }
-            if (this.beasts != null) {
-                if(this.beasts.size() != 0) {
-                    for (Player beast : this.beasts) {
-                        leave(beast);
-                        beast.playSound(beast.getLocation(), gameSound1, 3.0F, 1.0F);
-                    }
-                }
-            }
-            if (this.players != null) {
-                for (Player player : this.players) {
-                    leave(player);
-                    player.playSound(player.getLocation(), gameSound3, 3.0F, 1.0F);
-                }
-            }
-            restart();
-        }catch (Throwable throwable) {
-            plugin.getLogs().error("Can't leave players");
-            plugin.getLogs().error(throwable);
-            restart();
+    public void deathBeast(Player beast) {
+        this.beasts.remove(beast);
+        this.spectators.add(beast);
+        if(beasts.size() == 0) {
+            winRunners();
         }
     }
-    public void winBeasts() {
+    public void deathRunner(Player runner) {
+        this.runners.remove(runner);
+        this.spectators.add(runner);
+        if(runners.size() == 0) {
+            winBeasts();
+        }
+    }
+    public void winRunners() {
+        for(Player player : this.players) {
+            if(gameSound3 != null) {
+                player.playSound(player.getLocation(),gameSound3, 10.0F, 1.0F);
+            }
+            plugin.getUtils().sendGameList(player, messagesFile.getStringList("messages.inGame.infoList.endInfo"),GameTeam.RUNNERS);
+        }
         this.invincible = true;
         this.gameTimer = 0;
         this.endingStage = true;
         this.gameStatus = GameStatus.RESTARTING;
-        try {
-            if (this.runners != null) {
-                if(this.runners.size() != 0) {
-                    for (Player runner : this.runners) {
-                        leave(runner);
-                        runner.playSound(runner.getLocation(), gameSound3, 3.0F, 1.0F);
-                    }
-                }
+        timerToLobby(GameTeam.RUNNERS);
+    }
+    public void winBeasts() {
+        for(Player player : this.players) {
+            if(gameSound3 != null) {
+                player.playSound(player.getLocation(),gameSound3, 10.0F, 1.0F);
             }
-            if (this.spectators != null) {
-                if(this.spectators.size() != 0) {
-                    for (Player spectator : this.spectators) {
-                        leave(spectator);
-                        spectator.playSound(spectator.getLocation(), gameSound3, 3.0F, 1.0F);
-                    }
-                }
-            }
-            if (this.beasts != null) {
-                if(this.beasts.size() != 0) {
-                    for (Player beast : this.beasts) {
-                        leave(beast);
-                        beast.playSound(beast.getLocation(), gameSound1, 3.0F, 1.0F);
-                    }
-                }
-            }
-            if (this.players != null) {
-                for (Player player : this.players) {
-                    leave(player);
-                    player.playSound(player.getLocation(), gameSound3, 3.0F, 1.0F);
-                }
-            }
-            restart();
-        }catch (Throwable throwable) {
-            plugin.getLogs().error("Can't leave players");
-            plugin.getLogs().error(throwable);
-            restart();
+            plugin.getUtils().sendGameList(player, messagesFile.getStringList("messages.inGame.infoList.endInfo"),GameTeam.BEASTS);
         }
+        this.invincible = true;
+        this.gameTimer = 0;
+        this.endingStage = true;
+        this.gameStatus = GameStatus.RESTARTING;
+        timerToLobby(GameTeam.BEASTS);
+    }
+    public void timerToLobby(GameTeam winnerTeam) {
+        String LST = settingsFile.getString("settings.lobbyLocation");
+        if(LST == null) LST = "notSet";
+        Location location = plugin.getUtils().getLocationFromString(LST);
+        if (this.players.size() < 1) {
+            restart();
+            this.gameTimer = 0;
+            return;
+        }
+        if(this.ending == 50) {
+            for(Player player : this.players) {
+                plugin.getUtils().sendList(player,messagesFile.getStringList("messages.inGame.infoList.rewardSummary"));
+            }
+        }
+        if (this.ending >= 50)
+            if(winnerTeam.equals(GameTeam.RUNNERS)) {
+                for (Player pl : this.runners) {
+                    firework(pl, timing(this.ending));
+                }
+            } else {
+                for (Player pl : this.beasts) {
+                    firework(pl, timing(this.ending));
+                }
+            }
+        if (this.ending == 0) {
+            for (Player player : this.players) {
+                if(location != null) {
+                    player.teleport(location);
+                }
+                plugin.getPlayerData(player.getUniqueId()).setStatus(PlayerStatus.IN_LOBBY);
+                plugin.getPlayerData(player.getUniqueId()).setGame(null);
+                plugin.getPlayerData(player.getUniqueId()).setBoard(RigoxBoard.LOBBY);
+                player.getInventory().clear();
+                for (ItemStack item : plugin.getLobbyItems().keySet()) {
+                    player.getInventory().setItem(plugin.getSlot(item), item);
+                }
+                player.updateInventory();
+            }
+            restart();
+            this.gameTimer = 0;
+            return;
+        }
+        for (Player pl : this.players) {
+            pl.setGameMode(GameMode.ADVENTURE);
+            for (PotionEffect effect : pl.getActivePotionEffects())
+                pl.removePotionEffect(effect.getType());
+        }
+        this.ending--;
+        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> this.timerToLobby(winnerTeam),2L);
+    }
+    public void firework(Player player,boolean firework) {
+        if(!firework) return;
+        Firework fa = player.getWorld().spawn(player.getLocation(), Firework.class);
+        FireworkMeta fam = fa.getFireworkMeta();
+        Random r = new Random();
+        int fType = r.nextInt(5) + 1;
+        FireworkEffect.Type fireworkType = null;
+        switch (fType) {
+            case 1:
+                fireworkType = FireworkEffect.Type.STAR;
+                break;
+            case 2:
+                fireworkType = FireworkEffect.Type.BALL;
+                break;
+            case 3:
+                fireworkType = FireworkEffect.Type.BALL_LARGE;
+                break;
+            case 4:
+                fireworkType = FireworkEffect.Type.CREEPER;
+                break;
+            case 5:
+                fireworkType = FireworkEffect.Type.BURST;
+                break;
+        }
+        int co1 = r.nextInt(10) + 1;
+        int co2 = r.nextInt(10) + 1;
+        Color c1 = fireColor(co1);
+        Color c2 = fireColor(co2);
+        FireworkEffect ef = FireworkEffect.builder().flicker(r.nextBoolean()).withColor(c1).withFade(c2).with(fireworkType).trail(r.nextBoolean()).build();
+        fam.addEffect(ef);
+        fam.setPower(1);
+        fa.setFireworkMeta(fam);
+    }
+    public Color fireColor(int c) {
+        switch (c) {
+            default:
+                return Color.YELLOW;
+            case 2:
+                return Color.RED;
+            case 3:
+                return Color.GREEN;
+            case 4:
+                return Color.BLUE;
+            case 5:
+                return Color.AQUA;
+            case 6:
+                return Color.OLIVE;
+            case 7:
+                return Color.WHITE;
+            case 8:
+                return Color.ORANGE;
+            case 9:
+                return Color.TEAL;
+            case 10:
+                break;
+        }
+        return Color.LIME;
+    }
+    public boolean timing(int i) {
+        return i % 3 == 0;
     }
     public void leave(Player player) {
         this.players.remove(player);

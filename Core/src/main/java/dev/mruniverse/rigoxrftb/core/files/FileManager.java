@@ -107,6 +107,8 @@ public class FileManager {
         addConfig(Files.SETTINGS,"settings.gameStatus.ending","&9Restarting");
         addConfig(Files.SETTINGS,"roles.beast","Beast");
         addConfig(Files.SETTINGS,"roles.runner","Runner");
+        addConfig(Files.SETTINGS,"roles.beasts","Beasts");
+        addConfig(Files.SETTINGS,"roles.runners","Runners");
         addConfig(Files.SETTINGS,"times.minutes","minutes");
         addConfig(Files.SETTINGS,"times.minute","minute");
         addConfig(Files.SETTINGS,"times.seconds","seconds");
