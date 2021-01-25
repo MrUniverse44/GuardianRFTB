@@ -4,6 +4,7 @@ import dev.mruniverse.rigoxrftb.core.RigoxRFTB;
 import dev.mruniverse.rigoxrftb.core.enums.Files;
 import dev.mruniverse.rigoxrftb.core.enums.PlayerStatus;
 import dev.mruniverse.rigoxrftb.core.enums.RigoxBoard;
+import dev.mruniverse.rigoxrftb.core.utils.players.PlayerManager;
 import org.bukkit.*;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -208,6 +209,10 @@ public class Game {
         }
         if(this.gameStatus.equals(GameStatus.WAITING)) {
             this.gameStatus = GameStatus.STARTING;
+            for(Player player : this.players) {
+                PlayerManager playerData = plugin.getPlayerData(player.getUniqueId());
+                playerData.setBoard(RigoxBoard.STARTING);
+            }
         }
         return 0;
     }
