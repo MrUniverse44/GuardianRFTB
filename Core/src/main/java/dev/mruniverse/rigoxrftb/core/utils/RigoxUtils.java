@@ -277,8 +277,13 @@ public class RigoxUtils {
                 if (text.contains("<arena_max>")) text = text.replace("<arena_max>", playerGame.max + "");
                 if (text.contains("<arena_need>")) { text = text.replace("<arena_need>", playerGame.getNeedPlayers() + "");
                 }
-                if (text.contains("<arena_time_number>"))
-                    text = text.replace("<arena_time_number>", playerGame.starting + "");
+                if (text.contains("<arena_time_number>")) {
+                    if(plugin.getPlayerData(player.getUniqueId()).getBoard().equals(RigoxBoard.SELECTING)) {
+                        text = text.replace("<arena_time_number>", playerGame.starting + "");
+                    } else {
+                        text = text.replace("<arena_time_number>", playerGame.fakeStarting + "");
+                    }
+                }
                 if (text.contains("<arena_time_text>"))
                     text = text.replace("<arena_time_text>", getSecondsLeft(playerGame.starting));
                 if (text.contains("<arena_beast>")) text = text.replace("<arena_beast>", getBeast(playerGame));

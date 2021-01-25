@@ -725,7 +725,7 @@ public class Game {
         this.timer = 500;
         this.min = 2;
         this.max = 10;
-        this.fakeStarting = 0;
+        this.fakeStarting = 5;
         this.beasts.clear();
         this.playingStage = false;
         this.endingStage = false;
