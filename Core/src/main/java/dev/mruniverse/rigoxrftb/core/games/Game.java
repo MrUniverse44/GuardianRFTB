@@ -229,6 +229,7 @@ public class Game {
             return;
         }
         player.getInventory().clear();
+        player.setGameMode(GameMode.ADVENTURE);
         player.teleport(this.waiting);
         this.players.add(player);
         this.runners.add(player);
