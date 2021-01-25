@@ -3,6 +3,7 @@ package dev.mruniverse.rigoxrftb.core.enums;
 public enum RigoxBoard {
     LOBBY,
     WAITING,
+    SELECTING,
     STARTING,
     PLAYING,
     WIN_BEAST_FOR_BEAST,

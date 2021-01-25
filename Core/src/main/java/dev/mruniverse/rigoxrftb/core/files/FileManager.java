@@ -189,8 +189,8 @@ public class FileManager {
         lists.add(" ");
         lists.add("<isWaiting>&fWaiting for");
         lists.add("<isWaiting>&a<arena_need> &fplayers to start");
+        lists.add("<isSelecting>&fSelecting beast in &a<arena_time_number>");
         lists.add("<isStarting>&fStarting in <arena_time_number> &f<arena_time_text>.");
-        lists.add("<isStarting>&fBeast: &b<arena_beast>");
         lists.add(" ");
         lists.add("&erigox.club");
         addConfig(Files.SCOREBOARD,"scoreboards.waiting.lines",lists);
@@ -202,7 +202,7 @@ public class FileManager {
         lists.add("&fTime Left: &a<arena_timeLeft>");
         lists.add(" ");
         lists.add("&fMap: &a<arena_name>");
-        lists.add("&fMode: &a<arena_mode>");
+        lists.add("&fBeast(s): &a<arena_beast>");
         lists.add("&fYour role: &a<player_role>");
         lists.add(" ");
         lists.add("&erigox.club");

@@ -103,7 +103,7 @@ public class RigoxUtils {
             }
             return "";
         }
-        if(board.equals(RigoxBoard.WAITING) || board.equals(RigoxBoard.STARTING)) {
+        if(board.equals(RigoxBoard.WAITING) || board.equals(RigoxBoard.STARTING) || board.equals(RigoxBoard.SELECTING)) {
             if (plugin.getFiles().getControl(Files.SCOREBOARD).getString("scoreboards.waiting.title") != null) {
                 return plugin.getFiles().getControl(Files.SCOREBOARD).getString("scoreboards.waiting.title");
             }
@@ -155,8 +155,18 @@ public class RigoxUtils {
         }
         if(board.equals(RigoxBoard.WAITING)) {
             for(String line : plugin.getFiles().getControl(Files.SCOREBOARD).getStringList("scoreboards.waiting.lines")) {
-                if(!line.contains("<isStarting>")) {
+                if(!line.contains("<isStarting>") && !line.contains("<isSelecting>")) {
                     if(line.contains("<isWaiting>")) line = line.replace("<isWaiting>","");
+                    line = replaceVariables(line, player);
+                    lines.add(line);
+                }
+            }
+            return lines;
+        }
+        if(board.equals(RigoxBoard.SELECTING)) {
+            for(String line : plugin.getFiles().getControl(Files.SCOREBOARD).getStringList("scoreboards.waiting.lines")) {
+                if(!line.contains("<isWaiting>") && !line.contains("<isStarting>")) {
+                    if(line.contains("<isSelecting>")) line = line.replace("<isSelecting>","");
                     line = replaceVariables(line, player);
                     lines.add(line);
                 }
@@ -165,7 +175,7 @@ public class RigoxUtils {
         }
         if(board.equals(RigoxBoard.STARTING)) {
             for(String line : plugin.getFiles().getControl(Files.SCOREBOARD).getStringList("scoreboards.waiting.lines")) {
-                if(!line.contains("<isWaiting>")) {
+                if(!line.contains("<isWaiting>") && !line.contains("<isSelecting>")) {
                     if(line.contains("<isStarting>")) line = line.replace("<isStarting>","");
                     line = replaceVariables(line, player);
                     lines.add(line);

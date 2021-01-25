@@ -280,10 +280,10 @@ public class Game {
             this.startingStage = true;
             this.gameTimer = 1;
             for(Player runner : this.runners) {
-                plugin.getPlayerData(runner.getUniqueId()).setBoard(RigoxBoard.STARTING);
+                plugin.getPlayerData(runner.getUniqueId()).setBoard(RigoxBoard.SELECTING);
             }
             for(Player beast : this.beasts) {
-                plugin.getPlayerData(beast.getUniqueId()).setBoard(RigoxBoard.STARTING);
+                plugin.getPlayerData(beast.getUniqueId()).setBoard(RigoxBoard.SELECTING);
             }
         }
     }
@@ -525,6 +525,7 @@ public class Game {
             nextBeast.getInventory().setItem(plugin.exitSlot, plugin.exitItem);
             nextBeast.updateInventory();
             nextBeast.teleport(selectedBeast);
+            changeToStartingBoard();
             this.times = 0;
             return;
         }
@@ -557,9 +558,18 @@ public class Game {
         NextBeast.updateInventory();
         plugin.getItems(GameEquip.BEAST_KIT,NextBeast);
         nextBeast.teleport(selectedBeast);
+        changeToStartingBoard();
         this.runners.remove(nextBeast);
         this.times = 0;
 
+    }
+    public void changeToStartingBoard() {
+        for(Player runner : this.runners) {
+            plugin.getPlayerData(runner.getUniqueId()).setBoard(RigoxBoard.STARTING);
+        }
+        for(Player beast : this.beasts) {
+            plugin.getPlayerData(beast.getUniqueId()).setBoard(RigoxBoard.STARTING);
+        }
     }
     public void winRunners() {
         this.invincible = true;
@@ -568,21 +578,27 @@ public class Game {
         this.gameStatus = GameStatus.RESTARTING;
         try {
             if (this.runners != null) {
-                for (Player runner : this.runners) {
-                    leave(runner);
-                    runner.playSound(runner.getLocation(), gameSound3, 3.0F, 1.0F);
+                if(this.runners.size() != 0) {
+                    for (Player runner : this.runners) {
+                        leave(runner);
+                        runner.playSound(runner.getLocation(), gameSound3, 3.0F, 1.0F);
+                    }
                 }
             }
             if (this.spectators != null) {
-                for (Player spectator : this.spectators) {
-                    leave(spectator);
-                    spectator.playSound(spectator.getLocation(), gameSound3, 3.0F, 1.0F);
+                if(this.spectators.size() != 0) {
+                    for (Player spectator : this.spectators) {
+                        leave(spectator);
+                        spectator.playSound(spectator.getLocation(), gameSound3, 3.0F, 1.0F);
+                    }
                 }
             }
             if (this.beasts != null) {
-                for (Player beasts : this.beasts) {
-                    leave(beasts);
-                    beasts.playSound(beasts.getLocation(), gameSound1, 3.0F, 1.0F);
+                if(this.beasts.size() != 0) {
+                    for (Player beasts : this.beasts) {
+                        leave(beasts);
+                        beasts.playSound(beasts.getLocation(), gameSound1, 3.0F, 1.0F);
+                    }
                 }
             }
             if (this.players != null) {
@@ -605,21 +621,27 @@ public class Game {
         this.gameStatus = GameStatus.RESTARTING;
         try {
             if (this.runners != null) {
-                for (Player runner : this.runners) {
-                    leave(runner);
-                    runner.playSound(runner.getLocation(), gameSound3, 3.0F, 1.0F);
+                if(this.runners.size() != 0) {
+                    for (Player runner : this.runners) {
+                        leave(runner);
+                        runner.playSound(runner.getLocation(), gameSound3, 3.0F, 1.0F);
+                    }
                 }
             }
             if (this.spectators != null) {
-                for (Player spectator : this.spectators) {
-                    leave(spectator);
-                    spectator.playSound(spectator.getLocation(), gameSound3, 3.0F, 1.0F);
+                if(this.spectators.size() != 0) {
+                    for (Player spectator : this.spectators) {
+                        leave(spectator);
+                        spectator.playSound(spectator.getLocation(), gameSound3, 3.0F, 1.0F);
+                    }
                 }
             }
             if (this.beasts != null) {
-                for (Player beasts : this.beasts) {
-                    leave(beasts);
-                    beasts.playSound(beasts.getLocation(), gameSound1, 3.0F, 1.0F);
+                if(this.beasts.size() != 0) {
+                    for (Player beasts : this.beasts) {
+                        leave(beasts);
+                        beasts.playSound(beasts.getLocation(), gameSound1, 3.0F, 1.0F);
+                    }
                 }
             }
             if (this.players != null) {
