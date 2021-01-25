@@ -263,6 +263,13 @@ public class Game {
         for (PotionEffect effect : player.getActivePotionEffects()) {
             player.removePotionEffect(effect.getType());
         }
+        String joinMsg = messagesFile.getString("messages.inGame.join");
+        if(joinMsg == null) joinMsg = "&7%player% &ehas joined &e(&b%online%&e/&b%max%&e)!";
+        for(Player pl : this.players) {
+            plugin.getUtils().sendMessage(pl,joinMsg.replace("%player%",player.getName())
+            .replace("%online%",this.players.size()+"")
+            .replace("%max%",this.max+""));
+        }
         updateSigns();
         player.updateInventory();
     }
@@ -296,6 +303,26 @@ public class Game {
                     if (gameSound1 != null) {
                         for (Player beast : this.beasts) {
                             beast.playSound(beast.getLocation(), gameSound1, 1.0F, 0.5F);
+                        }
+                    }
+                }
+                if(this.starting == -24 || this.starting == -23 || this.starting == -22 || this.starting == -21 || this.starting == -20) {
+                    for(Player player : this.players) {
+                        int s = 5;
+                        String seconds = messagesFile.getString("times.seconds");
+                        String second = messagesFile.getString("times.seconds");
+                        String beastSpawn = messagesFile.getString("messages.inGame.beastsAppear");
+                        if(beastSpawn == null) beastSpawn = "&eThe beasts spawns in &c%time% &e%seconds%!";
+                        if(second == null) second = "second";
+                        if(seconds == null) seconds = "seconds";
+                        if(this.starting == -21) s = 4;
+                        if(this.starting == -22) s = 3;
+                        if(this.starting == -23) s = 2;
+                        if(this.starting == -24) s = 1;
+                        if(s != 1) {
+                            plugin.getUtils().sendMessage(player, beastSpawn.replace("%time%", s + "").replace("%seconds%",seconds));
+                        } else {
+                            plugin.getUtils().sendMessage(player, beastSpawn.replace("%time%", s + "").replace("%seconds%",second));
                         }
                     }
                 }
@@ -361,10 +388,12 @@ public class Game {
                     for (Player runner : this.runners) {
                         runner.teleport(runnersLocation);
                         plugin.getPlayerData(runner.getUniqueId()).setBoard(RigoxBoard.PLAYING);
+                        plugin.getUtils().sendList(runner,messagesFile.getStringList("messages.inGame.infoList.startInfo"));
                         plugin.getUtils().sendTitle(runner, 0, 20, 10, messagesFile.getString("messages.inGame.others.titles.runnersGo.toRunners.title"), messagesFile.getString("messages.inGame.others.titles.runnersGo.toRunners.subtitle"));
                     }
                     for (Player beasts : this.beasts) {
                         plugin.getPlayerData(beasts.getUniqueId()).setBoard(RigoxBoard.PLAYING);
+                        plugin.getUtils().sendList(beasts,messagesFile.getStringList("messages.inGame.infoList.startInfo"));
                         plugin.getUtils().sendTitle(beasts, 0, 20, 10, messagesFile.getString("messages.inGame.others.titles.runnersGo.toBeasts.title"), messagesFile.getString("messages.inGame.others.titles.runnersGo.toBeasts.subtitle"));
                     }
                 }
@@ -379,7 +408,6 @@ public class Game {
                     for (Player player : this.players) {
                         plugin.getPlayerData(player.getUniqueId()).setBoard(RigoxBoard.PLAYING);
                         plugin.getUtils().sendTitle(player, 5, 40, 5, messagesFile.getString("messages.inGame.others.titles.gameStart.title"), messagesFile.getString("messages.inGame.others.titles.gameStart.subtitle"));
-                        plugin.getUtils().sendList(player,messagesFile.getStringList("messages.inGame.infoList.startInfo"));
                     }
 
                 }
@@ -404,10 +432,10 @@ public class Game {
                 }
                 if(this.starting >= 1) {
                     if(this.starting > 1) {
-                        String startMsg = messagesFile.getString("messages.inGame.starting");
+                        String startMsg = messagesFile.getString("messages.inGame.selectingBeast");
                         String seconds = messagesFile.getString("times.seconds");
                         String second = messagesFile.getString("times.second");
-                        if(startMsg == null) startMsg = "&eThe game starts in &c%time% &e%seconds%!";
+                        if(startMsg == null) startMsg = "&eThe beast will be selected in &c%time% &e%seconds%!";
                         if(seconds == null) seconds = "seconds";
                         if(second == null) second = "second";
                         if(this.starting == 15 || this.starting == 10 || this.starting == 5 || this.starting == 4 || this.starting == 3 || this.starting == 2) {
@@ -418,6 +446,34 @@ public class Game {
                             for(Player player : this.players) {
                                 plugin.getUtils().sendMessage(player,startMsg.replace("%time%",starting+"").replace("%seconds%",second));
                             }
+                        }
+                    }
+                }
+                if(this.starting <= 0) {
+                    if(this.starting > -9) {
+                        String startMsg = messagesFile.getString("messages.inGame.starting");
+                        String seconds = messagesFile.getString("times.seconds");
+                        if(startMsg == null) startMsg = "&eThe game starts in &c%time% &e%seconds%!";
+                        if(seconds == null) seconds = "seconds";
+                        int perfectTime = 10;
+                        if(starting == -8) perfectTime = 2;
+                        if(starting == -7) perfectTime = 3;
+                        if(starting == -6) perfectTime = 4;
+                        if(starting == -5) perfectTime = 5;
+                        if(starting == -4) perfectTime = 6;
+                        if(starting == -3) perfectTime = 7;
+                        if(starting == -2) perfectTime = 8;
+                        if(starting == -1) perfectTime = 9;
+                        for(Player player : this.players) {
+                            plugin.getUtils().sendMessage(player,startMsg.replace("%time%",perfectTime+"").replace("%seconds%",seconds));
+                        }
+                    } else if(this.starting == -9){
+                        String startMsg = messagesFile.getString("messages.inGame.starting");
+                        String second = messagesFile.getString("times.second");
+                        if(startMsg == null) startMsg = "&eThe game starts in &c%time% &e%seconds%!";
+                        if(second == null) second = "second";
+                        for(Player player : this.players) {
+                            plugin.getUtils().sendMessage(player,startMsg.replace("%time%",1+"").replace("%seconds%",second));
                         }
                     }
                 }
@@ -449,16 +505,21 @@ public class Game {
         }
     }
     public void selectBeast() {
-        if(this.gameType.equals(GameType.CLASSIC) || this.gameType.equals(GameType.INFECTED)) {
+        String chosenBeast = messagesFile.getString("messages.inGame.chosenBeast");
+        if (chosenBeast == null) chosenBeast = "&eThe player &b%player% &enow is a beast!";
+        if (this.gameType.equals(GameType.CLASSIC) || this.gameType.equals(GameType.INFECTED)) {
             Random random = new Random();
             this.times++;
             int beast = random.nextInt(this.runners.size());
             Player nextBeast = this.runners.get(beast);
             this.beasts.add(nextBeast);
             this.runners.remove(nextBeast);
+            for (Player announce : this.players) {
+                plugin.getUtils().sendMessage(announce, chosenBeast.replace("%player%", nextBeast.getName()));
+            }
             nextBeast.getInventory().clear();
-            nextBeast.getInventory().setItem(plugin.beastSlot,plugin.kitBeast);
-            nextBeast.getInventory().setItem(plugin.exitSlot,plugin.exitItem);
+            nextBeast.getInventory().setItem(plugin.beastSlot, plugin.kitBeast);
+            nextBeast.getInventory().setItem(plugin.exitSlot, plugin.exitItem);
             nextBeast.updateInventory();
             nextBeast.teleport(selectedBeast);
             this.times = 0;
@@ -468,14 +529,17 @@ public class Game {
         int beast = random.nextInt(this.runners.size());
         Player nextBeast = this.runners.get(beast);
         this.beasts.add(nextBeast);
-        plugin.getItems(GameEquip.BEAST_KIT,nextBeast);
+        plugin.getItems(GameEquip.BEAST_KIT, nextBeast);
         nextBeast.teleport(selectedBeast);
         nextBeast.getInventory().clear();
-        nextBeast.getInventory().setItem(plugin.beastSlot,plugin.kitBeast);
-        nextBeast.getInventory().setItem(plugin.exitSlot,plugin.exitItem);
+        nextBeast.getInventory().setItem(plugin.beastSlot, plugin.kitBeast);
+        nextBeast.getInventory().setItem(plugin.exitSlot, plugin.exitItem);
         nextBeast.updateInventory();
         this.runners.remove(nextBeast);
         this.spectators.remove(nextBeast);
+        for(Player announce : this.players) {
+            plugin.getUtils().sendMessage(announce,chosenBeast.replace("%player%",nextBeast.getName()));
+        }
         int Beast = random.nextInt(this.runners.size());
         Player NextBeast = this.runners.get(Beast);
         this.beasts.add(NextBeast);
@@ -483,6 +547,9 @@ public class Game {
         this.spectators.remove(NextBeast);
         NextBeast.getInventory().clear();
         NextBeast.getInventory().setItem(plugin.beastSlot,plugin.kitBeast);
+        for(Player announce : this.players) {
+            plugin.getUtils().sendMessage(announce,chosenBeast.replace("%player%",NextBeast.getName()));
+        }
         NextBeast.getInventory().setItem(plugin.exitSlot,plugin.exitItem);
         NextBeast.updateInventory();
         plugin.getItems(GameEquip.BEAST_KIT,NextBeast);
@@ -548,6 +615,13 @@ public class Game {
         if(location != null) {
             player.teleport(location);
             player.setGameMode(GameMode.ADVENTURE);
+        }
+        String quitMsg = messagesFile.getString("messages.inGame.quit");
+        if(quitMsg == null) quitMsg = "&7%player% &ehas quit!";
+        for(Player pl : this.players) {
+            plugin.getUtils().sendMessage(pl,quitMsg.replace("%player%",player.getName())
+                    .replace("%online%",this.players.size()+"")
+                    .replace("%max%",this.max+""));
         }
         plugin.getPlayerData(player.getUniqueId()).setStatus(PlayerStatus.IN_LOBBY);
         plugin.getPlayerData(player.getUniqueId()).setGame(null);

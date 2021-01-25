@@ -257,6 +257,7 @@ public class FileManager {
         addConfig(Files.MESSAGES,"messages.inGame.join","&7%player% &ehas joined &e(&b%online%&e/&b%max%&e)!");
         addConfig(Files.MESSAGES,"messages.inGame.quit","&7%player% &ehas quit!");
         addConfig(Files.MESSAGES,"messages.inGame.already","&cYou're already in an arena!");
+        addConfig(Files.MESSAGES,"messages.inGame.selectingBeast","&eThe beast will be selected in &c%time% &e%seconds%!");
         addConfig(Files.MESSAGES,"messages.inGame.starting","&eThe game starts in &c%time% &e%seconds%!");
         addConfig(Files.MESSAGES,"messages.inGame.beastsAppear","&eThe beasts spawns in &c%time% &e%seconds%!");
         addConfig(Files.MESSAGES,"messages.inGame.chosenBeast","&eThe player &b%player% &enow is a beast!");
