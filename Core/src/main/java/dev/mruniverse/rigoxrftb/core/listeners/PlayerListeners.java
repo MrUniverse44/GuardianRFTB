@@ -13,6 +13,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -34,7 +36,6 @@ public class PlayerListeners implements Listener {
     @EventHandler
     public void joinOptions(PlayerJoinEvent event) {
         plugin.addPlayer(event.getPlayer());
-        plugin.getTeams().registerTeams(event.getPlayer());
         FileConfiguration file = plugin.getFiles().getControl(Files.SETTINGS);
         Player player = event.getPlayer();
         if(file.getBoolean("settings.options.hideServerJoinMessage")) {
@@ -84,6 +85,18 @@ public class PlayerListeners implements Listener {
         } catch (Throwable throwable) {
             plugin.getLogs().error("Can't generate lobby scoreboard for " + event.getPlayer().getName() +"!");
             plugin.getLogs().error(throwable);
+        }
+    }
+    @EventHandler
+    public void onBreak(BlockBreakEvent event) {
+        if(plugin.getPlayerData(event.getPlayer().getUniqueId()).getGame() != null) {
+            event.setCancelled(true);
+        }
+    }
+    @EventHandler
+    public void onPlace(BlockPlaceEvent event) {
+        if(plugin.getPlayerData(event.getPlayer().getUniqueId()).getGame() != null) {
+            event.setCancelled(true);
         }
     }
     @EventHandler
