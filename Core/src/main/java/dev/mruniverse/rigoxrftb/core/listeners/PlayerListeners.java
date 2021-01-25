@@ -34,6 +34,7 @@ public class PlayerListeners implements Listener {
     @EventHandler
     public void joinOptions(PlayerJoinEvent event) {
         plugin.addPlayer(event.getPlayer());
+        plugin.getTeams().registerTeams(event.getPlayer());
         FileConfiguration file = plugin.getFiles().getControl(Files.SETTINGS);
         Player player = event.getPlayer();
         if(file.getBoolean("settings.options.hideServerJoinMessage")) {
