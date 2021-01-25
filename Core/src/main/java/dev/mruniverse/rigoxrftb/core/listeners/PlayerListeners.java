@@ -14,8 +14,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.SignChangeEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -96,6 +98,29 @@ public class PlayerListeners implements Listener {
         }
     }
     @EventHandler
+    public void inGameDeath(PlayerDeathEvent event) {
+        final Player player = event.getEntity();
+        if(plugin.getPlayerData(player.getUniqueId()).getGame() != null) {
+            Game game = plugin.getPlayerData(player.getUniqueId()).getGame();
+            event.getDrops().clear();
+            event.setDeathMessage(null);
+            event.setDroppedExp(0);
+            if(game.beasts.contains(player)) {
+                game.deathBeast(player);
+                game.spectators.add(player);
+                player.spigot().respawn();
+                player.teleport(game.beastLocation);
+            } else {
+                game.deathRunner(player);
+                game.spectators.add(player);
+                player.spigot().respawn();
+                player.teleport(game.runnersLocation);
+
+            }
+            player.setGameMode(GameMode.SPECTATOR);
+        }
+    }
+    @EventHandler
     public void lobbyDamage(EntityDamageEvent event) {
         if(event.getEntity().getType().equals(EntityType.PLAYER)) {
             if (!plugin.getFiles().getControl(Files.SETTINGS).getString("settings.lobbyLocation").equalsIgnoreCase("notSet")) {
@@ -110,7 +135,31 @@ public class PlayerListeners implements Listener {
                 RigoxBoard board = plugin.getPlayerData(player.getUniqueId()).getBoard();
                 if(board.equals(RigoxBoard.WAITING) || board.equals(RigoxBoard.STARTING) || board.equals(RigoxBoard.WIN_BEAST_FOR_BEAST) || board.equals(RigoxBoard.WIN_BEAST_FOR_RUNNERS) || board.equals(RigoxBoard.WIN_RUNNERS_FOR_BEAST) || board.equals(RigoxBoard.WIN_RUNNERS_FOR_RUNNERS)) {
                     event.setCancelled(true);
+                } else {
+                    if(event.getCause().equals(EntityDamageEvent.DamageCause.FALL) || plugin.getPlayerData(player.getUniqueId()).getGame().spectators.contains(player)) {
+                        event.setCancelled(true);
+                    }
                 }
+            }
+        }
+    }
+    @EventHandler
+    public void inGameDamage(EntityDamageByEntityEvent event) {
+        if(event.getEntity().getType().equals(EntityType.PLAYER)) {
+            if(event.getDamager().getType().equals(EntityType.PLAYER)) {
+                Player victim = (Player)event.getEntity();
+                Player attacker = (Player)event.getDamager();
+                if(plugin.getPlayerData(victim.getUniqueId()).getGame() != null) {
+                    if(plugin.getPlayerData(attacker.getUniqueId()).getGame() == null) {
+                        event.setCancelled(true);
+                    } else {
+                        Game game = plugin.getPlayerData(victim.getUniqueId()).getGame();
+                        if(game.runners.contains(victim) && game.runners.contains(attacker)) {
+                            event.setCancelled(true);
+                        }
+                    }
+                }
+
             }
         }
     }

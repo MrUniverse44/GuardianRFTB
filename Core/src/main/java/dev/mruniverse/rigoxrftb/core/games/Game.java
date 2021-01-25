@@ -22,6 +22,7 @@ public class Game {
     public ArrayList<Location> signs;
     public ArrayList<Player> runners;
     public ArrayList<Player> beasts;
+    public ArrayList<Player> spectators;
 
     int times;
     public int gameTimer;
@@ -64,6 +65,7 @@ public class Game {
         this.plugin = main;
         this.players = new ArrayList<>();
         this.signs = new ArrayList<>();
+        this.spectators = new ArrayList<>();
         this.timer = 500;
         this.min = 2;
         this.time = 0;
@@ -167,6 +169,12 @@ public class Game {
             winRunners();
         }
     }
+    public void deathRunner(Player runner) {
+        this.runners.remove(runner);
+        if(runners.size() == 0) {
+            winBeasts();
+        }
+    }
 
     public String replaceGameVariable(String message) {
         if(message.contains("%arena%")) message = message.replace("%arena%",gameName);
@@ -220,6 +228,7 @@ public class Game {
             plugin.getUtils().sendMessage(player, messagesFile.getString("messages.others.full"));
             return;
         }
+        player.getInventory().clear();
         player.teleport(this.waiting);
         this.players.add(player);
         this.runners.add(player);
@@ -421,9 +430,11 @@ public class Game {
         plugin.getItems(GameEquip.BEAST_KIT,nextBeast);
         nextBeast.teleport(selectedBeast);
         this.runners.remove(nextBeast);
+        this.spectators.remove(nextBeast);
         int Beast = random.nextInt(this.runners.size());
         Player NextBeast = this.runners.get(Beast);
         this.beasts.add(NextBeast);
+        this.spectators.remove(NextBeast);
         plugin.getItems(GameEquip.BEAST_KIT,NextBeast);
         nextBeast.teleport(selectedBeast);
         this.runners.remove(nextBeast);
@@ -439,6 +450,10 @@ public class Game {
             leave(runner);
             runner.playSound(runner.getLocation(), gameSound3, 3.0F, 1.0F);
         }
+        for (Player spectator : this.spectators) {
+            leave(spectator);
+            spectator.playSound(spectator.getLocation(), gameSound3, 3.0F, 1.0F);
+        }
         for (Player beasts : this.beasts) {
             leave(beasts);
             beasts.playSound(beasts.getLocation(), gameSound1, 3.0F, 1.0F);
@@ -453,7 +468,11 @@ public class Game {
         for (Player runner : this.runners) {
             leave(runner);
             runner.playSound(runner.getLocation(), gameSound3, 3.0F, 1.0F);
+        }for (Player spectator : this.spectators) {
+            leave(spectator);
+            spectator.playSound(spectator.getLocation(), gameSound3, 3.0F, 1.0F);
         }
+
         for (Player beasts : this.beasts) {
             leave(beasts);
             beasts.playSound(beasts.getLocation(), gameSound1, 3.0F, 1.0F);
@@ -464,11 +483,13 @@ public class Game {
         this.players.remove(player);
         this.runners.remove(player);
         this.beasts.remove(player);
+        this.spectators.remove(player);
         String LST = settingsFile.getString("settings.lobbyLocation");
         if(LST == null) LST = "notSet";
         Location location = plugin.getUtils().getLocationFromString(LST);
         if(location != null) {
             player.teleport(location);
+            player.setGameMode(GameMode.ADVENTURE);
         }
         plugin.getPlayerData(player.getUniqueId()).setStatus(PlayerStatus.IN_LOBBY);
         plugin.getPlayerData(player.getUniqueId()).setGame(null);
@@ -480,6 +501,9 @@ public class Game {
         for (Player players : this.players)
             plugin.getTeams().addLobby(players);
         this.players.clear();
+        this.spectators.clear();
+        this.beasts.clear();
+        this.runners.clear();
         this.gameTimer = 0;
         this.timer = 500;
         this.min = 2;
