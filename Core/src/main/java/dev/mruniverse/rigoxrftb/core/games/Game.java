@@ -508,9 +508,11 @@ public class Game {
         plugin.getPlayerData(player.getUniqueId()).setStatus(PlayerStatus.IN_LOBBY);
         plugin.getPlayerData(player.getUniqueId()).setGame(null);
         plugin.getPlayerData(player.getUniqueId()).setBoard(RigoxBoard.LOBBY);
+        player.getInventory().clear();
         for(ItemStack item : plugin.getLobbyItems().keySet()) {
             player.getInventory().setItem(plugin.getSlot(item),item);
         }
+        player.updateInventory();
         updateSigns();
     }
     public void restart() {

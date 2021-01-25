@@ -1,5 +1,6 @@
 package dev.mruniverse.rigoxrftb.core.listeners;
 
+import dev.mruniverse.rigoxrftb.core.enums.CurrentItem;
 import dev.mruniverse.rigoxrftb.core.enums.Files;
 import dev.mruniverse.rigoxrftb.core.enums.RigoxBoard;
 import dev.mruniverse.rigoxrftb.core.RigoxRFTB;
@@ -55,6 +56,32 @@ public class PlayerListeners implements Listener {
         }
         for(ItemStack item : plugin.getLobbyItems().keySet()) {
             player.getInventory().setItem(plugin.getSlot(item),item);
+        }
+    }
+    @EventHandler
+    public void onInteract(PlayerInteractEvent event) {
+        Player player = event.getPlayer();
+        if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getItem() != null) {
+            if(event.getItem() == null) return;
+            if(event.getItem().getItemMeta() == null) return;
+            if(event.getItem().getType().equals(plugin.exitItem.getType()) && event.getItem().getItemMeta().equals(plugin.exitItem.getItemMeta())) {
+                event.setCancelled(true);
+                plugin.getPlayerData(event.getPlayer().getUniqueId()).getGame().leave(player);
+                return;
+            }
+
+            for(ItemStack item : plugin.getLobbyItems().keySet()) {
+                if(event.getItem().getType().equals(item.getType()) && event.getItem().getItemMeta().equals(item.getItemMeta())) {
+                    CurrentItem itemAction = plugin.getCurrent(item);
+                    event.setCancelled(true);
+                    if(itemAction.equals(CurrentItem.EXIT_GAME)) {
+                        if(plugin.getPlayerData(event.getPlayer().getUniqueId()).getGame() != null) {
+                            plugin.getPlayerData(event.getPlayer().getUniqueId()).getGame().leave(player);
+                            return;
+                        }
+                    }
+                }
+            }
         }
     }
     @EventHandler
