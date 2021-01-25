@@ -25,6 +25,10 @@ public class Teams {
         }
         runners.setAllowFriendlyFire(false);
         runners.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
+        Team lobby = sb.getTeam("rxLobby");
+        if(lobby == null)
+            sb.registerNewTeam("rxLobby");
+        lobby.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
         Team beasts = sb.getTeam("rxBeasts");
         if (beasts == null)
             beasts = sb.registerNewTeam("rxBeasts");
@@ -43,14 +47,20 @@ public class Teams {
                 if (plugin.getPlayerData(player.getUniqueId()).getGame() != null) {
                     if (!plugin.getPlayerData(player.getUniqueId()).getGame().beasts.contains(player)) {
                         Team beasts = loadPlayer.getScoreboard().getTeam("rxBeasts");
-                        beasts.addPlayer(player);
+                        if(beasts != null) {
+                            beasts.addPlayer(player);
+                        }
                     } else {
                         Team runners = loadPlayer.getScoreboard().getTeam("rxRunners");
-                        runners.addPlayer(player);
+                        if(runners != null) {
+                            runners.addPlayer(player);
+                        }
                     }
                 } else {
-                    Team runners = loadPlayer.getScoreboard().getTeam("rxRunners");
-                    runners.addPlayer(player);
+                    Team lobby = loadPlayer.getScoreboard().getTeam("rxLobby");
+                    if(lobby != null) {
+                        lobby.addPlayer(player);
+                    }
                 }
             }
         }catch (Throwable throwable) {
@@ -62,8 +72,10 @@ public class Teams {
     public void addLobby(Player player) {
         try {
             for (Player pl : Bukkit.getOnlinePlayers()) {
-                Team runners = pl.getScoreboard().getTeam("rxRunners");
-                runners.addPlayer(player);
+                Team lobby = pl.getScoreboard().getTeam("rxLobby");
+                if(lobby != null) {
+                    lobby.addPlayer(player);
+                }
             }
         }catch (Throwable throwable){
             plugin.getLogs().error("Can't add players to Beast or Runners team, this error don't affect gameplay.");
@@ -75,7 +87,9 @@ public class Teams {
         try {
             for (Player pl : Bukkit.getOnlinePlayers()) {
                 Team runners = pl.getScoreboard().getTeam("rxRunners");
-                runners.addPlayer(player);
+                if(runners != null) {
+                    runners.addPlayer(player);
+                }
             }
         }catch (Throwable throwable) {
             plugin.getLogs().error("Can't add players to Beast or Runners team, this error don't affect gameplay.");
@@ -87,7 +101,9 @@ public class Teams {
         try {
             for (Player pl : Bukkit.getOnlinePlayers()) {
                 Team beasts = pl.getScoreboard().getTeam("rxBeasts");
-                beasts.addPlayer(player);
+                if(beasts != null) {
+                    beasts.addPlayer(player);
+                }
             }
         }catch (Throwable throwable){
             plugin.getLogs().error("Can't add players to Beast or Runners team, this error don't affect gameplay.");
