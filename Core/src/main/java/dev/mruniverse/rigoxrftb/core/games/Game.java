@@ -563,46 +563,74 @@ public class Game {
         this.gameTimer = 0;
         this.endingStage = true;
         this.gameStatus = GameStatus.RESTARTING;
-        for (Player runner : this.runners) {
-            leave(runner);
-            runner.playSound(runner.getLocation(), gameSound3, 3.0F, 1.0F);
+        try {
+            if (this.runners != null) {
+                for (Player runner : this.runners) {
+                    leave(runner);
+                    runner.playSound(runner.getLocation(), gameSound3, 3.0F, 1.0F);
+                }
+            }
+            if (this.spectators != null) {
+                for (Player spectator : this.spectators) {
+                    leave(spectator);
+                    spectator.playSound(spectator.getLocation(), gameSound3, 3.0F, 1.0F);
+                }
+            }
+            if (this.beasts != null) {
+                for (Player beasts : this.beasts) {
+                    leave(beasts);
+                    beasts.playSound(beasts.getLocation(), gameSound1, 3.0F, 1.0F);
+                }
+            }
+            if (this.players != null) {
+                for (Player players : this.players) {
+                    leave(players);
+                    players.playSound(players.getLocation(), gameSound3, 3.0F, 1.0F);
+                }
+            }
+            restart();
+        }catch (Throwable throwable) {
+            plugin.getLogs().error("Can't leave players");
+            plugin.getLogs().error(throwable);
+            restart();
         }
-        for (Player spectator : this.spectators) {
-            leave(spectator);
-            spectator.playSound(spectator.getLocation(), gameSound3, 3.0F, 1.0F);
-        }
-        for (Player beasts : this.beasts) {
-            leave(beasts);
-            beasts.playSound(beasts.getLocation(), gameSound1, 3.0F, 1.0F);
-        }
-        for (Player players : this.players) {
-            leave(players);
-            players.playSound(players.getLocation(), gameSound1, 3.0F, 1.0F);
-        }
-        restart();
     }
     public void winBeasts() {
         this.invincible = true;
         this.gameTimer = 0;
         this.endingStage = true;
         this.gameStatus = GameStatus.RESTARTING;
-        for (Player runner : this.runners) {
-            leave(runner);
-            runner.playSound(runner.getLocation(), gameSound3, 3.0F, 1.0F);
+        try {
+            if (this.runners != null) {
+                for (Player runner : this.runners) {
+                    leave(runner);
+                    runner.playSound(runner.getLocation(), gameSound3, 3.0F, 1.0F);
+                }
+            }
+            if (this.spectators != null) {
+                for (Player spectator : this.spectators) {
+                    leave(spectator);
+                    spectator.playSound(spectator.getLocation(), gameSound3, 3.0F, 1.0F);
+                }
+            }
+            if (this.beasts != null) {
+                for (Player beasts : this.beasts) {
+                    leave(beasts);
+                    beasts.playSound(beasts.getLocation(), gameSound1, 3.0F, 1.0F);
+                }
+            }
+            if (this.players != null) {
+                for (Player players : this.players) {
+                    leave(players);
+                    players.playSound(players.getLocation(), gameSound3, 3.0F, 1.0F);
+                }
+            }
+            restart();
+        }catch (Throwable throwable) {
+            plugin.getLogs().error("Can't leave players");
+            plugin.getLogs().error(throwable);
+            restart();
         }
-        for (Player spectator : this.spectators) {
-            leave(spectator);
-            spectator.playSound(spectator.getLocation(), gameSound3, 3.0F, 1.0F);
-        }
-        for (Player beasts : this.beasts) {
-            leave(beasts);
-            beasts.playSound(beasts.getLocation(), gameSound1, 3.0F, 1.0F);
-        }
-        for (Player players : this.players) {
-            leave(players);
-            players.playSound(players.getLocation(), gameSound3, 3.0F, 1.0F);
-        }
-        restart();
     }
     public void leave(Player player) {
         this.players.remove(player);
