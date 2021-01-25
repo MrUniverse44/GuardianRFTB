@@ -9,7 +9,6 @@ import dev.mruniverse.rigoxrftb.core.listeners.ListenerUtil;
 import dev.mruniverse.rigoxrftb.core.enums.SaveMode;
 import dev.mruniverse.rigoxrftb.core.nms.NMS;
 import dev.mruniverse.rigoxrftb.core.utils.Logger;
-import dev.mruniverse.rigoxrftb.core.utils.Teams;
 import dev.mruniverse.rigoxrftb.core.utils.TextUtilities;
 import dev.mruniverse.rigoxrftb.core.utils.players.PlayerRunnable;
 import dev.mruniverse.rigoxrftb.core.utils.scoreboards.BoardManager;
@@ -35,7 +34,12 @@ public final class RigoxRFTB extends JavaPlugin {
     private ListenerUtil rigoxListeners;
     private BoardManager rigoxScoreboards;
     private GameManager rigoxGameManager;
-    private Teams rigoxTeams;
+    public ItemStack exitItem;
+    public Integer exitSlot;
+    public ItemStack kitRunner;
+    public Integer RunnerSlot;
+    public ItemStack kitBeast;
+    public Integer beastSlot;
     private final HashMap<UUID, PlayerManager> rigoxPlayers = new HashMap<>();
     private final HashMap<ItemStack, Integer> lobbyItems = new HashMap<>();
     @Override
@@ -62,7 +66,6 @@ public final class RigoxRFTB extends JavaPlugin {
 
 
         rigoxUtils = new RigoxUtils(this);
-        rigoxTeams = new Teams(this);
 
         // * Game Setup
 
@@ -89,6 +92,46 @@ public final class RigoxRFTB extends JavaPlugin {
             }
         } catch (Throwable throwable) {
             getLogs().error("Can't get lobby items on startup");
+            getLogs().error(throwable);
+        }
+        try {
+            String ItemMaterial,ItemName;
+            List<String> ItemLore;
+            Integer ItemSlot;
+            ItemStack item;
+            FileConfiguration items = getFiles().getControl(Files.ITEMS);
+            ItemMaterial = items.getString("InGame.RunnerKit.item");
+            ItemName = items.getString("InGame.RunnerKit.name");
+            ItemLore = items.getStringList("InGame.RunnerKit.lore");
+            ItemSlot = items.getInt("InGame.RunnerKit.slot");
+            if(ItemMaterial == null) ItemMaterial = "MAP";
+            if(Material.getMaterial(ItemMaterial) != null) {
+                item = getNMSHandler().getItemStack(Material.getMaterial(ItemMaterial), TextUtilities.recolor(ItemName), TextUtilities.recolorLore(ItemLore));
+                kitRunner = item;
+                RunnerSlot = ItemSlot;
+            }
+            ItemMaterial = items.getString("InGame.BeastKit.item");
+            ItemName = items.getString("InGame.BeastKit.name");
+            ItemLore = items.getStringList("InGame.BeastKit.lore");
+            ItemSlot = items.getInt("InGame.BeastKit.slot");
+            if(ItemMaterial == null) ItemMaterial = "MAP";
+            if(Material.getMaterial(ItemMaterial) != null) {
+                item = getNMSHandler().getItemStack(Material.getMaterial(ItemMaterial), TextUtilities.recolor(ItemName), TextUtilities.recolorLore(ItemLore));
+                kitBeast = item;
+                beastSlot = ItemSlot;
+            }
+            ItemMaterial = items.getString("InGame.Exit.item");
+            ItemName = items.getString("InGame.Exit.name");
+            ItemLore = items.getStringList("InGame.Exit.lore");
+            ItemSlot = items.getInt("InGame.Exit.slot");
+            if(ItemMaterial == null) ItemMaterial = "BED";
+            if(Material.getMaterial(ItemMaterial) != null) {
+                item = getNMSHandler().getItemStack(Material.getMaterial(ItemMaterial), TextUtilities.recolor(ItemName), TextUtilities.recolorLore(ItemLore));
+                exitItem = item;
+                exitSlot = ItemSlot;
+            }
+        } catch (Throwable throwable) {
+            getLogs().error("Can't get game items on startup");
             getLogs().error(throwable);
         }
 
@@ -119,9 +162,6 @@ public final class RigoxRFTB extends JavaPlugin {
     }
     public FileManager getFiles() {
         return fileManager;
-    }
-    public Teams getTeams() {
-        return rigoxTeams;
     }
     public GameManager getGameManager() {
         return rigoxGameManager;

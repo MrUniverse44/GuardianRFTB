@@ -241,6 +241,8 @@ public class Game {
         player.setAllowFlight(false);
         player.setHealth(20.0D);
         player.setFireTicks(0);
+        player.getInventory().setItem(plugin.RunnerSlot,plugin.kitRunner);
+        player.getInventory().setItem(plugin.exitSlot,plugin.exitItem);
         for (PotionEffect effect : player.getActivePotionEffects()) {
             player.removePotionEffect(effect.getType());
         }
@@ -342,7 +344,6 @@ public class Game {
                     this.playingStage = true;
                     this.gameStatus = GameStatus.PLAYING;
                     for (Player runner : this.runners) {
-                        plugin.getTeams().addRunner(runner);
                         runner.teleport(runnersLocation);
                         plugin.getPlayerData(runner.getUniqueId()).setBoard(RigoxBoard.PLAYING);
                         plugin.getUtils().sendTitle(runner, 0, 20, 10, messagesFile.getString("messages.inGame.others.titles.runnersGo.toRunners.title"), messagesFile.getString("messages.inGame.others.titles.runnersGo.toRunners.subtitle"));
@@ -418,7 +419,10 @@ public class Game {
             int beast = random.nextInt(this.runners.size());
             Player nextBeast = this.runners.get(beast);
             this.beasts.add(nextBeast);
-            plugin.getItems(GameEquip.BEAST_KIT,nextBeast);
+            nextBeast.getInventory().clear();
+            nextBeast.getInventory().setItem(plugin.beastSlot,plugin.kitBeast);
+            nextBeast.getInventory().setItem(plugin.exitSlot,plugin.exitItem);
+            nextBeast.updateInventory();
             nextBeast.teleport(selectedBeast);
             this.times = 0;
             return;
@@ -429,12 +433,20 @@ public class Game {
         this.beasts.add(nextBeast);
         plugin.getItems(GameEquip.BEAST_KIT,nextBeast);
         nextBeast.teleport(selectedBeast);
+        nextBeast.getInventory().clear();
+        nextBeast.getInventory().setItem(plugin.beastSlot,plugin.kitBeast);
+        nextBeast.getInventory().setItem(plugin.exitSlot,plugin.exitItem);
+        nextBeast.updateInventory();
         this.runners.remove(nextBeast);
         this.spectators.remove(nextBeast);
         int Beast = random.nextInt(this.runners.size());
         Player NextBeast = this.runners.get(Beast);
         this.beasts.add(NextBeast);
         this.spectators.remove(NextBeast);
+        NextBeast.getInventory().clear();
+        NextBeast.getInventory().setItem(plugin.beastSlot,plugin.kitBeast);
+        NextBeast.getInventory().setItem(plugin.exitSlot,plugin.exitItem);
+        NextBeast.updateInventory();
         plugin.getItems(GameEquip.BEAST_KIT,NextBeast);
         nextBeast.teleport(selectedBeast);
         this.runners.remove(nextBeast);
@@ -495,11 +507,8 @@ public class Game {
         plugin.getPlayerData(player.getUniqueId()).setGame(null);
         plugin.getPlayerData(player.getUniqueId()).setBoard(RigoxBoard.LOBBY);
         updateSigns();
-        plugin.getTeams().addLobby(player);
     }
     public void restart() {
-        for (Player players : this.players)
-            plugin.getTeams().addLobby(players);
         this.players.clear();
         this.spectators.clear();
         this.beasts.clear();
@@ -508,7 +517,6 @@ public class Game {
         this.timer = 500;
         this.min = 2;
         this.max = 10;
-        this.runners.clear();
         this.beasts.clear();
         this.playingStage = false;
         this.endingStage = false;
