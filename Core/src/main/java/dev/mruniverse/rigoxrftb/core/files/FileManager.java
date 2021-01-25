@@ -190,7 +190,7 @@ public class FileManager {
         lists.add("<isWaiting>&fWaiting for");
         lists.add("<isWaiting>&a<arena_need> &fplayers to start");
         lists.add("<isSelecting>&fSelecting beast in &a<arena_time_number>");
-        lists.add("<isStarting>&fStarting in <arena_time_number> &f<arena_time_text>.");
+        lists.add("<isStarting>&fStarting in &a<arena_time_number> &f<arena_time_text>.");
         lists.add(" ");
         lists.add("&erigox.club");
         addConfig(Files.SCOREBOARD,"scoreboards.waiting.lines",lists);
