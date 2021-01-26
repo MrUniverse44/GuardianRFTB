@@ -349,6 +349,7 @@ public class Game {
                         beast.setFoodLevel(20);
                         beast.setHealth(20.0D);
                         beast.getInventory().clear();
+                        giveBeastInv(beast);
                         beast.setExp(0.0F);
                         beast.setLevel(0);
                         beast.setFireTicks(0);
@@ -589,6 +590,18 @@ public class Game {
         for(Player beast : this.beasts) {
             plugin.getPlayerData(beast.getUniqueId()).setBoard(RigoxBoard.STARTING);
         }
+    }
+    private int getSlot(ItemStack item) {
+        return plugin.getBeastInventory().get(item);
+    }
+    public void giveBeastInv(Player beast){
+        for(ItemStack inventory : plugin.getBeastInventory().keySet()) {
+            beast.getInventory().setItem(getSlot(inventory),inventory);
+        }
+        beast.getInventory().setHelmet(plugin.beastHelmet);
+        beast.getInventory().setChestplate(plugin.beastChestplate);
+        beast.getInventory().setLeggings(plugin.beastLeggings);
+        beast.getInventory().setBoots(plugin.beastBoots);
     }
     public void deathBeast(Player beast) {
         beasts.remove(beast);

@@ -36,14 +36,22 @@ public final class RigoxRFTB extends JavaPlugin {
     private ListenerUtil rigoxListeners;
     private BoardManager rigoxScoreboards;
     private GameManager rigoxGameManager;
+
     public ItemStack exitItem;
-    public Integer exitSlot;
     public ItemStack kitRunner;
-    public Integer RunnerSlot;
     public ItemStack kitBeast;
+    public ItemStack beastHelmet;
+    public ItemStack beastChestplate;
+    public ItemStack beastLeggings;
+    public ItemStack beastBoots;
+
+    public Integer exitSlot;
+    public Integer RunnerSlot;
     public Integer beastSlot;
+
     private final HashMap<UUID, PlayerManager> rigoxPlayers = new HashMap<>();
     private final HashMap<ItemStack, Integer> lobbyItems = new HashMap<>();
+    private final HashMap<ItemStack, Integer> beastInventory = new HashMap<>();
     private final HashMap<ItemStack, CurrentItem> currentItem = new HashMap<>();
     @Override
     public void onEnable() {
@@ -78,8 +86,70 @@ public final class RigoxRFTB extends JavaPlugin {
         // * NMS Setup
 
         nmsSetup();
+        FileConfiguration items = getFiles().getControl(Files.ITEMS);
+        // * Beast Items
         try {
-            FileConfiguration items = getFiles().getControl(Files.ITEMS);
+            for(String beastDefaultInv : items.getConfigurationSection("Playing.BeastInventory").getKeys(false)) {
+                String material = items.getString("Playing.BeastInventory." + beastDefaultInv + ".item");
+                if(material == null) material = "BED";
+                if(Material.getMaterial(material) != null) {
+                    String itemName = items.getString("Playing.BeastInventory." + beastDefaultInv + ".name");
+                    Integer slot = items.getInt("Playing.BeastInventory." + beastDefaultInv + ".slot");
+                    List<String> lore = items.getStringList("Playing.BeastInventory." + beastDefaultInv + ".lore");
+                    ItemStack item = getNMSHandler().getItemStack(Material.getMaterial(material), TextUtilities.recolor(itemName), TextUtilities.recolorLore(lore));
+                    beastInventory.put(item, slot);
+                }
+            }
+        } catch (Throwable throwable) {
+            getLogs().error("Can't load beast inventory items");
+            getLogs().error(throwable);
+        }
+        // * Beast Armor
+        try {
+            String ItemMaterial,ItemName;
+            List<String> ItemLore;
+            ItemStack item;
+            ItemMaterial = items.getString("Playing.BeastArmor.Helmet.item");
+            ItemName = items.getString("Playing.BeastArmor.Helmet.name");
+            ItemLore = items.getStringList("Playing.BeastArmor.Helmet.lore");
+            if(ItemMaterial == null) ItemMaterial = "DIAMOND_HELMET";
+            if(Material.getMaterial(ItemMaterial) != null) {
+                item = getNMSHandler().getItemStack(Material.getMaterial(ItemMaterial), TextUtilities.recolor(ItemName), TextUtilities.recolorLore(ItemLore));
+                beastHelmet = item;
+            }
+
+            ItemMaterial = items.getString("Playing.BeastArmor.Chestplate.item");
+            ItemName = items.getString("Playing.BeastArmor.Chestplate.name");
+            ItemLore = items.getStringList("Playing.BeastArmor.Chestplate.lore");
+            if(ItemMaterial == null) ItemMaterial = "DIAMOND_CHESTPLATE";
+            if(Material.getMaterial(ItemMaterial) != null) {
+                item = getNMSHandler().getItemStack(Material.getMaterial(ItemMaterial), TextUtilities.recolor(ItemName), TextUtilities.recolorLore(ItemLore));
+                beastChestplate = item;
+            }
+
+            ItemMaterial = items.getString("Playing.BeastArmor.Leggings.item");
+            ItemName = items.getString("Playing.BeastArmor.Leggings.name");
+            ItemLore = items.getStringList("Playing.BeastArmor.Leggings.lore");
+            if(ItemMaterial == null) ItemMaterial = "DIAMOND_LEGGINGS";
+            if(Material.getMaterial(ItemMaterial) != null) {
+                item = getNMSHandler().getItemStack(Material.getMaterial(ItemMaterial), TextUtilities.recolor(ItemName), TextUtilities.recolorLore(ItemLore));
+                beastLeggings = item;
+            }
+
+            ItemMaterial = items.getString("Playing.BeastArmor.Boots.item");
+            ItemName = items.getString("Playing.BeastArmor.Boots.name");
+            ItemLore = items.getStringList("Playing.BeastArmor.Boots.lore");
+            if(ItemMaterial == null) ItemMaterial = "DIAMOND_BOOTS";
+            if(Material.getMaterial(ItemMaterial) != null) {
+                item = getNMSHandler().getItemStack(Material.getMaterial(ItemMaterial), TextUtilities.recolor(ItemName), TextUtilities.recolorLore(ItemLore));
+                beastBoots = item;
+            }
+        } catch (Throwable throwable) {
+            getLogs().error("Can't load beast Default Armor");
+        }
+
+        // * Lobby Items
+        try {
             for (String lItems : items.getConfigurationSection("lobby").getKeys(false)) {
                 if(items.getBoolean("lobby." + lItems + ".toggle")) {
                     String material = items.getString("lobby." + lItems + ".item");
@@ -103,7 +173,6 @@ public final class RigoxRFTB extends JavaPlugin {
             List<String> ItemLore;
             Integer ItemSlot;
             ItemStack item;
-            FileConfiguration items = getFiles().getControl(Files.ITEMS);
             ItemMaterial = items.getString("InGame.RunnerKit.item");
             ItemName = items.getString("InGame.RunnerKit.name");
             ItemLore = items.getStringList("InGame.RunnerKit.lore");
@@ -183,6 +252,7 @@ public final class RigoxRFTB extends JavaPlugin {
             getLogs().error(throwable);
         }
     }
+    public HashMap<ItemStack,Integer> getBeastInventory() { return beastInventory; }
     public HashMap<ItemStack,Integer> getLobbyItems() { return lobbyItems; }
     public int getSlot(ItemStack itemStack) { return lobbyItems.get(itemStack); }
     public NMS getNMSHandler() { return nmsHandler; }
