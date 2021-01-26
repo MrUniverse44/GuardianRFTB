@@ -7,6 +7,7 @@ import dev.mruniverse.rigoxrftb.core.RigoxRFTB;
 import dev.mruniverse.rigoxrftb.core.enums.SaveMode;
 import dev.mruniverse.rigoxrftb.core.games.Game;
 import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
@@ -56,6 +57,10 @@ public class PlayerListeners implements Listener {
         if(file.getBoolean("settings.options.clearInventory-onJoin")) {
             player.getInventory().clear();
         }
+        player.getInventory().setHelmet(null);
+        player.getInventory().setChestplate(null);
+        player.getInventory().setLeggings(null);
+        player.getInventory().setBoots(null);
         for(ItemStack item : plugin.getLobbyItems().keySet()) {
             player.getInventory().setItem(plugin.getSlot(item),item);
         }
@@ -91,12 +96,14 @@ public class PlayerListeners implements Listener {
         try {
             FileConfiguration file = plugin.getFiles().getControl(Files.SETTINGS);
             if (file.getBoolean("settings.lobbyScoreboard-only-in-lobby-world")) {
-                if (file.getString("settings.lobbyLocation").equalsIgnoreCase("notSet")) {
+                String lC = file.getString("settings.lobbyLocation");
+                if(lC == null ) lC = "notSet";
+                if (lC.equalsIgnoreCase("notSet")) {
                     plugin.getLogs().error("-----------------------------");
                     plugin.getLogs().error("Can't show lobby-scoreboard, lobby location is not set");
                     plugin.getLogs().error("-----------------------------");
                 } else {
-                    String[] loc = file.getString("settings.lobbyLocation").split(",");
+                    String[] loc = lC.split(",");
                     World w = Bukkit.getWorld(loc[0]);
                     if (event.getPlayer().getWorld().equals(w)) {
                         if(plugin.getFiles().getControl(Files.SCOREBOARD).getBoolean("scoreboards.lobby.toggle")) {
@@ -169,18 +176,19 @@ public class PlayerListeners implements Listener {
         if(game != null) {
             if(game.beasts.contains(player)) {
                 player.teleport(game.beastLocation);
-                player.setGameMode(GameMode.SPECTATOR);
             } else {
                 player.teleport(game.runnersLocation);
-                player.setGameMode(GameMode.SPECTATOR);
             }
+            player.setGameMode(GameMode.SPECTATOR);
         }
     }
     @EventHandler
     public void lobbyDamage(EntityDamageEvent event) {
         if(event.getEntity().getType().equals(EntityType.PLAYER)) {
-            if (!plugin.getFiles().getControl(Files.SETTINGS).getString("settings.lobbyLocation").equalsIgnoreCase("notSet")) {
-                String[] loc = plugin.getFiles().getControl(Files.SETTINGS).getString("settings.lobbyLocation").split(",");
+            String lC = plugin.getFiles().getControl(Files.SETTINGS).getString("settings.lobbyLocation");
+            if(lC == null) lC = "notSet";
+            if (!lC.equalsIgnoreCase("notSet")) {
+                String[] loc = lC.split(",");
                 World w = Bukkit.getWorld(loc[0]);
                 if (event.getEntity().getWorld().equals(w)) {
                     event.setCancelled(true);
@@ -222,8 +230,10 @@ public class PlayerListeners implements Listener {
     @EventHandler
     public void lobbyHunger(FoodLevelChangeEvent event) {
         if(event.getEntity().getType().equals(EntityType.PLAYER)) {
-            if (!plugin.getFiles().getControl(Files.SETTINGS).getString("settings.lobbyLocation").equalsIgnoreCase("notSet")) {
-                String[] loc = plugin.getFiles().getControl(Files.SETTINGS).getString("settings.lobbyLocation").split(",");
+            String lC = plugin.getFiles().getControl(Files.SETTINGS).getString("settings.lobbyLocation");
+            if(lC == null) lC = "notSet";
+            if (!lC.equalsIgnoreCase("notSet")) {
+                String[] loc = lC.split(",");
                 World w = Bukkit.getWorld(loc[0]);
                 if (event.getEntity().getWorld().equals(w)) {
                     event.setFoodLevel(20);
@@ -271,7 +281,9 @@ public class PlayerListeners implements Listener {
             return;
         Player player = e.getPlayer();
         try {
-            if (e.getClickedBlock().getState() instanceof Sign) {
+            Block block = e.getClickedBlock();
+            if(block == null) return;
+            if (block.getState() instanceof Sign) {
                 for (Game game : plugin.getGameManager().getGames()) {
                     if (game.signs.contains(e.getClickedBlock().getLocation())) {
                         game.join(player);
@@ -286,12 +298,14 @@ public class PlayerListeners implements Listener {
         try {
             FileConfiguration file = plugin.getFiles().getControl(Files.SETTINGS);
             if (file.getBoolean("settings.options.joinLobbyTeleport")) {
-                if (file.getString("settings.lobbyLocation").equalsIgnoreCase("notSet")) {
+                String lC = file.getString("settings.lobbyLocation");
+                if(lC == null) lC = "notSet";
+                if (lC.equalsIgnoreCase("notSet")) {
                     plugin.getLogs().error("-----------------------------");
                     plugin.getLogs().error("Can't teleport player to lobby location, lobby location is not set");
                     plugin.getLogs().error("-----------------------------");
                 } else {
-                    String[] loc = file.getString("settings.lobbyLocation").split(",");
+                    String[] loc = lC.split(",");
                     World w = Bukkit.getWorld(loc[0]);
                     double x = Double.parseDouble(loc[1]);
                     double y = Double.parseDouble(loc[2]);
