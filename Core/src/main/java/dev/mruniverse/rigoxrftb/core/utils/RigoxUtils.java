@@ -113,6 +113,8 @@ public class RigoxUtils {
                             .replace("<center>","             ")
                             .replace("%gameType%",plugin.getPlayerData(player.getUniqueId()).getGame().gameType.toString())
                             .replace("%map_name%",plugin.getPlayerData(player.getUniqueId()).getGame().getName())
+                            .replace("[px]","⚫")
+                            .replace("%game%","+5")
                             .replace("[bx]","▄");
                     if(!line.contains("<isRunner>")) {
                         sendMessage(player, line);
@@ -124,6 +126,8 @@ public class RigoxUtils {
                             .replace("<center>","             ")
                             .replace("%gameType%",plugin.getPlayerData(player.getUniqueId()).getGame().gameType.toString())
                             .replace("%map_name%",plugin.getPlayerData(player.getUniqueId()).getGame().getName())
+                            .replace("[px]","⚫")
+                            .replace("%game%","+5")
                             .replace("[bx]","▄");
                     if(!line.contains("<isBeast>")) {
                         sendMessage(player, line);

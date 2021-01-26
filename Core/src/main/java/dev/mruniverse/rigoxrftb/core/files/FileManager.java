@@ -276,7 +276,7 @@ public class FileManager {
         lists.add("&a[bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx]");
         lists.add("<center>&e&l%gameType% - %map_name%");
         lists.add(" ");
-        lists.add("<center>&7%winner_team% &e&lWINNER &7%looser_team%");
+        lists.add("<center>&a%winner_team% &e&lWINNER &c%looser_team%");
         lists.add(" ");
         lists.add("&a[bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx]");
         addConfig(Files.MESSAGES,"messages.inGame.infoList.endInfo",lists);
