@@ -400,6 +400,8 @@ public class Game {
                     this.gameStatus = GameStatus.PLAYING;
                     for (Player runner : this.runners) {
                         runner.teleport(runnersLocation);
+                        runner.getInventory().clear();
+                        runner.updateInventory();
                         plugin.getPlayerData(runner.getUniqueId()).setBoard(RigoxBoard.PLAYING);
                         plugin.getUtils().sendList(runner,messagesFile.getStringList("messages.inGame.infoList.startInfo"));
                         plugin.getUtils().sendTitle(runner, 0, 20, 10, messagesFile.getString("messages.inGame.others.titles.runnersGo.toRunners.title"), messagesFile.getString("messages.inGame.others.titles.runnersGo.toRunners.subtitle"));
@@ -602,6 +604,7 @@ public class Game {
     }
     public void winRunners() {
         for(Player player : this.players) {
+            if(this.spectators.contains(player)) player.setGameMode(GameMode.SPECTATOR);
             if(gameSound3 != null) {
                 player.playSound(player.getLocation(),gameSound3, 10.0F, 1.0F);
             }

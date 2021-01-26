@@ -149,11 +149,12 @@ public class PlayerListeners implements Listener {
                 player.setGameMode(GameMode.SPECTATOR);
                 game.deathBeast(player);
                 player.teleport(game.beastLocation);
+                player.setGameMode(GameMode.SPECTATOR);
             } else {
                 player.spigot().respawn();
-                player.setGameMode(GameMode.SPECTATOR);
                 game.deathRunner(player);
                 player.teleport(game.runnersLocation);
+                player.setGameMode(GameMode.SPECTATOR);
 
             }
             player.setGameMode(GameMode.SPECTATOR);
@@ -224,7 +225,9 @@ public class PlayerListeners implements Listener {
         if (!player.hasPermission("RigoxRFTB.admin.signCreate"))
             return;
         try {
-            if (event.getLine(0).equalsIgnoreCase("[RFTB]")) {
+            String line1 = event.getLine(0);
+            if(line1 == null) return;
+            if (line1.equalsIgnoreCase("[RFTB]")) {
                 String name = event.getLine(1);
                 if(name == null) name = "null";
                 final Game game = plugin.getGameManager().getGame(name);
@@ -280,7 +283,13 @@ public class PlayerListeners implements Listener {
                     float yaw = Float.parseFloat(loc[4]);
                     float pitch = Float.parseFloat(loc[5]);
                     Location location = new Location(w, x, y, z, yaw, pitch);
-                    event.getPlayer().teleport(location);
+                    plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin,() -> {
+                        try {
+                            event.getPlayer().teleport(location);
+                        } catch (Exception ex) {
+                            plugin.getLogs().error("Can't teleport player to lobby on join");
+                        }
+                    });
                     if(plugin.getFiles().getControl(Files.SCOREBOARD).getBoolean("scoreboards.lobby.toggle")) {
                         plugin.getScoreboards().setScoreboard(RigoxBoard.LOBBY,event.getPlayer());
                     }
