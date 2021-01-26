@@ -56,7 +56,6 @@ public final class NMSHandler implements NMS {
         PacketPlayOutSpawnEntityLiving packet = new PacketPlayOutSpawnEntityLiving(getBossBar(player));
         ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
     }
-
     public void sendBossBar(Player player, String message,float percentage) {
         if(!BossHasPlayer(player)) {
             bossBar.put(player,new EntityWither(((CraftWorld)player.getWorld()).getHandle()));

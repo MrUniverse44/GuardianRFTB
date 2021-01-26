@@ -95,7 +95,6 @@ public final class NMSHandler implements NMS {
         addItem.setItemMeta(addItemMeta);
         return addItem;
     }
-
     private EntityWither getBossBar(Player player) {
         return bossBar.get(player);
     }

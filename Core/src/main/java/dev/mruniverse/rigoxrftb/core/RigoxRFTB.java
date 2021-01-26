@@ -3,24 +3,24 @@ package dev.mruniverse.rigoxrftb.core;
 import dev.mruniverse.rigoxrftb.core.enums.CurrentItem;
 import dev.mruniverse.rigoxrftb.core.enums.Files;
 import dev.mruniverse.rigoxrftb.core.enums.NMSenum;
+import dev.mruniverse.rigoxrftb.core.enums.SaveMode;
 import dev.mruniverse.rigoxrftb.core.files.FileManager;
 import dev.mruniverse.rigoxrftb.core.games.GameEquip;
 import dev.mruniverse.rigoxrftb.core.games.GameManager;
 import dev.mruniverse.rigoxrftb.core.listeners.ListenerUtil;
-import dev.mruniverse.rigoxrftb.core.enums.SaveMode;
 import dev.mruniverse.rigoxrftb.core.nms.NMS;
 import dev.mruniverse.rigoxrftb.core.utils.Logger;
+import dev.mruniverse.rigoxrftb.core.utils.RigoxUtils;
 import dev.mruniverse.rigoxrftb.core.utils.TextUtilities;
+import dev.mruniverse.rigoxrftb.core.utils.players.PlayerManager;
 import dev.mruniverse.rigoxrftb.core.utils.players.PlayerRunnable;
 import dev.mruniverse.rigoxrftb.core.utils.scoreboards.BoardManager;
-import dev.mruniverse.rigoxrftb.core.utils.RigoxUtils;
-import dev.mruniverse.rigoxrftb.core.utils.players.PlayerManager;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.omg.CORBA.Current;
 
 import java.util.HashMap;
 import java.util.List;
@@ -149,6 +149,12 @@ public final class RigoxRFTB extends JavaPlugin {
         // * Tasks
 
         getServer().getScheduler().runTaskTimerAsynchronously(this,new PlayerRunnable(this),0L,20L);
+    }
+    private World getWorld() {
+        if(getServer().getWorlds().size() != 0) {
+            return getServer().getWorlds().get(0);
+        }
+        return null;
     }
     public CurrentItem getCurrent(ItemStack item) {
         return currentItem.get(item);

@@ -1,8 +1,8 @@
 package dev.mruniverse.rigoxrftb.core.utils;
 
+import dev.mruniverse.rigoxrftb.core.RigoxRFTB;
 import dev.mruniverse.rigoxrftb.core.enums.Files;
 import dev.mruniverse.rigoxrftb.core.enums.RigoxBoard;
-import dev.mruniverse.rigoxrftb.core.RigoxRFTB;
 import dev.mruniverse.rigoxrftb.core.games.Game;
 import dev.mruniverse.rigoxrftb.core.games.GameTeam;
 import dev.mruniverse.rigoxrftb.core.games.GameType;
@@ -12,6 +12,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -104,6 +105,7 @@ public class RigoxUtils {
             }
         }
     }
+
     public void sendList(Player player,List<String> list) {
         if(list == null) list = new ArrayList<>();
         if(plugin.getPlayerData(player.getUniqueId()).getGame() != null) {

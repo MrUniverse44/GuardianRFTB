@@ -348,6 +348,7 @@ public class Game {
                         beast.teleport(this.beastLocation);
                         beast.setFoodLevel(20);
                         beast.setHealth(20.0D);
+                        beast.getInventory().clear();
                         beast.setExp(0.0F);
                         beast.setLevel(0);
                         beast.setFireTicks(0);
@@ -406,6 +407,7 @@ public class Game {
                         plugin.getUtils().sendList(runner,messagesFile.getStringList("messages.inGame.infoList.startInfo"));
                         plugin.getUtils().sendTitle(runner, 0, 20, 10, messagesFile.getString("messages.inGame.others.titles.runnersGo.toRunners.title"), messagesFile.getString("messages.inGame.others.titles.runnersGo.toRunners.subtitle"));
                     }
+                    this.fakeStarting = 10;
                     for(Player beast : this.beasts) {
                         plugin.getPlayerData(beast.getUniqueId()).setBoard(RigoxBoard.BEAST_SPAWN);
                     }
@@ -589,15 +591,17 @@ public class Game {
         }
     }
     public void deathBeast(Player beast) {
-        this.beasts.remove(beast);
-        this.spectators.add(beast);
+        beasts.remove(beast);
+        spectators.add(beast);
+        beast.setGameMode(GameMode.SPECTATOR);
         if(beasts.size() == 0) {
             winRunners();
         }
     }
     public void deathRunner(Player runner) {
-        this.runners.remove(runner);
-        this.spectators.add(runner);
+        runners.remove(runner);
+        spectators.add(runner);
+        runner.setGameMode(GameMode.SPECTATOR);
         if(runners.size() == 0) {
             winBeasts();
         }
