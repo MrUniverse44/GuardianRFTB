@@ -12,6 +12,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -24,6 +25,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
@@ -158,6 +160,20 @@ public class PlayerListeners implements Listener {
 
             }
             player.setGameMode(GameMode.SPECTATOR);
+        }
+    }
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onDeathRespawn(PlayerRespawnEvent event) {
+        final Player player = event.getPlayer();
+        Game game = plugin.getPlayerData(player.getUniqueId()).getGame();
+        if(game != null) {
+            if(game.beasts.contains(player)) {
+                player.teleport(game.beastLocation);
+                player.setGameMode(GameMode.SPECTATOR);
+            } else {
+                player.teleport(game.runnersLocation);
+                player.setGameMode(GameMode.SPECTATOR);
+            }
         }
     }
     @EventHandler

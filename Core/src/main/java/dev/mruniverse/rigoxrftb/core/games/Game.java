@@ -249,6 +249,10 @@ public class Game {
         player.setAllowFlight(false);
         player.setHealth(20.0D);
         player.setFireTicks(0);
+        player.getInventory().setHelmet(null);
+        player.getInventory().setChestplate(null);
+        player.getInventory().setLeggings(null);
+        player.getInventory().setBoots(null);
         player.getInventory().setItem(plugin.RunnerSlot,plugin.kitRunner);
         player.getInventory().setItem(plugin.exitSlot,plugin.exitItem);
         for (PotionEffect effect : player.getActivePotionEffects()) {
@@ -541,6 +545,10 @@ public class Game {
                 plugin.getUtils().sendMessage(announce, chosenBeast.replace("%player%", nextBeast.getName()));
             }
             nextBeast.getInventory().clear();
+            nextBeast.getInventory().setHelmet(null);
+            nextBeast.getInventory().setChestplate(null);
+            nextBeast.getInventory().setLeggings(null);
+            nextBeast.getInventory().setBoots(null);
             nextBeast.getInventory().setItem(plugin.beastSlot, plugin.kitBeast);
             nextBeast.getInventory().setItem(plugin.exitSlot, plugin.exitItem);
             nextBeast.updateInventory();
@@ -556,6 +564,10 @@ public class Game {
         plugin.getItems(GameEquip.BEAST_KIT, nextBeast);
         nextBeast.teleport(selectedBeast);
         nextBeast.getInventory().clear();
+        nextBeast.getInventory().setHelmet(null);
+        nextBeast.getInventory().setChestplate(null);
+        nextBeast.getInventory().setLeggings(null);
+        nextBeast.getInventory().setBoots(null);
         nextBeast.getInventory().setItem(plugin.beastSlot, plugin.kitBeast);
         nextBeast.getInventory().setItem(plugin.exitSlot, plugin.exitItem);
         nextBeast.updateInventory();
@@ -570,6 +582,10 @@ public class Game {
         this.runners.remove(NextBeast);
         this.spectators.remove(NextBeast);
         NextBeast.getInventory().clear();
+        NextBeast.getInventory().setHelmet(null);
+        NextBeast.getInventory().setChestplate(null);
+        NextBeast.getInventory().setLeggings(null);
+        NextBeast.getInventory().setBoots(null);
         NextBeast.getInventory().setItem(plugin.beastSlot,plugin.kitBeast);
         for(Player announce : this.players) {
             plugin.getUtils().sendMessage(announce,chosenBeast.replace("%player%",NextBeast.getName()));
@@ -762,6 +778,10 @@ public class Game {
         this.runners.remove(player);
         this.beasts.remove(player);
         this.spectators.remove(player);
+        player.getInventory().setHelmet(null);
+        player.getInventory().setChestplate(null);
+        player.getInventory().setLeggings(null);
+        player.getInventory().setBoots(null);
         String LST = settingsFile.getString("settings.lobbyLocation");
         if(LST == null) LST = "notSet";
         if(player.isOnline()) {
