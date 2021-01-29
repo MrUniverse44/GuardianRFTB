@@ -12,7 +12,7 @@ import java.util.List;
 
 public class FileManager {
     private final RigoxRFTB plugin;
-    private FileConfiguration rGames,rMySQL,rMenus,rItems,rMessages,rScoreboard,rSettings;
+    private FileConfiguration rGames,rMySQL,rMenus,rItems,rMessages,rScoreboard,rSettings,rData,rChests;
     private final File dataFolder;
     private File Games;
     private File MySQL;
@@ -21,6 +21,8 @@ public class FileManager {
     private File Messages;
     private File Scoreboard;
     private File Settings;
+    private File Data;
+    private File Chests;
     public FileManager(RigoxRFTB main) {
         plugin = main;
         dataFolder = main.getDataFolder();
@@ -28,6 +30,8 @@ public class FileManager {
     public void loadFiles() {
         loadFolder(dataFolder,"Main Folder");
         Games = new File(dataFolder,"games.yml");
+        Data = new File(dataFolder,"data.yml");
+        Chests = new File(dataFolder,"chests.yml");
         MySQL = new File(dataFolder,"mysql.yml");
         Menus = new File(dataFolder, "menus.yml");
         Items = new File(dataFolder, "items.yml");
@@ -364,6 +368,16 @@ public class FileManager {
     }
     public void addConfig(Files fileToAdd,String path,Object value) {
         switch(fileToAdd) {
+            case DATA:
+                if(!getControl(Files.DATA).contains(path)) {
+                    getControl(Files.DATA).set(path,value);
+                }
+                return;
+            case CHESTS:
+                if(!getControl(Files.CHESTS).contains(path)) {
+                    getControl(Files.CHESTS).set(path,value);
+                }
+                return;
             case MESSAGES:
                 if(!getControl(Files.MESSAGES).contains(path)) {
                     getControl(Files.MESSAGES).set(path,value);
@@ -405,6 +419,12 @@ public class FileManager {
             case GAMES:
                 if(rGames == null) reloadFile(SaveMode.GAMES_FILES);
                 return rGames;
+            case DATA:
+                if(rData == null) reloadFile(SaveMode.DATA);
+                return rGames;
+            case CHESTS:
+                if(rChests == null) reloadFile(SaveMode.CHESTS);
+                return rChests;
             case MYSQL:
                 if(rMySQL == null) reloadFile(SaveMode.MYSQL);
                 return rMySQL;
@@ -429,6 +449,12 @@ public class FileManager {
         loadFiles();
         if(Mode.equals(SaveMode.MESSAGES) || Mode.equals(SaveMode.ALL)) {
             rMessages = YamlConfiguration.loadConfiguration(Messages);
+        }
+        if(Mode.equals(SaveMode.DATA) || Mode.equals(SaveMode.ALL)) {
+            rData = YamlConfiguration.loadConfiguration(Data);
+        }
+        if(Mode.equals(SaveMode.CHESTS) || Mode.equals(SaveMode.ALL)) {
+            rChests = YamlConfiguration.loadConfiguration(Chests);
         }
         if(Mode.equals(SaveMode.ITEMS) || Mode.equals(SaveMode.ALL)) {
             rItems = YamlConfiguration.loadConfiguration(Items);
@@ -456,6 +482,12 @@ public class FileManager {
             }
             if(Mode.equals(SaveMode.MYSQL) || Mode.equals(SaveMode.ALL)) {
                 getControl(Files.MYSQL).save(MySQL);
+            }
+            if(Mode.equals(SaveMode.DATA) || Mode.equals(SaveMode.ALL)) {
+                getControl(Files.DATA).save(Data);
+            }
+            if(Mode.equals(SaveMode.CHESTS) || Mode.equals(SaveMode.ALL)) {
+                getControl(Files.CHESTS).save(Chests);
             }
             if(Mode.equals(SaveMode.SCOREBOARDS) || Mode.equals(SaveMode.ALL)) {
                 getControl(Files.SCOREBOARD).save(Scoreboard);

@@ -4,6 +4,8 @@ public enum SaveMode {
     ALL,
     SETTINGS,
     MESSAGES,
+    DATA,
+    CHESTS,
     SCOREBOARDS,
     MENUS,
     GAMES_FILES,

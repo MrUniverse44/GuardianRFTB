@@ -3,9 +3,9 @@ package dev.mruniverse.rigoxrftb.core.utils;
 import dev.mruniverse.rigoxrftb.core.RigoxRFTB;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-
+@SuppressWarnings("unused")
 public class Logger {
-    private RigoxRFTB plugin;
+    private final RigoxRFTB plugin;
     public Logger(RigoxRFTB main) {
         plugin = main;
     }
@@ -31,12 +31,17 @@ public class Logger {
      * @param throwable throwable to send.
      */
     public void error(Throwable throwable) {
+        String location = throwable.getClass().getName();
+        String error = throwable.getClass().getSimpleName();
         sendMessage("&f[&cERROR &7| &fRigox RFTB] -------------------------");
-        sendMessage("&f[&cERROR &7| &fRigox RFTB] Class: " + throwable.getClass().getName() +".class");
+        sendMessage("&f[&cERROR &7| &fRigox RFTB] Location: " + location.replace("." + error,""));
+        sendMessage("&f[&cERROR &7| &fRigox RFTB] Error: " + error);
         if(throwable.getStackTrace() != null) {
             sendMessage("&f[&cERROR &7| &fRigox RFTB] StackTrace: ");
             for(StackTraceElement line : throwable.getStackTrace()) {
-                sendMessage("&f[&cERROR &7| &fRigox RFTB] (" + line.getLineNumber() + ") " + line.toString());
+                if(line.toString().contains("mruniverse")) {
+                    sendMessage("&f[&cERROR &7| &fRigox RFTB] (" + line.getLineNumber() + ") " + line.toString());
+                }
             }
         }
         sendMessage("&f[&cERROR &7| &fRigox RFTB]  -------------------------");
