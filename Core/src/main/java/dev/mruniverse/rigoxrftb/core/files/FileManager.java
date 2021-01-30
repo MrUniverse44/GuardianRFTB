@@ -3,6 +3,7 @@ package dev.mruniverse.rigoxrftb.core.files;
 import dev.mruniverse.rigoxrftb.core.enums.Files;
 import dev.mruniverse.rigoxrftb.core.RigoxRFTB;
 import dev.mruniverse.rigoxrftb.core.enums.SaveMode;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -69,10 +70,16 @@ public class FileManager {
     }
 
     public void startMenus() {
-
-        // * Items
-
         List<String> menuList = new ArrayList<>();
+        addConfig(Files.MENUS, "menus.shop.inventoryName","&8Shop Menu");
+        addConfig(Files.MENUS, "menus.shop.inventoryRows",6);
+        if(!Bukkit.getServer().getVersion().contains("1.8")) {
+            menuList.add("ENTITY_EXPERIENCE_ORB_PICKUP");
+        } else {
+            menuList.add("ORB_PICKUP");
+        }
+        addConfig(Files.MENUS, "menus.shop.inventorySounds",menuList);
+        menuList = new ArrayList<>();
         addConfig(Files.MENUS, "menus.shop.KitRunner.name", "&aKits: Runner");
         addConfig(Files.MENUS, "menus.shop.KitRunner.slot", 21);
         menuList.add("&8RigoxRFTB");
@@ -99,7 +106,6 @@ public class FileManager {
         addConfig(Files.MENUS, "menus.shop.Boost.item","EXPERIENCE_BOTTLE");
         menuList.remove("&eClick to open boost menu");
         menuList.add("&erigox.club");
-        // * Inventory Fill
         addConfig(Files.MENUS, "fill-inventory.shop.fillOne.item","STAINED_GLASS_PANE:5");
         addConfig(Files.MENUS, "fill-inventory.shop.fillOne.name","&aRFTB Shop");
         addConfig(Files.MENUS, "fill-inventory.shop.fillOne.lore",menuList);
@@ -133,9 +139,15 @@ public class FileManager {
         addConfig(Files.SETTINGS,"settings.update-check",true);
         addConfig(Files.SETTINGS,"settings.maxTime",500);
         addConfig(Files.SETTINGS,"settings.lobbyLocation","notSet");
-        addConfig(Files.SETTINGS,"settings.defaultSounds.sound1","BLOCK_NOTE_BLOCK_HARP");
-        addConfig(Files.SETTINGS,"settings.defaultSounds.sound2","ENTITY_ENDER_DRAGON_GROWL");
-        addConfig(Files.SETTINGS,"settings.defaultSounds.sound3","ENTITY_EXPERIENCE_ORB_PICKUP");
+        if(!Bukkit.getServer().getVersion().contains("1.8")) {
+            addConfig(Files.SETTINGS, "settings.defaultSounds.sound1", "BLOCK_NOTE_BLOCK_HARP");
+            addConfig(Files.SETTINGS, "settings.defaultSounds.sound2", "ENTITY_ENDER_DRAGON_GROWL");
+            addConfig(Files.SETTINGS, "settings.defaultSounds.sound3", "ENTITY_EXPERIENCE_ORB_PICKUP");
+        } else {
+            addConfig(Files.SETTINGS, "settings.defaultSounds.sound1", "NOTE_STICKS");
+            addConfig(Files.SETTINGS, "settings.defaultSounds.sound2", "ENDERDRAGON_GROWL");
+            addConfig(Files.SETTINGS, "settings.defaultSounds.sound3", "ORB_PICKUP");
+        }
         addConfig(Files.SETTINGS,"settings.options.joinLobbyTeleport",false);
         addConfig(Files.SETTINGS,"settings.options.joinHeal",true);
         addConfig(Files.SETTINGS,"settings.options.joinAdventureGamemode",true);
