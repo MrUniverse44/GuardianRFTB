@@ -67,7 +67,69 @@ public class FileManager {
             plugin.getLogs().info("Folder: &b" + folderName + "&f created!");
         }
     }
+
+    public void startMenus() {
+
+        // * Items
+
+        List<String> menuList = new ArrayList<>();
+        addConfig(Files.MENUS, "menus.shop.KitRunner.name", "&aKits: Runner");
+        addConfig(Files.MENUS, "menus.shop.KitRunner.slot", 21);
+        menuList.add("&8RigoxRFTB");
+        menuList.add("&eClick to open kit runners menu");
+        addConfig(Files.MENUS, "menus.shop.KitRunner.lore", menuList);
+        addConfig(Files.MENUS, "menus.shop.KitRunner.item", "MAP");
+        menuList.remove("&eClick to open kit runners menu");
+        addConfig(Files.MENUS, "menus.shop.Craft.name", "&aCraft Coins");
+        addConfig(Files.MENUS, "menus.shop.Craft.slot", 22);
+        menuList.add("&eClick to open Coins menu");
+        addConfig(Files.MENUS, "menus.shop.Craft.lore", menuList);
+        addConfig(Files.MENUS, "menus.shop.Craft.item", "BREWING_STAND");
+        menuList.remove("&eClick to open Coins menu");
+        addConfig(Files.MENUS, "menus.shop.KitBeast.name", "&aKits: Beast");
+        addConfig(Files.MENUS, "menus.shop.KitBeast.slot", 23);
+        menuList.add("&eClick to open kit beasts menu");
+        addConfig(Files.MENUS, "menus.shop.KitBeast.lore",menuList);
+        addConfig(Files.MENUS, "menus.shop.KitBeast.item","FIREWORK");
+        menuList.remove("&eClick to open kit beasts menu");
+        addConfig(Files.MENUS, "menus.shop.Boost.name","&aGame Booster");
+        addConfig(Files.MENUS, "menus.shop.Boost.slot",31);
+        menuList.add("&eClick to open boost menu");
+        addConfig(Files.MENUS, "menus.shop.Boost.lore",menuList);
+        addConfig(Files.MENUS, "menus.shop.Boost.item","EXPERIENCE_BOTTLE");
+        menuList.remove("&eClick to open boost menu");
+        menuList.add("&erigox.club");
+        // * Inventory Fill
+        addConfig(Files.MENUS, "fill-inventory.shop.fillOne.item","STAINED_GLASS_PANE:5");
+        addConfig(Files.MENUS, "fill-inventory.shop.fillOne.name","&aRFTB Shop");
+        addConfig(Files.MENUS, "fill-inventory.shop.fillOne.lore",menuList);
+        addConfig(Files.MENUS, "fill-inventory.shop.fillOne.list.type","ONLY");
+        List<Integer> menuValues = new ArrayList<>();
+        menuValues.add(0);
+        menuValues.add(1);
+        menuValues.add(7);
+        menuValues.add(8);
+        menuValues.add(9);
+        menuValues.add(17);
+        menuValues.add(36);
+        menuValues.add(44);
+        menuValues.add(45);
+        menuValues.add(46);
+        menuValues.add(52);
+        menuValues.add(53);
+        addConfig(Files.MENUS, "fill-inventory.shop.fillTwo.list.values",menuValues);
+        addConfig(Files.MENUS, "fill-inventory.shop.fillTwo.item","STAINED_GLASS_PANE:15");
+        addConfig(Files.MENUS, "fill-inventory.shop.fillTwo.name","&aRFTB Shop");
+        addConfig(Files.MENUS, "fill-inventory.shop.fillTwo.lore",menuList);
+        addConfig(Files.MENUS, "fill-inventory.shop.fillTwo.list.type","IGNORE");
+        menuValues.add(21);
+        menuValues.add(22);
+        menuValues.add(23);
+        menuValues.add(31);
+        addConfig(Files.MENUS, "fill-inventory.shop.fillTwo.list.values",menuValues);
+    }
     public void loadConfiguration() {
+        startMenus();
         addConfig(Files.SETTINGS,"settings.update-check",true);
         addConfig(Files.SETTINGS,"settings.maxTime",500);
         addConfig(Files.SETTINGS,"settings.lobbyLocation","notSet");

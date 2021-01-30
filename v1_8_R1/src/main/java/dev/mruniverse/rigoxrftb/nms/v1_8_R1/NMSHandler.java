@@ -81,7 +81,6 @@ public final class NMSHandler implements NMS {
     public boolean BossHasPlayer(Player player) {
         return bossBar.containsKey(player);
     }
-
     public ItemStack getItemStack(Material material, String itemName, List<String> lore) {
         ItemStack addItem = new ItemStack(material, 1);
         ItemMeta addItemMeta = addItem.getItemMeta();
