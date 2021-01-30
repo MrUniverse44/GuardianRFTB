@@ -4,6 +4,7 @@ import dev.mruniverse.rigoxrftb.core.enums.Files;
 import dev.mruniverse.rigoxrftb.core.RigoxRFTB;
 import dev.mruniverse.rigoxrftb.core.enums.SaveMode;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -548,6 +549,13 @@ public class FileManager {
         if(Mode.equals(SaveMode.GAMES_FILES) || Mode.equals(SaveMode.ALL)) {
             rGames = YamlConfiguration.loadConfiguration(Games);
         }
+    }
+    public List<String> getContent(Files file,String path,boolean getKeys) {
+        List<String> rx = new ArrayList<>();
+        ConfigurationSection section = getControl(file).getConfigurationSection(path);
+        if(section == null) return rx;
+        rx.addAll(section.getKeys(getKeys));
+        return rx;
     }
     public void save(SaveMode Mode) {
         try {

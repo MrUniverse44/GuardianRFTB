@@ -4,6 +4,7 @@ import dev.mruniverse.rigoxrftb.core.enums.CurrentItem;
 import dev.mruniverse.rigoxrftb.core.enums.Files;
 import dev.mruniverse.rigoxrftb.core.enums.NMSenum;
 import dev.mruniverse.rigoxrftb.core.enums.SaveMode;
+import dev.mruniverse.rigoxrftb.core.files.DataStorage;
 import dev.mruniverse.rigoxrftb.core.files.FileManager;
 import dev.mruniverse.rigoxrftb.core.games.GameEquip;
 import dev.mruniverse.rigoxrftb.core.games.GameManager;
@@ -37,6 +38,7 @@ public final class RigoxRFTB extends JavaPlugin {
     private ListenerUtil rigoxListeners;
     private BoardManager rigoxScoreboards;
     private GameManager rigoxGameManager;
+    private DataStorage dataStorage;
 
     public ItemStack exitItem;
     public ItemStack kitRunner;
@@ -225,6 +227,11 @@ public final class RigoxRFTB extends JavaPlugin {
             getLogs().error(throwable);
         }
 
+        // * Data Storage
+
+        dataStorage = new DataStorage(this);
+        dataStorage.loadDatabase();
+
         // * Scoreboard Setup
 
         rigoxScoreboards = new BoardManager(this);
@@ -272,15 +279,10 @@ public final class RigoxRFTB extends JavaPlugin {
     public NMS getNMSHandler() { return nmsHandler; }
     public boolean hasPAPI() { return hasPAPI; }
     public ListenerUtil getListener() { return rigoxListeners; }
-    public static RigoxRFTB getInstance() {
-        return instance;
-    }
-    public FileManager getFiles() {
-        return fileManager;
-    }
-    public GameManager getGameManager() {
-        return rigoxGameManager;
-    }
+    public static RigoxRFTB getInstance() { return instance; }
+    public FileManager getFiles() { return fileManager; }
+    public GameManager getGameManager() { return rigoxGameManager; }
+    public DataStorage getData() { return dataStorage; }
     public Logger getLogs() { return logger; }
     public RigoxUtils getUtils() { return rigoxUtils; }
     public BoardManager getScoreboards() { return rigoxScoreboards; }
@@ -292,16 +294,8 @@ public final class RigoxRFTB extends JavaPlugin {
     public void getItems(GameEquip gameEquipment, Player player) {
 
     }
-    public boolean existPlayer(Player player) {
-        return rigoxPlayers.containsKey(player.getUniqueId());
-    }
-    public void removePlayer(Player player) {
-        rigoxPlayers.remove(player.getUniqueId());
-    }
-    public HashMap<UUID, PlayerManager> getRigoxPlayers() {
-        return rigoxPlayers;
-    }
-    public PlayerManager getPlayerData(UUID uuid) {
-        return rigoxPlayers.get(uuid);
-    }
+    public boolean existPlayer(Player player) { return rigoxPlayers.containsKey(player.getUniqueId()); }
+    public void removePlayer(Player player) { rigoxPlayers.remove(player.getUniqueId()); }
+    public HashMap<UUID, PlayerManager> getRigoxPlayers() { return rigoxPlayers; }
+    public PlayerManager getPlayerData(UUID uuid) { return rigoxPlayers.get(uuid); }
 }
