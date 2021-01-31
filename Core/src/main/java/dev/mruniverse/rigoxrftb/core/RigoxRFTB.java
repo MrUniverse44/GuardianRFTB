@@ -26,6 +26,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public final class RigoxRFTB extends JavaPlugin {
@@ -90,20 +91,26 @@ public final class RigoxRFTB extends JavaPlugin {
 
         nmsSetup();
         FileConfiguration items = getFiles().getControl(Files.ITEMS);
+        ConfigurationSection section;
         // * Beast Items
         try {
-            ConfigurationSection section = items.getConfigurationSection("Playing.BeastInventory");
-            if(section == null) return;
+            section = items.getConfigurationSection("Playing.BeastInventory");
+            if(section == null) throw new Throwable("Can't found beast inventory section in items.yml");
             for(String beastDefaultInv : section.getKeys(false)) {
                 String material = items.getString("Playing.BeastInventory." + beastDefaultInv + ".item");
                 if(material == null) material = "BED";
-                XMaterial m = XMaterial.valueOf(material);
-                if(m.parseMaterial() != null) {
-                    String itemName = items.getString("Playing.BeastInventory." + beastDefaultInv + ".name");
-                    Integer slot = items.getInt("Playing.BeastInventory." + beastDefaultInv + ".slot");
-                    List<String> lore = items.getStringList("Playing.BeastInventory." + beastDefaultInv + ".lore");
-                    ItemStack item = getNMSHandler().getItemStack(m.parseMaterial(), TextUtilities.recolor(itemName), TextUtilities.recolorLore(lore));
-                    beastInventory.put(item, slot);
+                Optional<XMaterial> optionalXMaterial = XMaterial.matchXMaterial(material);
+                if(optionalXMaterial.isPresent()) {
+                    XMaterial m = optionalXMaterial.get();
+                    if (m.parseMaterial() != null) {
+                        String itemName = items.getString("Playing.BeastInventory." + beastDefaultInv + ".name");
+                        Integer slot = items.getInt("Playing.BeastInventory." + beastDefaultInv + ".slot");
+                        List<String> lore = items.getStringList("Playing.BeastInventory." + beastDefaultInv + ".lore");
+                        ItemStack item = getNMSHandler().getItemStack(m.parseMaterial(), TextUtilities.recolor(itemName), TextUtilities.recolorLore(lore));
+                        beastInventory.put(item, slot);
+                    }
+                } else {
+                    getLogs().error("Item: " + material + " doesn't exists.");
                 }
             }
         } catch (Throwable throwable) {
@@ -116,44 +123,62 @@ public final class RigoxRFTB extends JavaPlugin {
             List<String> ItemLore;
             ItemStack item;
             XMaterial m;
+            Optional<XMaterial> optionalXMaterial;
             ItemMaterial = items.getString("Playing.BeastArmor.Helmet.item");
             ItemName = items.getString("Playing.BeastArmor.Helmet.name");
             ItemLore = items.getStringList("Playing.BeastArmor.Helmet.lore");
             if(ItemMaterial == null) ItemMaterial = "DIAMOND_HELMET";
-            m = XMaterial.valueOf(ItemMaterial);
-            if(m.parseMaterial() != null) {
-                item = getNMSHandler().getItemStack(m.parseMaterial(), TextUtilities.recolor(ItemName), TextUtilities.recolorLore(ItemLore));
-                beastHelmet = item;
+            optionalXMaterial = XMaterial.matchXMaterial(ItemMaterial);
+            if(optionalXMaterial.isPresent()) {
+                m = optionalXMaterial.get();
+                if (m.parseMaterial() != null) {
+                    item = getNMSHandler().getItemStack(m.parseMaterial(), TextUtilities.recolor(ItemName), TextUtilities.recolorLore(ItemLore));
+                    beastHelmet = item;
+                }
+            } else {
+                getLogs().error("Item: " + ItemMaterial + " doesn't exists.");
             }
-
             ItemMaterial = items.getString("Playing.BeastArmor.Chestplate.item");
             ItemName = items.getString("Playing.BeastArmor.Chestplate.name");
             ItemLore = items.getStringList("Playing.BeastArmor.Chestplate.lore");
             if(ItemMaterial == null) ItemMaterial = "DIAMOND_CHESTPLATE";
-            m = XMaterial.valueOf(ItemMaterial);
-            if(m.parseMaterial() != null) {
-                item = getNMSHandler().getItemStack(m.parseMaterial(), TextUtilities.recolor(ItemName), TextUtilities.recolorLore(ItemLore));
-                beastChestplate = item;
+            optionalXMaterial = XMaterial.matchXMaterial(ItemMaterial);
+            if(optionalXMaterial.isPresent()) {
+                m = optionalXMaterial.get();
+                if (m.parseMaterial() != null) {
+                    item = getNMSHandler().getItemStack(m.parseMaterial(), TextUtilities.recolor(ItemName), TextUtilities.recolorLore(ItemLore));
+                    beastChestplate = item;
+                }
+            } else {
+                getLogs().error("Item: " + ItemMaterial + " doesn't exists.");
             }
-
             ItemMaterial = items.getString("Playing.BeastArmor.Leggings.item");
             ItemName = items.getString("Playing.BeastArmor.Leggings.name");
             ItemLore = items.getStringList("Playing.BeastArmor.Leggings.lore");
             if(ItemMaterial == null) ItemMaterial = "DIAMOND_LEGGINGS";
-            m = XMaterial.valueOf(ItemMaterial);
-            if(m.parseMaterial() != null) {
-                item = getNMSHandler().getItemStack(m.parseMaterial(), TextUtilities.recolor(ItemName), TextUtilities.recolorLore(ItemLore));
-                beastLeggings = item;
+            optionalXMaterial = XMaterial.matchXMaterial(ItemMaterial);
+            if(optionalXMaterial.isPresent()) {
+                m = optionalXMaterial.get();
+                if (m.parseMaterial() != null) {
+                    item = getNMSHandler().getItemStack(m.parseMaterial(), TextUtilities.recolor(ItemName), TextUtilities.recolorLore(ItemLore));
+                    beastLeggings = item;
+                }
+            } else {
+                getLogs().error("Item: " + ItemMaterial + " doesn't exists.");
             }
-
             ItemMaterial = items.getString("Playing.BeastArmor.Boots.item");
             ItemName = items.getString("Playing.BeastArmor.Boots.name");
             ItemLore = items.getStringList("Playing.BeastArmor.Boots.lore");
             if(ItemMaterial == null) ItemMaterial = "DIAMOND_BOOTS";
-            m = XMaterial.valueOf(ItemMaterial);
-            if(m.parseMaterial() != null) {
-                item = getNMSHandler().getItemStack(m.parseMaterial(), TextUtilities.recolor(ItemName), TextUtilities.recolorLore(ItemLore));
-                beastBoots = item;
+            optionalXMaterial = XMaterial.matchXMaterial(ItemMaterial);
+            if(optionalXMaterial.isPresent()) {
+                m = optionalXMaterial.get();
+                if (m.parseMaterial() != null) {
+                    item = getNMSHandler().getItemStack(m.parseMaterial(), TextUtilities.recolor(ItemName), TextUtilities.recolorLore(ItemLore));
+                    beastBoots = item;
+                }
+            } else {
+                getLogs().error("Item: " + ItemMaterial + " doesn't exists.");
             }
         } catch (Throwable throwable) {
             getLogs().error("Can't load beast Default Armor");
@@ -161,7 +186,9 @@ public final class RigoxRFTB extends JavaPlugin {
 
         // * Lobby Items
         try {
-            for (String lItems : items.getConfigurationSection("lobby").getKeys(false)) {
+            section = items.getConfigurationSection("lobby");
+            if(section == null) throw new Throwable("Can't found beast inventory section in items.yml");
+            for (String lItems : section.getKeys(false)) {
                 if(items.getBoolean("lobby." + lItems + ".toggle")) {
                     String material = items.getString("lobby." + lItems + ".item");
                     if(material == null) material = "BED";
@@ -185,42 +212,58 @@ public final class RigoxRFTB extends JavaPlugin {
             List<String> ItemLore;
             int ItemSlot;
             ItemStack item;
+            Optional<XMaterial> optionalXMaterial;
             XMaterial m;
             ItemMaterial = items.getString("InGame.RunnerKit.item");
             ItemName = items.getString("InGame.RunnerKit.name");
             ItemLore = items.getStringList("InGame.RunnerKit.lore");
             ItemSlot = items.getInt("InGame.RunnerKit.slot");
             if(ItemMaterial == null) ItemMaterial = "MAP";
-            m = XMaterial.valueOf(ItemMaterial);
-            if(m.parseMaterial() != null) {
-                item = getNMSHandler().getItemStack(m.parseMaterial(), TextUtilities.recolor(ItemName), TextUtilities.recolorLore(ItemLore));
-                kitRunner = item;
-                RunnerSlot = ItemSlot;
-                currentItem.put(item,CurrentItem.KIT_RUNNERS);
+            optionalXMaterial = XMaterial.matchXMaterial(ItemMaterial);
+            if(optionalXMaterial.isPresent()) {
+                m = optionalXMaterial.get();
+                if (m.parseMaterial() != null) {
+                    item = getNMSHandler().getItemStack(m.parseMaterial(), TextUtilities.recolor(ItemName), TextUtilities.recolorLore(ItemLore));
+                    kitRunner = item;
+                    RunnerSlot = ItemSlot;
+                    currentItem.put(item, CurrentItem.KIT_RUNNERS);
+                }
+            } else {
+                getLogs().error("Item: " + ItemMaterial + " doesn't exists.");
             }
             ItemMaterial = items.getString("InGame.BeastKit.item");
             ItemName = items.getString("InGame.BeastKit.name");
             ItemLore = items.getStringList("InGame.BeastKit.lore");
             ItemSlot = items.getInt("InGame.BeastKit.slot");
             if(ItemMaterial == null) ItemMaterial = "MAP";
-            m = XMaterial.valueOf(ItemMaterial);
-            if(m.parseMaterial() != null) {
-                item = getNMSHandler().getItemStack(m.parseMaterial(), TextUtilities.recolor(ItemName), TextUtilities.recolorLore(ItemLore));
-                kitBeast = item;
-                beastSlot = ItemSlot;
-                currentItem.put(item,CurrentItem.KIT_BEASTS);
+            optionalXMaterial = XMaterial.matchXMaterial(ItemMaterial);
+            if(optionalXMaterial.isPresent()) {
+                m = optionalXMaterial.get();
+                if (m.parseMaterial() != null) {
+                    item = getNMSHandler().getItemStack(m.parseMaterial(), TextUtilities.recolor(ItemName), TextUtilities.recolorLore(ItemLore));
+                    kitBeast = item;
+                    beastSlot = ItemSlot;
+                    currentItem.put(item, CurrentItem.KIT_BEASTS);
+                }
+            } else {
+                getLogs().error("Item: " + ItemMaterial + " doesn't exists.");
             }
             ItemMaterial = items.getString("InGame.Exit.item");
             ItemName = items.getString("InGame.Exit.name");
             ItemLore = items.getStringList("InGame.Exit.lore");
             ItemSlot = items.getInt("InGame.Exit.slot");
             if(ItemMaterial == null) ItemMaterial = "BED";
-            m = XMaterial.valueOf(ItemMaterial);
-            if(m.parseMaterial() != null) {
-                item = getNMSHandler().getItemStack(m.parseMaterial(), TextUtilities.recolor(ItemName), TextUtilities.recolorLore(ItemLore));
-                exitItem = item;
-                exitSlot = ItemSlot;
-                currentItem.put(item,CurrentItem.EXIT_GAME);
+            optionalXMaterial = XMaterial.matchXMaterial(ItemMaterial);
+            if(optionalXMaterial.isPresent()) {
+                m = optionalXMaterial.get();
+                if (m.parseMaterial() != null) {
+                    item = getNMSHandler().getItemStack(m.parseMaterial(), TextUtilities.recolor(ItemName), TextUtilities.recolorLore(ItemLore));
+                    exitItem = item;
+                    exitSlot = ItemSlot;
+                    currentItem.put(item, CurrentItem.EXIT_GAME);
+                }
+            } else {
+                getLogs().error("Item: " + ItemMaterial + " doesn't exists.");
             }
         } catch (Throwable throwable) {
             getLogs().error("Can't get game items on startup");

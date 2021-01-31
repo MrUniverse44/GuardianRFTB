@@ -3,6 +3,10 @@ package dev.mruniverse.rigoxrftb.core.utils;
 import dev.mruniverse.rigoxrftb.core.RigoxRFTB;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+
+import java.util.ArrayList;
+import java.util.List;
+
 @SuppressWarnings("unused")
 public class Logger {
     private final RigoxRFTB plugin;
@@ -37,12 +41,21 @@ public class Logger {
         sendMessage("&f[&cERROR &7| &fRigox RFTB] Location: " + location.replace("." + error,""));
         sendMessage("&f[&cERROR &7| &fRigox RFTB] Error: " + error);
         if(throwable.getStackTrace() != null) {
-            sendMessage("&f[&cERROR &7| &fRigox RFTB] StackTrace: ");
+            sendMessage("&f[&cERROR &7| &fRigox RFTB] Internal - StackTrace: ");
+            List<StackTraceElement> other = new ArrayList<>();
             for(StackTraceElement line : throwable.getStackTrace()) {
                 if(line.toString().contains("mruniverse")) {
-                    sendMessage("&f[&cERROR &7| &fRigox RFTB] (" + line.getLineNumber() + ") " + line.toString());
+                    sendMessage("&f[&cERROR &7| &fRigox RFTB] (Line: " + line.getLineNumber() + ") " + line.toString().replace("(" + line.getClassName() + ".java:" + line.getLineNumber() + ")",""));
+                } else {
+                    other.add(line);
                 }
             }
+            sendMessage("&f[&cERROR &7| &fRigox RFTB]  -------------------------");
+            sendMessage("&f[&cERROR &7| &fRigox RFTB] External - StackTrace: ");
+            for(StackTraceElement line : other) {
+                sendMessage("&f[&cERROR &7| &fRigox RFTB] (Line: " + line.getLineNumber() + ") " + line.toString().replace("(" + line.getClassName() + ".java:" + line.getLineNumber() + ")",""));
+            }
+
         }
         sendMessage("&f[&cERROR &7| &fRigox RFTB]  -------------------------");
     }
