@@ -192,14 +192,20 @@ public final class RigoxRFTB extends JavaPlugin {
                 if(items.getBoolean("lobby." + lItems + ".toggle")) {
                     String material = items.getString("lobby." + lItems + ".item");
                     if(material == null) material = "BED";
-                    XMaterial m = XMaterial.valueOf(material);
-                    if(m.parseMaterial() != null) {
-                        String itemName = items.getString("lobby." + lItems + ".name");
-                        Integer slot = items.getInt("lobby." + lItems + ".slot");
-                        List<String> lore = items.getStringList("lobby." + lItems + ".lore");
-                        ItemStack item = getNMSHandler().getItemStack(m.parseMaterial(), TextUtilities.recolor(itemName), TextUtilities.recolorLore(lore));
-                        lobbyItems.put(item, slot);
-                        currentItem.put(item, getCurrent(lItems));
+                    Optional<XMaterial> optionalXMaterial = XMaterial.matchXMaterial(material);
+                    XMaterial m;
+                    if(optionalXMaterial.isPresent()) {
+                        m = optionalXMaterial.get();
+                        if (m.parseMaterial() != null) {
+                            String itemName = items.getString("lobby." + lItems + ".name");
+                            Integer slot = items.getInt("lobby." + lItems + ".slot");
+                            List<String> lore = items.getStringList("lobby." + lItems + ".lore");
+                            ItemStack item = getNMSHandler().getItemStack(m.parseMaterial(), TextUtilities.recolor(itemName), TextUtilities.recolorLore(lore));
+                            lobbyItems.put(item, slot);
+                            currentItem.put(item, getCurrent(lItems));
+                        }
+                    } else {
+                        getLogs().error("Item: " + material + " doesn't exists.");
                     }
                 }
             }
