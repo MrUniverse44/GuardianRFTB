@@ -41,6 +41,7 @@ public class FileManager {
         Messages = new File(dataFolder,"messages.yml");
         Settings = new File(dataFolder,"settings.yml");
         loadFile(Games,"games.yml");
+        loadFile(Data,"data.yml");
         loadFile(MySQL,"mysql.yml");
         loadFile(Menus,"menus.yml");
         loadFile(Items,"items.yml");
