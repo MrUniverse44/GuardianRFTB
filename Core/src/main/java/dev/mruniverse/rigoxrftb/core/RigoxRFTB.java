@@ -288,7 +288,7 @@ public final class RigoxRFTB extends JavaPlugin {
     public BoardManager getScoreboards() { return rigoxScoreboards; }
     public void addPlayer(Player player){
         if(!existPlayer(player)) {
-            rigoxPlayers.put(player.getUniqueId(),new PlayerManager(player));
+            rigoxPlayers.put(player.getUniqueId(),new PlayerManager(player,this));
         }
     }
     public void getItems(GameEquip gameEquipment, Player player) {

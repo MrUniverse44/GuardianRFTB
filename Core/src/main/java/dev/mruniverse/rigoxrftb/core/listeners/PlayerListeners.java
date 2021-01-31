@@ -42,6 +42,9 @@ public class PlayerListeners implements Listener {
         plugin.addPlayer(event.getPlayer());
         FileConfiguration file = plugin.getFiles().getControl(Files.SETTINGS);
         Player player = event.getPlayer();
+        if (!plugin.getFiles().getControl(Files.MYSQL).getBoolean("mysql.enabled") && !plugin.getData().getSQL().deaths.containsKey(player.getUniqueId().toString())) {
+            plugin.getData().getSQL().createPlayer(player);
+        }
         if(file.getBoolean("settings.options.hideServerJoinMessage")) {
             event.setJoinMessage(null);
         }

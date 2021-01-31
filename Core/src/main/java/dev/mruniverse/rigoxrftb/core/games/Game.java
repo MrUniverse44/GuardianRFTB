@@ -622,6 +622,7 @@ public class Game {
     public void deathBeast(Player beast) {
         beasts.remove(beast);
         spectators.add(beast);
+        plugin.getPlayerData(beast.getUniqueId()).addDeaths();
         beast.setGameMode(GameMode.SPECTATOR);
         if(beasts.size() == 0) {
             winRunners();
@@ -631,6 +632,7 @@ public class Game {
         runners.remove(runner);
         spectators.add(runner);
         runner.setGameMode(GameMode.SPECTATOR);
+        plugin.getPlayerData(runner.getUniqueId()).addDeaths();
         if(runners.size() == 0) {
             winBeasts();
         }
@@ -642,6 +644,9 @@ public class Game {
                 player.playSound(player.getLocation(),gameSound3, 10.0F, 1.0F);
             }
             plugin.getUtils().sendGameList(player, messagesFile.getStringList("messages.inGame.infoList.endInfo"),GameTeam.RUNNERS);
+        }
+        for(Player runner : this.runners) {
+            plugin.getPlayerData(runner.getUniqueId()).addWins();
         }
         this.invincible = true;
         this.gameTimer = 0;
@@ -655,6 +660,9 @@ public class Game {
                 player.playSound(player.getLocation(),gameSound3, 10.0F, 1.0F);
             }
             plugin.getUtils().sendGameList(player, messagesFile.getStringList("messages.inGame.infoList.endInfo"),GameTeam.BEASTS);
+        }
+        for(Player beast : this.beasts) {
+            plugin.getPlayerData(beast.getUniqueId()).addWins();
         }
         this.invincible = true;
         this.gameTimer = 0;
