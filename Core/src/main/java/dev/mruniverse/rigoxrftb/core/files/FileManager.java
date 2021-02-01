@@ -71,73 +71,7 @@ public class FileManager {
         }
     }
 
-    public void startMenus() {
-        List<String> menuList = new ArrayList<>();
-        addConfig(Files.MENUS, "menus.shop.inventoryName","&8Shop Menu");
-        addConfig(Files.MENUS, "menus.shop.inventoryRows",6);
-        if(!Bukkit.getServer().getVersion().contains("1.8")) {
-            menuList.add("ENTITY_EXPERIENCE_ORB_PICKUP");
-        } else {
-            menuList.add("ORB_PICKUP");
-        }
-        addConfig(Files.MENUS, "menus.shop.inventorySounds",menuList);
-        menuList = new ArrayList<>();
-        addConfig(Files.MENUS, "menus.shop.KitRunner.name", "&aKits: Runner");
-        addConfig(Files.MENUS, "menus.shop.KitRunner.slot", 21);
-        menuList.add("&8RigoxRFTB");
-        menuList.add("&eClick to open kit runners menu");
-        addConfig(Files.MENUS, "menus.shop.KitRunner.lore", menuList);
-        addConfig(Files.MENUS, "menus.shop.KitRunner.item", "MAP");
-        menuList.remove("&eClick to open kit runners menu");
-        addConfig(Files.MENUS, "menus.shop.Craft.name", "&aCraft Coins");
-        addConfig(Files.MENUS, "menus.shop.Craft.slot", 22);
-        menuList.add("&eClick to open Coins menu");
-        addConfig(Files.MENUS, "menus.shop.Craft.lore", menuList);
-        addConfig(Files.MENUS, "menus.shop.Craft.item", "BREWING_STAND");
-        menuList.remove("&eClick to open Coins menu");
-        addConfig(Files.MENUS, "menus.shop.KitBeast.name", "&aKits: Beast");
-        addConfig(Files.MENUS, "menus.shop.KitBeast.slot", 23);
-        menuList.add("&eClick to open kit beasts menu");
-        addConfig(Files.MENUS, "menus.shop.KitBeast.lore",menuList);
-        addConfig(Files.MENUS, "menus.shop.KitBeast.item","FIREWORK");
-        menuList.remove("&eClick to open kit beasts menu");
-        addConfig(Files.MENUS, "menus.shop.Boost.name","&aGame Booster");
-        addConfig(Files.MENUS, "menus.shop.Boost.slot",31);
-        menuList.add("&eClick to open boost menu");
-        addConfig(Files.MENUS, "menus.shop.Boost.lore",menuList);
-        addConfig(Files.MENUS, "menus.shop.Boost.item","EXPERIENCE_BOTTLE");
-        menuList.remove("&eClick to open boost menu");
-        menuList.add("&erigox.club");
-        addConfig(Files.MENUS, "fill-inventory.shop.fillOne.item","STAINED_GLASS_PANE:5");
-        addConfig(Files.MENUS, "fill-inventory.shop.fillOne.name","&aRFTB Shop");
-        addConfig(Files.MENUS, "fill-inventory.shop.fillOne.lore",menuList);
-        addConfig(Files.MENUS, "fill-inventory.shop.fillOne.list.type","ONLY");
-        List<Integer> menuValues = new ArrayList<>();
-        menuValues.add(0);
-        menuValues.add(1);
-        menuValues.add(7);
-        menuValues.add(8);
-        menuValues.add(9);
-        menuValues.add(17);
-        menuValues.add(36);
-        menuValues.add(44);
-        menuValues.add(45);
-        menuValues.add(46);
-        menuValues.add(52);
-        menuValues.add(53);
-        addConfig(Files.MENUS, "fill-inventory.shop.fillTwo.list.values",menuValues);
-        addConfig(Files.MENUS, "fill-inventory.shop.fillTwo.item","STAINED_GLASS_PANE:15");
-        addConfig(Files.MENUS, "fill-inventory.shop.fillTwo.name","&aRFTB Shop");
-        addConfig(Files.MENUS, "fill-inventory.shop.fillTwo.lore",menuList);
-        addConfig(Files.MENUS, "fill-inventory.shop.fillTwo.list.type","IGNORE");
-        menuValues.add(21);
-        menuValues.add(22);
-        menuValues.add(23);
-        menuValues.add(31);
-        addConfig(Files.MENUS, "fill-inventory.shop.fillTwo.list.values",menuValues);
-    }
     public void loadConfiguration() {
-        startMenus();
         addConfig(Files.SETTINGS,"settings.update-check",true);
         addConfig(Files.SETTINGS,"settings.maxTime",500);
         addConfig(Files.SETTINGS,"settings.lobbyLocation","notSet");
@@ -441,6 +375,69 @@ public class FileManager {
         addConfig(Files.MESSAGES,"messages.admin.setName","&aArena ID: &b%arena_id% &anow has the name: &b%arena_name%");
         addConfig(Files.MESSAGES,"messages.admin.saveArena","&aArena &b%arena_name%&a(&b%arena_id%&a) was saved and enabled correctly!");
         addConfig(Files.MESSAGES,"messages.admin.editArena","&aNow you can edit arena &b%arena_name%&a(&b%arena_id%&a)");
+        List<String> menuList = new ArrayList<>();
+        addConfig(Files.MENUS, "menus.shop.inventoryName","&8Shop Menu");
+        addConfig(Files.MENUS, "menus.shop.inventoryRows",6);
+        if(!plugin.getServer().getVersion().contains("1.8")) {
+            menuList.add("ENTITY_EXPERIENCE_ORB_PICKUP");
+        } else {
+            menuList.add("ORB_PICKUP");
+        }
+        addConfig(Files.MENUS, "menus.shop.inventorySounds",menuList);
+        menuList = new ArrayList<>();
+        addConfig(Files.MENUS, "menus.shop.KitRunner.name", "&aKits: Runner");
+        addConfig(Files.MENUS, "menus.shop.KitRunner.slot", 21);
+        menuList.add("&8RigoxRFTB");
+        menuList.add("&eClick to open kit runners menu");
+        addConfig(Files.MENUS, "menus.shop.KitRunner.lore", menuList);
+        addConfig(Files.MENUS, "menus.shop.KitRunner.item", "MAP");
+        menuList.remove("&eClick to open kit runners menu");
+        addConfig(Files.MENUS, "menus.shop.Craft.name", "&aCraft Coins");
+        addConfig(Files.MENUS, "menus.shop.Craft.slot", 22);
+        menuList.add("&eClick to open Coins menu");
+        addConfig(Files.MENUS, "menus.shop.Craft.lore", menuList);
+        addConfig(Files.MENUS, "menus.shop.Craft.item", "BREWING_STAND");
+        menuList.remove("&eClick to open Coins menu");
+        addConfig(Files.MENUS, "menus.shop.KitBeast.name", "&aKits: Beast");
+        addConfig(Files.MENUS, "menus.shop.KitBeast.slot", 23);
+        menuList.add("&eClick to open kit beasts menu");
+        addConfig(Files.MENUS, "menus.shop.KitBeast.lore",menuList);
+        addConfig(Files.MENUS, "menus.shop.KitBeast.item","FIREWORK");
+        menuList.remove("&eClick to open kit beasts menu");
+        addConfig(Files.MENUS, "menus.shop.Boost.name","&aGame Booster");
+        addConfig(Files.MENUS, "menus.shop.Boost.slot",31);
+        menuList.add("&eClick to open boost menu");
+        addConfig(Files.MENUS, "menus.shop.Boost.lore",menuList);
+        addConfig(Files.MENUS, "menus.shop.Boost.item","EXPERIENCE_BOTTLE");
+        menuList.remove("&eClick to open boost menu");
+        menuList.add("&erigox.club");
+        addConfig(Files.MENUS, "fill-inventory.shop.fillOne.item","STAINED_GLASS_PANE:5");
+        addConfig(Files.MENUS, "fill-inventory.shop.fillOne.name","&aRFTB Shop");
+        addConfig(Files.MENUS, "fill-inventory.shop.fillOne.lore",menuList);
+        addConfig(Files.MENUS, "fill-inventory.shop.fillOne.list.type","ONLY");
+        List<Integer> menuValues = new ArrayList<>();
+        menuValues.add(0);
+        menuValues.add(1);
+        menuValues.add(7);
+        menuValues.add(8);
+        menuValues.add(9);
+        menuValues.add(17);
+        menuValues.add(36);
+        menuValues.add(44);
+        menuValues.add(45);
+        menuValues.add(46);
+        menuValues.add(52);
+        menuValues.add(53);
+        addConfig(Files.MENUS, "fill-inventory.shop.fillTwo.list.values",menuValues);
+        addConfig(Files.MENUS, "fill-inventory.shop.fillTwo.item","STAINED_GLASS_PANE:15");
+        addConfig(Files.MENUS, "fill-inventory.shop.fillTwo.name","&aRFTB Shop");
+        addConfig(Files.MENUS, "fill-inventory.shop.fillTwo.lore",menuList);
+        addConfig(Files.MENUS, "fill-inventory.shop.fillTwo.list.type","IGNORE");
+        menuValues.add(21);
+        menuValues.add(22);
+        menuValues.add(23);
+        menuValues.add(31);
+        addConfig(Files.MENUS, "fill-inventory.shop.fillTwo.list.values",menuValues);
     }
     public void addConfig(Files fileToAdd,String path,Object value) {
         switch(fileToAdd) {
@@ -574,6 +571,9 @@ public class FileManager {
             }
             if(Mode.equals(SaveMode.SCOREBOARDS) || Mode.equals(SaveMode.ALL)) {
                 getControl(Files.SCOREBOARD).save(Scoreboard);
+            }
+            if(Mode.equals(SaveMode.MENUS) || Mode.equals(SaveMode.ALL)) {
+                getControl(Files.MENUS).save(Menus);
             }
             if(Mode.equals(SaveMode.ITEMS) || Mode.equals(SaveMode.ALL)) {
                 getControl(Files.ITEMS).save(Items);
