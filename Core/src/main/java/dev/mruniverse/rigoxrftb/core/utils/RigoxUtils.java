@@ -322,9 +322,10 @@ public class RigoxUtils {
         return null;
     }
     public String replaceVariables(String text,Player player) {
+
         if(text.contains("<player_name>")) text = text.replace("<player_name>",player.getName());
-        if(text.contains("<player_coins>")) text = text.replace("<player_coins>","" + 0);
-        if(text.contains("<player_wins>")) text = text.replace("<player_wins>","" + 0);
+        if(text.contains("<player_coins>")) text = text.replace("<player_coins>","" + plugin.getPlayerData(player.getUniqueId()).getCoins());
+        if(text.contains("<player_wins>")) text = text.replace("<player_wins>","" + plugin.getPlayerData(player.getUniqueId()).getWins());
         if(text.contains("<player_beast_kit>")) text = text.replace("<player_beast_kit>","Not selected");
         if(text.contains("<player_runner_kit>")) text = text.replace("<player_runner_kit>","Not selected");
         if(text.contains("<server_online>")) text = text.replace("<server_online>",plugin.getServer().getOnlinePlayers().size() + "");

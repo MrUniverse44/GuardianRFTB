@@ -76,6 +76,14 @@ public class PlayerManager {
         setWins(getWins() + 1);
     }
 
+    public int getCoins() {
+        if (plugin.getFiles().getControl(Files.MYSQL).getBoolean("mysql.enabled")) {
+            String table = plugin.getFiles().getControl(Files.MYSQL).getString("mysql.table");
+            return plugin.getData().getInt(table, "Coins", "Player", player.getUniqueId().toString());
+        }
+        return plugin.getData().getSQL().coins.get(player.getUniqueId().toString());
+    }
+
     public int getKills() {
         if (plugin.getFiles().getControl(Files.MYSQL).getBoolean("mysql.enabled")) {
             String table = plugin.getFiles().getControl(Files.MYSQL).getString("mysql.table");
