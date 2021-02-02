@@ -16,7 +16,14 @@ public class MySQL {
 
     public void connect(String host, String db, String user, String password) {
         try {
-            con = DriverManager.getConnection("jdbc:mysql://" + host + ":" + plugin.getFiles().getControl(Files.MYSQL).getInt("mysql.port") + "/" + db + "?autoReconnect=true", user, password);
+            String url= plugin.getFiles().getControl(Files.MYSQL).getString("mysql.jdbc-url");
+            int port = plugin.getFiles().getControl(Files.MYSQL).getInt("mysql.port");
+            if(url == null) url = "jdbc:mysql://" + host + ":" + plugin.getFiles().getControl(Files.MYSQL).getInt("mysql.port") + "/" + db + "?autoReconnect=true";
+            url = url.replace("[host]",host)
+            .replace("[port]",port + "")
+            .replace("[db]",db);
+            con = DriverManager.getConnection(url,user,password);
+            //con = DriverManager.getConnection("jdbc:mysql://" + host + ":" + plugin.getFiles().getControl(Files.MYSQL).getInt("mysql.port") + "/" + db + "?autoReconnect=true", user, password);
             plugin.getLogs().info("Connected with MySQL! creating tables");
             List<String> integers = new ArrayList<>();
             integers.add("Kills");
@@ -32,6 +39,9 @@ public class MySQL {
             plugin.getLogs().info("Tables created!");
         } catch (SQLException e) {
             plugin.getLogs().error("Plugin can't connect to MySQL or cant initialize tables.");
+            plugin.getLogs().error(e);
+            plugin.getLogs().error("Using SQL instead MySQL.");
+            plugin.getLogs().error("-------------------------");
             plugin.getData().getSQL().loadData();
         }
     }

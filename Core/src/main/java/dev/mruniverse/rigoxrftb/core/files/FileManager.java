@@ -131,6 +131,7 @@ public class FileManager {
         lore.add("&7Here your lore");
         lore.add("&erigox.club");
         addConfig(Files.MYSQL,"mysql.enabled",true);
+        addConfig(Files.MYSQL,"mysql.jdbc-url","jdbc:mysql://[host]:[port]/[db]?autoReconnect=true");
         addConfig(Files.MYSQL,"mysql.host","localhost");
         addConfig(Files.MYSQL,"mysql.port",3306);
         addConfig(Files.MYSQL,"mysql.username","root");

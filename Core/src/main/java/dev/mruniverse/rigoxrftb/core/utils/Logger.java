@@ -45,7 +45,7 @@ public class Logger {
             List<StackTraceElement> other = new ArrayList<>();
             for(StackTraceElement line : throwable.getStackTrace()) {
                 if(line.toString().contains("mruniverse")) {
-                    sendMessage("&f[&cERROR &7| &fRigox RFTB] (Line: " + line.getLineNumber() + ") " + line.toString().replace("(" + line.getClassName() + ".java:" + line.getLineNumber() + ")",""));
+                    sendMessage("&f[&cERROR &7| &fRigox RFTB] (Line: " + line.getLineNumber() + ") " + line.toString().replace("(" + line.getFileName() + ":" + line.getLineNumber() + ")","").replace("dev.mruniverse.rigoxrftb.",""));
                 } else {
                     other.add(line);
                 }
@@ -53,7 +53,7 @@ public class Logger {
             sendMessage("&f[&cERROR &7| &fRigox RFTB]  -------------------------");
             sendMessage("&f[&cERROR &7| &fRigox RFTB] External - StackTrace: ");
             for(StackTraceElement line : other) {
-                sendMessage("&f[&cERROR &7| &fRigox RFTB] (Line: " + line.getLineNumber() + ") " + line.toString().replace("(" + line.getClassName() + ".java:" + line.getLineNumber() + ")",""));
+                sendMessage("&f[&cERROR &7| &fRigox RFTB] (Line: " + line.getLineNumber() + ") (Class: " + line.getFileName() + ") (Method: " + line.getMethodName() + ")".replace(".java",""));
             }
 
         }
