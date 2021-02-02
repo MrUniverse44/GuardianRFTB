@@ -16,6 +16,7 @@ import dev.mruniverse.rigoxrftb.core.utils.TextUtilities;
 import dev.mruniverse.rigoxrftb.core.utils.players.PlayerManager;
 import dev.mruniverse.rigoxrftb.core.utils.players.PlayerRunnable;
 import dev.mruniverse.rigoxrftb.core.utils.scoreboards.BoardManager;
+import dev.mruniverse.rigoxrftb.core.xseries.XEnchantment;
 import dev.mruniverse.rigoxrftb.core.xseries.XMaterial;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
@@ -107,6 +108,9 @@ public final class RigoxRFTB extends JavaPlugin {
                         Integer slot = items.getInt("Playing.BeastInventory." + beastDefaultInv + ".slot");
                         List<String> lore = items.getStringList("Playing.BeastInventory." + beastDefaultInv + ".lore");
                         ItemStack item = getNMSHandler().getItemStack(m.parseMaterial(), TextUtilities.recolor(itemName), TextUtilities.recolorLore(lore));
+                        if(items.get("Playing.BeastInventory." + beastDefaultInv + ".lore") != null) {
+                            item = getEnchantmentList(item,Files.ITEMS,"Playing.BeastInventory." + beastDefaultInv + ".enchantments");
+                        }
                         beastInventory.put(item, slot);
                     }
                 } else {
@@ -288,6 +292,16 @@ public final class RigoxRFTB extends JavaPlugin {
         // * Tasks
 
         getServer().getScheduler().runTaskTimerAsynchronously(this,new PlayerRunnable(this),0L,20L);
+    }
+    public ItemStack getEnchantmentList(ItemStack item,Files fileOfPath,String path) {
+        for(String enchants : getFiles().getControl(fileOfPath).getStringList(path)) {
+            try {
+                item = XEnchantment.addEnchantFromString(item, enchants);
+            } catch(Throwable throwable) {
+                getLogs().error("Can't add Enchantment: " + enchants);
+            }
+        }
+        return item;
     }
     private World getWorld() {
         if(getServer().getWorlds().size() != 0) {
