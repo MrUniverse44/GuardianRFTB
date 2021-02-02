@@ -4,7 +4,7 @@ import java.sql.ResultSet;
 import java.util.List;
 
 import dev.mruniverse.rigoxrftb.core.RigoxRFTB;
-import dev.mruniverse.rigoxrftb.core.enums.Files;
+import dev.mruniverse.rigoxrftb.core.enums.RigoxFiles;
 
 @SuppressWarnings("unused")
 public class DataStorage {
@@ -91,8 +91,8 @@ public class DataStorage {
     }
 
     public void loadDatabase() {
-        if (plugin.getFiles().getControl(Files.MYSQL).getBoolean("mysql.enabled")) {
-            mySQL.connect(plugin.getFiles().getControl(Files.MYSQL).getString("mysql.host"),plugin.getFiles().getControl(Files.MYSQL).getString("mysql.database"),plugin.getFiles().getControl(Files.MYSQL).getString("mysql.username"),plugin.getFiles().getControl(Files.MYSQL).getString("mysql.password"));
+        if (plugin.getFiles().getControl(RigoxFiles.MYSQL).getBoolean("mysql.enabled")) {
+            mySQL.connect(plugin.getFiles().getControl(RigoxFiles.MYSQL).getString("mysql.host"),plugin.getFiles().getControl(RigoxFiles.MYSQL).getString("mysql.database"),plugin.getFiles().getControl(RigoxFiles.MYSQL).getString("mysql.username"),plugin.getFiles().getControl(RigoxFiles.MYSQL).getString("mysql.password"));
         } else {
             sql.loadData();
             plugin.getLogs().info("MySQL is disabled, using data.yml");
@@ -100,7 +100,7 @@ public class DataStorage {
     }
 
     public void disableDatabase() {
-        if (plugin.getFiles().getControl(Files.MYSQL).getBoolean("mysql.enabled")) {
+        if (plugin.getFiles().getControl(RigoxFiles.MYSQL).getBoolean("mysql.enabled")) {
             mySQL.close();
         } else {
             sql.putData();

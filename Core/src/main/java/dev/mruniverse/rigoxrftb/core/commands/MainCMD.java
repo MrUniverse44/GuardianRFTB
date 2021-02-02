@@ -1,7 +1,7 @@
 package dev.mruniverse.rigoxrftb.core.commands;
 
 import dev.mruniverse.rigoxrftb.core.RigoxRFTB;
-import dev.mruniverse.rigoxrftb.core.enums.Files;
+import dev.mruniverse.rigoxrftb.core.enums.RigoxFiles;
 import dev.mruniverse.rigoxrftb.core.enums.SaveMode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -22,7 +22,7 @@ public class MainCMD implements CommandExecutor {
             Player player = (Player)sender;
             if (!player.hasPermission(permission)) {
                 try {
-                    plugin.getUtils().sendMessage(player, plugin.getFiles().getControl(Files.MESSAGES).getString("messages.others.no-perms").replace("%permission%", permission));
+                    plugin.getUtils().sendMessage(player, plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.others.no-perms").replace("%permission%", permission));
                 } catch (Throwable throwable) {
                     plugin.getLogs().error("Can't send permission message to " + sender.getName());
                     plugin.getLogs().error(throwable);
@@ -106,9 +106,9 @@ public class MainCMD implements CommandExecutor {
                             return true;
                         }
                         if (plugin.getGameManager().getGame(args[2]) == null) {
-                            if (!plugin.getFiles().getControl(Files.GAMES).contains("games." + args[2])) {
+                            if (!plugin.getFiles().getControl(RigoxFiles.GAMES).contains("games." + args[2])) {
                                 plugin.getGameManager().createGameFiles(args[2]);
-                                plugin.getUtils().sendMessage(sender, plugin.getFiles().getControl(Files.MESSAGES).getString("messages.admin.create").replace("%arena_id%", args[2]));
+                                plugin.getUtils().sendMessage(sender, plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.admin.create").replace("%arena_id%", args[2]));
                                 return true;
                             }
                             plugin.getUtils().sendMessage(sender, "&cThis game already exists in &6games.yml");
@@ -125,8 +125,8 @@ public class MainCMD implements CommandExecutor {
                             return true;
                         }
                         if (plugin.getGameManager().getGame(args[2]) == null) {
-                            if (plugin.getFiles().getControl(Files.GAMES).contains("games." + args[2])) {
-                                plugin.getFiles().getControl(Files.GAMES).set("games." + args[2] + ".enabled",true);
+                            if (plugin.getFiles().getControl(RigoxFiles.GAMES).contains("games." + args[2])) {
+                                plugin.getFiles().getControl(RigoxFiles.GAMES).set("games." + args[2] + ".enabled",true);
                                 plugin.getGameManager().addGame(args[2]);
                                 plugin.getFiles().save(SaveMode.GAMES_FILES);
                             }
@@ -140,8 +140,8 @@ public class MainCMD implements CommandExecutor {
                             return true;
                         }
                         if (plugin.getGameManager().getGame(args[2]) != null) {
-                            if (plugin.getFiles().getControl(Files.GAMES).contains("games." + args[2])) {
-                                plugin.getFiles().getControl(Files.GAMES).set("games." + args[2] + ".enabled",false);
+                            if (plugin.getFiles().getControl(RigoxFiles.GAMES).contains("games." + args[2])) {
+                                plugin.getFiles().getControl(RigoxFiles.GAMES).set("games." + args[2] + ".enabled",false);
                                 plugin.getGameManager().delGame(args[2]);
                                 plugin.getFiles().save(SaveMode.GAMES_FILES);
                             }
@@ -155,10 +155,10 @@ public class MainCMD implements CommandExecutor {
                 }
                 if(args[1].equalsIgnoreCase("list")) {
                     if(hasPermission(sender,"RigoxRFTB.admin.list")) {
-                        if(plugin.getFiles().getControl(Files.GAMES).contains("games")) {
+                        if(plugin.getFiles().getControl(RigoxFiles.GAMES).contains("games")) {
                             boolean status;
-                            for (String gameName : plugin.getFiles().getControl(Files.GAMES).getConfigurationSection("games").getKeys(false)) {
-                                status = plugin.getFiles().getControl(Files.GAMES).getBoolean("games." + gameName + ".enabled");
+                            for (String gameName : plugin.getFiles().getControl(RigoxFiles.GAMES).getConfigurationSection("games").getKeys(false)) {
+                                status = plugin.getFiles().getControl(RigoxFiles.GAMES).getBoolean("games." + gameName + ".enabled");
                                 plugin.getUtils().sendMessage(sender,"&aGame: &b" + gameName + " &aEnabled: &b" + status);
                             }
                         } else {
@@ -172,12 +172,12 @@ public class MainCMD implements CommandExecutor {
                             plugin.getUtils().sendMessage(sender, "&7Bad usage.");
                             return true;
                         }
-                        if (plugin.getGameManager().getGame(args[2]) != null || plugin.getFiles().getControl(Files.GAMES).contains("games." + args[2])) {
-                            plugin.getUtils().sendMessage(sender, plugin.getFiles().getControl(Files.MESSAGES).getString("messages.admin.delete").replace("%arena_id%", args[2]));
-                            plugin.getFiles().getControl(Files.GAMES).set("games." + args[2], null);
+                        if (plugin.getGameManager().getGame(args[2]) != null || plugin.getFiles().getControl(RigoxFiles.GAMES).contains("games." + args[2])) {
+                            plugin.getUtils().sendMessage(sender, plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.admin.delete").replace("%arena_id%", args[2]));
+                            plugin.getFiles().getControl(RigoxFiles.GAMES).set("games." + args[2], null);
                             return true;
                         }
-                        plugin.getUtils().sendMessage(sender, plugin.getFiles().getControl(Files.MESSAGES).getString("messages.admin.arenaError").replace("%arena_id%", args[2]));
+                        plugin.getUtils().sendMessage(sender, plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.admin.arenaError").replace("%arena_id%", args[2]));
                         return true;
                     }
                 }
@@ -187,12 +187,12 @@ public class MainCMD implements CommandExecutor {
                             plugin.getUtils().sendMessage(sender,"&7Bad usage");
                             return true;
                         }
-                        if (plugin.getFiles().getControl(Files.GAMES).contains("games." + args[2])) {
+                        if (plugin.getFiles().getControl(RigoxFiles.GAMES).contains("games." + args[2])) {
                             plugin.getGameManager().setMax(args[2], Integer.valueOf(args[3]));
                             plugin.getUtils().sendMessage(sender,"&aMax now is &b" + args[3]);
                             return true;
                         }
-                        plugin.getUtils().sendMessage(sender, plugin.getFiles().getControl(Files.MESSAGES).getString("messages.admin.arenaError").replace("%arena_id%", args[2]));
+                        plugin.getUtils().sendMessage(sender, plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.admin.arenaError").replace("%arena_id%", args[2]));
                         return true;
                     }
                 }
@@ -202,12 +202,12 @@ public class MainCMD implements CommandExecutor {
                             plugin.getUtils().sendMessage(sender,"&7Bad usage");
                             return true;
                         }
-                        if (plugin.getFiles().getControl(Files.GAMES).contains("games." + args[2])) {
+                        if (plugin.getFiles().getControl(RigoxFiles.GAMES).contains("games." + args[2])) {
                             plugin.getGameManager().setMin(args[2], Integer.valueOf(args[3]));
                             plugin.getUtils().sendMessage(sender,"&aMin now is &b" + args[3]);
                             return true;
                         }
-                        plugin.getUtils().sendMessage(sender, plugin.getFiles().getControl(Files.MESSAGES).getString("messages.admin.arenaError").replace("%arena_id%", args[2]));
+                        plugin.getUtils().sendMessage(sender, plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.admin.arenaError").replace("%arena_id%", args[2]));
                         return true;
                     }
                 }
@@ -215,45 +215,45 @@ public class MainCMD implements CommandExecutor {
                     Player player = (Player)sender;
                     if (args[1].equalsIgnoreCase("setWaiting")) {
                         if (hasPermission(sender, "RigoxRFTB.admin.locations")) {
-                            if (plugin.getFiles().getControl(Files.GAMES).contains("games." + args[2])) {
+                            if (plugin.getFiles().getControl(RigoxFiles.GAMES).contains("games." + args[2])) {
                                 plugin.getGameManager().setWaiting(args[2], player.getLocation());
-                                plugin.getUtils().sendMessage(sender, plugin.getFiles().getControl(Files.MESSAGES).getString("messages.admin.setWaiting").replace("%arena_id%", args[2]).replace("%spawnType%","Runner").replace("%location%",player.getLocation().toString()));
+                                plugin.getUtils().sendMessage(sender, plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.admin.setWaiting").replace("%arena_id%", args[2]).replace("%spawnType%","Runner").replace("%location%",player.getLocation().toString()));
                                 return true;
                             }
-                            plugin.getUtils().sendMessage(sender, plugin.getFiles().getControl(Files.MESSAGES).getString("messages.admin.arenaError").replace("%arena_id%", args[2]));
+                            plugin.getUtils().sendMessage(sender, plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.admin.arenaError").replace("%arena_id%", args[2]));
                             return true;
                         }
                     }
                     if (args[1].equalsIgnoreCase("setSelectedBeast")) {
                         if (hasPermission(sender, "RigoxRFTB.admin.locations")) {
-                            if (plugin.getFiles().getControl(Files.GAMES).contains("games." + args[2])) {
+                            if (plugin.getFiles().getControl(RigoxFiles.GAMES).contains("games." + args[2])) {
                                 plugin.getGameManager().setSelectedBeast(args[2], player.getLocation());
-                                plugin.getUtils().sendMessage(sender, plugin.getFiles().getControl(Files.MESSAGES).getString("messages.admin.setSpawn").replace("%arena_id%", args[2]).replace("%spawnType%","SelectedBeast").replace("%location%",player.getLocation().toString()));
+                                plugin.getUtils().sendMessage(sender, plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.admin.setSpawn").replace("%arena_id%", args[2]).replace("%spawnType%","SelectedBeast").replace("%location%",player.getLocation().toString()));
                                 return true;
                             }
-                            plugin.getUtils().sendMessage(sender, plugin.getFiles().getControl(Files.MESSAGES).getString("messages.admin.arenaError").replace("%arena_id%", args[2]));
+                            plugin.getUtils().sendMessage(sender, plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.admin.arenaError").replace("%arena_id%", args[2]));
                             return true;
                         }
                     }
                     if (args[1].equalsIgnoreCase("setBeastSpawn")) {
                         if (hasPermission(sender, "RigoxRFTB.admin.locations")) {
-                            if (plugin.getFiles().getControl(Files.GAMES).contains("games." + args[2])) {
+                            if (plugin.getFiles().getControl(RigoxFiles.GAMES).contains("games." + args[2])) {
                                 plugin.getGameManager().setBeast(args[2], player.getLocation());
-                                plugin.getUtils().sendMessage(sender, plugin.getFiles().getControl(Files.MESSAGES).getString("messages.admin.setSpawn").replace("%arena_id%", args[2]).replace("%spawnType%","Beast").replace("%location%",player.getLocation().toString()));
+                                plugin.getUtils().sendMessage(sender, plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.admin.setSpawn").replace("%arena_id%", args[2]).replace("%spawnType%","Beast").replace("%location%",player.getLocation().toString()));
                                 return true;
                             }
-                            plugin.getUtils().sendMessage(sender, plugin.getFiles().getControl(Files.MESSAGES).getString("messages.admin.arenaError").replace("%arena_id%", args[2]));
+                            plugin.getUtils().sendMessage(sender, plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.admin.arenaError").replace("%arena_id%", args[2]));
                             return true;
                         }
                     }
                     if (args[1].equalsIgnoreCase("setRunnerSpawn")) {
                         if (hasPermission(sender, "RigoxRFTB.admin.locations")) {
-                            if (plugin.getFiles().getControl(Files.GAMES).contains("games." + args[2])) {
+                            if (plugin.getFiles().getControl(RigoxFiles.GAMES).contains("games." + args[2])) {
                                 plugin.getGameManager().setRunners(args[2], player.getLocation());
-                                plugin.getUtils().sendMessage(sender, plugin.getFiles().getControl(Files.MESSAGES).getString("messages.admin.setSpawn").replace("%arena_id%", args[2]).replace("%spawnType%","Runner").replace("%location%",player.getLocation().toString()));
+                                plugin.getUtils().sendMessage(sender, plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.admin.setSpawn").replace("%arena_id%", args[2]).replace("%spawnType%","Runner").replace("%location%",player.getLocation().toString()));
                                 return true;
                             }
-                            plugin.getUtils().sendMessage(sender, plugin.getFiles().getControl(Files.MESSAGES).getString("messages.admin.arenaError").replace("%arena_id%", args[2]));
+                            plugin.getUtils().sendMessage(sender, plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.admin.arenaError").replace("%arena_id%", args[2]));
                             return true;
                         }
                     }

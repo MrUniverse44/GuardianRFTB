@@ -1,7 +1,7 @@
 package dev.mruniverse.rigoxrftb.core.utils;
 
 import dev.mruniverse.rigoxrftb.core.RigoxRFTB;
-import dev.mruniverse.rigoxrftb.core.enums.Files;
+import dev.mruniverse.rigoxrftb.core.enums.RigoxFiles;
 import dev.mruniverse.rigoxrftb.core.enums.RigoxBoard;
 import dev.mruniverse.rigoxrftb.core.games.Game;
 import dev.mruniverse.rigoxrftb.core.games.GameTeam;
@@ -54,8 +54,8 @@ public class RigoxUtils {
     public void sendGameList(Player player, List<String> list, GameTeam winnerTeam) {
         if(list == null) list = new ArrayList<>();
         if(plugin.getPlayerData(player.getUniqueId()).getGame() != null) {
-            String runnerRole = plugin.getFiles().getControl(Files.SETTINGS).getString("roles.runners");
-            String beastRole = plugin.getFiles().getControl(Files.SETTINGS).getString("roles.beasts");
+            String runnerRole = plugin.getFiles().getControl(RigoxFiles.SETTINGS).getString("roles.runners");
+            String beastRole = plugin.getFiles().getControl(RigoxFiles.SETTINGS).getString("roles.beasts");
             String wT,lT;
             if(runnerRole == null) runnerRole = "Runners";
             if(beastRole == null) beastRole = "Beasts";
@@ -158,44 +158,44 @@ public class RigoxUtils {
 
     public String getTitle(RigoxBoard board) {
         if(board.equals(RigoxBoard.LOBBY)) {
-            if (plugin.getFiles().getControl(Files.SCOREBOARD).getString("scoreboards.lobby.title") != null) {
-                return plugin.getFiles().getControl(Files.SCOREBOARD).getString("scoreboards.lobby.title");
+            if (plugin.getFiles().getControl(RigoxFiles.SCOREBOARD).getString("scoreboards.lobby.title") != null) {
+                return plugin.getFiles().getControl(RigoxFiles.SCOREBOARD).getString("scoreboards.lobby.title");
             }
             return "";
         }
         if(board.equals(RigoxBoard.WAITING) || board.equals(RigoxBoard.STARTING) || board.equals(RigoxBoard.SELECTING) || board.equals(RigoxBoard.BEAST_SPAWN)) {
-            if (plugin.getFiles().getControl(Files.SCOREBOARD).getString("scoreboards.waiting.title") != null) {
-                return plugin.getFiles().getControl(Files.SCOREBOARD).getString("scoreboards.waiting.title");
+            if (plugin.getFiles().getControl(RigoxFiles.SCOREBOARD).getString("scoreboards.waiting.title") != null) {
+                return plugin.getFiles().getControl(RigoxFiles.SCOREBOARD).getString("scoreboards.waiting.title");
             }
             return "";
         }
         if(board.equals(RigoxBoard.PLAYING)) {
-            if (plugin.getFiles().getControl(Files.SCOREBOARD).getString("scoreboards.playing.title") != null) {
-                return plugin.getFiles().getControl(Files.SCOREBOARD).getString("scoreboards.playing.title");
+            if (plugin.getFiles().getControl(RigoxFiles.SCOREBOARD).getString("scoreboards.playing.title") != null) {
+                return plugin.getFiles().getControl(RigoxFiles.SCOREBOARD).getString("scoreboards.playing.title");
             }
             return "";
         }
         if(board.equals(RigoxBoard.WIN_BEAST_FOR_BEAST)) {
-            if (plugin.getFiles().getControl(Files.SCOREBOARD).getString("scoreboards.beastWin.forBeast.title") != null) {
-                return plugin.getFiles().getControl(Files.SCOREBOARD).getString("scoreboards.beastWin.forBeast.title");
+            if (plugin.getFiles().getControl(RigoxFiles.SCOREBOARD).getString("scoreboards.beastWin.forBeast.title") != null) {
+                return plugin.getFiles().getControl(RigoxFiles.SCOREBOARD).getString("scoreboards.beastWin.forBeast.title");
             }
             return "";
         }
         if(board.equals(RigoxBoard.WIN_BEAST_FOR_RUNNERS)) {
-            if (plugin.getFiles().getControl(Files.SCOREBOARD).getString("scoreboards.beastWin.forRunners.title") != null) {
-                return plugin.getFiles().getControl(Files.SCOREBOARD).getString("scoreboards.beastWin.forRunners.title");
+            if (plugin.getFiles().getControl(RigoxFiles.SCOREBOARD).getString("scoreboards.beastWin.forRunners.title") != null) {
+                return plugin.getFiles().getControl(RigoxFiles.SCOREBOARD).getString("scoreboards.beastWin.forRunners.title");
             }
             return "";
         }
         if(board.equals(RigoxBoard.WIN_RUNNERS_FOR_BEAST)) {
-            if (plugin.getFiles().getControl(Files.SCOREBOARD).getString("scoreboards.runnersWin.forBeast.title") != null) {
-                return plugin.getFiles().getControl(Files.SCOREBOARD).getString("scoreboards.runnersWin.forBeast.title");
+            if (plugin.getFiles().getControl(RigoxFiles.SCOREBOARD).getString("scoreboards.runnersWin.forBeast.title") != null) {
+                return plugin.getFiles().getControl(RigoxFiles.SCOREBOARD).getString("scoreboards.runnersWin.forBeast.title");
             }
             return "";
         }
         if(board.equals(RigoxBoard.WIN_RUNNERS_FOR_RUNNERS)) {
-            if (plugin.getFiles().getControl(Files.SCOREBOARD).getString("scoreboards.runnersWin.forRunners.title") != null) {
-                return plugin.getFiles().getControl(Files.SCOREBOARD).getString("scoreboards.runnersWin.forRunners.title");
+            if (plugin.getFiles().getControl(RigoxFiles.SCOREBOARD).getString("scoreboards.runnersWin.forRunners.title") != null) {
+                return plugin.getFiles().getControl(RigoxFiles.SCOREBOARD).getString("scoreboards.runnersWin.forRunners.title");
             }
             return "";
         }
@@ -207,14 +207,14 @@ public class RigoxUtils {
     public List<String> getLines(RigoxBoard board,Player player) {
         List<String> lines = new ArrayList<>();
         if(board.equals(RigoxBoard.LOBBY)) {
-            for(String line : plugin.getFiles().getControl(Files.SCOREBOARD).getStringList("scoreboards.lobby.lines")) {
+            for(String line : plugin.getFiles().getControl(RigoxFiles.SCOREBOARD).getStringList("scoreboards.lobby.lines")) {
                 line = replaceVariables(line,player);
                 lines.add(line);
             }
             return lines;
         }
         if(board.equals(RigoxBoard.WAITING)) {
-            for(String line : plugin.getFiles().getControl(Files.SCOREBOARD).getStringList("scoreboards.waiting.lines")) {
+            for(String line : plugin.getFiles().getControl(RigoxFiles.SCOREBOARD).getStringList("scoreboards.waiting.lines")) {
                 if(!line.contains("<isStarting>") && !line.contains("<isSelecting>") && !line.contains("<BeastAppear>")) {
                     if(line.contains("<isWaiting>")) line = line.replace("<isWaiting>","");
                     line = replaceVariables(line, player);
@@ -224,7 +224,7 @@ public class RigoxUtils {
             return lines;
         }
         if(board.equals(RigoxBoard.SELECTING)) {
-            for(String line : plugin.getFiles().getControl(Files.SCOREBOARD).getStringList("scoreboards.waiting.lines")) {
+            for(String line : plugin.getFiles().getControl(RigoxFiles.SCOREBOARD).getStringList("scoreboards.waiting.lines")) {
                 if(!line.contains("<isWaiting>") && !line.contains("<isStarting>") && !line.contains("<BeastAppear>")) {
                     if(line.contains("<isSelecting>")) line = line.replace("<isSelecting>","");
                     line = replaceVariables(line, player);
@@ -234,7 +234,7 @@ public class RigoxUtils {
             return lines;
         }
         if(board.equals(RigoxBoard.STARTING)) {
-            for(String line : plugin.getFiles().getControl(Files.SCOREBOARD).getStringList("scoreboards.waiting.lines")) {
+            for(String line : plugin.getFiles().getControl(RigoxFiles.SCOREBOARD).getStringList("scoreboards.waiting.lines")) {
                 if(!line.contains("<isWaiting>") && !line.contains("<isSelecting>") && !line.contains("<BeastAppear>")) {
                     if(line.contains("<isStarting>")) line = line.replace("<isStarting>","");
                     line = replaceVariables(line, player);
@@ -244,7 +244,7 @@ public class RigoxUtils {
             return lines;
         }
         if(board.equals(RigoxBoard.BEAST_SPAWN)) {
-            for(String line : plugin.getFiles().getControl(Files.SCOREBOARD).getStringList("scoreboards.waiting.lines")) {
+            for(String line : plugin.getFiles().getControl(RigoxFiles.SCOREBOARD).getStringList("scoreboards.waiting.lines")) {
                 if(!line.contains("<isWaiting>") && !line.contains("<isSelecting>") && !line.contains("<isStarting>")) {
                     if(line.contains("<BeastAppear>")) line = line.replace("<BeastAppear>","");
                     line = replaceVariables(line, player);
@@ -254,35 +254,35 @@ public class RigoxUtils {
             return lines;
         }
         if(board.equals(RigoxBoard.PLAYING)) {
-            for(String line : plugin.getFiles().getControl(Files.SCOREBOARD).getStringList("scoreboards.playing.lines")) {
+            for(String line : plugin.getFiles().getControl(RigoxFiles.SCOREBOARD).getStringList("scoreboards.playing.lines")) {
                 line = replaceVariables(line,player);
                 lines.add(line);
             }
             return lines;
         }
         if(board.equals(RigoxBoard.WIN_BEAST_FOR_BEAST)) {
-            for(String line : plugin.getFiles().getControl(Files.SCOREBOARD).getStringList("scoreboards.beastWin.forBeast.lines")) {
+            for(String line : plugin.getFiles().getControl(RigoxFiles.SCOREBOARD).getStringList("scoreboards.beastWin.forBeast.lines")) {
                 line = replaceVariables(line,player);
                 lines.add(line);
             }
             return lines;
         }
         if(board.equals(RigoxBoard.WIN_BEAST_FOR_RUNNERS)) {
-            for(String line : plugin.getFiles().getControl(Files.SCOREBOARD).getStringList("scoreboards.beastWin.forRunners.lines")) {
+            for(String line : plugin.getFiles().getControl(RigoxFiles.SCOREBOARD).getStringList("scoreboards.beastWin.forRunners.lines")) {
                 line = replaceVariables(line,player);
                 lines.add(line);
             }
             return lines;
         }
         if(board.equals(RigoxBoard.WIN_RUNNERS_FOR_BEAST)) {
-            for(String line : plugin.getFiles().getControl(Files.SCOREBOARD).getStringList("scoreboards.runnersWin.forBeast.lines")) {
+            for(String line : plugin.getFiles().getControl(RigoxFiles.SCOREBOARD).getStringList("scoreboards.runnersWin.forBeast.lines")) {
                 line = replaceVariables(line,player);
                 lines.add(line);
             }
             return lines;
         }
         if(board.equals(RigoxBoard.WIN_RUNNERS_FOR_RUNNERS)) {
-            for(String line : plugin.getFiles().getControl(Files.SCOREBOARD).getStringList("scoreboards.runnersWin.forRunners.lines")) {
+            for(String line : plugin.getFiles().getControl(RigoxFiles.SCOREBOARD).getStringList("scoreboards.runnersWin.forRunners.lines")) {
                 line = replaceVariables(line,player);
                 lines.add(line);
             }
@@ -291,7 +291,7 @@ public class RigoxUtils {
         return new ArrayList<>();
     }
     public String getDateFormat() {
-        String dateFormat = plugin.getFiles().getControl(Files.SETTINGS).getString("settings.dateFormat");
+        String dateFormat = plugin.getFiles().getControl(RigoxFiles.SETTINGS).getString("settings.dateFormat");
         if(dateFormat == null) dateFormat = "dd/MM/yyyy";
         return "" + (new SimpleDateFormat(dateFormat).format(Calendar.getInstance().getTime()));
 
@@ -362,15 +362,15 @@ public class RigoxUtils {
     }
     private String getRole(Game game,Player player) {
         if(game.beasts.contains(player)) {
-            return plugin.getFiles().getControl(Files.SETTINGS).getString("roles.beast");
+            return plugin.getFiles().getControl(RigoxFiles.SETTINGS).getString("roles.beast");
         }
-        return plugin.getFiles().getControl(Files.SETTINGS).getString("roles.runner");
+        return plugin.getFiles().getControl(RigoxFiles.SETTINGS).getString("roles.runner");
     }
     private String getSecondsLeft(int time) {
         if(time != 1) {
-            return plugin.getFiles().getControl(Files.SETTINGS).getString("times.seconds");
+            return plugin.getFiles().getControl(RigoxFiles.SETTINGS).getString("times.seconds");
         }
-        return plugin.getFiles().getControl(Files.SETTINGS).getString("times.second");
+        return plugin.getFiles().getControl(RigoxFiles.SETTINGS).getString("times.second");
     }
     private String getBeast(Game game) {
         if(game.gameType.equals(GameType.DOUBLE_BEAST)) {

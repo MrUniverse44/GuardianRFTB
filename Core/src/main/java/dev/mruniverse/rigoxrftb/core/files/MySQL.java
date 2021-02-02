@@ -1,7 +1,7 @@
 package dev.mruniverse.rigoxrftb.core.files;
 
 import dev.mruniverse.rigoxrftb.core.RigoxRFTB;
-import dev.mruniverse.rigoxrftb.core.enums.Files;
+import dev.mruniverse.rigoxrftb.core.enums.RigoxFiles;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -16,14 +16,14 @@ public class MySQL {
 
     public void connect(String host, String db, String user, String password) {
         try {
-            String url= plugin.getFiles().getControl(Files.MYSQL).getString("mysql.jdbc-url");
-            int port = plugin.getFiles().getControl(Files.MYSQL).getInt("mysql.port");
-            if(url == null) url = "jdbc:mysql://" + host + ":" + plugin.getFiles().getControl(Files.MYSQL).getInt("mysql.port") + "/" + db + "?autoReconnect=true";
+            String url= plugin.getFiles().getControl(RigoxFiles.MYSQL).getString("mysql.jdbc-url");
+            int port = plugin.getFiles().getControl(RigoxFiles.MYSQL).getInt("mysql.port");
+            if(url == null) url = "jdbc:mysql://" + host + ":" + plugin.getFiles().getControl(RigoxFiles.MYSQL).getInt("mysql.port") + "/" + db + "?autoReconnect=true";
             url = url.replace("[host]",host)
             .replace("[port]",port + "")
             .replace("[db]",db);
             con = DriverManager.getConnection(url,user,password);
-            //con = DriverManager.getConnection("jdbc:mysql://" + host + ":" + plugin.getFiles().getControl(Files.MYSQL).getInt("mysql.port") + "/" + db + "?autoReconnect=true", user, password);
+            //con = DriverManager.getConnection("jdbc:mysql://" + host + ":" + plugin.getFiles().getControl(RigoxFiles.MYSQL).getInt("mysql.port") + "/" + db + "?autoReconnect=true", user, password);
             plugin.getLogs().info("Connected with MySQL! creating tables");
             List<String> integers = new ArrayList<>();
             integers.add("Kills");
@@ -35,7 +35,7 @@ public class MySQL {
             List<String> strings = new ArrayList<>();
             strings.add("Player");
             integers.add("Rank");
-            plugin.getData().createMultiTable(plugin.getFiles().getControl(Files.MYSQL).getString("mysql.table"), integers, strings);
+            plugin.getData().createMultiTable(plugin.getFiles().getControl(RigoxFiles.MYSQL).getString("mysql.table"), integers, strings);
             plugin.getLogs().info("Tables created!");
         } catch (SQLException e) {
             plugin.getLogs().error("Plugin can't connect to MySQL or cant initialize tables.");

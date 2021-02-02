@@ -1,7 +1,7 @@
 package dev.mruniverse.rigoxrftb.core.listeners;
 
 import dev.mruniverse.rigoxrftb.core.enums.CurrentItem;
-import dev.mruniverse.rigoxrftb.core.enums.Files;
+import dev.mruniverse.rigoxrftb.core.enums.RigoxFiles;
 import dev.mruniverse.rigoxrftb.core.enums.RigoxBoard;
 import dev.mruniverse.rigoxrftb.core.RigoxRFTB;
 import dev.mruniverse.rigoxrftb.core.enums.SaveMode;
@@ -40,9 +40,9 @@ public class PlayerListeners implements Listener {
     @EventHandler
     public void joinOptions(PlayerJoinEvent event) {
         plugin.addPlayer(event.getPlayer());
-        FileConfiguration file = plugin.getFiles().getControl(Files.SETTINGS);
+        FileConfiguration file = plugin.getFiles().getControl(RigoxFiles.SETTINGS);
         Player player = event.getPlayer();
-        if (!plugin.getFiles().getControl(Files.MYSQL).getBoolean("mysql.enabled") && !plugin.getData().getSQL().deaths.containsKey(player.getUniqueId().toString())) {
+        if (!plugin.getFiles().getControl(RigoxFiles.MYSQL).getBoolean("mysql.enabled") && !plugin.getData().getSQL().deaths.containsKey(player.getUniqueId().toString())) {
             plugin.getData().getSQL().createPlayer(player);
         }
         if(file.getBoolean("settings.options.hideServerJoinMessage")) {
@@ -97,7 +97,7 @@ public class PlayerListeners implements Listener {
     @EventHandler
     public void joinScoreboard(PlayerJoinEvent event) {
         try {
-            FileConfiguration file = plugin.getFiles().getControl(Files.SETTINGS);
+            FileConfiguration file = plugin.getFiles().getControl(RigoxFiles.SETTINGS);
             if (file.getBoolean("settings.lobbyScoreboard-only-in-lobby-world")) {
                 String lC = file.getString("settings.lobbyLocation");
                 if(lC == null ) lC = "notSet";
@@ -109,13 +109,13 @@ public class PlayerListeners implements Listener {
                     String[] loc = lC.split(",");
                     World w = Bukkit.getWorld(loc[0]);
                     if (event.getPlayer().getWorld().equals(w)) {
-                        if(plugin.getFiles().getControl(Files.SCOREBOARD).getBoolean("scoreboards.lobby.toggle")) {
+                        if(plugin.getFiles().getControl(RigoxFiles.SCOREBOARD).getBoolean("scoreboards.lobby.toggle")) {
                             plugin.getScoreboards().setScoreboard(RigoxBoard.LOBBY,event.getPlayer());
                         }
                     }
                 }
             } else {
-                if(plugin.getFiles().getControl(Files.SCOREBOARD).getBoolean("scoreboards.lobby.toggle")) {
+                if(plugin.getFiles().getControl(RigoxFiles.SCOREBOARD).getBoolean("scoreboards.lobby.toggle")) {
                     plugin.getScoreboards().setScoreboard(RigoxBoard.LOBBY,event.getPlayer());
                 }
             }
@@ -144,7 +144,7 @@ public class PlayerListeners implements Listener {
         }
         plugin.removePlayer(event.getPlayer());
         plugin.getNMSHandler().deleteBossBar(event.getPlayer());
-        if(plugin.getFiles().getControl(Files.SETTINGS).getBoolean("settings.options.hideServerQuitMessage")) {
+        if(plugin.getFiles().getControl(RigoxFiles.SETTINGS).getBoolean("settings.options.hideServerQuitMessage")) {
             event.setQuitMessage(null);
         }
     }
@@ -188,7 +188,7 @@ public class PlayerListeners implements Listener {
     @EventHandler
     public void lobbyDamage(EntityDamageEvent event) {
         if(event.getEntity().getType().equals(EntityType.PLAYER)) {
-            String lC = plugin.getFiles().getControl(Files.SETTINGS).getString("settings.lobbyLocation");
+            String lC = plugin.getFiles().getControl(RigoxFiles.SETTINGS).getString("settings.lobbyLocation");
             if(lC == null) lC = "notSet";
             if (!lC.equalsIgnoreCase("notSet")) {
                 String[] loc = lC.split(",");
@@ -233,7 +233,7 @@ public class PlayerListeners implements Listener {
     @EventHandler
     public void lobbyHunger(FoodLevelChangeEvent event) {
         if(event.getEntity().getType().equals(EntityType.PLAYER)) {
-            String lC = plugin.getFiles().getControl(Files.SETTINGS).getString("settings.lobbyLocation");
+            String lC = plugin.getFiles().getControl(RigoxFiles.SETTINGS).getString("settings.lobbyLocation");
             if(lC == null) lC = "notSet";
             if (!lC.equalsIgnoreCase("notSet")) {
                 String[] loc = lC.split(",");
@@ -261,15 +261,15 @@ public class PlayerListeners implements Listener {
                 if(name == null) name = "null";
                 final Game game = plugin.getGameManager().getGame(name);
                 if (game == null) {
-                    String errorMsg = plugin.getFiles().getControl(Files.MESSAGES).getString("messages.admin.arenaError");
+                    String errorMsg = plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.admin.arenaError");
                     if(errorMsg == null) errorMsg = "&c%arena_id% don't exists";
                     errorMsg = errorMsg.replace("%arena_id%", name);
                     plugin.getUtils().sendMessage(player,errorMsg);
                     return;
                 }
-                List<String> signs = plugin.getFiles().getControl(Files.GAMES).getStringList("games." + name + ".signs");
+                List<String> signs = plugin.getFiles().getControl(RigoxFiles.GAMES).getStringList("games." + name + ".signs");
                 signs.add(plugin.getUtils().getStringFromLocation(event.getBlock().getLocation()));
-                plugin.getFiles().getControl(Files.GAMES).set("games." + name + ".signs",signs);
+                plugin.getFiles().getControl(RigoxFiles.GAMES).set("games." + name + ".signs",signs);
                 plugin.getFiles().save(SaveMode.GAMES_FILES);
                 game.loadSigns();
             }
@@ -299,7 +299,7 @@ public class PlayerListeners implements Listener {
     @EventHandler
     public void joinTeleport(PlayerJoinEvent event) {
         try {
-            FileConfiguration file = plugin.getFiles().getControl(Files.SETTINGS);
+            FileConfiguration file = plugin.getFiles().getControl(RigoxFiles.SETTINGS);
             if (file.getBoolean("settings.options.joinLobbyTeleport")) {
                 String lC = file.getString("settings.lobbyLocation");
                 if(lC == null) lC = "notSet";
@@ -323,7 +323,7 @@ public class PlayerListeners implements Listener {
                             plugin.getLogs().error("Can't teleport player to lobby on join");
                         }
                     });
-                    if(plugin.getFiles().getControl(Files.SCOREBOARD).getBoolean("scoreboards.lobby.toggle")) {
+                    if(plugin.getFiles().getControl(RigoxFiles.SCOREBOARD).getBoolean("scoreboards.lobby.toggle")) {
                         plugin.getScoreboards().setScoreboard(RigoxBoard.LOBBY,event.getPlayer());
                     }
                     if(file.getBoolean("settings.options.joinHeal")) {
@@ -333,7 +333,7 @@ public class PlayerListeners implements Listener {
                         event.getPlayer().setExp(0.0F);
                     }
                     if(file.getBoolean("settings.options.lobby-actionBar")) {
-                        plugin.getUtils().sendActionbar(event.getPlayer(),plugin.getFiles().getControl(Files.MESSAGES).getString("messages.lobby.actionBar"));
+                        plugin.getUtils().sendActionbar(event.getPlayer(),plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.lobby.actionBar"));
                     }
                     if(file.getBoolean("settings.options.joinAdventureGamemode")) {
                         event.getPlayer().setGameMode(GameMode.ADVENTURE);

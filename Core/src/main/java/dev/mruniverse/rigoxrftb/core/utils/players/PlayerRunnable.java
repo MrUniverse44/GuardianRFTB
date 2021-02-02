@@ -1,7 +1,7 @@
 package dev.mruniverse.rigoxrftb.core.utils.players;
 
 import dev.mruniverse.rigoxrftb.core.RigoxRFTB;
-import dev.mruniverse.rigoxrftb.core.enums.Files;
+import dev.mruniverse.rigoxrftb.core.enums.RigoxFiles;
 import dev.mruniverse.rigoxrftb.core.enums.PlayerStatus;
 import dev.mruniverse.rigoxrftb.core.enums.RigoxBoard;
 import org.bukkit.entity.Player;
@@ -15,16 +15,16 @@ public class PlayerRunnable extends BukkitRunnable {
     private String bossLobby,actionLobby;
     public PlayerRunnable(RigoxRFTB main) {
         plugin = main;
-        bossLb = plugin.getFiles().getControl(Files.SETTINGS).getBoolean("settings.options.lobby-bossBar");
-        bossLobby = plugin.getFiles().getControl(Files.MESSAGES).getString("messages.lobby.bossBar");
-        actionLb = plugin.getFiles().getControl(Files.SETTINGS).getBoolean("settings.options.lobby-actionBar");
-        actionLobby = plugin.getFiles().getControl(Files.MESSAGES).getString("messages.lobby.actionBar");
+        bossLb = plugin.getFiles().getControl(RigoxFiles.SETTINGS).getBoolean("settings.options.lobby-bossBar");
+        bossLobby = plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.lobby.bossBar");
+        actionLb = plugin.getFiles().getControl(RigoxFiles.SETTINGS).getBoolean("settings.options.lobby-actionBar");
+        actionLobby = plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.lobby.actionBar");
     }
     public void update() {
-        bossLb = plugin.getFiles().getControl(Files.SETTINGS).getBoolean("settings.options.lobby-bossBar");
-        bossLobby = plugin.getFiles().getControl(Files.MESSAGES).getString("messages.lobby.bossBar");
-        actionLb = plugin.getFiles().getControl(Files.SETTINGS).getBoolean("settings.options.lobby-actionBar");
-        actionLobby = plugin.getFiles().getControl(Files.MESSAGES).getString("messages.lobby.actionBar");
+        bossLb = plugin.getFiles().getControl(RigoxFiles.SETTINGS).getBoolean("settings.options.lobby-bossBar");
+        bossLobby = plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.lobby.bossBar");
+        actionLb = plugin.getFiles().getControl(RigoxFiles.SETTINGS).getBoolean("settings.options.lobby-actionBar");
+        actionLobby = plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.lobby.actionBar");
     }
     @Override
     public void run() {

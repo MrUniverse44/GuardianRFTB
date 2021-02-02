@@ -1,7 +1,7 @@
 package dev.mruniverse.rigoxrftb.core.games;
 
 import dev.mruniverse.rigoxrftb.core.RigoxRFTB;
-import dev.mruniverse.rigoxrftb.core.enums.Files;
+import dev.mruniverse.rigoxrftb.core.enums.RigoxFiles;
 import dev.mruniverse.rigoxrftb.core.enums.PlayerStatus;
 import dev.mruniverse.rigoxrftb.core.enums.RigoxBoard;
 import dev.mruniverse.rigoxrftb.core.utils.players.PlayerManager;
@@ -64,9 +64,9 @@ public class Game {
 
     public Game(RigoxRFTB main, String name) {
         this.gameTimer = 0;
-        this.gameFile = main.getFiles().getControl(Files.GAMES);
-        this.settingsFile = main.getFiles().getControl(Files.SETTINGS);
-        this.messagesFile = main.getFiles().getControl(Files.MESSAGES);
+        this.gameFile = main.getFiles().getControl(RigoxFiles.GAMES);
+        this.settingsFile = main.getFiles().getControl(RigoxFiles.SETTINGS);
+        this.messagesFile = main.getFiles().getControl(RigoxFiles.MESSAGES);
         this.plugin = main;
         this.players = new ArrayList<>();
         this.signs = new ArrayList<>();

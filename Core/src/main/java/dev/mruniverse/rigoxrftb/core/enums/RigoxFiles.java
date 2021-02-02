@@ -1,6 +1,6 @@
 package dev.mruniverse.rigoxrftb.core.enums;
 
-public enum Files {
+public enum RigoxFiles {
     SETTINGS,
     DATA,
     CHESTS,

@@ -1,6 +1,6 @@
 package dev.mruniverse.rigoxrftb.core.files;
 
-import dev.mruniverse.rigoxrftb.core.enums.Files;
+import dev.mruniverse.rigoxrftb.core.enums.RigoxFiles;
 import dev.mruniverse.rigoxrftb.core.RigoxRFTB;
 import dev.mruniverse.rigoxrftb.core.enums.SaveMode;
 import org.bukkit.Bukkit;
@@ -72,133 +72,133 @@ public class FileManager {
     }
 
     public void loadConfiguration() {
-        addConfig(Files.SETTINGS,"settings.update-check",true);
-        addConfig(Files.SETTINGS,"settings.maxTime",500);
-        addConfig(Files.SETTINGS,"settings.lobbyLocation","notSet");
+        addConfig(RigoxFiles.SETTINGS,"settings.update-check",true);
+        addConfig(RigoxFiles.SETTINGS,"settings.maxTime",500);
+        addConfig(RigoxFiles.SETTINGS,"settings.lobbyLocation","notSet");
         if(!Bukkit.getServer().getVersion().contains("1.8")) {
-            addConfig(Files.SETTINGS, "settings.defaultSounds.sound1", "BLOCK_NOTE_BLOCK_HARP");
-            addConfig(Files.SETTINGS, "settings.defaultSounds.sound2", "ENTITY_ENDER_DRAGON_GROWL");
-            addConfig(Files.SETTINGS, "settings.defaultSounds.sound3", "ENTITY_EXPERIENCE_ORB_PICKUP");
+            addConfig(RigoxFiles.SETTINGS, "settings.defaultSounds.sound1", "BLOCK_NOTE_BLOCK_HARP");
+            addConfig(RigoxFiles.SETTINGS, "settings.defaultSounds.sound2", "ENTITY_ENDER_DRAGON_GROWL");
+            addConfig(RigoxFiles.SETTINGS, "settings.defaultSounds.sound3", "ENTITY_EXPERIENCE_ORB_PICKUP");
         } else {
-            addConfig(Files.SETTINGS, "settings.defaultSounds.sound1", "NOTE_STICKS");
-            addConfig(Files.SETTINGS, "settings.defaultSounds.sound2", "ENDERDRAGON_GROWL");
-            addConfig(Files.SETTINGS, "settings.defaultSounds.sound3", "ORB_PICKUP");
+            addConfig(RigoxFiles.SETTINGS, "settings.defaultSounds.sound1", "NOTE_STICKS");
+            addConfig(RigoxFiles.SETTINGS, "settings.defaultSounds.sound2", "ENDERDRAGON_GROWL");
+            addConfig(RigoxFiles.SETTINGS, "settings.defaultSounds.sound3", "ORB_PICKUP");
         }
-        addConfig(Files.SETTINGS,"settings.options.joinLobbyTeleport",false);
-        addConfig(Files.SETTINGS,"settings.options.joinHeal",true);
-        addConfig(Files.SETTINGS,"settings.options.joinAdventureGamemode",true);
-        addConfig(Files.SETTINGS,"settings.options.clearInventory-onJoin",true);
-        addConfig(Files.SETTINGS,"settings.options.hideServerJoinMessage",true);
-        addConfig(Files.SETTINGS,"settings.options.hideServerQuitMessage",true);
-        addConfig(Files.SETTINGS,"settings.options.lobby-bossBar",true);
-        addConfig(Files.SETTINGS,"settings.options.lobby-noDamage",true);
-        addConfig(Files.SETTINGS,"settings.options.lobby-noHunger",true);
-        addConfig(Files.SETTINGS,"settings.options.lobby-actionBar",true);
-        addConfig(Files.SETTINGS,"settings.tags.runners.toggle",true);
-        addConfig(Files.SETTINGS,"settings.tags.runners.tag","&b&lRUNNER");
-        addConfig(Files.SETTINGS,"settings.tags.beasts.toggle",true);
-        addConfig(Files.SETTINGS,"settings.tags.beasts.tag","&c&lBEAST");
-        addConfig(Files.SETTINGS,"settings.dateFormat","dd/MM/yyyy");
-        addConfig(Files.SETTINGS,"settings.lobbyScoreboard-only-in-lobby-world",true);
-        addConfig(Files.SETTINGS,"settings.options.pluginChat",true);
-        addConfig(Files.SETTINGS,"settings.options.PerWorldTab",true);
-        addConfig(Files.SETTINGS,"settings.options.PerWorldChat",true);
-        addConfig(Files.SETTINGS,"settings.pointSystem.onRunnerDeath",-4);
-        addConfig(Files.SETTINGS,"settings.pointSystem.onBeastDeath",-4);
-        addConfig(Files.SETTINGS,"settings.pointSystem.onRunnersWin",8);
-        addConfig(Files.SETTINGS,"settings.pointSystem.onBeastWin",4);
-        addConfig(Files.SETTINGS,"settings.pointSystem.onKillBeast",4);
-        addConfig(Files.SETTINGS,"settings.pointSystem.onBeastKill",1);
-        addConfig(Files.SETTINGS,"settings.signs.line1","&l%arena%");
-        addConfig(Files.SETTINGS,"settings.signs.line2","%gameStatus%");
-        addConfig(Files.SETTINGS,"settings.signs.line3","%on%/%max%");
-        addConfig(Files.SETTINGS,"settings.signs.line4","&nClick to join");
-        addConfig(Files.SETTINGS,"settings.gameStatus.preparing","&5Config");
-        addConfig(Files.SETTINGS,"settings.gameStatus.waiting","&aWaiting");
-        addConfig(Files.SETTINGS,"settings.gameStatus.starting","&eStarting");
-        addConfig(Files.SETTINGS,"settings.gameStatus.playing","&cPlaying");
-        addConfig(Files.SETTINGS,"settings.gameStatus.InGame","&4InGame");
-        addConfig(Files.SETTINGS,"settings.gameStatus.ending","&9Restarting");
-        addConfig(Files.SETTINGS,"roles.beast","Beast");
-        addConfig(Files.SETTINGS,"roles.runner","Runner");
-        addConfig(Files.SETTINGS,"roles.beasts","Beasts");
-        addConfig(Files.SETTINGS,"roles.runners","Runners");
-        addConfig(Files.SETTINGS,"times.minutes","minutes");
-        addConfig(Files.SETTINGS,"times.minute","minute");
-        addConfig(Files.SETTINGS,"times.seconds","seconds");
-        addConfig(Files.SETTINGS,"times.second","second");
+        addConfig(RigoxFiles.SETTINGS,"settings.options.joinLobbyTeleport",false);
+        addConfig(RigoxFiles.SETTINGS,"settings.options.joinHeal",true);
+        addConfig(RigoxFiles.SETTINGS,"settings.options.joinAdventureGamemode",true);
+        addConfig(RigoxFiles.SETTINGS,"settings.options.clearInventory-onJoin",true);
+        addConfig(RigoxFiles.SETTINGS,"settings.options.hideServerJoinMessage",true);
+        addConfig(RigoxFiles.SETTINGS,"settings.options.hideServerQuitMessage",true);
+        addConfig(RigoxFiles.SETTINGS,"settings.options.lobby-bossBar",true);
+        addConfig(RigoxFiles.SETTINGS,"settings.options.lobby-noDamage",true);
+        addConfig(RigoxFiles.SETTINGS,"settings.options.lobby-noHunger",true);
+        addConfig(RigoxFiles.SETTINGS,"settings.options.lobby-actionBar",true);
+        addConfig(RigoxFiles.SETTINGS,"settings.tags.runners.toggle",true);
+        addConfig(RigoxFiles.SETTINGS,"settings.tags.runners.tag","&b&lRUNNER");
+        addConfig(RigoxFiles.SETTINGS,"settings.tags.beasts.toggle",true);
+        addConfig(RigoxFiles.SETTINGS,"settings.tags.beasts.tag","&c&lBEAST");
+        addConfig(RigoxFiles.SETTINGS,"settings.dateFormat","dd/MM/yyyy");
+        addConfig(RigoxFiles.SETTINGS,"settings.lobbyScoreboard-only-in-lobby-world",true);
+        addConfig(RigoxFiles.SETTINGS,"settings.options.pluginChat",true);
+        addConfig(RigoxFiles.SETTINGS,"settings.options.PerWorldTab",true);
+        addConfig(RigoxFiles.SETTINGS,"settings.options.PerWorldChat",true);
+        addConfig(RigoxFiles.SETTINGS,"settings.pointSystem.onRunnerDeath",-4);
+        addConfig(RigoxFiles.SETTINGS,"settings.pointSystem.onBeastDeath",-4);
+        addConfig(RigoxFiles.SETTINGS,"settings.pointSystem.onRunnersWin",8);
+        addConfig(RigoxFiles.SETTINGS,"settings.pointSystem.onBeastWin",4);
+        addConfig(RigoxFiles.SETTINGS,"settings.pointSystem.onKillBeast",4);
+        addConfig(RigoxFiles.SETTINGS,"settings.pointSystem.onBeastKill",1);
+        addConfig(RigoxFiles.SETTINGS,"settings.signs.line1","&l%arena%");
+        addConfig(RigoxFiles.SETTINGS,"settings.signs.line2","%gameStatus%");
+        addConfig(RigoxFiles.SETTINGS,"settings.signs.line3","%on%/%max%");
+        addConfig(RigoxFiles.SETTINGS,"settings.signs.line4","&nClick to join");
+        addConfig(RigoxFiles.SETTINGS,"settings.gameStatus.preparing","&5Config");
+        addConfig(RigoxFiles.SETTINGS,"settings.gameStatus.waiting","&aWaiting");
+        addConfig(RigoxFiles.SETTINGS,"settings.gameStatus.starting","&eStarting");
+        addConfig(RigoxFiles.SETTINGS,"settings.gameStatus.playing","&cPlaying");
+        addConfig(RigoxFiles.SETTINGS,"settings.gameStatus.InGame","&4InGame");
+        addConfig(RigoxFiles.SETTINGS,"settings.gameStatus.ending","&9Restarting");
+        addConfig(RigoxFiles.SETTINGS,"roles.beast","Beast");
+        addConfig(RigoxFiles.SETTINGS,"roles.runner","Runner");
+        addConfig(RigoxFiles.SETTINGS,"roles.beasts","Beasts");
+        addConfig(RigoxFiles.SETTINGS,"roles.runners","Runners");
+        addConfig(RigoxFiles.SETTINGS,"times.minutes","minutes");
+        addConfig(RigoxFiles.SETTINGS,"times.minute","minute");
+        addConfig(RigoxFiles.SETTINGS,"times.seconds","seconds");
+        addConfig(RigoxFiles.SETTINGS,"times.second","second");
         List<String> lore = new ArrayList<>();
         lore.add("&7Here your lore");
         lore.add("&erigox.club");
-        addConfig(Files.MYSQL,"mysql.enabled",true);
-        addConfig(Files.MYSQL,"mysql.jdbc-url","jdbc:mysql://[host]:[port]/[db]?autoReconnect=true");
-        addConfig(Files.MYSQL,"mysql.host","localhost");
-        addConfig(Files.MYSQL,"mysql.port",3306);
-        addConfig(Files.MYSQL,"mysql.username","root");
-        addConfig(Files.MYSQL,"mysql.password","password");
-        addConfig(Files.MYSQL,"mysql.database","rRFTB");
-        addConfig(Files.MYSQL,"mysql.table","rData");
-        addConfig(Files.ITEMS,"lobby.gameSelector.toggle",true);
-        addConfig(Files.ITEMS,"lobby.gameSelector.item","PAPER");
-        addConfig(Files.ITEMS,"lobby.gameSelector.name","&aGame Selector");
-        addConfig(Files.ITEMS,"lobby.gameSelector.lore",lore);
-        addConfig(Files.ITEMS,"lobby.gameSelector.slot",0);
-        addConfig(Files.ITEMS,"lobby.Shop.toggle",true);
-        addConfig(Files.ITEMS,"lobby.Shop.item","EMERALD");
-        addConfig(Files.ITEMS,"lobby.Shop.name","&aRFTB Shop");
-        addConfig(Files.ITEMS,"lobby.Shop.lore",lore);
-        addConfig(Files.ITEMS,"lobby.Shop.slot",4);
-        addConfig(Files.ITEMS,"lobby.PlayerSettings.toggle",true);
-        addConfig(Files.ITEMS,"lobby.PlayerSettings.item","FIREWORK");
-        addConfig(Files.ITEMS,"lobby.PlayerSettings.name","&aYour settings");
-        addConfig(Files.ITEMS,"lobby.PlayerSettings.lore",lore);
-        addConfig(Files.ITEMS,"lobby.PlayerSettings.slot",1);
-        addConfig(Files.ITEMS,"lobby.LobbySelector.toggle",true);
-        addConfig(Files.ITEMS,"lobby.LobbySelector.item","BEACON");
-        addConfig(Files.ITEMS,"lobby.LobbySelector.name","&aLobby Selector");
-        addConfig(Files.ITEMS,"lobby.LobbySelector.lore",lore);
-        addConfig(Files.ITEMS,"lobby.LobbySelector.slot",7);
-        addConfig(Files.ITEMS,"lobby.Exit.toggle",true);
-        addConfig(Files.ITEMS,"lobby.Exit.item","BED");
-        addConfig(Files.ITEMS,"lobby.Exit.name","&aGo to the hub");
-        addConfig(Files.ITEMS,"lobby.Exit.lore",lore);
-        addConfig(Files.ITEMS,"lobby.Exit.slot",8);
-        addConfig(Files.ITEMS,"InGame.RunnerKit.item","MAP");
-        addConfig(Files.ITEMS,"InGame.RunnerKit.name","&aKit Selector (&lRunners&a)");
-        addConfig(Files.ITEMS,"InGame.RunnerKit.lore",lore);
-        addConfig(Files.ITEMS,"InGame.RunnerKit.slot",0);
-        addConfig(Files.ITEMS,"InGame.BeastKit.item","MAP");
-        addConfig(Files.ITEMS,"InGame.BeastKit.name","&aKit Selector (&lBeast&a)");
-        addConfig(Files.ITEMS,"InGame.BeastKit.lore",lore);
-        addConfig(Files.ITEMS,"InGame.BeastKit.slot",0);
-        addConfig(Files.ITEMS,"InGame.Exit.item","BED");
-        addConfig(Files.ITEMS,"InGame.Exit.name","&aLeave");
-        addConfig(Files.ITEMS,"InGame.Exit.lore",lore);
-        addConfig(Files.ITEMS,"InGame.Exit.slot",8);
-        addConfig(Files.ITEMS,"Playing.BeastInventory.Sword.item","DIAMOND_SWORD");
-        addConfig(Files.ITEMS,"Playing.BeastInventory.Sword.name","&eBeast Sword");
-        addConfig(Files.ITEMS,"Playing.BeastInventory.Sword.lore",lore);
-        addConfig(Files.ITEMS,"Playing.BeastInventory.Sword.slot",0);
-        addConfig(Files.ITEMS,"Playing.BeastArmor.Helmet.item","DIAMOND_HELMET");
-        addConfig(Files.ITEMS,"Playing.BeastArmor.Helmet.name","&eBeast Helmet");
-        addConfig(Files.ITEMS,"Playing.BeastArmor.Helmet.lore",lore);
-        addConfig(Files.ITEMS,"Playing.BeastArmor.Chestplate.item","DIAMOND_CHESTPLATE");
-        addConfig(Files.ITEMS,"Playing.BeastArmor.Chestplate.name","&eBeast Helmet");
-        addConfig(Files.ITEMS,"Playing.BeastArmor.Chestplate.lore",lore);
-        addConfig(Files.ITEMS,"Playing.BeastArmor.Leggings.item","DIAMOND_LEGGINGS");
-        addConfig(Files.ITEMS,"Playing.BeastArmor.Leggings.name","&eBeast Leggings");
-        addConfig(Files.ITEMS,"Playing.BeastArmor.Leggings.lore",lore);
-        addConfig(Files.ITEMS,"Playing.BeastArmor.Boots.item","DIAMOND_BOOTS");
-        addConfig(Files.ITEMS,"Playing.BeastArmor.Boots.name","&eBeast Boots");
-        addConfig(Files.ITEMS,"Playing.BeastArmor.Boots.lore",lore);
+        addConfig(RigoxFiles.MYSQL,"mysql.enabled",true);
+        addConfig(RigoxFiles.MYSQL,"mysql.jdbc-url","jdbc:mysql://[host]:[port]/[db]?autoReconnect=true");
+        addConfig(RigoxFiles.MYSQL,"mysql.host","localhost");
+        addConfig(RigoxFiles.MYSQL,"mysql.port",3306);
+        addConfig(RigoxFiles.MYSQL,"mysql.username","root");
+        addConfig(RigoxFiles.MYSQL,"mysql.password","password");
+        addConfig(RigoxFiles.MYSQL,"mysql.database","rRFTB");
+        addConfig(RigoxFiles.MYSQL,"mysql.table","rData");
+        addConfig(RigoxFiles.ITEMS,"lobby.gameSelector.toggle",true);
+        addConfig(RigoxFiles.ITEMS,"lobby.gameSelector.item","PAPER");
+        addConfig(RigoxFiles.ITEMS,"lobby.gameSelector.name","&aGame Selector");
+        addConfig(RigoxFiles.ITEMS,"lobby.gameSelector.lore",lore);
+        addConfig(RigoxFiles.ITEMS,"lobby.gameSelector.slot",0);
+        addConfig(RigoxFiles.ITEMS,"lobby.Shop.toggle",true);
+        addConfig(RigoxFiles.ITEMS,"lobby.Shop.item","EMERALD");
+        addConfig(RigoxFiles.ITEMS,"lobby.Shop.name","&aRFTB Shop");
+        addConfig(RigoxFiles.ITEMS,"lobby.Shop.lore",lore);
+        addConfig(RigoxFiles.ITEMS,"lobby.Shop.slot",4);
+        addConfig(RigoxFiles.ITEMS,"lobby.PlayerSettings.toggle",true);
+        addConfig(RigoxFiles.ITEMS,"lobby.PlayerSettings.item","FIREWORK");
+        addConfig(RigoxFiles.ITEMS,"lobby.PlayerSettings.name","&aYour settings");
+        addConfig(RigoxFiles.ITEMS,"lobby.PlayerSettings.lore",lore);
+        addConfig(RigoxFiles.ITEMS,"lobby.PlayerSettings.slot",1);
+        addConfig(RigoxFiles.ITEMS,"lobby.LobbySelector.toggle",true);
+        addConfig(RigoxFiles.ITEMS,"lobby.LobbySelector.item","BEACON");
+        addConfig(RigoxFiles.ITEMS,"lobby.LobbySelector.name","&aLobby Selector");
+        addConfig(RigoxFiles.ITEMS,"lobby.LobbySelector.lore",lore);
+        addConfig(RigoxFiles.ITEMS,"lobby.LobbySelector.slot",7);
+        addConfig(RigoxFiles.ITEMS,"lobby.Exit.toggle",true);
+        addConfig(RigoxFiles.ITEMS,"lobby.Exit.item","BED");
+        addConfig(RigoxFiles.ITEMS,"lobby.Exit.name","&aGo to the hub");
+        addConfig(RigoxFiles.ITEMS,"lobby.Exit.lore",lore);
+        addConfig(RigoxFiles.ITEMS,"lobby.Exit.slot",8);
+        addConfig(RigoxFiles.ITEMS,"InGame.RunnerKit.item","MAP");
+        addConfig(RigoxFiles.ITEMS,"InGame.RunnerKit.name","&aKit Selector (&lRunners&a)");
+        addConfig(RigoxFiles.ITEMS,"InGame.RunnerKit.lore",lore);
+        addConfig(RigoxFiles.ITEMS,"InGame.RunnerKit.slot",0);
+        addConfig(RigoxFiles.ITEMS,"InGame.BeastKit.item","MAP");
+        addConfig(RigoxFiles.ITEMS,"InGame.BeastKit.name","&aKit Selector (&lBeast&a)");
+        addConfig(RigoxFiles.ITEMS,"InGame.BeastKit.lore",lore);
+        addConfig(RigoxFiles.ITEMS,"InGame.BeastKit.slot",0);
+        addConfig(RigoxFiles.ITEMS,"InGame.Exit.item","BED");
+        addConfig(RigoxFiles.ITEMS,"InGame.Exit.name","&aLeave");
+        addConfig(RigoxFiles.ITEMS,"InGame.Exit.lore",lore);
+        addConfig(RigoxFiles.ITEMS,"InGame.Exit.slot",8);
+        addConfig(RigoxFiles.ITEMS,"Playing.BeastInventory.Sword.item","DIAMOND_SWORD");
+        addConfig(RigoxFiles.ITEMS,"Playing.BeastInventory.Sword.name","&eBeast Sword");
+        addConfig(RigoxFiles.ITEMS,"Playing.BeastInventory.Sword.lore",lore);
+        addConfig(RigoxFiles.ITEMS,"Playing.BeastInventory.Sword.slot",0);
+        addConfig(RigoxFiles.ITEMS,"Playing.BeastArmor.Helmet.item","DIAMOND_HELMET");
+        addConfig(RigoxFiles.ITEMS,"Playing.BeastArmor.Helmet.name","&eBeast Helmet");
+        addConfig(RigoxFiles.ITEMS,"Playing.BeastArmor.Helmet.lore",lore);
+        addConfig(RigoxFiles.ITEMS,"Playing.BeastArmor.Chestplate.item","DIAMOND_CHESTPLATE");
+        addConfig(RigoxFiles.ITEMS,"Playing.BeastArmor.Chestplate.name","&eBeast Helmet");
+        addConfig(RigoxFiles.ITEMS,"Playing.BeastArmor.Chestplate.lore",lore);
+        addConfig(RigoxFiles.ITEMS,"Playing.BeastArmor.Leggings.item","DIAMOND_LEGGINGS");
+        addConfig(RigoxFiles.ITEMS,"Playing.BeastArmor.Leggings.name","&eBeast Leggings");
+        addConfig(RigoxFiles.ITEMS,"Playing.BeastArmor.Leggings.lore",lore);
+        addConfig(RigoxFiles.ITEMS,"Playing.BeastArmor.Boots.item","DIAMOND_BOOTS");
+        addConfig(RigoxFiles.ITEMS,"Playing.BeastArmor.Boots.name","&eBeast Boots");
+        addConfig(RigoxFiles.ITEMS,"Playing.BeastArmor.Boots.lore",lore);
         List<String> lists = new ArrayList<>();
         lists.add("/leave");
         lists.add("/quit");
         lists.add("/salir");
-        addConfig(Files.SETTINGS,"settings.leaveCMDs",lists);
+        addConfig(RigoxFiles.SETTINGS,"settings.leaveCMDs",lists);
         lists = new ArrayList<>();
-        addConfig(Files.SCOREBOARD,"scoreboards.lobby.toggle",true);
-        addConfig(Files.SCOREBOARD,"scoreboards.lobby.title","&e&lRigoxRFTB");
+        addConfig(RigoxFiles.SCOREBOARD,"scoreboards.lobby.toggle",true);
+        addConfig(RigoxFiles.SCOREBOARD,"scoreboards.lobby.title","&e&lRigoxRFTB");
         lists.add(" ");
         lists.add("&fUser: &b<player_name>");
         lists.add("&fCoins: &b<player_coins>");
@@ -212,9 +212,9 @@ public class FileManager {
         lists.add("&fOnline: &b<server_online>");
         lists.add(" ");
         lists.add("&erigox.club");
-        addConfig(Files.SCOREBOARD,"scoreboards.lobby.lines",lists);
+        addConfig(RigoxFiles.SCOREBOARD,"scoreboards.lobby.lines",lists);
         lists = new ArrayList<>();
-        addConfig(Files.SCOREBOARD,"scoreboards.waiting.title","&e&lRigoxRFTB");
+        addConfig(RigoxFiles.SCOREBOARD,"scoreboards.waiting.title","&e&lRigoxRFTB");
         lists.add("&7<arena_mode> | <timeFormat>");
         lists.add(" ");
         lists.add("&fMap: &a<arena_name>");
@@ -227,9 +227,9 @@ public class FileManager {
         lists.add("<BeastAppear>&fYou will spawn in &a<arena_time_number>&f!");
         lists.add(" ");
         lists.add("&erigox.club");
-        addConfig(Files.SCOREBOARD,"scoreboards.waiting.lines",lists);
+        addConfig(RigoxFiles.SCOREBOARD,"scoreboards.waiting.lines",lists);
         lists = new ArrayList<>();
-        addConfig(Files.SCOREBOARD,"scoreboards.playing.title","&e&lRigoxRFTB");
+        addConfig(RigoxFiles.SCOREBOARD,"scoreboards.playing.title","&e&lRigoxRFTB");
         lists.add("&7<timeFormat>");
         lists.add(" ");
         lists.add("&fRunners Left: &a<arena_runners>");
@@ -240,9 +240,9 @@ public class FileManager {
         lists.add("&fYour role: &a<player_role>");
         lists.add(" ");
         lists.add("&erigox.club");
-        addConfig(Files.SCOREBOARD,"scoreboards.playing.lines",lists);
+        addConfig(RigoxFiles.SCOREBOARD,"scoreboards.playing.lines",lists);
         lists = new ArrayList<>();
-        addConfig(Files.SCOREBOARD,"scoreboards.beastWin.forBeast.title","&e&lRigoxRFTB");
+        addConfig(RigoxFiles.SCOREBOARD,"scoreboards.beastWin.forBeast.title","&e&lRigoxRFTB");
         lists.add("&7<timeFormat>");
         lists.add(" ");
         lists.add("&fYou are the best beast");
@@ -252,9 +252,9 @@ public class FileManager {
         lists.add("&a+<beast_coins_kill> &fcoins &bxKill");
         lists.add(" ");
         lists.add("&erigox.club");
-        addConfig(Files.SCOREBOARD,"scoreboards.beastWin.forBeast.lines",lists);
+        addConfig(RigoxFiles.SCOREBOARD,"scoreboards.beastWin.forBeast.lines",lists);
         lists = new ArrayList<>();
-        addConfig(Files.SCOREBOARD,"scoreboards.beastWin.forRunners.title","&e&lRigoxRFTB");
+        addConfig(RigoxFiles.SCOREBOARD,"scoreboards.beastWin.forRunners.title","&e&lRigoxRFTB");
         lists.add("&7<timeFormat>");
         lists.add(" ");
         lists.add("&fWell.. you tried");
@@ -262,9 +262,9 @@ public class FileManager {
         lists.add("&c<runners_coins_death> &fcoins");
         lists.add(" ");
         lists.add("&erigox.club");
-        addConfig(Files.SCOREBOARD,"scoreboards.beastWin.forRunners.lines",lists);
+        addConfig(RigoxFiles.SCOREBOARD,"scoreboards.beastWin.forRunners.lines",lists);
         lists = new ArrayList<>();
-        addConfig(Files.SCOREBOARD,"scoreboards.runnersWin.forBeast.title","&e&lRigoxRFTB");
+        addConfig(RigoxFiles.SCOREBOARD,"scoreboards.runnersWin.forBeast.title","&e&lRigoxRFTB");
         lists.add("&7<timeFormat>");
         lists.add(" ");
         lists.add("&fBad played!");
@@ -274,9 +274,9 @@ public class FileManager {
         lists.add("&a+<beast_coins_kill> &fcoins &bxKill");
         lists.add(" ");
         lists.add("&erigox.club");
-        addConfig(Files.SCOREBOARD,"scoreboards.runnersWin.forBeast.lines",lists);
+        addConfig(RigoxFiles.SCOREBOARD,"scoreboards.runnersWin.forBeast.lines",lists);
         lists = new ArrayList<>();
-        addConfig(Files.SCOREBOARD,"scoreboards.runnersWin.forRunners.title","&e&lRigoxRFTB");
+        addConfig(RigoxFiles.SCOREBOARD,"scoreboards.runnersWin.forRunners.title","&e&lRigoxRFTB");
         lists.add("&7<timeFormat>");
         lists.add(" ");
         lists.add("&fRunners Win!");
@@ -286,15 +286,15 @@ public class FileManager {
         lists.add("<isPlayerKiller>&a+<runners_coins_kill> &fcoins only for you.");
         lists.add(" ");
         lists.add("&erigox.club");
-        addConfig(Files.SCOREBOARD,"scoreboards.runnersWin.forRunners.lines",lists);
+        addConfig(RigoxFiles.SCOREBOARD,"scoreboards.runnersWin.forRunners.lines",lists);
         lists = new ArrayList<>();
-        addConfig(Files.MESSAGES,"messages.inGame.join","&7%player% &ehas joined &e(&b%online%&e/&b%max%&e)!");
-        addConfig(Files.MESSAGES,"messages.inGame.quit","&7%player% &ehas quit!");
-        addConfig(Files.MESSAGES,"messages.inGame.already","&cYou're already in an arena!");
-        addConfig(Files.MESSAGES,"messages.inGame.selectingBeast","&eThe beast will be selected in &c%time% &e%seconds%!");
-        addConfig(Files.MESSAGES,"messages.inGame.starting","&eThe game starts in &c%time% &e%seconds%!");
-        addConfig(Files.MESSAGES,"messages.inGame.beastsAppear","&eThe beasts spawns in &c%time% &e%seconds%!");
-        addConfig(Files.MESSAGES,"messages.inGame.chosenBeast","&eThe player &b%player% &enow is a beast!");
+        addConfig(RigoxFiles.MESSAGES,"messages.inGame.join","&7%player% &ehas joined &e(&b%online%&e/&b%max%&e)!");
+        addConfig(RigoxFiles.MESSAGES,"messages.inGame.quit","&7%player% &ehas quit!");
+        addConfig(RigoxFiles.MESSAGES,"messages.inGame.already","&cYou're already in an arena!");
+        addConfig(RigoxFiles.MESSAGES,"messages.inGame.selectingBeast","&eThe beast will be selected in &c%time% &e%seconds%!");
+        addConfig(RigoxFiles.MESSAGES,"messages.inGame.starting","&eThe game starts in &c%time% &e%seconds%!");
+        addConfig(RigoxFiles.MESSAGES,"messages.inGame.beastsAppear","&eThe beasts spawns in &c%time% &e%seconds%!");
+        addConfig(RigoxFiles.MESSAGES,"messages.inGame.chosenBeast","&eThe player &b%player% &enow is a beast!");
         lists.add("&a[bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx]");
         lists.add("<center>&e&lMode: %gameType% - %map_name%");
         lists.add(" ");
@@ -302,7 +302,7 @@ public class FileManager {
         lists.add("<isRunner>&e&lSurvive and Kill the beast!");
         lists.add(" ");
         lists.add("&a[bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx]");
-        addConfig(Files.MESSAGES,"messages.inGame.infoList.startInfo",lists);
+        addConfig(RigoxFiles.MESSAGES,"messages.inGame.infoList.startInfo",lists);
         lists = new ArrayList<>();
         lists.add("&a[bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx]");
         lists.add("<center>&e&l%gameType% - %map_name%");
@@ -310,7 +310,7 @@ public class FileManager {
         lists.add("<center>&a%winner_team% &e&lWINNER &c%looser_team%");
         lists.add(" ");
         lists.add("&a[bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx]");
-        addConfig(Files.MESSAGES,"messages.inGame.infoList.endInfo",lists);
+        addConfig(RigoxFiles.MESSAGES,"messages.inGame.infoList.endInfo",lists);
         lists = new ArrayList<>();
         lists.add("&a[bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx]");
         lists.add("<center>&e&l%gameType% - %map_name%");
@@ -320,106 +320,106 @@ public class FileManager {
         lists.add("  &f<isInGuild>[px] &2%guild% Guild Experience");
         lists.add(" ");
         lists.add("&a[bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx]");
-        addConfig(Files.MESSAGES,"messages.inGame.infoList.rewardSummary",lists);
-        addConfig(Files.MESSAGES,"messages.inGame.deathMessages.pvp","&7%victim% was killed by %attacker%");
-        addConfig(Files.MESSAGES,"messages.inGame.deathMessages.void","&7%victim% was searching a diamond.");
-        addConfig(Files.MESSAGES,"messages.inGame.deathMessages.lava","&7%victim% was on fire!");
-        addConfig(Files.MESSAGES,"messages.inGame.deathMessages.bow","&7%attacker% is the best with the bow vs %victim%");
-        addConfig(Files.MESSAGES,"messages.inGame.deathMessages.otherCause","&7%victim% died");
-        addConfig(Files.MESSAGES,"messages.inGame.cantStartGame","&cThis game can't start, not enough players");
-        addConfig(Files.MESSAGES,"messages.inGame.others.winCoins","&6+%winCoins% coins (Win)!");
-        addConfig(Files.MESSAGES,"messages.inGame.others.playAgainWin","&a&lYOU WON! &e&lWant to play again? <clickText>");
-        addConfig(Files.MESSAGES,"messages.inGame.others.playAgainLoose","&c&lYOU LOOSE! &e&lWant to play again? <clickText>");
-        addConfig(Files.MESSAGES,"messages.inGame.others.playAgainClickText","&6&lCLICK HERE");
-        addConfig(Files.MESSAGES,"messages.inGame.others.titles.gameStart.title","&a");
-        addConfig(Files.MESSAGES,"messages.inGame.others.titles.gameStart.subtitle","&aGame Started!");
-        addConfig(Files.MESSAGES,"messages.inGame.others.titles.runnersGo.toRunners.title","&a");
-        addConfig(Files.MESSAGES,"messages.inGame.others.titles.runnersGo.toRunners.subtitle","&aYou has been released, GO!");
-        addConfig(Files.MESSAGES,"messages.inGame.others.titles.runnersGo.toBeasts.title","&a");
-        addConfig(Files.MESSAGES,"messages.inGame.others.titles.runnersGo.toBeasts.subtitle","&aThe runners has been released!");
-        addConfig(Files.MESSAGES,"messages.inGame.others.titles.beastsGo.toRunners.title","&a");
-        addConfig(Files.MESSAGES,"messages.inGame.others.titles.beastsGo.toRunners.subtitle","&cThe beasts has been released!");
-        addConfig(Files.MESSAGES,"messages.inGame.others.titles.beastsGo.toBeasts.title","&a");
-        addConfig(Files.MESSAGES,"messages.inGame.others.titles.beastsGo.toBeasts.subtitle","&aYou has been released, GO!");
-        addConfig(Files.MESSAGES,"messages.inGame.others.titles.Winner.title","&6&lVICTORY!");
-        addConfig(Files.MESSAGES,"messages.inGame.others.titles.Winner.subtitle","&b%winner_name%&f won the game!");
-        addConfig(Files.MESSAGES,"messages.inGame.others.titles.Looser.title","&c&lGAME OVER!");
-        addConfig(Files.MESSAGES,"messages.inGame.others.titles.Looser.subtitle","&8%attacker_name%&f kill you!");
-        addConfig(Files.MESSAGES,"messages.inGame.others.bossBar.toRunners","&bDistance between you and &e&lBEAST &f%beastName%");
-        addConfig(Files.MESSAGES,"messages.inGame.others.bossBar.toBeasts","&bRunners with life: &e&l%runners%");
-        addConfig(Files.MESSAGES,"messages.lobby.actionBar","&bYou are playing &e&lRFTB &bwith &e&lRigoxRFTB");
-        addConfig(Files.MESSAGES,"messages.lobby.bossBar","&bYou are playing on &e&nRigox Network&b.");
-        addConfig(Files.MESSAGES,"messages.others.topFormat.top","&b================[&lTOP 10&b]================");
-        addConfig(Files.MESSAGES,"messages.others.topFormat.format","&a%number% &6%player% &7- Score: &b%score%");
-        addConfig(Files.MESSAGES,"messages.others.topFormat.bot","&b================[&lTOP 10&b]================");
-        addConfig(Files.MESSAGES,"messages.others.gameTypes.Classic","Classic");
-        addConfig(Files.MESSAGES,"messages.others.gameTypes.Infected","Infected");
-        addConfig(Files.MESSAGES,"messages.others.gameTypes.Double","Double Beast");
-        addConfig(Files.MESSAGES,"messages.others.no-perms","&cYou need permission &7%permission% &cfor this action.");
-        addConfig(Files.MESSAGES,"messages.others.full","&cThis game is full!");
-        addConfig(Files.MESSAGES,"messages.others.gamePlaying","&cThis arena is in game.");
-        addConfig(Files.MESSAGES,"messages.others.restarting","&cThis game is in restarting mode!");
-        addConfig(Files.MESSAGES,"messages.others.playerError","&7%player% &cis not online.");
-        addConfig(Files.MESSAGES,"messages.others.customChat.inGame","&a[%player_role%] &7<player_name>&8: &f%message%");
-        addConfig(Files.MESSAGES,"messages.others.customChat.spectator","&8[SPECTATOR] &7<player_name>&8: &f%message%");
-        addConfig(Files.MESSAGES,"messages.others.customChat.lobby","&7<player_name>&8: &f%message%");
-        addConfig(Files.MESSAGES,"messages.admin.create","&aArena &b%arena_id% &acreated correctly!");
-        addConfig(Files.MESSAGES,"messages.admin.delete","&aArena &b%arena_id% &aremoved correctly!");
-        addConfig(Files.MESSAGES,"messages.admin.arenaError","&7%arena_id% &cdoesn't exists");
-        addConfig(Files.MESSAGES,"messages.admin.setWaiting","&aWaiting Lobby now is in &b%location%");
-        addConfig(Files.MESSAGES,"messages.admin.setSpawn","&aSpawn-%spawnType% now is in &b%location%");
-        addConfig(Files.MESSAGES,"messages.admin.setCenter","&aArena center now is in &b%location%");
-        addConfig(Files.MESSAGES,"messages.admin.setCenter","&aArena Beast Presentation now is in &b%location%");
-        addConfig(Files.MESSAGES,"messages.admin.setChestArea","&aArena Chest Area now is in &b%location%");
-        addConfig(Files.MESSAGES,"messages.admin.setMode","&aArena Mode now is &b%arena_mode%");
-        addConfig(Files.MESSAGES,"messages.admin.setCreator","&aArena creator now is &b%arena_creator%");
-        addConfig(Files.MESSAGES,"messages.admin.setName","&aArena ID: &b%arena_id% &anow has the name: &b%arena_name%");
-        addConfig(Files.MESSAGES,"messages.admin.saveArena","&aArena &b%arena_name%&a(&b%arena_id%&a) was saved and enabled correctly!");
-        addConfig(Files.MESSAGES,"messages.admin.editArena","&aNow you can edit arena &b%arena_name%&a(&b%arena_id%&a)");
+        addConfig(RigoxFiles.MESSAGES,"messages.inGame.infoList.rewardSummary",lists);
+        addConfig(RigoxFiles.MESSAGES,"messages.inGame.deathMessages.pvp","&7%victim% was killed by %attacker%");
+        addConfig(RigoxFiles.MESSAGES,"messages.inGame.deathMessages.void","&7%victim% was searching a diamond.");
+        addConfig(RigoxFiles.MESSAGES,"messages.inGame.deathMessages.lava","&7%victim% was on fire!");
+        addConfig(RigoxFiles.MESSAGES,"messages.inGame.deathMessages.bow","&7%attacker% is the best with the bow vs %victim%");
+        addConfig(RigoxFiles.MESSAGES,"messages.inGame.deathMessages.otherCause","&7%victim% died");
+        addConfig(RigoxFiles.MESSAGES,"messages.inGame.cantStartGame","&cThis game can't start, not enough players");
+        addConfig(RigoxFiles.MESSAGES,"messages.inGame.others.winCoins","&6+%winCoins% coins (Win)!");
+        addConfig(RigoxFiles.MESSAGES,"messages.inGame.others.playAgainWin","&a&lYOU WON! &e&lWant to play again? <clickText>");
+        addConfig(RigoxFiles.MESSAGES,"messages.inGame.others.playAgainLoose","&c&lYOU LOOSE! &e&lWant to play again? <clickText>");
+        addConfig(RigoxFiles.MESSAGES,"messages.inGame.others.playAgainClickText","&6&lCLICK HERE");
+        addConfig(RigoxFiles.MESSAGES,"messages.inGame.others.titles.gameStart.title","&a");
+        addConfig(RigoxFiles.MESSAGES,"messages.inGame.others.titles.gameStart.subtitle","&aGame Started!");
+        addConfig(RigoxFiles.MESSAGES,"messages.inGame.others.titles.runnersGo.toRunners.title","&a");
+        addConfig(RigoxFiles.MESSAGES,"messages.inGame.others.titles.runnersGo.toRunners.subtitle","&aYou has been released, GO!");
+        addConfig(RigoxFiles.MESSAGES,"messages.inGame.others.titles.runnersGo.toBeasts.title","&a");
+        addConfig(RigoxFiles.MESSAGES,"messages.inGame.others.titles.runnersGo.toBeasts.subtitle","&aThe runners has been released!");
+        addConfig(RigoxFiles.MESSAGES,"messages.inGame.others.titles.beastsGo.toRunners.title","&a");
+        addConfig(RigoxFiles.MESSAGES,"messages.inGame.others.titles.beastsGo.toRunners.subtitle","&cThe beasts has been released!");
+        addConfig(RigoxFiles.MESSAGES,"messages.inGame.others.titles.beastsGo.toBeasts.title","&a");
+        addConfig(RigoxFiles.MESSAGES,"messages.inGame.others.titles.beastsGo.toBeasts.subtitle","&aYou has been released, GO!");
+        addConfig(RigoxFiles.MESSAGES,"messages.inGame.others.titles.Winner.title","&6&lVICTORY!");
+        addConfig(RigoxFiles.MESSAGES,"messages.inGame.others.titles.Winner.subtitle","&b%winner_name%&f won the game!");
+        addConfig(RigoxFiles.MESSAGES,"messages.inGame.others.titles.Looser.title","&c&lGAME OVER!");
+        addConfig(RigoxFiles.MESSAGES,"messages.inGame.others.titles.Looser.subtitle","&8%attacker_name%&f kill you!");
+        addConfig(RigoxFiles.MESSAGES,"messages.inGame.others.bossBar.toRunners","&bDistance between you and &e&lBEAST &f%beastName%");
+        addConfig(RigoxFiles.MESSAGES,"messages.inGame.others.bossBar.toBeasts","&bRunners with life: &e&l%runners%");
+        addConfig(RigoxFiles.MESSAGES,"messages.lobby.actionBar","&bYou are playing &e&lRFTB &bwith &e&lRigoxRFTB");
+        addConfig(RigoxFiles.MESSAGES,"messages.lobby.bossBar","&bYou are playing on &e&nRigox Network&b.");
+        addConfig(RigoxFiles.MESSAGES,"messages.others.topFormat.top","&b================[&lTOP 10&b]================");
+        addConfig(RigoxFiles.MESSAGES,"messages.others.topFormat.format","&a%number% &6%player% &7- Score: &b%score%");
+        addConfig(RigoxFiles.MESSAGES,"messages.others.topFormat.bot","&b================[&lTOP 10&b]================");
+        addConfig(RigoxFiles.MESSAGES,"messages.others.gameTypes.Classic","Classic");
+        addConfig(RigoxFiles.MESSAGES,"messages.others.gameTypes.Infected","Infected");
+        addConfig(RigoxFiles.MESSAGES,"messages.others.gameTypes.Double","Double Beast");
+        addConfig(RigoxFiles.MESSAGES,"messages.others.no-perms","&cYou need permission &7%permission% &cfor this action.");
+        addConfig(RigoxFiles.MESSAGES,"messages.others.full","&cThis game is full!");
+        addConfig(RigoxFiles.MESSAGES,"messages.others.gamePlaying","&cThis arena is in game.");
+        addConfig(RigoxFiles.MESSAGES,"messages.others.restarting","&cThis game is in restarting mode!");
+        addConfig(RigoxFiles.MESSAGES,"messages.others.playerError","&7%player% &cis not online.");
+        addConfig(RigoxFiles.MESSAGES,"messages.others.customChat.inGame","&a[%player_role%] &7<player_name>&8: &f%message%");
+        addConfig(RigoxFiles.MESSAGES,"messages.others.customChat.spectator","&8[SPECTATOR] &7<player_name>&8: &f%message%");
+        addConfig(RigoxFiles.MESSAGES,"messages.others.customChat.lobby","&7<player_name>&8: &f%message%");
+        addConfig(RigoxFiles.MESSAGES,"messages.admin.create","&aArena &b%arena_id% &acreated correctly!");
+        addConfig(RigoxFiles.MESSAGES,"messages.admin.delete","&aArena &b%arena_id% &aremoved correctly!");
+        addConfig(RigoxFiles.MESSAGES,"messages.admin.arenaError","&7%arena_id% &cdoesn't exists");
+        addConfig(RigoxFiles.MESSAGES,"messages.admin.setWaiting","&aWaiting Lobby now is in &b%location%");
+        addConfig(RigoxFiles.MESSAGES,"messages.admin.setSpawn","&aSpawn-%spawnType% now is in &b%location%");
+        addConfig(RigoxFiles.MESSAGES,"messages.admin.setCenter","&aArena center now is in &b%location%");
+        addConfig(RigoxFiles.MESSAGES,"messages.admin.setCenter","&aArena Beast Presentation now is in &b%location%");
+        addConfig(RigoxFiles.MESSAGES,"messages.admin.setChestArea","&aArena Chest Area now is in &b%location%");
+        addConfig(RigoxFiles.MESSAGES,"messages.admin.setMode","&aArena Mode now is &b%arena_mode%");
+        addConfig(RigoxFiles.MESSAGES,"messages.admin.setCreator","&aArena creator now is &b%arena_creator%");
+        addConfig(RigoxFiles.MESSAGES,"messages.admin.setName","&aArena ID: &b%arena_id% &anow has the name: &b%arena_name%");
+        addConfig(RigoxFiles.MESSAGES,"messages.admin.saveArena","&aArena &b%arena_name%&a(&b%arena_id%&a) was saved and enabled correctly!");
+        addConfig(RigoxFiles.MESSAGES,"messages.admin.editArena","&aNow you can edit arena &b%arena_name%&a(&b%arena_id%&a)");
         List<String> menuList = new ArrayList<>();
-        addConfig(Files.MENUS, "menus.shop.inventoryName","&8Shop Menu");
-        addConfig(Files.MENUS, "menus.shop.inventoryRows",6);
+        addConfig(RigoxFiles.MENUS, "menus.shop.inventoryName","&8Shop Menu");
+        addConfig(RigoxFiles.MENUS, "menus.shop.inventoryRows",6);
         if(!plugin.getServer().getVersion().contains("1.8")) {
             menuList.add("ENTITY_EXPERIENCE_ORB_PICKUP");
         } else {
             menuList.add("ORB_PICKUP");
         }
-        addConfig(Files.MENUS, "menus.shop.inventorySounds",menuList);
+        addConfig(RigoxFiles.MENUS, "menus.shop.inventorySounds",menuList);
         menuList = new ArrayList<>();
-        addConfig(Files.MENUS, "menus.shop.KitRunner.name", "&aKits: Runner");
-        addConfig(Files.MENUS, "menus.shop.KitRunner.slot", 21);
+        addConfig(RigoxFiles.MENUS, "menus.shop.KitRunner.name", "&aKits: Runner");
+        addConfig(RigoxFiles.MENUS, "menus.shop.KitRunner.slot", 21);
         menuList.add("&8RigoxRFTB");
         menuList.add("&eClick to open kit runners menu");
-        addConfig(Files.MENUS, "menus.shop.KitRunner.lore", menuList);
-        addConfig(Files.MENUS, "menus.shop.KitRunner.item", "MAP");
+        addConfig(RigoxFiles.MENUS, "menus.shop.KitRunner.lore", menuList);
+        addConfig(RigoxFiles.MENUS, "menus.shop.KitRunner.item", "MAP");
         menuList = new ArrayList<>();
         menuList.add("&8RigoxRFTB");
         menuList.add("&eClick to open Craft Coins menu");
-        addConfig(Files.MENUS, "menus.shop.Craft.name", "&aCraft Coins");
-        addConfig(Files.MENUS, "menus.shop.Craft.slot", 22);
-        addConfig(Files.MENUS, "menus.shop.Craft.lore", menuList);
-        addConfig(Files.MENUS, "menus.shop.Craft.item", "BREWING_STAND");
-        addConfig(Files.MENUS, "menus.shop.KitBeast.name", "&aKits: Beast");
-        addConfig(Files.MENUS, "menus.shop.KitBeast.slot", 23);
+        addConfig(RigoxFiles.MENUS, "menus.shop.Craft.name", "&aCraft Coins");
+        addConfig(RigoxFiles.MENUS, "menus.shop.Craft.slot", 22);
+        addConfig(RigoxFiles.MENUS, "menus.shop.Craft.lore", menuList);
+        addConfig(RigoxFiles.MENUS, "menus.shop.Craft.item", "BREWING_STAND");
+        addConfig(RigoxFiles.MENUS, "menus.shop.KitBeast.name", "&aKits: Beast");
+        addConfig(RigoxFiles.MENUS, "menus.shop.KitBeast.slot", 23);
         menuList = new ArrayList<>();
         menuList.add("&8RigoxRFTB");
         menuList.add("&eClick to open kit beasts menu");
-        addConfig(Files.MENUS, "menus.shop.KitBeast.lore",menuList);
-        addConfig(Files.MENUS, "menus.shop.KitBeast.item","FIREWORK");
-        addConfig(Files.MENUS, "menus.shop.Boost.name","&aGame Booster");
-        addConfig(Files.MENUS, "menus.shop.Boost.slot",31);
+        addConfig(RigoxFiles.MENUS, "menus.shop.KitBeast.lore",menuList);
+        addConfig(RigoxFiles.MENUS, "menus.shop.KitBeast.item","FIREWORK");
+        addConfig(RigoxFiles.MENUS, "menus.shop.Boost.name","&aGame Booster");
+        addConfig(RigoxFiles.MENUS, "menus.shop.Boost.slot",31);
         menuList = new ArrayList<>();
         menuList.add("&8RigoxRFTB");
         menuList.add("&eClick to open boost menu");
-        addConfig(Files.MENUS, "menus.shop.Boost.lore",menuList);
-        addConfig(Files.MENUS, "menus.shop.Boost.item","EXPERIENCE_BOTTLE");
+        addConfig(RigoxFiles.MENUS, "menus.shop.Boost.lore",menuList);
+        addConfig(RigoxFiles.MENUS, "menus.shop.Boost.item","EXPERIENCE_BOTTLE");
         menuList = new ArrayList<>();
         menuList.add("&8RigoxRFTB &7F-1");
         menuList.add("&erigox.club");
-        addConfig(Files.MENUS, "fill-inventory.shop.fillOne.item","STAINED_GLASS_PANE:5");
-        addConfig(Files.MENUS, "fill-inventory.shop.fillOne.name","&aRFTB Shop");
-        addConfig(Files.MENUS, "fill-inventory.shop.fillOne.lore",menuList);
-        addConfig(Files.MENUS, "fill-inventory.shop.fillOne.list.type","ONLY");
+        addConfig(RigoxFiles.MENUS, "fill-inventory.shop.fillOne.item","STAINED_GLASS_PANE:5");
+        addConfig(RigoxFiles.MENUS, "fill-inventory.shop.fillOne.name","&aRFTB Shop");
+        addConfig(RigoxFiles.MENUS, "fill-inventory.shop.fillOne.lore",menuList);
+        addConfig(RigoxFiles.MENUS, "fill-inventory.shop.fillOne.list.type","ONLY");
         List<Integer> menuValues = new ArrayList<>();
         menuValues.add(0);
         menuValues.add(1);
@@ -433,14 +433,14 @@ public class FileManager {
         menuValues.add(46);
         menuValues.add(52);
         menuValues.add(53);
-        addConfig(Files.MENUS, "fill-inventory.shop.fillOne.list.values",menuValues);
-        addConfig(Files.MENUS, "fill-inventory.shop.fillTwo.item","STAINED_GLASS_PANE:15");
-        addConfig(Files.MENUS, "fill-inventory.shop.fillTwo.name","&aRFTB Shop");
+        addConfig(RigoxFiles.MENUS, "fill-inventory.shop.fillOne.list.values",menuValues);
+        addConfig(RigoxFiles.MENUS, "fill-inventory.shop.fillTwo.item","STAINED_GLASS_PANE:15");
+        addConfig(RigoxFiles.MENUS, "fill-inventory.shop.fillTwo.name","&aRFTB Shop");
         menuList = new ArrayList<>();
         menuList.add("&8RigoxRFTB &7F-2");
         menuList.add("&erigox.club");
-        addConfig(Files.MENUS, "fill-inventory.shop.fillTwo.lore",menuList);
-        addConfig(Files.MENUS, "fill-inventory.shop.fillTwo.list.type","IGNORE");
+        addConfig(RigoxFiles.MENUS, "fill-inventory.shop.fillTwo.lore",menuList);
+        addConfig(RigoxFiles.MENUS, "fill-inventory.shop.fillTwo.list.type","IGNORE");
         menuValues = new ArrayList<>();
         menuValues.add(0);
         menuValues.add(1);
@@ -458,128 +458,128 @@ public class FileManager {
         menuValues.add(22);
         menuValues.add(23);
         menuValues.add(31);
-        addConfig(Files.MENUS, "fill-inventory.shop.fillTwo.list.values",menuValues);
+        addConfig(RigoxFiles.MENUS, "fill-inventory.shop.fillTwo.list.values",menuValues);
         //chests
         menuList = new ArrayList<>();
-        addConfig(Files.CHESTS, "chests.armor.inventoryName","&8Shop Menu");
-        addConfig(Files.CHESTS, "chests.armor.inventoryRows",6);
+        addConfig(RigoxFiles.CHESTS, "chests.armor.inventoryName","&8Shop Menu");
+        addConfig(RigoxFiles.CHESTS, "chests.armor.inventoryRows",6);
         if(!plugin.getServer().getVersion().contains("1.8")) {
             menuList.add("ENTITY_EXPERIENCE_ORB_PICKUP");
         } else {
             menuList.add("ORB_PICKUP");
         }
-        addConfig(Files.CHESTS, "chests.armor.inventorySounds",menuList);
+        addConfig(RigoxFiles.CHESTS, "chests.armor.inventorySounds",menuList);
         menuList = new ArrayList<>();
         List<String> enchants = new ArrayList<>();
         enchants.add("UNBREAKING, 10");
         enchants.add("PROTECTION, 5");
         menuList.add("&8RigoxRFTB");
-        addConfig(Files.CHESTS, "chests.armor.helmet.name", "&aDiamond Helmet");
-        addConfig(Files.CHESTS, "chests.armor.helmet.slot", 21);
-        addConfig(Files.CHESTS, "chests.armor.helmet.lore", menuList);
-        addConfig(Files.CHESTS, "chests.armor.helmet.item", "DIAMOND_HELMET");
-        addConfig(Files.CHESTS, "chests.armor.helmet.enchantments",enchants);
-        addConfig(Files.CHESTS, "chests.armor.chestplate.name", "&aDiamond Chestplate");
-        addConfig(Files.CHESTS, "chests.armor.chestplate.slot", 22);
-        addConfig(Files.CHESTS, "chests.armor.chestplate.lore", menuList);
-        addConfig(Files.CHESTS, "chests.armor.chestplate.item", "DIAMOND_CHESTPLATE");
+        addConfig(RigoxFiles.CHESTS, "chests.armor.helmet.name", "&aDiamond Helmet");
+        addConfig(RigoxFiles.CHESTS, "chests.armor.helmet.slot", 21);
+        addConfig(RigoxFiles.CHESTS, "chests.armor.helmet.lore", menuList);
+        addConfig(RigoxFiles.CHESTS, "chests.armor.helmet.item", "DIAMOND_HELMET");
+        addConfig(RigoxFiles.CHESTS, "chests.armor.helmet.enchantments",enchants);
+        addConfig(RigoxFiles.CHESTS, "chests.armor.chestplate.name", "&aDiamond Chestplate");
+        addConfig(RigoxFiles.CHESTS, "chests.armor.chestplate.slot", 22);
+        addConfig(RigoxFiles.CHESTS, "chests.armor.chestplate.lore", menuList);
+        addConfig(RigoxFiles.CHESTS, "chests.armor.chestplate.item", "DIAMOND_CHESTPLATE");
         enchants = new ArrayList<>();
         enchants.add("UNBREAKING, 2");
         enchants.add("PROTECTION, 4");
-        addConfig(Files.CHESTS, "chests.armor.chestplate.enchantments",enchants);
-        addConfig(Files.CHESTS, "chests.armor.leggings.name", "&aDiamond Leggings");
-        addConfig(Files.CHESTS, "chests.armor.leggings.slot", 23);
-        addConfig(Files.CHESTS, "chests.armor.leggings.lore",menuList);
-        addConfig(Files.CHESTS, "chests.armor.leggings.item","DIAMOND_LEGGINGS");
+        addConfig(RigoxFiles.CHESTS, "chests.armor.chestplate.enchantments",enchants);
+        addConfig(RigoxFiles.CHESTS, "chests.armor.leggings.name", "&aDiamond Leggings");
+        addConfig(RigoxFiles.CHESTS, "chests.armor.leggings.slot", 23);
+        addConfig(RigoxFiles.CHESTS, "chests.armor.leggings.lore",menuList);
+        addConfig(RigoxFiles.CHESTS, "chests.armor.leggings.item","DIAMOND_LEGGINGS");
         enchants = new ArrayList<>();
         enchants.add("UNBREAKING, 3");
         enchants.add("PROTECTION, 2");
-        addConfig(Files.CHESTS, "chests.armor.leggings.enchantments",enchants);
-        addConfig(Files.CHESTS, "chests.armor.boots.name","&aDiamond Boots");
-        addConfig(Files.CHESTS, "chests.armor.boots.slot",31);
-        addConfig(Files.CHESTS, "chests.armor.boots.lore",menuList);
-        addConfig(Files.CHESTS, "chests.armor.boots.item","DIAMOND_BOOTS");
+        addConfig(RigoxFiles.CHESTS, "chests.armor.leggings.enchantments",enchants);
+        addConfig(RigoxFiles.CHESTS, "chests.armor.boots.name","&aDiamond Boots");
+        addConfig(RigoxFiles.CHESTS, "chests.armor.boots.slot",31);
+        addConfig(RigoxFiles.CHESTS, "chests.armor.boots.lore",menuList);
+        addConfig(RigoxFiles.CHESTS, "chests.armor.boots.item","DIAMOND_BOOTS");
         enchants = new ArrayList<>();
         enchants.add("UNBREAKING, 3");
         enchants.add("PROTECTION, 1");
-        addConfig(Files.CHESTS, "chests.armor.boots.enchantments",enchants);
+        addConfig(RigoxFiles.CHESTS, "chests.armor.boots.enchantments",enchants);
         enchants = new ArrayList<>();
         enchants.add("FIRE_ASPECT, 2");
         enchants.add("SHARPNESS, 3");
-        addConfig(Files.CHESTS, "chests.attack.sword.name", "&aDiamond Sword");
-        addConfig(Files.CHESTS, "chests.attack.sword.slot", 21);
-        addConfig(Files.CHESTS, "chests.attack.sword.lore", menuList);
-        addConfig(Files.CHESTS, "chests.attack.sword.item", "DIAMOND_SWORD");
-        addConfig(Files.CHESTS, "chests.attack.sword.enchantments",enchants);
-        addConfig(Files.CHESTS, "chests.attack.bow.name", "&aHardcore Bow");
-        addConfig(Files.CHESTS, "chests.attack.bow.slot", 22);
-        addConfig(Files.CHESTS, "chests.attack.bow.lore", menuList);
-        addConfig(Files.CHESTS, "chests.attack.bow.item", "BOW");
+        addConfig(RigoxFiles.CHESTS, "chests.attack.sword.name", "&aDiamond Sword");
+        addConfig(RigoxFiles.CHESTS, "chests.attack.sword.slot", 21);
+        addConfig(RigoxFiles.CHESTS, "chests.attack.sword.lore", menuList);
+        addConfig(RigoxFiles.CHESTS, "chests.attack.sword.item", "DIAMOND_SWORD");
+        addConfig(RigoxFiles.CHESTS, "chests.attack.sword.enchantments",enchants);
+        addConfig(RigoxFiles.CHESTS, "chests.attack.bow.name", "&aHardcore Bow");
+        addConfig(RigoxFiles.CHESTS, "chests.attack.bow.slot", 22);
+        addConfig(RigoxFiles.CHESTS, "chests.attack.bow.lore", menuList);
+        addConfig(RigoxFiles.CHESTS, "chests.attack.bow.item", "BOW");
         enchants = new ArrayList<>();
         enchants.add("FLAME, 1");
         enchants.add("INFINITY, 1");
-        addConfig(Files.CHESTS, "chests.attack.bow.enchantments",enchants);
-        addConfig(Files.CHESTS, "chests.attack.arrow.name", "&aHardcore Arrow");
-        addConfig(Files.CHESTS, "chests.attack.arrow.slot", 23);
-        addConfig(Files.CHESTS, "chests.attack.arrow.lore",menuList);
+        addConfig(RigoxFiles.CHESTS, "chests.attack.bow.enchantments",enchants);
+        addConfig(RigoxFiles.CHESTS, "chests.attack.arrow.name", "&aHardcore Arrow");
+        addConfig(RigoxFiles.CHESTS, "chests.attack.arrow.slot", 23);
+        addConfig(RigoxFiles.CHESTS, "chests.attack.arrow.lore",menuList);
         enchants = new ArrayList<>();
         enchants.add("KB, 1");
-        addConfig(Files.CHESTS, "chests.attack.arrow.item","ARROW");
-        addConfig(Files.CHESTS, "chests.attack.arrow.enchantments",enchants);
-        addConfig(Files.CHESTS, "chests.attack.potion.name","&aHardcore Potion");
-        addConfig(Files.CHESTS, "chests.attack.potion.slot",31);
-        addConfig(Files.CHESTS, "chests.attack.potion.lore",menuList);
-        addConfig(Files.CHESTS, "chests.attack.potion.item","POTION");
+        addConfig(RigoxFiles.CHESTS, "chests.attack.arrow.item","ARROW");
+        addConfig(RigoxFiles.CHESTS, "chests.attack.arrow.enchantments",enchants);
+        addConfig(RigoxFiles.CHESTS, "chests.attack.potion.name","&aHardcore Potion");
+        addConfig(RigoxFiles.CHESTS, "chests.attack.potion.slot",31);
+        addConfig(RigoxFiles.CHESTS, "chests.attack.potion.lore",menuList);
+        addConfig(RigoxFiles.CHESTS, "chests.attack.potion.item","POTION");
     }
-    public void addConfig(Files fileToAdd,String path,Object value) {
+    public void addConfig(RigoxFiles fileToAdd, String path, Object value) {
         switch(fileToAdd) {
             case DATA:
-                if(!getControl(Files.DATA).contains(path)) {
-                    getControl(Files.DATA).set(path,value);
+                if(!getControl(RigoxFiles.DATA).contains(path)) {
+                    getControl(RigoxFiles.DATA).set(path,value);
                 }
                 return;
             case CHESTS:
-                if(!getControl(Files.CHESTS).contains(path)) {
-                    getControl(Files.CHESTS).set(path,value);
+                if(!getControl(RigoxFiles.CHESTS).contains(path)) {
+                    getControl(RigoxFiles.CHESTS).set(path,value);
                 }
                 return;
             case MESSAGES:
-                if(!getControl(Files.MESSAGES).contains(path)) {
-                    getControl(Files.MESSAGES).set(path,value);
+                if(!getControl(RigoxFiles.MESSAGES).contains(path)) {
+                    getControl(RigoxFiles.MESSAGES).set(path,value);
                 }
                 return;
             case ITEMS:
-                if(!getControl(Files.ITEMS).contains(path)) {
-                    getControl(Files.ITEMS).set(path,value);
+                if(!getControl(RigoxFiles.ITEMS).contains(path)) {
+                    getControl(RigoxFiles.ITEMS).set(path,value);
                 }
                 return;
             case MYSQL:
-                if(!getControl(Files.MYSQL).contains(path)) {
-                    getControl(Files.MYSQL).set(path, value);
+                if(!getControl(RigoxFiles.MYSQL).contains(path)) {
+                    getControl(RigoxFiles.MYSQL).set(path, value);
                 }
                 return;
             case GAMES:
-                if(!getControl(Files.GAMES).contains(path)) {
-                    getControl(Files.GAMES).set(path,value);
+                if(!getControl(RigoxFiles.GAMES).contains(path)) {
+                    getControl(RigoxFiles.GAMES).set(path,value);
                 }
                 return;
             case MENUS:
-                if(!getControl(Files.MENUS).contains(path)) {
-                    getControl(Files.MENUS).set(path,value);
+                if(!getControl(RigoxFiles.MENUS).contains(path)) {
+                    getControl(RigoxFiles.MENUS).set(path,value);
                 }
                 return;
             case SCOREBOARD:
-                if(!getControl(Files.SCOREBOARD).contains(path)) {
-                    getControl(Files.SCOREBOARD).set(path,value);
+                if(!getControl(RigoxFiles.SCOREBOARD).contains(path)) {
+                    getControl(RigoxFiles.SCOREBOARD).set(path,value);
                 }
                 return;
             default:
-                if(!getControl(Files.SETTINGS).contains(path)) {
-                    getControl(Files.SETTINGS).set(path,value);
+                if(!getControl(RigoxFiles.SETTINGS).contains(path)) {
+                    getControl(RigoxFiles.SETTINGS).set(path,value);
                 }
         }
     }
-    public FileConfiguration getControl(Files fileToGet) {
+    public FileConfiguration getControl(RigoxFiles fileToGet) {
         switch (fileToGet) {
             case GAMES:
                 if(rGames == null) reloadFile(SaveMode.GAMES_FILES);
@@ -640,7 +640,7 @@ public class FileManager {
             rGames = YamlConfiguration.loadConfiguration(Games);
         }
     }
-    public List<String> getContent(Files file,String path,boolean getKeys) {
+    public List<String> getContent(RigoxFiles file, String path, boolean getKeys) {
         List<String> rx = new ArrayList<>();
         ConfigurationSection section = getControl(file).getConfigurationSection(path);
         if(section == null) return rx;
@@ -650,31 +650,31 @@ public class FileManager {
     public void save(SaveMode Mode) {
         try {
             if(Mode.equals(SaveMode.GAMES_FILES) || Mode.equals(SaveMode.ALL)) {
-                getControl(Files.GAMES).save(Games);
+                getControl(RigoxFiles.GAMES).save(Games);
             }
             if(Mode.equals(SaveMode.MYSQL) || Mode.equals(SaveMode.ALL)) {
-                getControl(Files.MYSQL).save(MySQL);
+                getControl(RigoxFiles.MYSQL).save(MySQL);
             }
             if(Mode.equals(SaveMode.DATA) || Mode.equals(SaveMode.ALL)) {
-                getControl(Files.DATA).save(Data);
+                getControl(RigoxFiles.DATA).save(Data);
             }
             if(Mode.equals(SaveMode.CHESTS) || Mode.equals(SaveMode.ALL)) {
-                getControl(Files.CHESTS).save(Chests);
+                getControl(RigoxFiles.CHESTS).save(Chests);
             }
             if(Mode.equals(SaveMode.SCOREBOARDS) || Mode.equals(SaveMode.ALL)) {
-                getControl(Files.SCOREBOARD).save(Scoreboard);
+                getControl(RigoxFiles.SCOREBOARD).save(Scoreboard);
             }
             if(Mode.equals(SaveMode.MENUS) || Mode.equals(SaveMode.ALL)) {
-                getControl(Files.MENUS).save(Menus);
+                getControl(RigoxFiles.MENUS).save(Menus);
             }
             if(Mode.equals(SaveMode.ITEMS) || Mode.equals(SaveMode.ALL)) {
-                getControl(Files.ITEMS).save(Items);
+                getControl(RigoxFiles.ITEMS).save(Items);
             }
             if(Mode.equals(SaveMode.MESSAGES) || Mode.equals(SaveMode.ALL)) {
-                getControl(Files.MESSAGES).save(Messages);
+                getControl(RigoxFiles.MESSAGES).save(Messages);
             }
             if(Mode.equals(SaveMode.SETTINGS) || Mode.equals(SaveMode.ALL)) {
-                getControl(Files.SETTINGS).save(Settings);
+                getControl(RigoxFiles.SETTINGS).save(Settings);
             }
         } catch(Throwable throwable) {
             plugin.getLogs().error("The plugin can't load or save configuration files! (Spigot Control Issue - Caused by: One plugin is using bad the <getControl() from FileManager.class>)");
