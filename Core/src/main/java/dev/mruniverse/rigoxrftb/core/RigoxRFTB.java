@@ -217,6 +217,9 @@ public final class RigoxRFTB extends JavaPlugin {
                             Integer slot = items.getInt("lobby." + lItems + ".slot");
                             List<String> lore = items.getStringList("lobby." + lItems + ".lore");
                             ItemStack item = getNMSHandler().getItemStack(m.parseMaterial(), TextUtilities.recolor(itemName), TextUtilities.recolorLore(lore));
+                            if(items.get("lobby." + lItems + ".enchantments") != null) {
+                                item = getEnchantmentList(item,Files.ITEMS,"lobby." + lItems + ".enchantments");
+                            }
                             lobbyItems.put(item, slot);
                             currentItem.put(item, getCurrent(lItems));
                         }
@@ -246,6 +249,9 @@ public final class RigoxRFTB extends JavaPlugin {
                 m = optionalXMaterial.get();
                 if (m.parseMaterial() != null) {
                     item = getNMSHandler().getItemStack(m.parseMaterial(), TextUtilities.recolor(ItemName), TextUtilities.recolorLore(ItemLore));
+                    if(items.get("InGame.RunnerKit.enchantments") != null) {
+                        item = getEnchantmentList(item,Files.ITEMS,"InGame.RunnerKit.enchantments");
+                    }
                     kitRunner = item;
                     RunnerSlot = ItemSlot;
                     currentItem.put(item, CurrentItem.KIT_RUNNERS);
@@ -263,6 +269,9 @@ public final class RigoxRFTB extends JavaPlugin {
                 m = optionalXMaterial.get();
                 if (m.parseMaterial() != null) {
                     item = getNMSHandler().getItemStack(m.parseMaterial(), TextUtilities.recolor(ItemName), TextUtilities.recolorLore(ItemLore));
+                    if(items.get("InGame.BeastKit.enchantments") != null) {
+                        item = getEnchantmentList(item,Files.ITEMS,"InGame.BeastKit.enchantments");
+                    }
                     kitBeast = item;
                     beastSlot = ItemSlot;
                     currentItem.put(item, CurrentItem.KIT_BEASTS);
@@ -280,6 +289,9 @@ public final class RigoxRFTB extends JavaPlugin {
                 m = optionalXMaterial.get();
                 if (m.parseMaterial() != null) {
                     item = getNMSHandler().getItemStack(m.parseMaterial(), TextUtilities.recolor(ItemName), TextUtilities.recolorLore(ItemLore));
+                    if(items.get("InGame.Exit.enchantments") != null) {
+                        item = getEnchantmentList(item,Files.ITEMS,"InGame.Exit.enchantments");
+                    }
                     exitItem = item;
                     exitSlot = ItemSlot;
                     currentItem.put(item, CurrentItem.EXIT_GAME);
