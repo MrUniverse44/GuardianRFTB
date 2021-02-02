@@ -232,7 +232,33 @@ public class MainCMD implements CommandExecutor {
                         return true;
                     }
                 }
-
+                if(args[1].equalsIgnoreCase("delChest")) {
+                    if(hasPermission(sender,"RigoxRFTB.admin.addChest")) {
+                        if(args.length == 3) {
+                            plugin.getUtils().sendMessage(sender,"&7Bad usage");
+                            return true;
+                        }
+                        if (plugin.getFiles().getControl(RigoxFiles.GAMES).contains("games." + args[2])) {
+                            if(plugin.getFiles().getControl(RigoxFiles.GAMES).get("games." + args[2] + ".chests") != null) {
+                                if(!plugin.getFiles().getControl(RigoxFiles.GAMES).getStringList("games." + args[2] + ".chests").contains(args[3])) {
+                                    plugin.getUtils().sendMessage(sender,"&cThis chest doesn't exists in game '&e" + args[2] + "&c'");
+                                    return true;
+                                }
+                                List<String> chests = plugin.getFiles().getControl(RigoxFiles.GAMES).getStringList("games." + args[2] + ".chests");
+                                chests.remove(args[3]);
+                                plugin.getUtils().sendMessage(sender,"&aChest &b" + args[3] + " &aremoved from game &b" + args[2] + "&a.");
+                                plugin.getFiles().getControl(RigoxFiles.GAMES).set("games." + args[2] + ".chests",chests);
+                                return true;
+                            }
+                            if(!plugin.getFiles().getControl(RigoxFiles.GAMES).getStringList("games." + args[2] + ".chests").contains(args[3])) {
+                                plugin.getUtils().sendMessage(sender,"&cThis chest doesn't exists in game '&e" + args[2] + "&c'");
+                                return true;
+                            }
+                        }
+                        plugin.getUtils().sendMessage(sender, plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.admin.arenaError").replace("%arena_id%", args[2]));
+                        return true;
+                    }
+                }
                 if(args[1].equalsIgnoreCase("setMin")) {
                     if(hasPermission(sender,"RigoxRFTB.admin.setMax")) {
                         if(args.length == 3) {
