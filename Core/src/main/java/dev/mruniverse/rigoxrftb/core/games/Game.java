@@ -646,7 +646,11 @@ public class Game {
             plugin.getUtils().sendGameList(player, messagesFile.getStringList("messages.inGame.infoList.endInfo"),GameTeam.RUNNERS);
         }
         for(Player runner : this.runners) {
+            plugin.getPlayerData(runner.getUniqueId()).setBoard(RigoxBoard.WIN_RUNNERS_FOR_RUNNERS);
             plugin.getPlayerData(runner.getUniqueId()).addWins();
+        }
+        for(Player beast : this.beasts) {
+            plugin.getPlayerData(beast.getUniqueId()).setBoard(RigoxBoard.WIN_RUNNERS_FOR_BEAST);
         }
         this.invincible = true;
         this.gameTimer = 0;
@@ -662,7 +666,11 @@ public class Game {
             plugin.getUtils().sendGameList(player, messagesFile.getStringList("messages.inGame.infoList.endInfo"),GameTeam.BEASTS);
         }
         for(Player beast : this.beasts) {
+            plugin.getPlayerData(beast.getUniqueId()).setBoard(RigoxBoard.WIN_BEAST_FOR_BEAST);
             plugin.getPlayerData(beast.getUniqueId()).addWins();
+        }
+        for(Player runner : this.runners) {
+            plugin.getPlayerData(runner.getUniqueId()).setBoard(RigoxBoard.WIN_BEAST_FOR_RUNNERS);
         }
         this.invincible = true;
         this.gameTimer = 0;
