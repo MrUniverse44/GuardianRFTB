@@ -221,12 +221,14 @@ public class MainCMD implements CommandExecutor {
                                 chests.add(args[3]);
                                 plugin.getUtils().sendMessage(sender,"&aChest &b" + args[3] + " &aadded to game &b" + args[2] + "&a.");
                                 plugin.getFiles().getControl(RigoxFiles.GAMES).set("games." + args[2] + ".chests",chests);
+                                plugin.getFiles().save(SaveMode.GAMES_FILES);
                                 return true;
                             }
                             List<String> chests = new ArrayList<>();
                             chests.add(args[3]);
                             plugin.getUtils().sendMessage(sender,"&aChest &b" + args[3] + " &aadded to game &b" + args[2] + "&a.");
                             plugin.getFiles().getControl(RigoxFiles.GAMES).set("games." + args[2] + ".chests",chests);
+                            plugin.getFiles().save(SaveMode.GAMES_FILES);
                             return true;
                         }
                         plugin.getUtils().sendMessage(sender, plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.admin.arenaError").replace("%arena_id%", args[2]));
@@ -249,6 +251,7 @@ public class MainCMD implements CommandExecutor {
                                 chests.remove(args[3]);
                                 plugin.getUtils().sendMessage(sender,"&aChest &b" + args[3] + " &aremoved from game &b" + args[2] + "&a.");
                                 plugin.getFiles().getControl(RigoxFiles.GAMES).set("games." + args[2] + ".chests",chests);
+                                plugin.getFiles().save(SaveMode.GAMES_FILES);
                                 return true;
                             }
                             if(!plugin.getFiles().getControl(RigoxFiles.GAMES).getStringList("games." + args[2] + ".chests").contains(args[3])) {
@@ -318,12 +321,14 @@ public class MainCMD implements CommandExecutor {
                                     chests.add(toAdd);
                                     plugin.getUtils().sendMessage(sender,"&aChest Location added to chest &b" + args[3] + " &ain game&b " + args[2] + "&a.");
                                     plugin.getFiles().getControl(RigoxFiles.GAMES).set(path,chests);
+                                    plugin.getFiles().save(SaveMode.GAMES_FILES);
                                     return true;
                                 }
                                 List<String> chests = new ArrayList<>();
                                 chests.add(toAdd);
                                 plugin.getUtils().sendMessage(sender,"&aChest Location added to chest &b" + args[3] + " &ain game&b " + args[2] + "&a.");
                                 plugin.getFiles().getControl(RigoxFiles.GAMES).set(path,chests);
+                                plugin.getFiles().save(SaveMode.GAMES_FILES);
                                 return true;
                             }
                             plugin.getUtils().sendMessage(sender, plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.admin.arenaError").replace("%arena_id%", args[2]));
@@ -357,9 +362,10 @@ public class MainCMD implements CommandExecutor {
                                         return true;
                                     }
                                     List<String> chests = plugin.getFiles().getControl(RigoxFiles.GAMES).getStringList(path);
-                                    chests.add(toRemove);
+                                    chests.remove(toRemove);
                                     plugin.getUtils().sendMessage(sender,"&aChest Location removed from chest &b" + args[3] + " &ain game&b " + args[2] + "&a.");
                                     plugin.getFiles().getControl(RigoxFiles.GAMES).set(path,chests);
+                                    plugin.getFiles().save(SaveMode.GAMES_FILES);
                                     return true;
                                 }
                                 plugin.getUtils().sendMessage(sender,"&cThis chest location already doesn't exists in game '&e" + args[2] + "&c'");
