@@ -459,6 +459,39 @@ public class FileManager {
         menuValues.add(23);
         menuValues.add(31);
         addConfig(Files.MENUS, "fill-inventory.shop.fillTwo.list.values",menuValues);
+        //chests
+        menuList = new ArrayList<>();
+        addConfig(Files.MENUS, "chests.armor.inventoryName","&8Shop Menu");
+        addConfig(Files.MENUS, "chests.armor.inventoryRows",6);
+        if(!plugin.getServer().getVersion().contains("1.8")) {
+            menuList.add("ENTITY_EXPERIENCE_ORB_PICKUP");
+        } else {
+            menuList.add("ORB_PICKUP");
+        }
+        addConfig(Files.MENUS, "chests.armor.inventorySounds",menuList);
+        menuList = new ArrayList<>();
+        List<String> enchants = new ArrayList<>();
+        enchants.add("unbreaking, 10");
+        enchants.add("");
+
+        menuList.add("&8RigoxRFTB");
+        addConfig(Files.MENUS, "chests.armor.helmet.name", "&aDiamond Helmet");
+        addConfig(Files.MENUS, "chests.armor.helmet.slot", 21);
+        addConfig(Files.MENUS, "chests.armor.helmet.lore", menuList);
+        addConfig(Files.MENUS, "chests.armor.helmet.item", "DIAMOND_HELMET");
+        addConfig(Files.MENUS, "chests.armor.chestplate.name", "&aDiamond Chestplate");
+        addConfig(Files.MENUS, "chests.armor.chestplate.slot", 22);
+        addConfig(Files.MENUS, "chests.armor.chestplate.lore", menuList);
+        addConfig(Files.MENUS, "chests.armor.chestplate.item", "DIAMOND_CHESTPLATE");
+        addConfig(Files.MENUS, "chests.armor.leggings.name", "&aDiamond Leggings");
+        addConfig(Files.MENUS, "chests.armor.leggings.slot", 23);
+        addConfig(Files.MENUS, "chests.armor.leggings.lore",menuList);
+        addConfig(Files.MENUS, "chests.armor.leggings.item","DIAMOND_LEGGINGS");
+        addConfig(Files.MENUS, "chests.armor.boots.name","&aDiamond Boots");
+        addConfig(Files.MENUS, "chests.armor.boots.slot",31);
+        addConfig(Files.MENUS, "chests.armor.boots.lore",menuList);
+        addConfig(Files.MENUS, "chests.armor.boots.item","DIAMOND_BOOTS");
+        addConfig(Files.MENUS, "chest.armor.boots.enchantments",enchants);
     }
     public void addConfig(Files fileToAdd,String path,Object value) {
         switch(fileToAdd) {
