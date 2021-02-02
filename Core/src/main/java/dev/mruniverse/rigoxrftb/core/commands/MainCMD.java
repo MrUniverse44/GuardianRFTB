@@ -9,6 +9,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainCMD implements CommandExecutor {
     private final String command;
     private final RigoxRFTB plugin;
@@ -82,6 +85,11 @@ public class MainCMD implements CommandExecutor {
                         plugin.getUtils().sendMessage(sender, "&8» &7/" + command + " &cadmin setMin (gameName) (min) &b- &eSet min players.");
                         plugin.getUtils().sendMessage(sender, "&8» &7/" + command + " &cadmin setMax (gameName) (max) &b- &eSet max players.");
                         plugin.getUtils().sendMessage(sender, "&8» &7/" + command + " &cadmin setMode (gameName) (gameType) &b- &eSet gameType. &bOPTIONAL");
+                        plugin.getUtils().sendMessage(sender, "&8» &7/" + command + " &cadmin addChest (gameName) (chestName) &b- &eAdd a chest to your game &bOPTIONAL");
+                        plugin.getUtils().sendMessage(sender, "&8» &7/" + command + " &cadmin delChest (gameName) (chestName) &b- &eRemove a chest from your game &bOPTIONAL");
+                        plugin.getUtils().sendMessage(sender, "&8» &7/" + command + " &cadmin addChestLocation (gameName) (chestName) &b- &eAdd Chest location &bOPTIONAL");
+                        plugin.getUtils().sendMessage(sender, "&8» &7/" + command + " &cadmin delChestLocation (gameName) (chestName) &b- &eRemove Chest location &bOPTIONAL");
+                        plugin.getUtils().sendMessage(sender, "&8» &7/" + command + " &cadmin chestList (gameName) &b- &eSee all chests of an game.");
                         plugin.getUtils().sendMessage(sender, "&8» &7/" + command + " &cadmin enable (gameName) &b- &eEnable game to play.");
                         plugin.getUtils().sendMessage(sender, "&8» &7/" + command + " &cadmin disable (gameName) &b- &eDisable game to config.");
                         plugin.getUtils().sendMessage(sender, "&8» &7/" + command + " &cadmin modes &b- &eShow all modes.");
@@ -196,6 +204,35 @@ public class MainCMD implements CommandExecutor {
                         return true;
                     }
                 }
+                if(args[1].equalsIgnoreCase("addChest")) {
+                    if(hasPermission(sender,"RigoxRFTB.admin.addChest")) {
+                        if(args.length == 3) {
+                            plugin.getUtils().sendMessage(sender,"&7Bad usage");
+                            return true;
+                        }
+                        if (plugin.getFiles().getControl(RigoxFiles.GAMES).contains("games." + args[2])) {
+                            if(plugin.getFiles().getControl(RigoxFiles.GAMES).get("games." + args[2] + ".chests") != null) {
+                                if(plugin.getFiles().getControl(RigoxFiles.GAMES).getStringList("games." + args[2] + ".chests").contains(args[3])) {
+                                    plugin.getUtils().sendMessage(sender,"&cThis chest already exists in game '&e" + args[2] + "&c'");
+                                    return true;
+                                }
+                                List<String> chests = plugin.getFiles().getControl(RigoxFiles.GAMES).getStringList("games." + args[2] + ".chests");
+                                chests.add(args[3]);
+                                plugin.getUtils().sendMessage(sender,"&aChest &b" + args[3] + " &aadded to game &b" + args[2] + "&a.");
+                                plugin.getFiles().getControl(RigoxFiles.GAMES).set("games." + args[2] + ".chests",chests);
+                                return true;
+                            }
+                            List<String> chests = new ArrayList<>();
+                            chests.add(args[3]);
+                            plugin.getUtils().sendMessage(sender,"&aChest &b" + args[3] + " &aadded to game &b" + args[2] + "&a.");
+                            plugin.getFiles().getControl(RigoxFiles.GAMES).set("games." + args[2] + ".chests",chests);
+                            return true;
+                        }
+                        plugin.getUtils().sendMessage(sender, plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.admin.arenaError").replace("%arena_id%", args[2]));
+                        return true;
+                    }
+                }
+
                 if(args[1].equalsIgnoreCase("setMin")) {
                     if(hasPermission(sender,"RigoxRFTB.admin.setMax")) {
                         if(args.length == 3) {
