@@ -233,7 +233,7 @@ public class MainCMD implements CommandExecutor {
                     }
                 }
                 if(args[1].equalsIgnoreCase("delChest")) {
-                    if(hasPermission(sender,"RigoxRFTB.admin.addChest")) {
+                    if(hasPermission(sender,"RigoxRFTB.admin.delChest")) {
                         if(args.length == 3) {
                             plugin.getUtils().sendMessage(sender,"&7Bad usage");
                             return true;
