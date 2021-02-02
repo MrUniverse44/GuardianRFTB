@@ -3,6 +3,7 @@ package dev.mruniverse.rigoxrftb.core.commands;
 import dev.mruniverse.rigoxrftb.core.RigoxRFTB;
 import dev.mruniverse.rigoxrftb.core.enums.RigoxFiles;
 import dev.mruniverse.rigoxrftb.core.enums.SaveMode;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -287,6 +288,40 @@ public class MainCMD implements CommandExecutor {
                             return true;
                         }
                     }
+                    if(args[1].equalsIgnoreCase("addChestLocation")) {
+                        if(hasPermission(sender,"RigoxRFTB.admin.addChestLocation")) {
+                            if(args.length == 3) {
+                                plugin.getUtils().sendMessage(sender,"&7Bad usage");
+                                return true;
+                            }
+                            if (plugin.getFiles().getControl(RigoxFiles.GAMES).contains("games." + args[2])) {
+                                if(falseChest(player.getTargetBlock(null,5).getType())) {
+                                    plugin.getUtils().sendMessage(sender,"&cThis block is not a chest.");
+                                    return true;
+                                }
+                                String path = "games." + args[2] + ".chests-location." + args[3];
+                                String toAdd = plugin.getUtils().getStringFromLocation(player.getTargetBlock(null,5).getLocation());
+                                if(plugin.getFiles().getControl(RigoxFiles.GAMES).get(path) != null) {
+                                    if(plugin.getFiles().getControl(RigoxFiles.GAMES).getStringList(path).contains(args[3])) {
+                                        plugin.getUtils().sendMessage(sender,"&cThis chest location already exists in game '&e" + args[2] + "&c'");
+                                        return true;
+                                    }
+                                    List<String> chests = plugin.getFiles().getControl(RigoxFiles.GAMES).getStringList(path);
+                                    chests.add(toAdd);
+                                    plugin.getUtils().sendMessage(sender,"&aChest Location added to chest &b" + args[3] + " &ain game&b " + args[2] + "&a.");
+                                    plugin.getFiles().getControl(RigoxFiles.GAMES).set(path,chests);
+                                    return true;
+                                }
+                                List<String> chests = new ArrayList<>();
+                                chests.add(toAdd);
+                                plugin.getUtils().sendMessage(sender,"&aChest Location added to chest &b" + args[3] + " &ain game&b " + args[2] + "&a.");
+                                plugin.getFiles().getControl(RigoxFiles.GAMES).set(path,chests);
+                                return true;
+                            }
+                            plugin.getUtils().sendMessage(sender, plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.admin.arenaError").replace("%arena_id%", args[2]));
+                            return true;
+                        }
+                    }
                     if (args[1].equalsIgnoreCase("setSelectedBeast")) {
                         if (hasPermission(sender, "RigoxRFTB.admin.locations")) {
                             if (plugin.getFiles().getControl(RigoxFiles.GAMES).contains("games." + args[2])) {
@@ -331,5 +366,11 @@ public class MainCMD implements CommandExecutor {
             plugin.getLogs().error(throwable);
         }
         return true;
+    }
+    private boolean falseChest(Material evalMaterial) {
+        if(evalMaterial.equals(Material.CHEST)) return false;
+        if(evalMaterial.equals(Material.TRAPPED_CHEST)) return false;
+        if(evalMaterial.equals(Material.CHEST_MINECART)) return false;
+        return (!evalMaterial.equals(Material.ENDER_CHEST));
     }
 }
