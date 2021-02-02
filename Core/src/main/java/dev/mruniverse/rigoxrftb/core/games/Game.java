@@ -14,14 +14,13 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.potion.PotionEffect;
 
-import java.util.ArrayList;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 
 public class Game {
     private final String gameName;
     private final String gamePath;
     public GameType gameType;
+    public HashMap<String, List<Location>> gameChests;
     public ArrayList<Player> players;
     public ArrayList<Location> signs;
     public ArrayList<Player> runners;
@@ -66,6 +65,7 @@ public class Game {
         this.gameTimer = 0;
         this.gameFile = main.getFiles().getControl(RigoxFiles.GAMES);
         this.settingsFile = main.getFiles().getControl(RigoxFiles.SETTINGS);
+        this.gameChests = new HashMap<>();
         this.messagesFile = main.getFiles().getControl(RigoxFiles.MESSAGES);
         this.plugin = main;
         this.players = new ArrayList<>();
@@ -102,45 +102,74 @@ public class Game {
     }
 
     private void loadGame() {
-        this.timer = gameFile.getInt(gamePath + "time");
-        this.worldTime = gameFile.getInt(gamePath + "worldTime");
-        this.max = gameFile.getInt(gamePath + "max");
-        this.min = gameFile.getInt(gamePath + "min");
-        this.gameType = GameType.valueOf(gameFile.getString(gamePath + "gameType"));
+        timer = gameFile.getInt(gamePath + "time");
+        worldTime = gameFile.getInt(gamePath + "worldTime");
+        max = gameFile.getInt(gamePath + "max");
+        min = gameFile.getInt(gamePath + "min");
+        gameType = GameType.valueOf(gameFile.getString(gamePath + "gameType"));
         String bL = gameFile.getString(gamePath + "locations.beast");
         if(bL == null) bL = "notSet";
-        this.beastLocation = plugin.getUtils().getLocationFromString(bL);
+        beastLocation = plugin.getUtils().getLocationFromString(bL);
         String sbL = gameFile.getString(gamePath + "locations.selected-beast");
         if(sbL == null) sbL = "notSet";
-        this.selectedBeast = plugin.getUtils().getLocationFromString(sbL);
+        selectedBeast = plugin.getUtils().getLocationFromString(sbL);
         String rL = gameFile.getString(gamePath + "locations.runners");
         if(rL == null) rL = "notSet";
-        this.runnersLocation = plugin.getUtils().getLocationFromString(rL);
+        runnersLocation = plugin.getUtils().getLocationFromString(rL);
         String wL = gameFile.getString(gamePath + "locations.waiting");
         if(wL == null) wL = "notSet";
-        this.waiting = plugin.getUtils().getLocationFromString(wL);
-        if (this.beastLocation == null || this.runnersLocation == null || this.selectedBeast == null || this.waiting == null) {
-            this.preparingStage = false;
-            this.gameStatus = GameStatus.PREPARING;
+        waiting = plugin.getUtils().getLocationFromString(wL);
+        if (beastLocation == null || runnersLocation == null || selectedBeast == null || waiting == null) {
+            preparingStage = false;
+            gameStatus = GameStatus.PREPARING;
         }
-        this.gameStatus = GameStatus.WAITING;
+        gameStatus = GameStatus.WAITING;
         loadSigns();
+        loadChests();
         try {
-            this.gameSound1 = Sound.valueOf(gameFile.getString(gamePath + "gameSound1"));
-            this.gameSound2 = Sound.valueOf(gameFile.getString(gamePath + "gameSound2"));
-            this.gameSound3 = Sound.valueOf(gameFile.getString(gamePath + "gameSound3"));
+            gameSound1 = Sound.valueOf(gameFile.getString(gamePath + "gameSound1"));
+            gameSound2 = Sound.valueOf(gameFile.getString(gamePath + "gameSound2"));
+            gameSound3 = Sound.valueOf(gameFile.getString(gamePath + "gameSound3"));
         }catch (Throwable throwable) {
             plugin.getLogs().error("Can't load game Sounds! Please verify if the sound works in your current version!");
         }
     }
 
+    public void loadChestType(String chestName) {
+        try {
+            if(gameFile.get(gamePath + "chests-location." + chestName) != null) {
+                List<Location> newLocations = new ArrayList<>();
+                for(String locations : gameFile.getStringList(gamePath + "chests-location." + chestName)) {
+                    newLocations.add(plugin.getUtils().getLocationFromString(locations));
+                }
+                gameChests.put(chestName,newLocations);
+            }
+        }catch (Throwable throwable){
+            plugin.getLogs().error("Can't load game Chests");
+            plugin.getLogs().error(throwable);
+        }
+    }
+
+    public void loadChests() {
+        try {
+            if(gameFile.get(gamePath + "chests") != null) {
+                for(String chestType : gameFile.getStringList(gamePath + "chests")) {
+                    loadChestType(chestType);
+                }
+            }
+        }catch (Throwable throwable){
+            plugin.getLogs().error("Can't load game Chests");
+            plugin.getLogs().error(throwable);
+        }
+    }
+
     public void loadSigns() {
-        this.signs.clear();
-        for(String signs : gameFile.getStringList(gamePath + "signs")) {
-            Location signLocation = plugin.getUtils().getLocationFromString(signs);
+        signs.clear();
+        for(String sign : gameFile.getStringList(gamePath + "signs")) {
+            Location signLocation = plugin.getUtils().getLocationFromString(sign);
             if(signLocation != null) {
                 if (signLocation.getBlock().getState() instanceof Sign) {
-                    this.signs.add(signLocation);
+                    signs.add(signLocation);
                 }
             }
         }
@@ -195,19 +224,19 @@ public class Game {
         }
     }
     public int getNeedPlayers() {
-        if((min - this.players.size()) <= 0 && this.gameStatus.equals(GameStatus.WAITING)) {
-            this.gameStatus = GameStatus.STARTING;
-            for(Player player : this.players) {
+        if((min - players.size()) <= 0 && gameStatus.equals(GameStatus.WAITING)) {
+            gameStatus = GameStatus.STARTING;
+            for(Player player : players) {
                 PlayerManager playerData = plugin.getPlayerData(player.getUniqueId());
                 playerData.setBoard(RigoxBoard.STARTING);
             }
         }
-        if(this.players.size() < min) {
-            return (min - this.players.size());
+        if(players.size() < min) {
+            return (min - players.size());
         }
-        if(this.gameStatus.equals(GameStatus.WAITING)) {
-            this.gameStatus = GameStatus.STARTING;
-            for(Player player : this.players) {
+        if(gameStatus.equals(GameStatus.WAITING)) {
+            gameStatus = GameStatus.STARTING;
+            for(Player player : players) {
                 PlayerManager playerData = plugin.getPlayerData(player.getUniqueId());
                 playerData.setBoard(RigoxBoard.STARTING);
             }
@@ -223,23 +252,23 @@ public class Game {
             plugin.getUtils().sendMessage(player, messagesFile.getString("messages.inGame.already"));
             return;
         }
-        if(!this.gameStatus.equals(GameStatus.WAITING) && !this.gameStatus.equals(GameStatus.STARTING)) {
-            if(!this.gameStatus.equals(GameStatus.RESTARTING)) {
+        if(!gameStatus.equals(GameStatus.WAITING) && !gameStatus.equals(GameStatus.STARTING)) {
+            if(!gameStatus.equals(GameStatus.RESTARTING)) {
                 plugin.getUtils().sendMessage(player, messagesFile.getString("messages.others.gamePlaying"));
                 return;
             }
             plugin.getUtils().sendMessage(player, messagesFile.getString("messages.others.restarting"));
             return;
         }
-        if(this.players.size() >= max) {
+        if(players.size() >= max) {
             plugin.getUtils().sendMessage(player, messagesFile.getString("messages.others.full"));
             return;
         }
         player.getInventory().clear();
         player.setGameMode(GameMode.ADVENTURE);
         player.teleport(this.waiting);
-        this.players.add(player);
-        this.runners.add(player);
+        players.add(player);
+        runners.add(player);
         plugin.getPlayerData(player.getUniqueId()).setGame(this);
         plugin.getPlayerData(player.getUniqueId()).setBoard(RigoxBoard.WAITING);
         plugin.getPlayerData(player.getUniqueId()).setStatus(PlayerStatus.IN_GAME);
@@ -260,7 +289,7 @@ public class Game {
         }
         String joinMsg = messagesFile.getString("messages.inGame.join");
         if(joinMsg == null) joinMsg = "&7%player% &ehas joined &e(&b%online%&e/&b%max%&e)!";
-        for(Player pl : this.players) {
+        for(Player pl : players) {
             plugin.getUtils().sendMessage(pl,joinMsg.replace("%player%",player.getName())
             .replace("%online%",this.players.size()+"")
             .replace("%max%",this.max+""));
@@ -270,14 +299,14 @@ public class Game {
     }
     public void checkPlayers() {
         this.endingStage = false;
-        if (this.players.size() == this.min && !this.startingStage && !gameStatus.equals(GameStatus.STARTING)) {
-            this.gameStatus = GameStatus.STARTING;
-            this.startingStage = true;
-            this.gameTimer = 1;
-            for(Player runner : this.runners) {
+        if (players.size() == min && !startingStage && !gameStatus.equals(GameStatus.STARTING)) {
+            gameStatus = GameStatus.STARTING;
+            startingStage = true;
+            gameTimer = 1;
+            for(Player runner : runners) {
                 plugin.getPlayerData(runner.getUniqueId()).setBoard(RigoxBoard.SELECTING);
             }
-            for(Player beast : this.beasts) {
+            for(Player beast : beasts) {
                 plugin.getPlayerData(beast.getUniqueId()).setBoard(RigoxBoard.SELECTING);
             }
         }
@@ -285,30 +314,30 @@ public class Game {
     public void gameCount(GameCountType gameCountType) {
         try {
             if (gameCountType.equals(GameCountType.START_COUNT)) {
-                if (this.starting < -25) {
-                    this.gameTimer = 2;
+                if (starting < -25) {
+                    gameTimer = 2;
                     return;
                 }
-                if (this.starting <= 5 && this.starting >= 0)
+                if (starting <= 5 && starting >= 0)
                     if (gameSound1 != null) {
-                        for (Player members : this.players) {
+                        for (Player members : players) {
                             members.playSound(members.getLocation(), gameSound1, 1.0F, 0.5F);
                         }
                     }
-                if (this.starting <= -20 && this.starting >= -25) {
+                if (starting <= -20 && starting >= -25) {
                     if (gameSound2 != null) {
-                        for (Player runner : this.runners) {
+                        for (Player runner : runners) {
                             runner.playSound(runner.getLocation(), gameSound2, 1.0F, 0.8F);
                         }
                     }
                     if (gameSound1 != null) {
-                        for (Player beast : this.beasts) {
+                        for (Player beast : beasts) {
                             beast.playSound(beast.getLocation(), gameSound1, 1.0F, 0.5F);
                         }
                     }
                 }
-                if(this.starting == -24 || this.starting == -23 || this.starting == -22 || this.starting == -21 || this.starting == -20) {
-                    for(Player player : this.players) {
+                if(starting == -24 || starting == -23 || starting == -22 || starting == -21 || starting == -20) {
+                    for(Player player : players) {
                         int s = 5;
                         fakeStarting = 5;
                         String seconds = messagesFile.getString("times.seconds");
@@ -340,16 +369,16 @@ public class Game {
                         }
                     }
                 }
-                if (this.starting == -25) {
-                    this.starting--;
-                    this.invincible = false;
-                    this.gameTimer = 2;
-                    if (this.beasts.size() <= 0) {
+                if (starting == -25) {
+                    starting--;
+                    invincible = false;
+                    gameTimer = 2;
+                    if (beasts.size() <= 0) {
                         winRunners();
                         return;
                     }
-                    for (Player beast : this.beasts) {
-                        beast.teleport(this.beastLocation);
+                    for (Player beast : beasts) {
+                        beast.teleport(beastLocation);
                         beast.setFoodLevel(20);
                         beast.setHealth(20.0D);
                         beast.getInventory().clear();
@@ -362,49 +391,49 @@ public class Game {
                         plugin.getUtils().sendTitle(beast, 0, 20, 10, messagesFile.getString("messages.inGame.others.titles.runnersGo.toBeasts.title"), messagesFile.getString("messages.inGame.others.titles.runnersGo.toBeasts.subtitle"));
                     }
                     if (gameSound3 != null) {
-                        for (Player runner : this.players)
+                        for (Player runner : players)
                             runner.playSound(runner.getLocation(), gameSound3, 10.0F, 1.0F);
                     }
                 }
-                if (this.runners.size() < 1) {
-                    if (!this.inGameStage) {
-                        this.startingStage = false;
-                        this.gameStatus = GameStatus.WAITING;
-                        this.starting = 30;
-                        for (Player player : this.players) {
+                if (runners.size() < 1) {
+                    if (!inGameStage) {
+                        startingStage = false;
+                        gameStatus = GameStatus.WAITING;
+                        starting = 30;
+                        for (Player player : players) {
                             player.teleport(waiting);
                             player.getInventory().clear();
                             player.getInventory().setArmorContents(null);
-                            this.beasts = new ArrayList<>();
-                            if (!this.runners.contains(player))
-                                this.runners.add(player);
+                            beasts = new ArrayList<>();
+                            if (!runners.contains(player))
+                                runners.add(player);
                             plugin.getPlayerData(player.getUniqueId()).setBoard(RigoxBoard.WAITING);
                             plugin.getUtils().sendMessage(player, messagesFile.getString("messages.inGame.cantStartGame"));
                         }
-                        this.gameTimer = 0;
+                        gameTimer = 0;
                         return;
                     }
-                    if (!this.playingStage) {
-                        for (Player player : this.players) {
+                    if (!playingStage) {
+                        for (Player player : players) {
                             leave(player);
                             plugin.getUtils().sendMessage(player, messagesFile.getString("messages.inGame.cantStartGame"));
                         }
                         restart();
                     } else {
-                        if (this.beasts.size() == 0) {
+                        if (beasts.size() == 0) {
                             winRunners();
-                            this.gameTimer = 0;
+                            gameTimer = 0;
                             return;
                         }
                         winBeasts();
-                        this.gameTimer = 0;
+                        gameTimer = 0;
                         return;
                     }
                 }
-                if (this.starting == -10) {
-                    this.playingStage = true;
-                    this.gameStatus = GameStatus.PLAYING;
-                    for (Player runner : this.runners) {
+                if (starting == -10) {
+                    playingStage = true;
+                    gameStatus = GameStatus.PLAYING;
+                    for (Player runner : runners) {
                         runner.teleport(runnersLocation);
                         runner.getInventory().clear();
                         runner.updateInventory();
@@ -412,20 +441,20 @@ public class Game {
                         plugin.getUtils().sendList(runner,messagesFile.getStringList("messages.inGame.infoList.startInfo"));
                         plugin.getUtils().sendTitle(runner, 0, 20, 10, messagesFile.getString("messages.inGame.others.titles.runnersGo.toRunners.title"), messagesFile.getString("messages.inGame.others.titles.runnersGo.toRunners.subtitle"));
                     }
-                    this.fakeStarting = 10;
-                    for(Player beast : this.beasts) {
+                    fakeStarting = 10;
+                    for(Player beast : beasts) {
                         plugin.getPlayerData(beast.getUniqueId()).setBoard(RigoxBoard.BEAST_SPAWN);
                     }
                 }
-                if (this.starting == 0) {
-                    this.inGameStage = true;
-                    this.gameStatus = GameStatus.IN_GAME;
-                    Objects.requireNonNull(this.runnersLocation.getWorld()).setTime(this.worldTime);
-                    this.runnersLocation.getWorld().setThundering(false);
-                    this.runnersLocation.getWorld().setStorm(false);
-                    this.runnersLocation.getWorld().setSpawnFlags(false, false);
-                    this.endingStage = false;
-                    for (Player player : this.players) {
+                if (starting == 0) {
+                    inGameStage = true;
+                    gameStatus = GameStatus.IN_GAME;
+                    Objects.requireNonNull(runnersLocation.getWorld()).setTime(worldTime);
+                    runnersLocation.getWorld().setThundering(false);
+                    runnersLocation.getWorld().setStorm(false);
+                    runnersLocation.getWorld().setSpawnFlags(false, false);
+                    endingStage = false;
+                    for (Player player : players) {
                         plugin.getPlayerData(player.getUniqueId()).setBoard(RigoxBoard.PLAYING);
                         plugin.getUtils().sendTitle(player, 5, 40, 5, messagesFile.getString("messages.inGame.others.titles.gameStart.title"), messagesFile.getString("messages.inGame.others.titles.gameStart.subtitle"));
                     }
