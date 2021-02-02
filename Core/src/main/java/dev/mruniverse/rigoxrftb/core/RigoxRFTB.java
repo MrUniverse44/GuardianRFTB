@@ -137,6 +137,9 @@ public final class RigoxRFTB extends JavaPlugin {
                 m = optionalXMaterial.get();
                 if (m.parseMaterial() != null) {
                     item = getNMSHandler().getItemStack(m.parseMaterial(), TextUtilities.recolor(ItemName), TextUtilities.recolorLore(ItemLore));
+                    if(items.get("Playing.BeastArmor.Helmet.enchantments") != null) {
+                        item = getEnchantmentList(item,Files.ITEMS,"Playing.BeastArmor.Helmet.enchantments");
+                    }
                     beastHelmet = item;
                 }
             } else {
@@ -151,6 +154,9 @@ public final class RigoxRFTB extends JavaPlugin {
                 m = optionalXMaterial.get();
                 if (m.parseMaterial() != null) {
                     item = getNMSHandler().getItemStack(m.parseMaterial(), TextUtilities.recolor(ItemName), TextUtilities.recolorLore(ItemLore));
+                    if(items.get("Playing.BeastArmor.Helmet.enchantments") != null) {
+                        item = getEnchantmentList(item,Files.ITEMS,"Playing.BeastArmor.Chestplate.enchantments");
+                    }
                     beastChestplate = item;
                 }
             } else {
@@ -165,6 +171,9 @@ public final class RigoxRFTB extends JavaPlugin {
                 m = optionalXMaterial.get();
                 if (m.parseMaterial() != null) {
                     item = getNMSHandler().getItemStack(m.parseMaterial(), TextUtilities.recolor(ItemName), TextUtilities.recolorLore(ItemLore));
+                    if(items.get("Playing.BeastArmor.Helmet.enchantments") != null) {
+                        item = getEnchantmentList(item,Files.ITEMS,"Playing.BeastArmor.Leggings.enchantments");
+                    }
                     beastLeggings = item;
                 }
             } else {
@@ -179,6 +188,9 @@ public final class RigoxRFTB extends JavaPlugin {
                 m = optionalXMaterial.get();
                 if (m.parseMaterial() != null) {
                     item = getNMSHandler().getItemStack(m.parseMaterial(), TextUtilities.recolor(ItemName), TextUtilities.recolorLore(ItemLore));
+                    if(items.get("Playing.BeastArmor.Helmet.enchantments") != null) {
+                        item = getEnchantmentList(item,Files.ITEMS,"Playing.BeastArmor.Boots.enchantments");
+                    }
                     beastBoots = item;
                 }
             } else {
