@@ -460,33 +460,33 @@ public class Game {
                     }
 
                 }
-                if (this.starting == -2)
+                if (starting == -2)
                     selectBeast();
-                if (this.starting == -2)
-                    for (Player runner : this.runners) {
+                if (starting == -2)
+                    for (Player runner : runners) {
                         runner.getInventory().clear();
                         runner.getInventory().setArmorContents(null);
                     }
-                if (this.starting == 30) {
-                    this.endingStage = false;
-                    Objects.requireNonNull(waiting.getWorld()).setTime(this.time);
+                if (starting == 30) {
+                    endingStage = false;
+                    Objects.requireNonNull(waiting.getWorld()).setTime(time);
                     waiting.getWorld().setThundering(false);
                     waiting.getWorld().setStorm(false);
                     waiting.getWorld().setDifficulty(Difficulty.PEACEFUL);
                     waiting.getWorld().setSpawnFlags(false, false);
-                    for (Player player : this.players) {
+                    for (Player player : players) {
                         player.closeInventory();
                         player.setHealth(20.0D);
                     }
                 }
-                if(this.starting >= 1) {
-                    if(this.starting > 1) {
+                if(starting >= 1) {
+                    if(starting > 1) {
                         String startMsg = messagesFile.getString("messages.inGame.selectingBeast");
                         String seconds = messagesFile.getString("times.seconds");
                         if(startMsg == null) startMsg = "&eThe beast will be selected in &c%time% &e%seconds%!";
                         if(seconds == null) seconds = "seconds";
-                        if(this.starting == 15 || this.starting == 10 || this.starting == 5 || this.starting == 4 || this.starting == 3 || this.starting == 2) {
-                            for(Player player : this.players) {
+                        if(starting == 15 || starting == 10 || starting == 5 || starting == 4 || starting == 3 || starting == 2) {
+                            for(Player player : players) {
                                 plugin.getUtils().sendMessage(player,startMsg.replace("%time%",starting+"").replace("%seconds%",seconds));
                             }
                         }
@@ -495,7 +495,7 @@ public class Game {
                         String second = messagesFile.getString("times.second");
                         if(startMsg == null) startMsg = "&eThe beast will be selected in &c%time% &e%seconds%!";
                         if(second == null) second = "second";
-                        for(Player player : this.players) {
+                        for(Player player : players) {
                             plugin.getUtils().sendMessage(player,startMsg.replace("%time%",starting+"").replace("%seconds%",second));
                         }
                     }
@@ -520,41 +520,41 @@ public class Game {
                             perfectTime = 4;
                             fakeStarting = 4;
                         }
-                        for(Player player : this.players) {
+                        for(Player player : players) {
                             plugin.getUtils().sendMessage(player,startMsg.replace("%time%",perfectTime+"").replace("%seconds%",seconds));
                         }
-                    } else if(this.starting == -9){
+                    } else if(starting == -9){
                         String startMsg = messagesFile.getString("messages.inGame.starting");
                         String second = messagesFile.getString("times.second");
                         if(startMsg == null) startMsg = "&eThe game starts in &c%time% &e%seconds%!";
                         if(second == null) second = "second";
-                        for(Player player : this.players) {
+                        for(Player player : players) {
                             plugin.getUtils().sendMessage(player,startMsg.replace("%time%",1+"").replace("%seconds%",second));
                         }
                     }
                 }
-                this.starting--;
+                starting--;
                 updateSigns();
                 return;
             }
             updateSigns();
-            if(this.beasts.size() == 0) {
-                if(!this.endingStage && !gameStatus.equals(GameStatus.RESTARTING)) {
+            if(beasts.size() == 0) {
+                if(!endingStage && !gameStatus.equals(GameStatus.RESTARTING)) {
                     winRunners();
                 }
                 return;
             }
-            if(this.runners.size() == 0) {
-                if(!this.endingStage && !gameStatus.equals(GameStatus.RESTARTING)) {
+            if(runners.size() == 0) {
+                if(!endingStage && !gameStatus.equals(GameStatus.RESTARTING)) {
                     winBeasts();
                 }
                 return;
             }
-            if (this.timer == 0) {
+            if (timer == 0) {
                 winRunners();
                 return;
             }
-            this.timer--;
+            timer--;
         }catch (Throwable throwable) {
             plugin.getLogs().error("Can't play in " + gameName + ", because an error occurred in the principal Game-Count");
             plugin.getLogs().error(throwable);
