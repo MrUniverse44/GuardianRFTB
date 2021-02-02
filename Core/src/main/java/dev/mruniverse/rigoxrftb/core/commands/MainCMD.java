@@ -295,12 +295,20 @@ public class MainCMD implements CommandExecutor {
                                 return true;
                             }
                             if (plugin.getFiles().getControl(RigoxFiles.GAMES).contains("games." + args[2])) {
+                                String path = "games." + args[2] + ".chests-location." + args[3];
+                                String toAdd = plugin.getUtils().getStringFromLocation(player.getTargetBlock(null,5).getLocation());
                                 if(falseChest(player.getTargetBlock(null,5).getType())) {
                                     plugin.getUtils().sendMessage(sender,"&cThis block is not a chest.");
                                     return true;
                                 }
-                                String path = "games." + args[2] + ".chests-location." + args[3];
-                                String toAdd = plugin.getUtils().getStringFromLocation(player.getTargetBlock(null,5).getLocation());
+                                if(plugin.getFiles().getControl(RigoxFiles.GAMES).get("games." + args[2] + ".chests") == null) {
+                                    plugin.getUtils().sendMessage(sender,"&cThe chest &f" + args[3] + " &cis not added in chest list of game &f" + args[2]);
+                                    return true;
+                                }
+                                if(!plugin.getFiles().getControl(RigoxFiles.GAMES).getStringList("games." + args[2] + ".chests").contains(args[3])) {
+                                    plugin.getUtils().sendMessage(sender,"&cThe chest &f" + args[3] + " &cis not added in chest list of game &f" + args[2]);
+                                    return true;
+                                }
                                 if(plugin.getFiles().getControl(RigoxFiles.GAMES).get(path) != null) {
                                     if(plugin.getFiles().getControl(RigoxFiles.GAMES).getStringList(path).contains(args[3])) {
                                         plugin.getUtils().sendMessage(sender,"&cThis chest location already exists in game '&e" + args[2] + "&c'");
@@ -316,6 +324,45 @@ public class MainCMD implements CommandExecutor {
                                 chests.add(toAdd);
                                 plugin.getUtils().sendMessage(sender,"&aChest Location added to chest &b" + args[3] + " &ain game&b " + args[2] + "&a.");
                                 plugin.getFiles().getControl(RigoxFiles.GAMES).set(path,chests);
+                                return true;
+                            }
+                            plugin.getUtils().sendMessage(sender, plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.admin.arenaError").replace("%arena_id%", args[2]));
+                            return true;
+                        }
+                    }
+                    if(args[1].equalsIgnoreCase("delChestLocation")) {
+                        if(hasPermission(sender,"RigoxRFTB.admin.delChestLocation")) {
+                            if(args.length == 3) {
+                                plugin.getUtils().sendMessage(sender,"&7Bad usage");
+                                return true;
+                            }
+                            if (plugin.getFiles().getControl(RigoxFiles.GAMES).contains("games." + args[2])) {
+                                if(falseChest(player.getTargetBlock(null,5).getType())) {
+                                    plugin.getUtils().sendMessage(sender,"&cThis block is not a chest.");
+                                    return true;
+                                }
+                                String path = "games." + args[2] + ".chests-location." + args[3];
+                                String toRemove = plugin.getUtils().getStringFromLocation(player.getTargetBlock(null,5).getLocation());
+                                if(plugin.getFiles().getControl(RigoxFiles.GAMES).get("games." + args[2] + ".chests") == null) {
+                                    plugin.getUtils().sendMessage(sender,"&cThe chest &f" + args[3] + " &cis not added in chest list of game &f" + args[2]);
+                                    return true;
+                                }
+                                if(!plugin.getFiles().getControl(RigoxFiles.GAMES).getStringList("games." + args[2] + ".chests").contains(args[3])) {
+                                    plugin.getUtils().sendMessage(sender,"&cThe chest &f" + args[3] + " &cis not added in chest list of game &f" + args[2]);
+                                    return true;
+                                }
+                                if(plugin.getFiles().getControl(RigoxFiles.GAMES).get(path) != null) {
+                                    if(!plugin.getFiles().getControl(RigoxFiles.GAMES).getStringList(path).contains(args[3])) {
+                                        plugin.getUtils().sendMessage(sender,"&cThis chest location already doesn't exists in game '&e" + args[2] + "&c'");
+                                        return true;
+                                    }
+                                    List<String> chests = plugin.getFiles().getControl(RigoxFiles.GAMES).getStringList(path);
+                                    chests.add(toRemove);
+                                    plugin.getUtils().sendMessage(sender,"&aChest Location removed from chest &b" + args[3] + " &ain game&b " + args[2] + "&a.");
+                                    plugin.getFiles().getControl(RigoxFiles.GAMES).set(path,chests);
+                                    return true;
+                                }
+                                plugin.getUtils().sendMessage(sender,"&cThis chest location already doesn't exists in game '&e" + args[2] + "&c'");
                                 return true;
                             }
                             plugin.getUtils().sendMessage(sender, plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.admin.arenaError").replace("%arena_id%", args[2]));
