@@ -362,7 +362,7 @@ public class FileManager {
         addConfig(RigoxFiles.MESSAGES,"messages.others.gamePlaying","&cThis arena is in game.");
         addConfig(RigoxFiles.MESSAGES,"messages.others.restarting","&cThis game is in restarting mode!");
         addConfig(RigoxFiles.MESSAGES,"messages.others.playerError","&7%player% &cis not online.");
-        addConfig(RigoxFiles.MESSAGES,"messages.others.customChat.inGame","&a[%player_role%] &7<player_name>&8: &f%message%");
+        addConfig(RigoxFiles.MESSAGES,"messages.others.customChat.inGame","&a[%player_role%&a] &7<player_name>&8: &f%message%");
         addConfig(RigoxFiles.MESSAGES,"messages.others.customChat.spectator","&8[SPECTATOR] &7<player_name>&8: &f%message%");
         addConfig(RigoxFiles.MESSAGES,"messages.others.customChat.lobby","&7<player_name>&8: &f%message%");
         addConfig(RigoxFiles.MESSAGES,"messages.admin.create","&aArena &b%arena_id% &acreated correctly!");

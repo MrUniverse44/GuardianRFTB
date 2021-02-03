@@ -7,6 +7,7 @@ import dev.mruniverse.rigoxrftb.core.RigoxRFTB;
 import dev.mruniverse.rigoxrftb.core.enums.SaveMode;
 import dev.mruniverse.rigoxrftb.core.games.Game;
 import dev.mruniverse.rigoxrftb.core.games.GameStatus;
+import dev.mruniverse.rigoxrftb.core.utils.players.PlayerManager;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
@@ -26,10 +27,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 
@@ -180,6 +178,56 @@ public class PlayerListeners implements Listener {
         } catch (Throwable throwable) {
             plugin.getLogs().error("Can't generate lobby scoreboard for " + event.getPlayer().getName() +"!");
             plugin.getLogs().error(throwable);
+        }
+    }
+    @EventHandler
+    public void pluginChat(AsyncPlayerChatEvent event) {
+        if(event.isCancelled()) return;
+        if(!plugin.getFiles().getControl(RigoxFiles.SETTINGS).getBoolean("settings.options.pluginChat")) return;
+        Player player = event.getPlayer();
+        PlayerManager playerManager = plugin.getPlayerData(player.getUniqueId());
+        if(playerManager == null || playerManager.getGame() == null) {
+            String lC = plugin.getFiles().getControl(RigoxFiles.SETTINGS).getString("settings.lobbyLocation");
+            String lobbyChat = plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.others.customChat.lobby");
+            if(lobbyChat == null) lobbyChat = "&7<player_name>&8: &f%message%";
+            if(lC == null ) lC = "notSet";
+            if (lC.equalsIgnoreCase("notSet")) {
+                plugin.getLogs().error("-----------------------------");
+                plugin.getLogs().error("Can't show lobby-scoreboard, lobby location is not set");
+                plugin.getLogs().error("-----------------------------");
+            } else {
+                String[] loc = lC.split(",");
+                World w = Bukkit.getWorld(loc[0]);
+                if(w == null) return;
+                for(Player lPlayer : w.getPlayers()) {
+                    plugin.getUtils().sendMessage(lPlayer,lobbyChat.replace("<player_name>",player.getName())
+                    .replace("%message%",event.getMessage()));
+                }
+            }
+            return;
+        }
+        Game game = playerManager.getGame();
+        if(game.spectators.contains(player)) {
+            String spectatorChat = plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.others.customChat.spectator");
+            if(spectatorChat == null) spectatorChat = "&8[SPECTATOR] &7<player_name>&8: &f%message%";
+            for(Player spectator : game.spectators) {
+                plugin.getUtils().sendMessage(spectator,spectatorChat.replace("<player_name>",player.getName())
+                        .replace("%message%",event.getMessage()));
+            }
+            return;
+        }
+        String inGameChat = plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.others.customChat.inGame");
+        String playerRole;
+        if(inGameChat == null) inGameChat = "&a[%player_role%&a] &7<player_name>&8: &f%message%";
+        if(game.beasts.contains(player)) {
+            playerRole = plugin.getFiles().getControl(RigoxFiles.SETTINGS).getString("roles.beast");
+        } else {
+            playerRole = plugin.getFiles().getControl(RigoxFiles.SETTINGS).getString("roles.runner");
+        }
+        if(playerRole == null) playerRole = "Runner";
+        for(Player spectator : game.players) {
+            plugin.getUtils().sendMessage(spectator,inGameChat.replace("<player_name>",player.getName())
+                    .replace("%message%",event.getMessage()).replace("%player_role%",playerRole));
         }
     }
     @EventHandler
