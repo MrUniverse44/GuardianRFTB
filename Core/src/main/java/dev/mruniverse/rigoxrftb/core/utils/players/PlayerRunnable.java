@@ -5,6 +5,7 @@ import dev.mruniverse.rigoxrftb.core.enums.RigoxFiles;
 import dev.mruniverse.rigoxrftb.core.enums.PlayerStatus;
 import dev.mruniverse.rigoxrftb.core.enums.RigoxBoard;
 import dev.mruniverse.rigoxrftb.core.games.GameBossFormat;
+import dev.mruniverse.rigoxrftb.core.utils.FloatConverter;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -15,8 +16,10 @@ public class PlayerRunnable extends BukkitRunnable {
     private boolean bossLb,bossGm,actionLb;
     private String bossLobby,actionLobby,bossGameBeast,bossGameRunners;
     private GameBossFormat gameBossFormat;
+    private final FloatConverter floatConverter;
     public PlayerRunnable(RigoxRFTB main) {
         plugin = main;
+        floatConverter = new FloatConverter();
         bossLb = plugin.getFiles().getControl(RigoxFiles.SETTINGS).getBoolean("settings.options.lobby-bossBar");
         bossLobby = plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.lobby.bossBar");
         actionLb = plugin.getFiles().getControl(RigoxFiles.SETTINGS).getBoolean("settings.options.lobby-actionBar");
@@ -81,10 +84,11 @@ public class PlayerRunnable extends BukkitRunnable {
                                 changeLife = true;
                             }
                             Player beast = plugin.getUtils().getRandomBeast(player);
-                            float distance = (float)((float)player.getLocation().distance(beast.getLocation()) * 0.008D);
+                            double mainDistance = player.getLocation().distance(beast.getLocation());
+                            float distance = floatConverter.converter(mainDistance);
                             message = message.replace("%runners%",playerManager.getGame().runners.size() + "")
                             .replace("%beastName%",beast.getName())
-                            .replace("%beastDistance%",distance + "m");
+                            .replace("%beastDistance%",floatConverter.meters(mainDistance) + "m");
                             if(!changeLife) {
                                 plugin.getUtils().sendBossBar(player, message);
                             } else {
@@ -92,7 +96,8 @@ public class PlayerRunnable extends BukkitRunnable {
                             }
                         } else {
                             Player beast = plugin.getUtils().getRandomBeast(player);
-                            float distance = (float)((float)player.getLocation().distance(beast.getLocation()) * 0.008D);
+                            double mainDistance = player.getLocation().distance(beast.getLocation());
+                            float distance = floatConverter.meters(mainDistance);
                             message = message.replace("%runners%",playerManager.getGame().runners.size() + "")
                                     .replace("%beastName%",beast.getName())
                                     .replace("%beastDistance%",distance + "m");
