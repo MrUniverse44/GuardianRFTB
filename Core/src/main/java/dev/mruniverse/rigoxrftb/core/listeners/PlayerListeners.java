@@ -8,6 +8,8 @@ import dev.mruniverse.rigoxrftb.core.enums.SaveMode;
 import dev.mruniverse.rigoxrftb.core.games.Game;
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.block.Chest;
+import org.bukkit.block.DoubleChest;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
@@ -27,6 +29,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
@@ -93,6 +96,57 @@ public class PlayerListeners implements Listener {
                 }
             }
         }
+    }
+    @EventHandler
+    public void onChestClick(PlayerInteractEvent e) {
+        if(plugin.getPlayerData(e.getPlayer().getUniqueId()).getGame() == null) return;
+        Block b = e.getClickedBlock();
+        if (b == null) { return; }
+        if(falseChest(b.getType())) { return; }
+        e.setCancelled(true);
+        Chest chest = (Chest)b;
+        InventoryHolder holder = chest.getInventory().getHolder();
+        if (holder instanceof DoubleChest) {
+            DoubleChest doubleChest = ((DoubleChest) holder);
+            Chest leftChest = (Chest) doubleChest.getLeftSide();
+            if (leftChest != null) {
+                if (isGameChest(e.getPlayer(), leftChest.getLocation())) return;
+            }
+            Chest rightChest = (Chest) doubleChest.getRightSide();
+            if (rightChest != null) { if (isGameChest(e.getPlayer(), rightChest.getLocation())) return; }
+            return;
+        }
+        checkGameChest(e.getPlayer(),b.getLocation());
+    }
+    private void openGameChest(Player player,String chestName) {
+
+    }
+    private void checkGameChest(Player player,Location location) {
+        Game game = plugin.getPlayerData(player.getUniqueId()).getGame();
+        if(game == null) return;
+        for(String chests : game.gameChestsTypes) {
+            if(game.gameChests.get(chests).contains(location)) {
+                openGameChest(player,chests);
+                return;
+            }
+        }
+    }
+    private boolean isGameChest(Player player,Location location) {
+        Game game = plugin.getPlayerData(player.getUniqueId()).getGame();
+        if(game == null) return false;
+        for(String chests : game.gameChestsTypes) {
+            if(game.gameChests.get(chests).contains(location)) {
+                openGameChest(player,chests);
+                return true;
+            }
+        }
+        return false;
+    }
+    private boolean falseChest(Material evalMaterial) {
+        if(evalMaterial.equals(Material.CHEST)) return false;
+        if(evalMaterial.equals(Material.TRAPPED_CHEST)) return false;
+        if(evalMaterial.equals(Material.CHEST_MINECART)) return false;
+        return (!evalMaterial.equals(Material.ENDER_CHEST));
     }
     @EventHandler
     public void joinScoreboard(PlayerJoinEvent event) {

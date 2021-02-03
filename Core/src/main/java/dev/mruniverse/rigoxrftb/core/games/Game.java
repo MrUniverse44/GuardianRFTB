@@ -26,7 +26,7 @@ public class Game {
     public ArrayList<Player> runners;
     public ArrayList<Player> beasts;
     public ArrayList<Player> spectators;
-
+    public ArrayList<String> gameChestsTypes;
     int times;
     public int gameTimer;
     public int timer;
@@ -64,6 +64,7 @@ public class Game {
     public Game(RigoxRFTB main, String name) {
         this.gameTimer = 0;
         this.gameFile = main.getFiles().getControl(RigoxFiles.GAMES);
+        this.gameChestsTypes = new ArrayList<>();
         this.settingsFile = main.getFiles().getControl(RigoxFiles.SETTINGS);
         this.gameChests = new HashMap<>();
         this.messagesFile = main.getFiles().getControl(RigoxFiles.MESSAGES);
@@ -154,6 +155,7 @@ public class Game {
         try {
             if(gameFile.get(gamePath + "chests") != null) {
                 for(String chestType : gameFile.getStringList(gamePath + "chests")) {
+                    gameChestsTypes.add(chestType);
                     loadChestType(chestType);
                 }
             }

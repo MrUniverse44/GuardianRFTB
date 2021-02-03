@@ -4,17 +4,27 @@ import dev.mruniverse.rigoxrftb.core.RigoxRFTB;
 import dev.mruniverse.rigoxrftb.core.enums.RigoxFiles;
 import dev.mruniverse.rigoxrftb.core.enums.SaveMode;
 import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 
 public class GameManager {
     private final ArrayList<Game> games = new ArrayList<>();
+    private final HashMap<String,GameChests> gameChests = new HashMap<>();
     private final RigoxRFTB plugin;
     public GameManager(RigoxRFTB main) {
         plugin = main;
+    }
+    public void loadChests() {
+        ConfigurationSection section = plugin.getFiles().getControl(RigoxFiles.CHESTS).getConfigurationSection("chests");
+        if(section == null) return;
+        for(String chest : section.getKeys(false)) {
+            gameChests.put(chest,new GameChests(plugin,chest));
+        }
     }
     public Game getGame(String gameName) {
         if (this.games.size() < 1)
