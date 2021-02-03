@@ -14,7 +14,7 @@ import java.util.Objects;
 
 public class GameManager {
     private final ArrayList<Game> games = new ArrayList<>();
-    private final HashMap<String,GameChests> gameChests = new HashMap<>();
+    public HashMap<String,GameChests> gameChests = new HashMap<>();
     private final RigoxRFTB plugin;
     public GameManager(RigoxRFTB main) {
         plugin = main;
@@ -25,6 +25,9 @@ public class GameManager {
         for(String chest : section.getKeys(false)) {
             gameChests.put(chest,new GameChests(plugin,chest));
         }
+    }
+    public GameChests getGameChest(String chestName) {
+        return gameChests.get(chestName);
     }
     public Game getGame(String gameName) {
         if (this.games.size() < 1)

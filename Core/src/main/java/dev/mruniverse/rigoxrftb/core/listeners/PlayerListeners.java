@@ -119,7 +119,7 @@ public class PlayerListeners implements Listener {
         checkGameChest(e.getPlayer(),b.getLocation());
     }
     private void openGameChest(Player player,String chestName) {
-
+        player.openInventory(plugin.getGameManager().getGameChest(chestName).getInventory());
     }
     private void checkGameChest(Player player,Location location) {
         Game game = plugin.getPlayerData(player.getUniqueId()).getGame();
