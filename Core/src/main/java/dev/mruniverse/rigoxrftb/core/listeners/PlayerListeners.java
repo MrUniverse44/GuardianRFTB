@@ -6,6 +6,7 @@ import dev.mruniverse.rigoxrftb.core.enums.RigoxBoard;
 import dev.mruniverse.rigoxrftb.core.RigoxRFTB;
 import dev.mruniverse.rigoxrftb.core.enums.SaveMode;
 import dev.mruniverse.rigoxrftb.core.games.Game;
+import dev.mruniverse.rigoxrftb.core.games.GameStatus;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
@@ -99,7 +100,11 @@ public class PlayerListeners implements Listener {
     }
     @EventHandler
     public void onChestClick(PlayerInteractEvent e) {
-        if(plugin.getPlayerData(e.getPlayer().getUniqueId()).getGame() == null) return;
+        Game game = plugin.getPlayerData(e.getPlayer().getUniqueId()).getGame();
+        if(game == null) return;
+        if(game.gameStatus.equals(GameStatus.WAITING) || game.gameStatus.equals(GameStatus.STARTING) || game.gameStatus.equals(GameStatus.RESTARTING)) {
+            e.setCancelled(true);
+        }
         Block b = e.getClickedBlock();
         if (b == null) { return; }
         if(falseChest(b.getType())) { return; }
