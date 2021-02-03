@@ -80,7 +80,7 @@ public class GameChests {
             }
             pasteItems();
         } catch (Throwable throwable) {
-            plugin.getLogs().error("Can't get lobby items on startup");
+            plugin.getLogs().error("Can't get chests items on startup");
             plugin.getLogs().error(throwable);
         }
     }

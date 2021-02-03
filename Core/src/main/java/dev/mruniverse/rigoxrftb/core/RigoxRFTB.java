@@ -80,8 +80,11 @@ public final class RigoxRFTB extends JavaPlugin {
 
         // * Utils Setup
 
-
         rigoxUtils = new RigoxUtils(this);
+
+        // * NMS Setup
+
+        nmsSetup();
 
         // * Game Setup
 
@@ -89,10 +92,6 @@ public final class RigoxRFTB extends JavaPlugin {
         rigoxGameManager.loadChests();
         rigoxGameManager.loadGames();
 
-
-        // * NMS Setup
-
-        nmsSetup();
         FileConfiguration items = getFiles().getControl(RigoxFiles.ITEMS);
         ConfigurationSection section;
         // * Beast Items
