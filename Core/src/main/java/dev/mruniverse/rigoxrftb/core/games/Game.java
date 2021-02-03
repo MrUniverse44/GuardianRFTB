@@ -659,6 +659,9 @@ public class Game {
             plugin.getPlayerData(beast.getUniqueId()).setBoard(RigoxBoard.WIN_RUNNERS_FOR_BEAST);
             winRunners();
         }
+        for(Player spectator : this.spectators) {
+            spectator.setGameMode(GameMode.SPECTATOR);
+        }
     }
     public void deathRunner(Player runner) {
         runners.remove(runner);
@@ -668,6 +671,9 @@ public class Game {
         if(runners.size() == 0) {
             plugin.getPlayerData(runner.getUniqueId()).setBoard(RigoxBoard.WIN_BEAST_FOR_RUNNERS);
             winBeasts();
+        }
+        for(Player spectator : this.spectators) {
+            spectator.setGameMode(GameMode.SPECTATOR);
         }
     }
     public void winRunners() {
