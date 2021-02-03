@@ -656,6 +656,7 @@ public class Game {
         plugin.getPlayerData(beast.getUniqueId()).addDeaths();
         beast.setGameMode(GameMode.SPECTATOR);
         if(beasts.size() == 0) {
+            plugin.getPlayerData(beast.getUniqueId()).setBoard(RigoxBoard.WIN_RUNNERS_FOR_BEAST);
             winRunners();
         }
     }
@@ -665,6 +666,7 @@ public class Game {
         runner.setGameMode(GameMode.SPECTATOR);
         plugin.getPlayerData(runner.getUniqueId()).addDeaths();
         if(runners.size() == 0) {
+            plugin.getPlayerData(runner.getUniqueId()).setBoard(RigoxBoard.WIN_BEAST_FOR_RUNNERS);
             winBeasts();
         }
     }
@@ -682,6 +684,9 @@ public class Game {
         }
         for(Player beast : this.beasts) {
             plugin.getPlayerData(beast.getUniqueId()).setBoard(RigoxBoard.WIN_RUNNERS_FOR_BEAST);
+        }
+        for(Player spectator : this.spectators) {
+            plugin.getPlayerData(spectator.getUniqueId()).setBoard(RigoxBoard.WIN_RUNNERS_FOR_BEAST);
         }
         this.invincible = true;
         this.gameTimer = 0;
@@ -702,6 +707,9 @@ public class Game {
         }
         for(Player runner : this.runners) {
             plugin.getPlayerData(runner.getUniqueId()).setBoard(RigoxBoard.WIN_BEAST_FOR_RUNNERS);
+        }
+        for(Player spectator : this.spectators) {
+            plugin.getPlayerData(spectator.getUniqueId()).setBoard(RigoxBoard.WIN_BEAST_FOR_RUNNERS);
         }
         this.invincible = true;
         this.gameTimer = 0;
@@ -738,6 +746,10 @@ public class Game {
                 if(location != null) {
                     player.teleport(location);
                 }
+                player.getInventory().setHelmet(null);
+                player.getInventory().setChestplate(null);
+                player.getInventory().setLeggings(null);
+                player.getInventory().setBoots(null);
                 plugin.getPlayerData(player.getUniqueId()).setStatus(PlayerStatus.IN_LOBBY);
                 plugin.getPlayerData(player.getUniqueId()).setGame(null);
                 plugin.getPlayerData(player.getUniqueId()).setBoard(RigoxBoard.LOBBY);

@@ -206,7 +206,7 @@ public class PlayerListeners implements Listener {
             event.setQuitMessage(null);
         }
     }
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     public void inGameDeath(PlayerDeathEvent event) {
         final Player player = event.getEntity();
         if(plugin.getPlayerData(player.getUniqueId()).getGame() != null) {
