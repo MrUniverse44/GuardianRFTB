@@ -41,6 +41,7 @@ public final class RigoxRFTB extends JavaPlugin {
     private BoardManager rigoxScoreboards;
     private GameManager rigoxGameManager;
     private DataStorage dataStorage;
+    private PlayerRunnable runnable;
 
     public ItemStack exitItem;
     public ItemStack kitRunner;
@@ -315,8 +316,8 @@ public final class RigoxRFTB extends JavaPlugin {
         rigoxScoreboards = new BoardManager(this);
 
         // * Tasks
-
-        getServer().getScheduler().runTaskTimerAsynchronously(this,new PlayerRunnable(this),0L,20L);
+        runnable = new PlayerRunnable(this);
+        getServer().getScheduler().runTaskTimerAsynchronously(this,runnable,0L,20L);
     }
     public ItemStack getEnchantmentList(ItemStack item, RigoxFiles fileOfPath, String path) {
         for(String enchants : getFiles().getControl(fileOfPath).getStringList(path)) {
@@ -373,6 +374,7 @@ public final class RigoxRFTB extends JavaPlugin {
     public DataStorage getData() { return dataStorage; }
     public Logger getLogs() { return logger; }
     public RigoxUtils getUtils() { return rigoxUtils; }
+    public PlayerRunnable getRunnable() { return runnable; }
     public BoardManager getScoreboards() { return rigoxScoreboards; }
     public void addPlayer(Player player){
         if(!existPlayer(player)) {

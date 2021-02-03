@@ -104,6 +104,7 @@ public class MainCMD implements CommandExecutor {
                     if(hasPermission(sender,"RigoxRFTB.admin.reload")) {
                         plugin.getFiles().reloadFile(SaveMode.ALL);
                         plugin.getUtils().sendMessage(sender, "&8» &aReload completed!");
+                        plugin.getRunnable().update();
                         return true;
                     }
                     return true;
