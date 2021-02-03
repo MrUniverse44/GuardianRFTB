@@ -504,7 +504,7 @@ public class FileManager {
         enchants = new ArrayList<>();
         enchants.add("UNBREAKING, 3");
         enchants.add("PROTECTION, 1");
-        addConfig(RigoxFiles.CHESTS, "chests.attack.items.boots.enchantments",enchants);
+        addConfig(RigoxFiles.CHESTS, "chests.armor.items.boots.enchantments",enchants);
         menuList = new ArrayList<>();
         addConfig(RigoxFiles.CHESTS, "chests.attack.inventoryName","&8Attack Items");
         addConfig(RigoxFiles.CHESTS, "chests.attack.inventoryRows",6);
@@ -514,13 +514,15 @@ public class FileManager {
             menuList.add("ORB_PICKUP");
         }
         addConfig(RigoxFiles.CHESTS, "chests.attack.inventorySounds",menuList);
+        addConfig(RigoxFiles.CHESTS, "chests.attack.items.sword.name", "&aDiamond Sword");
+        addConfig(RigoxFiles.CHESTS, "chests.attack.items.sword.slot", 21);
+        menuList = new ArrayList<>();
+        menuList.add("&7RigoxRFTB");
+        addConfig(RigoxFiles.CHESTS, "chests.attack.items.sword.lore", menuList);
+        addConfig(RigoxFiles.CHESTS, "chests.attack.items.sword.item", "DIAMOND_SWORD");
         enchants = new ArrayList<>();
         enchants.add("FIRE_ASPECT, 2");
         enchants.add("SHARPNESS, 3");
-        addConfig(RigoxFiles.CHESTS, "chests.attack.items.sword.name", "&aDiamond Sword");
-        addConfig(RigoxFiles.CHESTS, "chests.attack.items.sword.slot", 21);
-        addConfig(RigoxFiles.CHESTS, "chests.attack.items.sword.lore", menuList);
-        addConfig(RigoxFiles.CHESTS, "chests.attack.items.sword.item", "DIAMOND_SWORD");
         addConfig(RigoxFiles.CHESTS, "chests.attack.items.sword.enchantments",enchants);
         addConfig(RigoxFiles.CHESTS, "chests.attack.items.bow.name", "&aHardcore Bow");
         addConfig(RigoxFiles.CHESTS, "chests.attack.items.bow.slot", 22);
