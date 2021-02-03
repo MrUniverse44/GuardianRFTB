@@ -268,7 +268,7 @@ public class PlayerListeners implements Listener {
             event.setDroppedExp(0);
             if(game.beasts.contains(player)) {
                 player.spigot().respawn();
-                player.setGameMode(GameMode.SPECTATOR);
+                player.setGameMode(org.bukkit.GameMode.SPECTATOR);
                 game.deathBeast(player);
                 player.teleport(game.beastLocation);
                 player.setGameMode(GameMode.SPECTATOR);
@@ -276,10 +276,10 @@ public class PlayerListeners implements Listener {
                 player.spigot().respawn();
                 game.deathRunner(player);
                 player.teleport(game.runnersLocation);
-                player.setGameMode(GameMode.SPECTATOR);
+                player.setGameMode(org.bukkit.GameMode.SPECTATOR);
 
             }
-            player.setGameMode(GameMode.SPECTATOR);
+            player.setGameMode(org.bukkit.GameMode.SPECTATOR);
         }
     }
     @EventHandler
@@ -305,7 +305,8 @@ public class PlayerListeners implements Listener {
                 game.deathRunner(player);
                 player.teleport(game.runnersLocation);
             }
-            player.setGameMode(GameMode.SPECTATOR);
+            player.setGameMode(org.bukkit.GameMode.SPECTATOR);
+
         }
     }
     @EventHandler(priority = EventPriority.HIGH)
@@ -318,7 +319,7 @@ public class PlayerListeners implements Listener {
             } else {
                 player.teleport(game.runnersLocation);
             }
-            player.setGameMode(GameMode.SPECTATOR);
+            player.setGameMode(org.bukkit.GameMode.SPECTATOR);
         }
     }
     @EventHandler
