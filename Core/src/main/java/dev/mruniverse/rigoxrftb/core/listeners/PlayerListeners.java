@@ -196,6 +196,8 @@ public class PlayerListeners implements Listener {
                 plugin.getLogs().error("Can't show lobby-scoreboard, lobby location is not set");
                 plugin.getLogs().error("-----------------------------");
             } else {
+                event.setCancelled(true);
+                plugin.getLogs().debug("CHAT | " + player.getName() + ": " + event.getMessage());
                 String[] loc = lC.split(",");
                 World w = Bukkit.getWorld(loc[0]);
                 if(w == null) return;
@@ -206,6 +208,8 @@ public class PlayerListeners implements Listener {
             }
             return;
         }
+        event.setCancelled(true);
+        plugin.getLogs().debug("CHAT | " + player.getName() + ": " + event.getMessage());
         Game game = playerManager.getGame();
         if(game.spectators.contains(player)) {
             String spectatorChat = plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.others.customChat.spectator");
