@@ -10,6 +10,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -68,6 +69,7 @@ public class GameChests {
                         String itemName = loadConfig.getString(path + item + ".name");
                         Integer slot = loadConfig.getInt(path + item + ".slot");
                         List<String> lore = loadConfig.getStringList(path + item + ".lore");
+                        if(itemName == null) itemName = "&e<Unknown Name>";
                         ItemStack itLoad = plugin.getNMSHandler().getItemStack(m.parseMaterial(), TextUtilities.recolor(itemName), TextUtilities.recolorLore(lore));
                         if(loadConfig.get(path + item + ".enchantments") != null) {
                             itLoad = plugin.getEnchantmentList(itLoad, RigoxFiles.ITEMS,path + item + ".enchantments");
