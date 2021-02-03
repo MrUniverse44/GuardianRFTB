@@ -230,6 +230,32 @@ public class PlayerListeners implements Listener {
             player.setGameMode(GameMode.SPECTATOR);
         }
     }
+    @EventHandler
+    public void inGameDamage(EntityDamageEvent event) {
+        if(!event.getEntity().getType().equals(EntityType.PLAYER)) return;
+        Player player = (Player)event.getEntity();
+        if(plugin.getPlayerData(player.getUniqueId()) == null) return;
+        if(plugin.getPlayerData(player.getUniqueId()).getGame() == null) return;
+        if((player.getHealth() - event.getFinalDamage()) <= 0) {
+            event.setCancelled(true);
+            Game game = plugin.getPlayerData(player.getUniqueId()).getGame();
+            player.getInventory().clear();
+            player.setHealth(20);
+            player.setFoodLevel(20);
+            player.getInventory().setBoots(null);
+            player.getInventory().setHelmet(null);
+            player.getInventory().setChestplate(null);
+            player.getInventory().setLeggings(null);
+            if(game.beasts.contains(player)) {
+                game.deathBeast(player);
+                player.teleport(game.beastLocation);
+            } else {
+                game.deathRunner(player);
+                player.teleport(game.runnersLocation);
+            }
+            player.setGameMode(GameMode.SPECTATOR);
+        }
+    }
     @EventHandler(priority = EventPriority.HIGH)
     public void onDeathRespawn(PlayerRespawnEvent event) {
         final Player player = event.getPlayer();
