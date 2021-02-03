@@ -86,7 +86,9 @@ public final class RigoxRFTB extends JavaPlugin {
         // * Game Setup
 
         rigoxGameManager = new GameManager(this);
+        rigoxGameManager.loadChests();
         rigoxGameManager.loadGames();
+
 
         // * NMS Setup
 

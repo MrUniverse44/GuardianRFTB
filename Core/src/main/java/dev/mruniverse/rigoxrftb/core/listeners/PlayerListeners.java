@@ -109,7 +109,7 @@ public class PlayerListeners implements Listener {
         if (b == null) { return; }
         if(falseChest(b.getType())) { return; }
         e.setCancelled(true);
-        Chest chest = (Chest)b;
+        Chest chest = (Chest)e.getClickedBlock().getState();
         InventoryHolder holder = chest.getInventory().getHolder();
         if (holder instanceof DoubleChest) {
             DoubleChest doubleChest = ((DoubleChest) holder);
