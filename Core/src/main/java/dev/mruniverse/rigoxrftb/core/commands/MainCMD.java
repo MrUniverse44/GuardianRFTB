@@ -138,6 +138,7 @@ public class MainCMD implements CommandExecutor {
                                 plugin.getFiles().getControl(RigoxFiles.GAMES).set("games." + args[2] + ".enabled",true);
                                 plugin.getGameManager().addGame(args[2]);
                                 plugin.getFiles().save(SaveMode.GAMES_FILES);
+                                plugin.getUtils().sendMessage(sender,"&aGame &b" + args[2] + "&a enabled.");
                             }
                         }
                     }
@@ -153,6 +154,7 @@ public class MainCMD implements CommandExecutor {
                                 plugin.getFiles().getControl(RigoxFiles.GAMES).set("games." + args[2] + ".enabled",false);
                                 plugin.getGameManager().delGame(args[2]);
                                 plugin.getFiles().save(SaveMode.GAMES_FILES);
+                                plugin.getUtils().sendMessage(sender,"&aGame &b" + args[2] + "&a disabled.");
                             }
                         }
                     }
@@ -423,7 +425,6 @@ public class MainCMD implements CommandExecutor {
     private boolean falseChest(Material evalMaterial) {
         if(evalMaterial.equals(Material.CHEST)) return false;
         if(evalMaterial.equals(Material.TRAPPED_CHEST)) return false;
-        if(evalMaterial.equals(Material.CHEST_MINECART)) return false;
         return (!evalMaterial.equals(Material.ENDER_CHEST));
     }
 }

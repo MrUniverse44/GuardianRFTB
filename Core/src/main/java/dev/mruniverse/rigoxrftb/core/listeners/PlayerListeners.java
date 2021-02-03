@@ -145,7 +145,6 @@ public class PlayerListeners implements Listener {
     private boolean falseChest(Material evalMaterial) {
         if(evalMaterial.equals(Material.CHEST)) return false;
         if(evalMaterial.equals(Material.TRAPPED_CHEST)) return false;
-        if(evalMaterial.equals(Material.CHEST_MINECART)) return false;
         return (!evalMaterial.equals(Material.ENDER_CHEST));
     }
     @EventHandler
