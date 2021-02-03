@@ -324,8 +324,17 @@ public class RigoxUtils {
     public String replaceVariables(String text,Player player) {
 
         if(text.contains("<player_name>")) text = text.replace("<player_name>",player.getName());
-        if(text.contains("<player_coins>")) text = text.replace("<player_coins>","" + plugin.getPlayerData(player.getUniqueId()).getCoins());
-        if(text.contains("<player_wins>")) text = text.replace("<player_wins>","" + plugin.getPlayerData(player.getUniqueId()).getWins());
+        if(plugin.getPlayerData(player.getUniqueId()) != null) {
+            if (text.contains("<player_coins>"))
+                text = text.replace("<player_coins>", "" + plugin.getPlayerData(player.getUniqueId()).getCoins());
+            if (text.contains("<player_wins>"))
+                text = text.replace("<player_wins>", "" + plugin.getPlayerData(player.getUniqueId()).getWins());
+        } else {
+            if (text.contains("<player_coins>"))
+                text = text.replace("<player_coins>", "" + 0);
+            if (text.contains("<player_wins>"))
+                text = text.replace("<player_wins>", "" + 0);
+        }
         if(text.contains("<player_beast_kit>")) text = text.replace("<player_beast_kit>","Not selected");
         if(text.contains("<player_runner_kit>")) text = text.replace("<player_runner_kit>","Not selected");
         if(text.contains("<server_online>")) text = text.replace("<server_online>",plugin.getServer().getOnlinePlayers().size() + "");
@@ -371,6 +380,15 @@ public class RigoxUtils {
             return plugin.getFiles().getControl(RigoxFiles.SETTINGS).getString("times.seconds");
         }
         return plugin.getFiles().getControl(RigoxFiles.SETTINGS).getString("times.second");
+    }
+    private Player getRandomBeast(Player player) {
+        if(plugin.getPlayerData(player.getUniqueId()).getGame() != null) {
+            if(plugin.getPlayerData(player.getUniqueId()).getGame().beasts.size() != 0) {
+                return plugin.getPlayerData(player.getUniqueId()).getGame().beasts.get(0);
+            }
+            return player;
+        }
+        return player;
     }
     private String getBeast(Game game) {
         if(game.gameType.equals(GameType.DOUBLE_BEAST)) {
