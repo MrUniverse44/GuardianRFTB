@@ -165,11 +165,11 @@ public class FileManager {
         addConfig(RigoxFiles.ITEMS,"lobby.Exit.name","&aGo to the hub");
         addConfig(RigoxFiles.ITEMS,"lobby.Exit.lore",lore);
         addConfig(RigoxFiles.ITEMS,"lobby.Exit.slot",8);
-        addConfig(RigoxFiles.ITEMS,"InGame.RunnerKit.item","MAP");
+        addConfig(RigoxFiles.ITEMS,"InGame.RunnerKit.item","PAPER");
         addConfig(RigoxFiles.ITEMS,"InGame.RunnerKit.name","&aKit Selector (&lRunners&a)");
         addConfig(RigoxFiles.ITEMS,"InGame.RunnerKit.lore",lore);
         addConfig(RigoxFiles.ITEMS,"InGame.RunnerKit.slot",0);
-        addConfig(RigoxFiles.ITEMS,"InGame.BeastKit.item","MAP");
+        addConfig(RigoxFiles.ITEMS,"InGame.BeastKit.item","PAPER");
         addConfig(RigoxFiles.ITEMS,"InGame.BeastKit.name","&aKit Selector (&lBeast&a)");
         addConfig(RigoxFiles.ITEMS,"InGame.BeastKit.lore",lore);
         addConfig(RigoxFiles.ITEMS,"InGame.BeastKit.slot",0);
