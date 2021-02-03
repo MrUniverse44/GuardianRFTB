@@ -4,6 +4,7 @@ import dev.mruniverse.rigoxrftb.core.RigoxRFTB;
 import dev.mruniverse.rigoxrftb.core.enums.RigoxFiles;
 import dev.mruniverse.rigoxrftb.core.enums.PlayerStatus;
 import dev.mruniverse.rigoxrftb.core.enums.RigoxBoard;
+import dev.mruniverse.rigoxrftb.core.games.GameBossFormat;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -11,20 +12,41 @@ import java.util.UUID;
 
 public class PlayerRunnable extends BukkitRunnable {
     private final RigoxRFTB plugin;
-    private boolean bossLb,actionLb;
-    private String bossLobby,actionLobby;
+    private boolean bossLb,bossGm,actionLb;
+    private String bossLobby,actionLobby,bossGameBeast,bossGameRunners;
+    private GameBossFormat gameBossFormat;
     public PlayerRunnable(RigoxRFTB main) {
         plugin = main;
         bossLb = plugin.getFiles().getControl(RigoxFiles.SETTINGS).getBoolean("settings.options.lobby-bossBar");
         bossLobby = plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.lobby.bossBar");
         actionLb = plugin.getFiles().getControl(RigoxFiles.SETTINGS).getBoolean("settings.options.lobby-actionBar");
         actionLobby = plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.lobby.actionBar");
+        bossGm = plugin.getFiles().getControl(RigoxFiles.SETTINGS).getBoolean("settings.ShowBeastDistance.toggle");
+        bossGameRunners = plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.inGame.others.bossBar.toRunners");
+        bossGameBeast = plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.inGame.others.bossBar.toBeasts");
+        String format = plugin.getFiles().getControl(RigoxFiles.SETTINGS).getString("settings.ShowBeastDistance.Format");
+        if(format == null) format = "BOSSBAR";
+        if(format.equalsIgnoreCase("ACTIONBAR") || format.equalsIgnoreCase("ACTION BAR") || format.equalsIgnoreCase("ACTION_BAR")) {
+            gameBossFormat = GameBossFormat.ACTIONBAR;
+        } else {
+            gameBossFormat = GameBossFormat.BOSSBAR;
+        }
     }
     public void update() {
         bossLb = plugin.getFiles().getControl(RigoxFiles.SETTINGS).getBoolean("settings.options.lobby-bossBar");
         bossLobby = plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.lobby.bossBar");
         actionLb = plugin.getFiles().getControl(RigoxFiles.SETTINGS).getBoolean("settings.options.lobby-actionBar");
         actionLobby = plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.lobby.actionBar");
+        bossGm = plugin.getFiles().getControl(RigoxFiles.SETTINGS).getBoolean("settings.ShowBeastDistance.toggle");
+        bossGameRunners = plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.inGame.others.bossBar.toRunners");
+        bossGameBeast = plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.inGame.others.bossBar.toBeasts");
+        String format = plugin.getFiles().getControl(RigoxFiles.SETTINGS).getString("settings.ShowBeastDistance.Format");
+        if(format == null) format = "BOSSBAR";
+        if(format.equalsIgnoreCase("ACTIONBAR") || format.equalsIgnoreCase("ACTION BAR") || format.equalsIgnoreCase("ACTION_BAR")) {
+            gameBossFormat = GameBossFormat.ACTIONBAR;
+        } else {
+            gameBossFormat = GameBossFormat.BOSSBAR;
+        }
     }
     @Override
     public void run() {
@@ -41,9 +63,39 @@ public class PlayerRunnable extends BukkitRunnable {
                     plugin.getUtils().sendActionbar(player, actionLobby);
                 }
             } else {
-                if(playerManager.getBoard().equals(RigoxBoard.WAITING) || playerManager.getBoard().equals(RigoxBoard.STARTING)) {
+                if(playerManager.getBoard().equals(RigoxBoard.WAITING) || playerManager.getBoard().equals(RigoxBoard.STARTING) || playerManager.getBoard().equals(RigoxBoard.SELECTING) || playerManager.getBoard().equals(RigoxBoard.BEAST_SPAWN) || playerManager.getBoard().equals(RigoxBoard.WIN_RUNNERS_FOR_RUNNERS) || playerManager.getBoard().equals(RigoxBoard.WIN_RUNNERS_FOR_BEAST) || playerManager.getBoard().equals(RigoxBoard.WIN_BEAST_FOR_RUNNERS) || playerManager.getBoard().equals(RigoxBoard.WIN_BEAST_FOR_BEAST)    ) {
                     if(bossLb) {
                         plugin.getUtils().sendBossBar(player, bossLobby);
+                    }
+                } else {
+                    if(bossGm) {
+                        String message;
+                        if(plugin.getUtils().isBeast(player)) {
+                            message = bossGameBeast;
+                        } else {
+                            message = bossGameRunners;
+                        }
+                        if(gameBossFormat.equals(GameBossFormat.BOSSBAR)) {
+                            boolean changeLife = false;
+                            if(!plugin.getUtils().isBeast(player)) {
+                                changeLife = true;
+                            }
+                            Player beast = plugin.getUtils().getRandomBeast(player);
+                            message = message.replace("%runners%",playerManager.getGame().runners.size() + "")
+                            .replace("%beastName%",beast.getName())
+                            .replace("%beastDistance%",player.getLocation().distance(beast.getLocation()) + "m");
+                            if(!changeLife) {
+                                plugin.getUtils().sendBossBar(player, message);
+                            } else {
+                                plugin.getUtils().sendBossBar(player, message, (float)player.getLocation().distance(beast.getLocation()));
+                            }
+                        } else {
+                            Player beast = plugin.getUtils().getRandomBeast(player);
+                            message = message.replace("%runners%",playerManager.getGame().runners.size() + "")
+                                    .replace("%beastName%",beast.getName())
+                                    .replace("%beastDistance%",player.getLocation().distance(beast.getLocation()) + "m");
+                            plugin.getUtils().sendActionbar(player,message);
+                        }
                     }
                 }
             }

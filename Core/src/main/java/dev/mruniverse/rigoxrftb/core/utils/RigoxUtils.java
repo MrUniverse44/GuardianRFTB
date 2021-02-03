@@ -149,6 +149,12 @@ public class RigoxUtils {
         message = ChatColor.translateAlternateColorCodes('&',message);
         plugin.getNMSHandler().sendBossBar(player,message);
     }
+    public void sendBossBar(Player player, String message, float percentage) {
+        if (player == null || message == null) return;
+        if(plugin.hasPAPI()) { message = PlaceholderAPI.setPlaceholders(player,message); }
+        message = ChatColor.translateAlternateColorCodes('&',message);
+        plugin.getNMSHandler().sendBossBar(player,message,percentage);
+    }
     public void sendActionbar(Player player, String message) {
         if (player == null || message == null) return;
         if(plugin.hasPAPI()) { message = PlaceholderAPI.setPlaceholders(player,message); }
@@ -381,7 +387,7 @@ public class RigoxUtils {
         }
         return plugin.getFiles().getControl(RigoxFiles.SETTINGS).getString("times.second");
     }
-    private Player getRandomBeast(Player player) {
+    public Player getRandomBeast(Player player) {
         if(plugin.getPlayerData(player.getUniqueId()).getGame() != null) {
             if(plugin.getPlayerData(player.getUniqueId()).getGame().beasts.size() != 0) {
                 return plugin.getPlayerData(player.getUniqueId()).getGame().beasts.get(0);
@@ -389,6 +395,13 @@ public class RigoxUtils {
             return player;
         }
         return player;
+    }
+    public boolean isBeast(Player player) {
+        if(plugin.getPlayerData(player.getUniqueId()) == null) return false;
+        if(plugin.getPlayerData(player.getUniqueId()).getGame() != null) {
+            return plugin.getPlayerData(player.getUniqueId()).getGame().beasts.contains(player);
+        }
+        return false;
     }
     private String getBeast(Game game) {
         if(game.gameType.equals(GameType.DOUBLE_BEAST)) {

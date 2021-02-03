@@ -98,6 +98,8 @@ public class FileManager {
         addConfig(RigoxFiles.SETTINGS,"settings.tags.runners.tag","&b&lRUNNER");
         addConfig(RigoxFiles.SETTINGS,"settings.tags.beasts.toggle",true);
         addConfig(RigoxFiles.SETTINGS,"settings.tags.beasts.tag","&c&lBEAST");
+        addConfig(RigoxFiles.SETTINGS,"settings.ShowBeastDistance.toggle",true);
+        addConfig(RigoxFiles.SETTINGS,"settings.ShowBeastDistance.Format","BOSSBAR");
         addConfig(RigoxFiles.SETTINGS,"settings.dateFormat","dd/MM/yyyy");
         addConfig(RigoxFiles.SETTINGS,"settings.lobbyScoreboard-only-in-lobby-world",true);
         addConfig(RigoxFiles.SETTINGS,"settings.options.pluginChat",true);
