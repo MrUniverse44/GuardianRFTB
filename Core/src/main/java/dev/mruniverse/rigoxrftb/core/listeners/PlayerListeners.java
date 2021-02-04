@@ -7,6 +7,7 @@ import dev.mruniverse.rigoxrftb.core.RigoxRFTB;
 import dev.mruniverse.rigoxrftb.core.enums.SaveMode;
 import dev.mruniverse.rigoxrftb.core.games.Game;
 import dev.mruniverse.rigoxrftb.core.games.GameStatus;
+import dev.mruniverse.rigoxrftb.core.games.GameType;
 import dev.mruniverse.rigoxrftb.core.utils.players.PlayerManager;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -275,9 +276,10 @@ public class PlayerListeners implements Listener {
             } else {
                 player.spigot().respawn();
                 game.deathRunner(player);
-                player.teleport(game.runnersLocation);
-                player.setGameMode(GameMode.SPECTATOR);
-
+                if(!game.gameType.equals(GameType.INFECTED)) {
+                    player.teleport(game.runnersLocation);
+                    player.setGameMode(GameMode.SPECTATOR);
+                }
             }
             player.setGameMode(GameMode.SPECTATOR);
         }
@@ -298,15 +300,19 @@ public class PlayerListeners implements Listener {
             player.getInventory().setHelmet(null);
             player.getInventory().setChestplate(null);
             player.getInventory().setLeggings(null);
+
             if(game.beasts.contains(player)) {
+                player.setGameMode(GameMode.SPECTATOR);
                 game.deathBeast(player);
                 player.teleport(game.beastLocation);
             } else {
                 game.deathRunner(player);
-                player.teleport(game.runnersLocation);
+                if(!game.gameType.equals(GameType.INFECTED)) {
+                    player.setGameMode(GameMode.SPECTATOR);
+                    player.teleport(game.runnersLocation);
+                }
             }
-            player.setGameMode(GameMode.SPECTATOR);
-            player.sendMessage("DAMAGE EVENT");
+
 
         }
     }

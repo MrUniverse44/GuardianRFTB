@@ -666,8 +666,15 @@ public class Game {
     }
     public void deathRunner(Player runner) {
         runners.remove(runner);
-        spectators.add(runner);
-        runner.setGameMode(GameMode.SPECTATOR);
+        if(!gameType.equals(GameType.INFECTED)) {
+            spectators.add(runner);
+            runner.setGameMode(GameMode.SPECTATOR);
+        } else {
+            beasts.add(runner);
+            runner.getInventory().clear();
+            giveBeastInv(runner);
+            runner.teleport(beastLocation);
+        }
         plugin.getPlayerData(runner.getUniqueId()).addDeaths();
         if(runners.size() == 0) {
             plugin.getPlayerData(runner.getUniqueId()).setBoard(RigoxBoard.WIN_BEAST_FOR_RUNNERS);
