@@ -336,6 +336,7 @@ public class Game {
                         gameStatus = GameStatus.WAITING;
                         for(Player player : players) {
                             beasts.remove(player);
+                            plugin.getPlayerData(player.getUniqueId()).setBoard(RigoxBoard.WAITING);
                             player.teleport(waiting);
                             player.getInventory().clear();
                             player.getInventory().setItem(plugin.RunnerSlot,plugin.kitRunner);
