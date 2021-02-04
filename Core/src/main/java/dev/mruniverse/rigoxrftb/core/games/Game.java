@@ -226,15 +226,19 @@ public class Game {
         }
     }
     public int getNeedPlayers() {
-        if((min - players.size()) <= 0 && gameStatus.equals(GameStatus.WAITING)) {
+        int RealMin = min;
+        if(gameType.equals(GameType.DOUBLE_BEAST) && min == 2) {
+            RealMin = 3;
+        }
+        if((RealMin - players.size()) <= 0 && gameStatus.equals(GameStatus.WAITING)) {
             gameStatus = GameStatus.STARTING;
             for(Player player : players) {
                 PlayerManager playerData = plugin.getPlayerData(player.getUniqueId());
                 playerData.setBoard(RigoxBoard.STARTING);
             }
         }
-        if(players.size() < min) {
-            return (min - players.size());
+        if(players.size() < RealMin) {
+            return (RealMin - players.size());
         }
         if(gameStatus.equals(GameStatus.WAITING)) {
             gameStatus = GameStatus.STARTING;
