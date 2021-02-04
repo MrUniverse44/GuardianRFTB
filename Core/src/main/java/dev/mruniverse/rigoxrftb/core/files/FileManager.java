@@ -250,9 +250,6 @@ public class FileManager {
         lists.add("&fYou are the best beast");
         lists.add("&aWell played&f!");
         lists.add(" ");
-        lists.add("&a+<beast_coins_win> &fcoins &bxWin");
-        lists.add("&a+<beast_coins_kill> &fcoins &bxKill");
-        lists.add(" ");
         lists.add("&erigox.club");
         addConfig(RigoxFiles.SCOREBOARD,"scoreboards.beastWin.forBeast.lines",lists);
         lists = new ArrayList<>();
@@ -260,8 +257,6 @@ public class FileManager {
         lists.add("&7<timeFormat>");
         lists.add(" ");
         lists.add("&fWell.. you tried");
-        lists.add(" ");
-        lists.add("&c<runners_coins_death> &fcoins");
         lists.add(" ");
         lists.add("&erigox.club");
         addConfig(RigoxFiles.SCOREBOARD,"scoreboards.beastWin.forRunners.lines",lists);
@@ -272,9 +267,6 @@ public class FileManager {
         lists.add("&fBad played!");
         lists.add("&cGood luck for next game&f!");
         lists.add(" ");
-        lists.add("&c<beast_coins_death> &fcoins");
-        lists.add("&a+<beast_coins_kill> &fcoins &bxKill");
-        lists.add(" ");
         lists.add("&erigox.club");
         addConfig(RigoxFiles.SCOREBOARD,"scoreboards.runnersWin.forBeast.lines",lists);
         lists = new ArrayList<>();
@@ -283,9 +275,6 @@ public class FileManager {
         lists.add(" ");
         lists.add("&fRunners Win!");
         lists.add("&aWell played!");
-        lists.add(" ");
-        lists.add("&a+<runners_coins_win> &fcoins &bxWin");
-        lists.add("<isPlayerKiller>&a+<runners_coins_kill> &fcoins only for you.");
         lists.add(" ");
         lists.add("&erigox.club");
         addConfig(RigoxFiles.SCOREBOARD,"scoreboards.runnersWin.forRunners.lines",lists);
@@ -319,7 +308,6 @@ public class FileManager {
         lists.add(" ");
         lists.add(" &7You earned:");
         lists.add("  &f[px] &3%game% Game Experience");
-        lists.add("  &f<isInGuild>[px] &2%guild% Guild Experience");
         lists.add(" ");
         lists.add("&a[bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx]");
         addConfig(RigoxFiles.MESSAGES,"messages.inGame.infoList.rewardSummary",lists);
