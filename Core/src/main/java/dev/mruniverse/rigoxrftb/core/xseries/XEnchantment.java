@@ -10,6 +10,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.commons.lang.WordUtils;
 import org.apache.commons.lang.math.NumberUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
@@ -244,7 +245,10 @@ public enum XEnchantment {
         if (split.length == 0) split = StringUtils.split(enchantment, ' ');
 
         Optional<XEnchantment> enchantOpt = matchXEnchantment(split[0]);
-        if (!enchantOpt.isPresent()) return item;
+        if (!enchantOpt.isPresent()) {
+            Bukkit.getServer().getConsoleSender().sendMessage("Can not apply enchantment: " + enchantment + " don't found.");
+            return item;
+        }
         Enchantment enchant = enchantOpt.get().parseEnchantment();
         if (enchant == null) return item;
 

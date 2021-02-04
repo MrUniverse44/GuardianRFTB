@@ -461,88 +461,89 @@ public class FileManager {
         menuValues.add(23);
         menuValues.add(31);
         addConfig(RigoxFiles.MENUS, "fill-inventory.shop.fillTwo.list.values",menuValues);
-        //chests
         menuList = new ArrayList<>();
-        addConfig(RigoxFiles.CHESTS, "chests.armor.inventoryName","&8Armor Items");
-        addConfig(RigoxFiles.CHESTS, "chests.armor.inventoryRows",6);
-        if(!plugin.getServer().getVersion().contains("1.8")) {
-            menuList.add("ENTITY_EXPERIENCE_ORB_PICKUP");
-        } else {
-            menuList.add("ORB_PICKUP");
+        if(plugin.getFiles().getControl(RigoxFiles.CHESTS).get("chests") == null) {
+            addConfig(RigoxFiles.CHESTS, "chests.armor.inventoryName", "&8Armor Items");
+            addConfig(RigoxFiles.CHESTS, "chests.armor.inventoryRows", 6);
+            if (!plugin.getServer().getVersion().contains("1.8")) {
+                menuList.add("ENTITY_EXPERIENCE_ORB_PICKUP");
+            } else {
+                menuList.add("ORB_PICKUP");
+            }
+            addConfig(RigoxFiles.CHESTS, "chests.armor.inventorySounds", menuList);
+            menuList = new ArrayList<>();
+            List<String> enchants = new ArrayList<>();
+            enchants.add("UNBREAKING, 10");
+            enchants.add("PROTECTION, 5");
+            menuList.add("&8RigoxRFTB");
+            addConfig(RigoxFiles.CHESTS, "chests.armor.items.helmet.name", "&aDiamond Helmet");
+            addConfig(RigoxFiles.CHESTS, "chests.armor.items.helmet.slot", 21);
+            addConfig(RigoxFiles.CHESTS, "chests.armor.items.helmet.lore", menuList);
+            addConfig(RigoxFiles.CHESTS, "chests.armor.items.helmet.item", "DIAMOND_HELMET");
+            addConfig(RigoxFiles.CHESTS, "chests.armor.items.helmet.enchantments", enchants);
+            addConfig(RigoxFiles.CHESTS, "chests.armor.items.chestplate.name", "&aDiamond Chestplate");
+            addConfig(RigoxFiles.CHESTS, "chests.armor.items.chestplate.slot", 22);
+            addConfig(RigoxFiles.CHESTS, "chests.armor.items.chestplate.lore", menuList);
+            addConfig(RigoxFiles.CHESTS, "chests.armor.items.chestplate.item", "DIAMOND_CHESTPLATE");
+            enchants = new ArrayList<>();
+            enchants.add("UNBREAKING, 2");
+            enchants.add("PROTECTION, 4");
+            addConfig(RigoxFiles.CHESTS, "chests.armor.items.chestplate.enchantments", enchants);
+            addConfig(RigoxFiles.CHESTS, "chests.armor.items.leggings.name", "&aDiamond Leggings");
+            addConfig(RigoxFiles.CHESTS, "chests.armor.items.leggings.slot", 23);
+            addConfig(RigoxFiles.CHESTS, "chests.armor.items.leggings.lore", menuList);
+            addConfig(RigoxFiles.CHESTS, "chests.armor.items.leggings.item", "DIAMOND_LEGGINGS");
+            enchants = new ArrayList<>();
+            enchants.add("UNBREAKING, 3");
+            enchants.add("PROTECTION, 2");
+            addConfig(RigoxFiles.CHESTS, "chests.armor.items.leggings.enchantments", enchants);
+            addConfig(RigoxFiles.CHESTS, "chests.armor.items.boots.name", "&aDiamond Boots");
+            addConfig(RigoxFiles.CHESTS, "chests.armor.items.boots.slot", 31);
+            addConfig(RigoxFiles.CHESTS, "chests.armor.items.boots.lore", menuList);
+            addConfig(RigoxFiles.CHESTS, "chests.armor.items.boots.item", "DIAMOND_BOOTS");
+            enchants = new ArrayList<>();
+            enchants.add("UNBREAKING, 3");
+            enchants.add("PROTECTION, 1");
+            addConfig(RigoxFiles.CHESTS, "chests.armor.items.boots.enchantments", enchants);
+            menuList = new ArrayList<>();
+            addConfig(RigoxFiles.CHESTS, "chests.attack.inventoryName", "&8Attack Items");
+            addConfig(RigoxFiles.CHESTS, "chests.attack.inventoryRows", 6);
+            if (!plugin.getServer().getVersion().contains("1.8")) {
+                menuList.add("ENTITY_EXPERIENCE_ORB_PICKUP");
+            } else {
+                menuList.add("ORB_PICKUP");
+            }
+            addConfig(RigoxFiles.CHESTS, "chests.attack.inventorySounds", menuList);
+            addConfig(RigoxFiles.CHESTS, "chests.attack.items.sword.name", "&aDiamond Sword");
+            addConfig(RigoxFiles.CHESTS, "chests.attack.items.sword.slot", 21);
+            menuList = new ArrayList<>();
+            menuList.add("&7RigoxRFTB");
+            addConfig(RigoxFiles.CHESTS, "chests.attack.items.sword.lore", menuList);
+            addConfig(RigoxFiles.CHESTS, "chests.attack.items.sword.item", "DIAMOND_SWORD");
+            enchants = new ArrayList<>();
+            enchants.add("FIRE_ASPECT, 2");
+            enchants.add("SHARPNESS, 3");
+            addConfig(RigoxFiles.CHESTS, "chests.attack.items.sword.enchantments", enchants);
+            addConfig(RigoxFiles.CHESTS, "chests.attack.items.bow.name", "&aHardcore Bow");
+            addConfig(RigoxFiles.CHESTS, "chests.attack.items.bow.slot", 22);
+            addConfig(RigoxFiles.CHESTS, "chests.attack.items.bow.lore", menuList);
+            addConfig(RigoxFiles.CHESTS, "chests.attack.items.bow.item", "BOW");
+            enchants = new ArrayList<>();
+            enchants.add("FLAME, 1");
+            enchants.add("INFINITY, 1");
+            addConfig(RigoxFiles.CHESTS, "chests.attack.items.bow.enchantments", enchants);
+            addConfig(RigoxFiles.CHESTS, "chests.attack.items.arrow.name", "&aHardcore Arrow");
+            addConfig(RigoxFiles.CHESTS, "chests.attack.items.arrow.slot", 23);
+            addConfig(RigoxFiles.CHESTS, "chests.attack.items.arrow.lore", menuList);
+            enchants = new ArrayList<>();
+            enchants.add("KB, 1");
+            addConfig(RigoxFiles.CHESTS, "chests.attack.items.arrow.item", "ARROW");
+            addConfig(RigoxFiles.CHESTS, "chests.attack.items.arrow.enchantments", enchants);
+            addConfig(RigoxFiles.CHESTS, "chests.attack.items.potion.name", "&aHardcore Potion");
+            addConfig(RigoxFiles.CHESTS, "chests.attack.items.potion.slot", 31);
+            addConfig(RigoxFiles.CHESTS, "chests.attack.items.potion.lore", menuList);
+            addConfig(RigoxFiles.CHESTS, "chests.attack.items.potion.item", "POTION");
         }
-        addConfig(RigoxFiles.CHESTS, "chests.armor.inventorySounds",menuList);
-        menuList = new ArrayList<>();
-        List<String> enchants = new ArrayList<>();
-        enchants.add("UNBREAKING, 10");
-        enchants.add("PROTECTION, 5");
-        menuList.add("&8RigoxRFTB");
-        addConfig(RigoxFiles.CHESTS, "chests.armor.items.helmet.name", "&aDiamond Helmet");
-        addConfig(RigoxFiles.CHESTS, "chests.armor.items.helmet.slot", 21);
-        addConfig(RigoxFiles.CHESTS, "chests.armor.items.helmet.lore", menuList);
-        addConfig(RigoxFiles.CHESTS, "chests.armor.items.helmet.item", "DIAMOND_HELMET");
-        addConfig(RigoxFiles.CHESTS, "chests.armor.items.helmet.enchantments",enchants);
-        addConfig(RigoxFiles.CHESTS, "chests.armor.items.chestplate.name", "&aDiamond Chestplate");
-        addConfig(RigoxFiles.CHESTS, "chests.armor.items.chestplate.slot", 22);
-        addConfig(RigoxFiles.CHESTS, "chests.armor.items.chestplate.lore", menuList);
-        addConfig(RigoxFiles.CHESTS, "chests.armor.items.chestplate.item", "DIAMOND_CHESTPLATE");
-        enchants = new ArrayList<>();
-        enchants.add("UNBREAKING, 2");
-        enchants.add("PROTECTION, 4");
-        addConfig(RigoxFiles.CHESTS, "chests.armor.items.chestplate.enchantments",enchants);
-        addConfig(RigoxFiles.CHESTS, "chests.armor.items.leggings.name", "&aDiamond Leggings");
-        addConfig(RigoxFiles.CHESTS, "chests.armor.items.leggings.slot", 23);
-        addConfig(RigoxFiles.CHESTS, "chests.armor.items.leggings.lore",menuList);
-        addConfig(RigoxFiles.CHESTS, "chests.armor.items.leggings.item","DIAMOND_LEGGINGS");
-        enchants = new ArrayList<>();
-        enchants.add("UNBREAKING, 3");
-        enchants.add("PROTECTION, 2");
-        addConfig(RigoxFiles.CHESTS, "chests.armor.items.leggings.enchantments",enchants);
-        addConfig(RigoxFiles.CHESTS, "chests.armor.items.boots.name","&aDiamond Boots");
-        addConfig(RigoxFiles.CHESTS, "chests.armor.items.boots.slot",31);
-        addConfig(RigoxFiles.CHESTS, "chests.armor.items.boots.lore",menuList);
-        addConfig(RigoxFiles.CHESTS, "chests.armor.items.boots.item","DIAMOND_BOOTS");
-        enchants = new ArrayList<>();
-        enchants.add("UNBREAKING, 3");
-        enchants.add("PROTECTION, 1");
-        addConfig(RigoxFiles.CHESTS, "chests.armor.items.boots.enchantments",enchants);
-        menuList = new ArrayList<>();
-        addConfig(RigoxFiles.CHESTS, "chests.attack.inventoryName","&8Attack Items");
-        addConfig(RigoxFiles.CHESTS, "chests.attack.inventoryRows",6);
-        if(!plugin.getServer().getVersion().contains("1.8")) {
-            menuList.add("ENTITY_EXPERIENCE_ORB_PICKUP");
-        } else {
-            menuList.add("ORB_PICKUP");
-        }
-        addConfig(RigoxFiles.CHESTS, "chests.attack.inventorySounds",menuList);
-        addConfig(RigoxFiles.CHESTS, "chests.attack.items.sword.name", "&aDiamond Sword");
-        addConfig(RigoxFiles.CHESTS, "chests.attack.items.sword.slot", 21);
-        menuList = new ArrayList<>();
-        menuList.add("&7RigoxRFTB");
-        addConfig(RigoxFiles.CHESTS, "chests.attack.items.sword.lore", menuList);
-        addConfig(RigoxFiles.CHESTS, "chests.attack.items.sword.item", "DIAMOND_SWORD");
-        enchants = new ArrayList<>();
-        enchants.add("FIRE_ASPECT, 2");
-        enchants.add("SHARPNESS, 3");
-        addConfig(RigoxFiles.CHESTS, "chests.attack.items.sword.enchantments",enchants);
-        addConfig(RigoxFiles.CHESTS, "chests.attack.items.bow.name", "&aHardcore Bow");
-        addConfig(RigoxFiles.CHESTS, "chests.attack.items.bow.slot", 22);
-        addConfig(RigoxFiles.CHESTS, "chests.attack.items.bow.lore", menuList);
-        addConfig(RigoxFiles.CHESTS, "chests.attack.items.bow.item", "BOW");
-        enchants = new ArrayList<>();
-        enchants.add("FLAME, 1");
-        enchants.add("INFINITY, 1");
-        addConfig(RigoxFiles.CHESTS, "chests.attack.items.bow.enchantments",enchants);
-        addConfig(RigoxFiles.CHESTS, "chests.attack.items.arrow.name", "&aHardcore Arrow");
-        addConfig(RigoxFiles.CHESTS, "chests.attack.items.arrow.slot", 23);
-        addConfig(RigoxFiles.CHESTS, "chests.attack.items.arrow.lore",menuList);
-        enchants = new ArrayList<>();
-        enchants.add("KB, 1");
-        addConfig(RigoxFiles.CHESTS, "chests.attack.items.arrow.item","ARROW");
-        addConfig(RigoxFiles.CHESTS, "chests.attack.items.arrow.enchantments",enchants);
-        addConfig(RigoxFiles.CHESTS, "chests.attack.items.potion.name","&aHardcore Potion");
-        addConfig(RigoxFiles.CHESTS, "chests.attack.items.potion.slot",31);
-        addConfig(RigoxFiles.CHESTS, "chests.attack.items.potion.lore",menuList);
-        addConfig(RigoxFiles.CHESTS, "chests.attack.items.potion.item","POTION");
     }
     public void addConfig(RigoxFiles fileToAdd, String path, Object value) {
         switch(fileToAdd) {
