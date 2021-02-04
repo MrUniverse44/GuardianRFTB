@@ -258,10 +258,6 @@ public class PlayerListeners implements Listener {
             event.setQuitMessage(null);
         }
     }
-    //@EventHandler
-    //public void debugGamemode(PlayerGameModeChangeEvent event) {
-    //    plugin.getLogs().debug("Player: " + event.getPlayer().getName() + ", New Gamemode: " +event.getNewGameMode());
-    //}
     @EventHandler(priority = EventPriority.HIGH)
     public void inGameDeath(PlayerDeathEvent event) {
         final Player player = event.getEntity();
