@@ -258,6 +258,10 @@ public class PlayerListeners implements Listener {
             event.setQuitMessage(null);
         }
     }
+    //@EventHandler
+    //public void debugGamemode(PlayerGameModeChangeEvent event) {
+    //    plugin.getLogs().debug("Player: " + event.getPlayer().getName() + ", New Gamemode: " +event.getNewGameMode());
+    //}
     @EventHandler(priority = EventPriority.HIGH)
     public void inGameDeath(PlayerDeathEvent event) {
         final Player player = event.getEntity();
@@ -268,7 +272,7 @@ public class PlayerListeners implements Listener {
             event.setDroppedExp(0);
             if(game.beasts.contains(player)) {
                 player.spigot().respawn();
-                player.setGameMode(org.bukkit.GameMode.SPECTATOR);
+                player.setGameMode(GameMode.SPECTATOR);
                 game.deathBeast(player);
                 player.teleport(game.beastLocation);
                 player.setGameMode(GameMode.SPECTATOR);
@@ -276,10 +280,10 @@ public class PlayerListeners implements Listener {
                 player.spigot().respawn();
                 game.deathRunner(player);
                 player.teleport(game.runnersLocation);
-                player.setGameMode(org.bukkit.GameMode.SPECTATOR);
+                player.setGameMode(GameMode.SPECTATOR);
 
             }
-            player.setGameMode(org.bukkit.GameMode.SPECTATOR);
+            player.setGameMode(GameMode.SPECTATOR);
         }
     }
     @EventHandler
@@ -305,7 +309,8 @@ public class PlayerListeners implements Listener {
                 game.deathRunner(player);
                 player.teleport(game.runnersLocation);
             }
-            player.setGameMode(org.bukkit.GameMode.SPECTATOR);
+            player.setGameMode(GameMode.SPECTATOR);
+            player.sendMessage("DAMAGE EVENT");
 
         }
     }
@@ -319,7 +324,7 @@ public class PlayerListeners implements Listener {
             } else {
                 player.teleport(game.runnersLocation);
             }
-            player.setGameMode(org.bukkit.GameMode.SPECTATOR);
+            player.setGameMode(GameMode.SPECTATOR);
         }
     }
     @EventHandler
