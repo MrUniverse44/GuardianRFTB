@@ -72,7 +72,7 @@ public class GameChests {
                         if(itemName == null) itemName = "&e<Unknown Name>";
                         ItemStack itLoad = plugin.getNMSHandler().getItemStack(m.parseMaterial(), TextUtilities.recolor(itemName), TextUtilities.recolorLore(lore));
                         if(loadConfig.get(path + item + ".enchantments") != null) {
-                            itLoad = plugin.getEnchantmentList(itLoad, RigoxFiles.ITEMS,path + item + ".enchantments");
+                            itLoad = plugin.getEnchantmentList(itLoad, RigoxFiles.CHESTS,path + item + ".enchantments");
                         }
                         chestItems.put(itLoad,slot);
                     }
@@ -87,7 +87,10 @@ public class GameChests {
         }
     }
     public int getSlot(ItemStack item) { return chestItems.get(item); }
-    public Inventory getInventory() { return chestInventory; }
+    public Inventory getInventory() {
+        pasteItems();
+        return chestInventory;
+    }
     public void setName(String newName) { name = newName; }
     public String getName() { return name; }
 
