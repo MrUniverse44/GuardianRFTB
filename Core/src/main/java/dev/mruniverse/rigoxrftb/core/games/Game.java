@@ -107,6 +107,7 @@ public class Game {
         worldTime = gameFile.getInt(gamePath + "worldTime");
         max = gameFile.getInt(gamePath + "max");
         min = gameFile.getInt(gamePath + "min");
+        if(min == 1) min = 2;
         gameType = GameType.valueOf(gameFile.getString(gamePath + "gameType"));
         String bL = gameFile.getString(gamePath + "locations.beast");
         if(bL == null) bL = "notSet";
@@ -323,7 +324,28 @@ public class Game {
     }
     public void gameCount(GameCountType gameCountType) {
         try {
+            int realMin = min;
+            if(min == 2 && gameType.equals(GameType.DOUBLE_BEAST)) {
+                realMin = 3;
+            }
             if (gameCountType.equals(GameCountType.START_COUNT)) {
+                if(gameStatus.equals(GameStatus.STARTING)) {
+                    if(players.size() < realMin) {
+                        startingStage = false;
+                        gameTimer = 0;
+                        gameStatus = GameStatus.WAITING;
+                        for(Player player : players) {
+                            beasts.remove(player);
+                            player.teleport(waiting);
+                            player.getInventory().clear();
+                            player.getInventory().setItem(plugin.RunnerSlot,plugin.kitRunner);
+                            player.getInventory().setItem(plugin.exitSlot,plugin.exitItem);
+                            if(!runners.contains(player)) {
+                                runners.add(player);
+                            }
+                        }
+                    }
+                }
                 if (starting < -25) {
                     gameTimer = 2;
                     return;
@@ -424,8 +446,25 @@ public class Game {
                         return;
                     }
                     if (!playingStage) {
+                        String LST = settingsFile.getString("settings.lobbyLocation");
+                        if(LST == null) LST = "notSet";
+                        Location location = plugin.getUtils().getLocationFromString(LST);
                         for (Player player : players) {
-                            leave(player);
+                            if(location != null) {
+                                player.teleport(location);
+                            }
+                            player.getInventory().setHelmet(null);
+                            player.getInventory().setChestplate(null);
+                            player.getInventory().setLeggings(null);
+                            player.getInventory().setBoots(null);
+                            plugin.getPlayerData(player.getUniqueId()).setStatus(PlayerStatus.IN_LOBBY);
+                            plugin.getPlayerData(player.getUniqueId()).setGame(null);
+                            plugin.getPlayerData(player.getUniqueId()).setBoard(RigoxBoard.LOBBY);
+                            player.getInventory().clear();
+                            for (ItemStack item : plugin.getLobbyItems().keySet()) {
+                                player.getInventory().setItem(plugin.getSlot(item), item);
+                            }
+                            player.updateInventory();
                             plugin.getUtils().sendMessage(player, messagesFile.getString("messages.inGame.cantStartGame"));
                         }
                         restart();
