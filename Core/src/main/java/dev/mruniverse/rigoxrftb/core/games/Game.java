@@ -301,7 +301,11 @@ public class Game {
     }
     public void checkPlayers() {
         this.endingStage = false;
-        if (players.size() == min && !startingStage && !gameStatus.equals(GameStatus.STARTING)) {
+        int realMin = min;
+        if(min == 2 && gameType.equals(GameType.DOUBLE_BEAST)) {
+            realMin = 3;
+        }
+        if (players.size() == realMin && !startingStage && !gameStatus.equals(GameStatus.STARTING)) {
             gameStatus = GameStatus.STARTING;
             startingStage = true;
             gameTimer = 1;
@@ -732,14 +736,18 @@ public class Game {
             }
         }
         if (this.ending >= 50)
-            if(winnerTeam.equals(GameTeam.RUNNERS)) {
-                for (Player pl : this.runners) {
-                    firework(pl, timing(this.ending));
+            try {
+                if (winnerTeam.equals(GameTeam.RUNNERS)) {
+                    for (Player pl : this.runners) {
+                        firework(pl, timing(this.ending));
+                    }
+                } else {
+                    for (Player pl : this.beasts) {
+                        firework(pl, timing(this.ending));
+                    }
                 }
-            } else {
-                for (Player pl : this.beasts) {
-                    firework(pl, timing(this.ending));
-                }
+            }catch (Throwable throwable) {
+                plugin.getLogs().error("Can't send fireworks effect on win");
             }
         if (this.ending == 0) {
             for (Player player : this.players) {
@@ -775,7 +783,7 @@ public class Game {
         Firework fa = player.getWorld().spawn(player.getLocation(), Firework.class);
         FireworkMeta fam = fa.getFireworkMeta();
         Random r = new Random();
-        int fType = r.nextInt(5) + 1;
+        int fType = r.nextInt(4) + 1;
         FireworkEffect.Type fireworkType = null;
         switch (fType) {
             case 1:
