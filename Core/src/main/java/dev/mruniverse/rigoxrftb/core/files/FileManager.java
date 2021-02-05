@@ -401,8 +401,8 @@ public class FileManager {
         menuList = new ArrayList<>();
         menuList.add("&8RigoxRFTB");
         menuList.add("&eClick to open boost menu");
-        addConfig(RigoxFiles.MENUS, "menus.shop.Boost.lore",menuList);
-        addConfig(RigoxFiles.MENUS, "menus.shop.Boost.item","EXPERIENCE_BOTTLE");
+        addConfig(RigoxFiles.MENUS, "menus.shop.items.Boost.lore",menuList);
+        addConfig(RigoxFiles.MENUS, "menus.shop.items.Boost.item","EXPERIENCE_BOTTLE");
         menuList = new ArrayList<>();
         addConfig(RigoxFiles.MENUS, "menus.game.inventoryName","&8Game Menu");
         addConfig(RigoxFiles.MENUS, "menus.game.inventoryRows",3);
