@@ -9,8 +9,8 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -65,12 +65,22 @@ public class GameChests {
                 XMaterial m;
                 if(optionalXMaterial.isPresent()) {
                     m = optionalXMaterial.get();
-                    if (m.parseMaterial() != null) {
+                    if (m.parseItem() != null) {
                         String itemName = loadConfig.getString(path + item + ".name");
                         Integer slot = loadConfig.getInt(path + item + ".slot");
                         List<String> lore = loadConfig.getStringList(path + item + ".lore");
                         if(itemName == null) itemName = "&e<Unknown Name>";
-                        ItemStack itLoad = plugin.getNMSHandler().getItemStack(m.parseMaterial(), TextUtilities.recolor(itemName), TextUtilities.recolorLore(lore));
+                        ItemStack itLoad = m.parseItem();
+                        if(itLoad != null) {
+                            ItemMeta ReturnMeta = itLoad.getItemMeta();
+                            if(ReturnMeta != null) {
+                                ReturnMeta.setDisplayName(TextUtilities.recolor(itemName));
+                                ReturnMeta.setLore(TextUtilities.recolorLore(lore));
+                                itLoad.setItemMeta(ReturnMeta);
+                            }
+                        } else {
+                            itLoad = plugin.getNMSHandler().getItemStack(m.parseMaterial(), TextUtilities.recolor(itemName), TextUtilities.recolorLore(lore));
+                        }
                         if(loadConfig.get(path + item + ".enchantments") != null) {
                             itLoad = plugin.getEnchantmentList(itLoad, RigoxFiles.CHESTS,path + item + ".enchantments");
                         }

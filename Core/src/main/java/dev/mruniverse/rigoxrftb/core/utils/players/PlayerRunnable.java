@@ -86,7 +86,7 @@ public class PlayerRunnable extends BukkitRunnable {
                             Player beast = plugin.getUtils().getRandomBeast(player);
                             double mainDistance = player.getLocation().distance(beast.getLocation());
                             float distance = floatConverter.converter(mainDistance);
-                            message = message.replace("%runners%",playerManager.getGame().runners.size() + "")
+                            message = message.replace("%runners%",playerManager.getGame().getRunners().size() + "")
                             .replace("%beastName%",beast.getName())
                             .replace("%beastDistance%",floatConverter.meters(mainDistance) + "m");
                             if(!changeLife) {
@@ -98,7 +98,7 @@ public class PlayerRunnable extends BukkitRunnable {
                             Player beast = plugin.getUtils().getRandomBeast(player);
                             double mainDistance = player.getLocation().distance(beast.getLocation());
                             float distance = floatConverter.meters(mainDistance);
-                            message = message.replace("%runners%",playerManager.getGame().runners.size() + "")
+                            message = message.replace("%runners%",playerManager.getGame().getRunners().size() + "")
                                     .replace("%beastName%",beast.getName())
                                     .replace("%beastDistance%",distance + "m");
                             plugin.getUtils().sendActionbar(player,message);

@@ -1,6 +1,6 @@
 package dev.mruniverse.rigoxrftb.core.listeners;
 
-import dev.mruniverse.rigoxrftb.core.enums.CurrentItem;
+import dev.mruniverse.rigoxrftb.core.enums.ItemFunction;
 import dev.mruniverse.rigoxrftb.core.enums.RigoxFiles;
 import dev.mruniverse.rigoxrftb.core.enums.RigoxBoard;
 import dev.mruniverse.rigoxrftb.core.RigoxRFTB;
@@ -28,15 +28,17 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.HashMap;
 import java.util.List;
 
-public class PlayerListeners implements Listener {
+public class MainListener implements Listener {
     private final RigoxRFTB plugin;
-    public PlayerListeners(RigoxRFTB main) {
+    public MainListener(RigoxRFTB main) {
         plugin = main;
         main.getLogs().info("PlayerListener registered!");
     }
@@ -85,16 +87,47 @@ public class PlayerListeners implements Listener {
 
             for(ItemStack item : plugin.getLobbyItems().keySet()) {
                 if(event.getItem().getType().equals(item.getType()) && event.getItem().getItemMeta().equals(item.getItemMeta())) {
-                    CurrentItem itemAction = plugin.getCurrent(item);
+                    ItemFunction itemAction = plugin.getCurrent(item);
                     event.setCancelled(true);
-                    if(itemAction.equals(CurrentItem.EXIT_GAME)) {
-                        if(plugin.getPlayerData(event.getPlayer().getUniqueId()).getGame() != null) {
-                            plugin.getPlayerData(event.getPlayer().getUniqueId()).getGame().leave(player);
+                    switch(itemAction) {
+                        case SHOP:
+                            plugin.getUtils().sendMessage(player,"&cShop currently is in development");
                             return;
-                        }
+                        case KIT_BEASTS:
+                            plugin.getUtils().sendMessage(player,"&cBeast Kits currently in development");
+                            return;
+                        case KIT_RUNNERS:
+                            plugin.getUtils().sendMessage(player,"&cRunners Kits currently in development");
+                            return;
+                        case EXIT_LOBBY:
+                            plugin.getUtils().sendMessage(player,"&aSending you to Lobby..");
+                            return;
+                        case GAME_SELECTOR:
+                            player.openInventory(plugin.getGameManager().gameMenu.getInventory());
+                            return;
+                        case LOBBY_SELECTOR:
+                        case PLAYER_SETTINGS:
+                            plugin.getUtils().sendMessage(player,"&cCurrently in development");
+                            return;
+                        default:
+                            if(plugin.getPlayerData(event.getPlayer().getUniqueId()).getGame() != null) {
+                                plugin.getPlayerData(event.getPlayer().getUniqueId()).getGame().leave(player);
+                                return;
+                            }
                     }
                 }
             }
+        }
+    }
+    @EventHandler
+    public void onGameMenuClick(InventoryClickEvent event) {
+        Player player = (Player)event.getWhoClicked();
+        if(plugin.getPlayerData(player.getUniqueId()).getGame() != null) return;
+        if(!event.getInventory().equals(plugin.getGameManager().gameMenu.getInventory())) return;
+        HashMap<ItemStack,String> hash = plugin.getGameManager().gameMenu.getGameItems();
+        ItemStack clickedItem = event.getCurrentItem();
+        if(hash.containsKey(event.getCurrentItem())) {
+            plugin.getGameManager().joinGame(player,hash.get(clickedItem));
         }
     }
     @EventHandler
@@ -128,8 +161,8 @@ public class PlayerListeners implements Listener {
     private void checkGameChest(Player player,Location location) {
         Game game = plugin.getPlayerData(player.getUniqueId()).getGame();
         if(game == null) return;
-        for(String chests : game.gameChestsTypes) {
-            if(game.gameChests.get(chests).contains(location)) {
+        for(String chests : game.getGameChestsTypes()) {
+            if(game.getGameChests().get(chests).contains(location)) {
                 openGameChest(player,chests);
                 return;
             }
@@ -138,8 +171,8 @@ public class PlayerListeners implements Listener {
     private boolean isGameChest(Player player,Location location) {
         Game game = plugin.getPlayerData(player.getUniqueId()).getGame();
         if(game == null) return false;
-        for(String chests : game.gameChestsTypes) {
-            if(game.gameChests.get(chests).contains(location)) {
+        for(String chests : game.getGameChestsTypes()) {
+            if(game.getGameChests().get(chests).contains(location)) {
                 openGameChest(player,chests);
                 return true;
             }
@@ -212,10 +245,10 @@ public class PlayerListeners implements Listener {
         event.setCancelled(true);
         plugin.getLogs().debug("CHAT | " + player.getName() + ": " + event.getMessage());
         Game game = playerManager.getGame();
-        if(game.spectators.contains(player)) {
+        if(game.getSpectators().contains(player)) {
             String spectatorChat = plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.others.customChat.spectator");
             if(spectatorChat == null) spectatorChat = "&8[SPECTATOR] &7<player_name>&8: &f%message%";
-            for(Player spectator : game.spectators) {
+            for(Player spectator : game.getSpectators()) {
                 plugin.getUtils().sendMessage(spectator,spectatorChat.replace("<player_name>",player.getName())
                         .replace("%message%",event.getMessage()));
             }
@@ -224,13 +257,13 @@ public class PlayerListeners implements Listener {
         String inGameChat = plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.others.customChat.inGame");
         String playerRole;
         if(inGameChat == null) inGameChat = "&a[%player_role%&a] &7<player_name>&8: &f%message%";
-        if(game.beasts.contains(player)) {
+        if(game.getBeasts().contains(player)) {
             playerRole = plugin.getFiles().getControl(RigoxFiles.SETTINGS).getString("roles.beast");
         } else {
             playerRole = plugin.getFiles().getControl(RigoxFiles.SETTINGS).getString("roles.runner");
         }
         if(playerRole == null) playerRole = "Runner";
-        for(Player spectator : game.players) {
+        for(Player spectator : game.getPlayers()) {
             plugin.getUtils().sendMessage(spectator,inGameChat.replace("<player_name>",player.getName())
                     .replace("%message%",event.getMessage()).replace("%player_role%",playerRole));
         }
@@ -267,7 +300,7 @@ public class PlayerListeners implements Listener {
             event.getDrops().clear();
             event.setDeathMessage(null);
             event.setDroppedExp(0);
-            if(game.beasts.contains(player)) {
+            if(game.getBeasts().contains(player)) {
                 player.spigot().respawn();
                 player.setGameMode(GameMode.SPECTATOR);
                 game.deathBeast(player);
@@ -276,7 +309,7 @@ public class PlayerListeners implements Listener {
             } else {
                 player.spigot().respawn();
                 game.deathRunner(player);
-                if(!game.gameType.equals(GameType.INFECTED)) {
+                if(!game.getGameType().equals(GameType.INFECTED)) {
                     player.teleport(game.runnersLocation);
                     player.setGameMode(GameMode.SPECTATOR);
                 }
@@ -301,13 +334,13 @@ public class PlayerListeners implements Listener {
             player.getInventory().setChestplate(null);
             player.getInventory().setLeggings(null);
 
-            if(game.beasts.contains(player)) {
+            if(game.getBeasts().contains(player)) {
                 player.setGameMode(GameMode.SPECTATOR);
                 game.deathBeast(player);
                 player.teleport(game.beastLocation);
             } else {
                 game.deathRunner(player);
-                if(!game.gameType.equals(GameType.INFECTED)) {
+                if(!game.getGameType().equals(GameType.INFECTED)) {
                     player.setGameMode(GameMode.SPECTATOR);
                     player.teleport(game.runnersLocation);
                 }
@@ -321,7 +354,7 @@ public class PlayerListeners implements Listener {
         final Player player = event.getPlayer();
         Game game = plugin.getPlayerData(player.getUniqueId()).getGame();
         if(game != null) {
-            if(game.beasts.contains(player)) {
+            if(game.getBeasts().contains(player)) {
                 player.teleport(game.beastLocation);
             } else {
                 player.teleport(game.runnersLocation);
@@ -347,7 +380,7 @@ public class PlayerListeners implements Listener {
                 if(board.equals(RigoxBoard.WAITING) || board.equals(RigoxBoard.STARTING) || board.equals(RigoxBoard.WIN_BEAST_FOR_BEAST) || board.equals(RigoxBoard.WIN_BEAST_FOR_RUNNERS) || board.equals(RigoxBoard.WIN_RUNNERS_FOR_BEAST) || board.equals(RigoxBoard.WIN_RUNNERS_FOR_RUNNERS)) {
                     event.setCancelled(true);
                 } else {
-                    if(event.getCause().equals(EntityDamageEvent.DamageCause.FALL) || plugin.getPlayerData(player.getUniqueId()).getGame().spectators.contains(player)) {
+                    if(event.getCause().equals(EntityDamageEvent.DamageCause.FALL) || plugin.getPlayerData(player.getUniqueId()).getGame().getSpectators().contains(player)) {
                         event.setCancelled(true);
                     }
                 }
@@ -365,7 +398,7 @@ public class PlayerListeners implements Listener {
                         event.setCancelled(true);
                     } else {
                         Game game = plugin.getPlayerData(victim.getUniqueId()).getGame();
-                        if(game.runners.contains(victim) && game.runners.contains(attacker)) {
+                        if(game.getRunners().contains(victim) && game.getRunners().contains(attacker)) {
                             event.setCancelled(true);
                         }
                     }
@@ -432,7 +465,7 @@ public class PlayerListeners implements Listener {
             if(block == null) return;
             if (block.getState() instanceof Sign) {
                 for (Game game : plugin.getGameManager().getGames()) {
-                    if (game.signs.contains(e.getClickedBlock().getLocation())) {
+                    if (game.getSigns().contains(e.getClickedBlock().getLocation())) {
                         game.join(player);
                         return;
                     }

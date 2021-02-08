@@ -21,6 +21,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
 
+@SuppressWarnings("unused")
 public enum XEnchantment {
     ARROW_DAMAGE("POWER", "ARROW_DAMAGE", "ARROW_POWER", "AD"),
     ARROW_FIRE("FLAME", "FLAME_ARROW", "FIRE_ARROW", "AF"),
@@ -270,7 +271,9 @@ public enum XEnchantment {
         ItemStack book = new ItemStack(Material.ENCHANTED_BOOK);
         EnchantmentStorageMeta meta = (EnchantmentStorageMeta) book.getItemMeta();
 
-        meta.addStoredEnchant(this.parseEnchantment(), level, true);
+        if (meta != null) {
+            meta.addStoredEnchant(this.parseEnchantment(), level, true);
+        }
         book.setItemMeta(meta);
         return book;
     }

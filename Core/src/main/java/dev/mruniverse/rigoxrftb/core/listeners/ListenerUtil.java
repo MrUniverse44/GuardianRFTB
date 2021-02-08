@@ -5,31 +5,29 @@ import dev.mruniverse.rigoxrftb.core.commands.MainCMD;
 
 import java.util.Objects;
 
+@SuppressWarnings("unused")
 public class ListenerUtil {
-    private RigoxRFTB plugin;
+    private final RigoxRFTB plugin;
     public ListenerUtil(RigoxRFTB main){
         plugin = main;
     }
     public void registerListeners() {
-        plugin.getLogs().info("Registering listeners..");
-        plugin.getServer().getPluginManager().registerEvents(new PlayerListeners(plugin),plugin);
-        plugin.getLogs().info("Events registered!");
+        plugin.getLogs().debug("Registering listeners..");
+        plugin.getServer().getPluginManager().registerEvents(new MainListener(plugin),plugin);
+        plugin.getLogs().debug("Events registered!");
     }
     public void registerCommands() {
-        plugin.getLogs().info("Registering commands..");
+        plugin.getLogs().debug("Registering commands..");
         try {
             Objects.requireNonNull(plugin.getCommand("RigoxRFTB")).setExecutor(new MainCMD("RigoxRFTB", plugin));
-            plugin.getLogs().info("Command: RigoxRFTB, registered!");
             Objects.requireNonNull(plugin.getCommand("rRFTB")).setExecutor(new MainCMD("rRFTB", plugin));
-            plugin.getLogs().info("Command: rRFTB, registered!");
             Objects.requireNonNull(plugin.getCommand("rftb")).setExecutor(new MainCMD("rftb", plugin));
-            plugin.getLogs().info("Command: rftb, registered!");
         } catch (Throwable throwable) {
             plugin.getLogs().error("Can't register commands.");
         }
     }
     public void stopWorking(int errorCode) {
-        plugin.getLogs().info("The plugin stop working, error code: " + errorCode);
+        plugin.getLogs().error("The plugin stop working, error code: " + errorCode);
         plugin.getServer().getPluginManager().disablePlugin(plugin);
     }
 }

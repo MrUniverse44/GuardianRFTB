@@ -8,11 +8,11 @@ import java.util.HashMap;
 import java.util.UUID;
 
 public class BoardManager {
-    private RigoxRFTB plugin;
+    private final RigoxRFTB plugin;
     public BoardManager(RigoxRFTB main) {
         plugin = main;
     }
-    private HashMap<UUID, PlayerManager> players = new HashMap<>();
+    private final HashMap<UUID, PlayerManager> players = new HashMap<>();
 
     public PlayerManager getBoardOfPlayer(Player player) {
         return players.get(player.getUniqueId());

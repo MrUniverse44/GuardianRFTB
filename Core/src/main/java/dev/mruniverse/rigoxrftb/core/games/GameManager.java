@@ -15,6 +15,7 @@ import java.util.Objects;
 public class GameManager {
     private final ArrayList<Game> games = new ArrayList<>();
     public HashMap<String,GameChests> gameChests = new HashMap<>();
+    public GameMenu gameMenu;
     private final RigoxRFTB plugin;
     public GameManager(RigoxRFTB main) {
         plugin = main;
@@ -56,10 +57,14 @@ public class GameManager {
                 plugin.getLogs().info("You don't have games created yet.");
             }
             plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin,new GameRunnable(plugin),0L,20L);
+            gameMenu = new GameMenu(plugin);
         }catch (Throwable throwable) {
             plugin.getLogs().error("Can't load games plugin games :(");
             plugin.getLogs().error(throwable);
         }
+    }
+    public GameMenu getGameMenu() {
+        return gameMenu;
     }
     public void addGame(String gameName) {
         if(getGame(gameName) != null) {
@@ -97,9 +102,6 @@ public class GameManager {
         }
         Game game = getGame(gameName);
         game.join(player);
-    }
-    public void openMenu(Player player) {
-
     }
     public void createGameFiles(String gameName) {
         FileConfiguration gameFiles = plugin.getFiles().getControl(RigoxFiles.GAMES);

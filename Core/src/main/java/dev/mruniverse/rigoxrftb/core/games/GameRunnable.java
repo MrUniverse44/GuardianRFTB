@@ -4,7 +4,7 @@ package dev.mruniverse.rigoxrftb.core.games;
 import dev.mruniverse.rigoxrftb.core.RigoxRFTB;
 
 public class GameRunnable implements Runnable {
-    private RigoxRFTB plugin;
+    private final RigoxRFTB plugin;
     public GameRunnable(RigoxRFTB main) {
         plugin = main;
     }

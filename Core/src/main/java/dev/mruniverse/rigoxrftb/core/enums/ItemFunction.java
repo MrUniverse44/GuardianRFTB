@@ -1,6 +1,6 @@
 package dev.mruniverse.rigoxrftb.core.enums;
 
-public enum CurrentItem {
+public enum ItemFunction {
     GAME_SELECTOR,
     SHOP,
     PLAYER_SETTINGS,

@@ -10,11 +10,13 @@ import org.bukkit.scoreboard.Team;
 
 import java.util.List;
 
+@SuppressWarnings("deprecation")
 public class PlayerManager {
-    private final Scoreboard scoreboard;
-    private final Objective sidebar;
+    private Scoreboard scoreboard;
+    private Objective sidebar;
 
     public PlayerManager(Player player) {
+        if(Bukkit.getScoreboardManager() == null) return;
         this.scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
         this.sidebar = this.scoreboard.registerNewObjective("sidebar", "dummy");
         this.sidebar.setDisplaySlot(DisplaySlot.SIDEBAR);
@@ -32,6 +34,7 @@ public class PlayerManager {
 
     public void setSlot(int slot, String text) {
         Team team = this.scoreboard.getTeam("SLOT_" + slot);
+        if(team == null) return;
         String entry = genEntry(slot);
         if (!this.scoreboard.getEntries().contains(entry))
             this.sidebar.getScore(entry).setScore(slot);

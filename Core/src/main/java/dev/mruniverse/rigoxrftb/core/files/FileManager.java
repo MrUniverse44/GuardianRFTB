@@ -129,6 +129,9 @@ public class FileManager {
         addConfig(RigoxFiles.SETTINGS,"times.minute","minute");
         addConfig(RigoxFiles.SETTINGS,"times.seconds","seconds");
         addConfig(RigoxFiles.SETTINGS,"times.second","second");
+        addConfig(RigoxFiles.SETTINGS,"gameType.DOUBLE_BEAST","Double Beast");
+        addConfig(RigoxFiles.SETTINGS,"gameType.CLASSIC","Classic");
+        addConfig(RigoxFiles.SETTINGS,"gameType.INFECTED","Infected");
         List<String> lore = new ArrayList<>();
         lore.add("&7Here your lore");
         lore.add("&erigox.club");
@@ -161,7 +164,7 @@ public class FileManager {
         addConfig(RigoxFiles.ITEMS,"lobby.LobbySelector.lore",lore);
         addConfig(RigoxFiles.ITEMS,"lobby.LobbySelector.slot",7);
         addConfig(RigoxFiles.ITEMS,"lobby.Exit.toggle",true);
-        addConfig(RigoxFiles.ITEMS,"lobby.Exit.item","BED");
+        addConfig(RigoxFiles.ITEMS,"lobby.Exit.item","RED_BED");
         addConfig(RigoxFiles.ITEMS,"lobby.Exit.name","&aGo to the hub");
         addConfig(RigoxFiles.ITEMS,"lobby.Exit.lore",lore);
         addConfig(RigoxFiles.ITEMS,"lobby.Exit.slot",8);
@@ -173,7 +176,7 @@ public class FileManager {
         addConfig(RigoxFiles.ITEMS,"InGame.BeastKit.name","&aKit Selector (&lBeast&a)");
         addConfig(RigoxFiles.ITEMS,"InGame.BeastKit.lore",lore);
         addConfig(RigoxFiles.ITEMS,"InGame.BeastKit.slot",0);
-        addConfig(RigoxFiles.ITEMS,"InGame.Exit.item","BED");
+        addConfig(RigoxFiles.ITEMS,"InGame.Exit.item","RED_BED");
         addConfig(RigoxFiles.ITEMS,"InGame.Exit.name","&aLeave");
         addConfig(RigoxFiles.ITEMS,"InGame.Exit.lore",lore);
         addConfig(RigoxFiles.ITEMS,"InGame.Exit.slot",8);

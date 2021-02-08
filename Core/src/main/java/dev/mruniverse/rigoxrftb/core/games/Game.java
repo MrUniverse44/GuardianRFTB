@@ -1,6 +1,10 @@
 package dev.mruniverse.rigoxrftb.core.games;
 
 import dev.mruniverse.rigoxrftb.core.RigoxRFTB;
+import dev.mruniverse.rigoxrftb.core.api.BeastDeathEvent;
+import dev.mruniverse.rigoxrftb.core.api.GameEndEvent;
+import dev.mruniverse.rigoxrftb.core.api.GameStartEvent;
+import dev.mruniverse.rigoxrftb.core.api.RunnerDeathEvent;
 import dev.mruniverse.rigoxrftb.core.enums.RigoxFiles;
 import dev.mruniverse.rigoxrftb.core.enums.PlayerStatus;
 import dev.mruniverse.rigoxrftb.core.enums.RigoxBoard;
@@ -19,14 +23,14 @@ import java.util.*;
 public class Game {
     private final String gameName;
     private final String gamePath;
-    public GameType gameType;
-    public HashMap<String, List<Location>> gameChests;
-    public ArrayList<Player> players;
-    public ArrayList<Location> signs;
-    public ArrayList<Player> runners;
-    public ArrayList<Player> beasts;
-    public ArrayList<Player> spectators;
-    public ArrayList<String> gameChestsTypes;
+    private GameType gameType;
+    private final HashMap<String, List<Location>> gameChests;
+    private final ArrayList<Player> players;
+    private final ArrayList<Location> signs;
+    private final ArrayList<Player> runners;
+    private ArrayList<Player> beasts;
+    private final ArrayList<Player> spectators;
+    private final ArrayList<String> gameChestsTypes;
     int times;
     public int gameTimer;
     public int timer;
@@ -38,7 +42,7 @@ public class Game {
     public int starting;
     public int ending;
     public int inventoryNumber;
-
+    public int menuSlot;
     public Sound gameSound1;
     public Sound gameSound2;
     public Sound gameSound3;
@@ -62,44 +66,77 @@ public class Game {
     public boolean endingStage;
 
     public Game(RigoxRFTB main, String name) {
-        this.gameTimer = 0;
-        this.gameFile = main.getFiles().getControl(RigoxFiles.GAMES);
-        this.gameChestsTypes = new ArrayList<>();
-        this.settingsFile = main.getFiles().getControl(RigoxFiles.SETTINGS);
-        this.gameChests = new HashMap<>();
-        this.messagesFile = main.getFiles().getControl(RigoxFiles.MESSAGES);
-        this.plugin = main;
-        this.players = new ArrayList<>();
-        this.signs = new ArrayList<>();
-        this.spectators = new ArrayList<>();
-        this.timer = 500;
-        this.min = 2;
-        this.time = 0;
-        this.max = 10;
-        this.fakeStarting = 0;
-        this.beastLocation = null;
-        this.runnersLocation = null;
-        this.runners = new ArrayList<>();
-        this.beasts = new ArrayList<>();
-        this.preparingStage = true;
-        this.startingStage = false;
-        this.inGameStage = false;
-        this.playingStage = false;
-        this.endingStage = false;
-        this.starting = 30;
-        this.ending = 150;
-        this.times = 0;
-        this.inventoryNumber = -1;
-        this.gameName = name;
-        this.gamePath = "games." + name + ".";
+        gameTimer = 0;
+        gameFile = main.getFiles().getControl(RigoxFiles.GAMES);
+        gameChestsTypes = new ArrayList<>();
+        settingsFile = main.getFiles().getControl(RigoxFiles.SETTINGS);
+        gameChests = new HashMap<>();
+        messagesFile = main.getFiles().getControl(RigoxFiles.MESSAGES);
+        plugin = main;
+        players = new ArrayList<>();
+        signs = new ArrayList<>();
+        spectators = new ArrayList<>();
+        timer = 500;
+        menuSlot = -1;
+        min = 2;
+        time = 0;
+        max = 10;
+        fakeStarting = 0;
+        beastLocation = null;
+        runnersLocation = null;
+        runners = new ArrayList<>();
+        beasts = new ArrayList<>();
+        preparingStage = true;
+        startingStage = false;
+        inGameStage = false;
+        playingStage = false;
+        endingStage = false;
+        starting = 30;
+        ending = 150;
+        times = 0;
+        inventoryNumber = -1;
+        gameName = name;
+        gamePath = "games." + name + ".";
         try {
             loadGame();
         } catch (Throwable throwable) {
             RigoxRFTB.getInstance().getLogs().error("Can't load arena: " + gameName);
             RigoxRFTB.getInstance().getLogs().error(throwable);
-            this.preparingStage = false;
-            this.gameStatus = GameStatus.PREPARING;
+            preparingStage = false;
+            gameStatus = GameStatus.PREPARING;
         }
+    }
+
+    public GameType getGameType() {
+        return gameType;
+    }
+
+    public HashMap<String, List<Location>> getGameChests() {
+        return gameChests;
+    }
+
+    public ArrayList<Location> getSigns() {
+        return signs;
+    }
+
+    public ArrayList<Player> getPlayers() {
+        return players;
+    }
+
+    public ArrayList<Player> getRunners() {
+        return runners;
+    }
+
+    public ArrayList<Player> getBeasts() {
+        return beasts;
+    }
+
+    public ArrayList<Player> getSpectators() {
+        return spectators;
+    }
+
+    public ArrayList<String> getGameChestsTypes() {
+        return gameChestsTypes;
     }
 
     private void loadGame() {
@@ -189,6 +226,9 @@ public class Game {
         if(line2 == null) line2 = "%gameStatus%";
         if(line3 == null) line3 = "%on%/%max%";
         if(line4 == null) line4 = "&nClick to join";
+        if(plugin.getGameManager().gameMenu != null) {
+            plugin.getGameManager().gameMenu.updateSlot(menuSlot, this);
+        }
         for(Location signLocation : this.signs) {
             if(signLocation.getBlock().getState() instanceof Sign) {
                 Sign currentSign = (Sign)signLocation.getBlock().getState();
@@ -483,11 +523,14 @@ public class Game {
                 if (starting == -10) {
                     playingStage = true;
                     gameStatus = GameStatus.PLAYING;
+                    GameStartEvent event = new GameStartEvent(this);
+                    plugin.getServer().getPluginManager().callEvent(event);
                     for (Player runner : runners) {
                         runner.teleport(runnersLocation);
                         runner.getInventory().clear();
                         runner.updateInventory();
                         plugin.getPlayerData(runner.getUniqueId()).setBoard(RigoxBoard.PLAYING);
+                        plugin.getItems(GameEquip.RUNNER_KIT,runner);
                         plugin.getUtils().sendList(runner,messagesFile.getStringList("messages.inGame.infoList.startInfo"));
                         plugin.getUtils().sendTitle(runner, 0, 20, 10, messagesFile.getString("messages.inGame.others.titles.runnersGo.toRunners.title"), messagesFile.getString("messages.inGame.others.titles.runnersGo.toRunners.subtitle"));
                     }
@@ -619,6 +662,7 @@ public class Game {
             int beast = random.nextInt(this.runners.size());
             Player nextBeast = this.runners.get(beast);
             this.beasts.add(nextBeast);
+            plugin.getItems(GameEquip.BEAST_KIT,nextBeast);
             this.runners.remove(nextBeast);
             for (Player announce : this.players) {
                 plugin.getUtils().sendMessage(announce, chosenBeast.replace("%player%", nextBeast.getName()));
@@ -703,6 +747,8 @@ public class Game {
         spectators.add(beast);
         plugin.getPlayerData(beast.getUniqueId()).addDeaths();
         beast.setGameMode(GameMode.SPECTATOR);
+        BeastDeathEvent event = new BeastDeathEvent(this,beast);
+        plugin.getServer().getPluginManager().callEvent(event);
         if(beasts.size() == 0) {
             plugin.getPlayerData(beast.getUniqueId()).setBoard(RigoxBoard.WIN_RUNNERS_FOR_BEAST);
             winRunners();
@@ -710,6 +756,8 @@ public class Game {
     }
     public void deathRunner(Player runner) {
         runners.remove(runner);
+        RunnerDeathEvent event = new RunnerDeathEvent(this,runner);
+        plugin.getServer().getPluginManager().callEvent(event);
         if(!gameType.equals(GameType.INFECTED)) {
             spectators.add(runner);
             runner.setGameMode(GameMode.SPECTATOR);
@@ -747,6 +795,8 @@ public class Game {
         this.gameTimer = 0;
         this.endingStage = true;
         this.gameStatus = GameStatus.RESTARTING;
+        GameEndEvent event = new GameEndEvent(this);
+        plugin.getServer().getPluginManager().callEvent(event);
         timerToLobby(GameTeam.RUNNERS);
     }
     public void winBeasts() {
