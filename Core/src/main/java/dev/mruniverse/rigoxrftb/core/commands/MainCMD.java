@@ -3,6 +3,7 @@ package dev.mruniverse.rigoxrftb.core.commands;
 import dev.mruniverse.rigoxrftb.core.RigoxRFTB;
 import dev.mruniverse.rigoxrftb.core.enums.RigoxFiles;
 import dev.mruniverse.rigoxrftb.core.enums.SaveMode;
+import dev.mruniverse.rigoxrftb.core.games.GameType;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -267,6 +268,30 @@ public class MainCMD implements CommandExecutor {
                                 plugin.getUtils().sendMessage(sender,"&cThis chest doesn't exists in game '&e" + args[2] + "&c'");
                                 return true;
                             }
+                        }
+                        plugin.getUtils().sendMessage(sender, plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.admin.arenaError").replace("%arena_id%", args[2]));
+                        return true;
+                    }
+                }
+                if(args[1].equalsIgnoreCase("setMode")) {
+                    if(hasPermission(sender,"RigoxRFTB.admin.setMode")) {
+                        if(args.length == 3) {
+                            plugin.getUtils().sendMessage(sender,"&7Bad usage");
+                            return true;
+                        }
+                        if (plugin.getFiles().getControl(RigoxFiles.GAMES).contains("games." + args[2])) {
+                            GameType gameType;
+                            switch (args[3]) {
+                                case "INFECTED":
+                                    gameType = GameType.INFECTED;
+                                case "DOUBLE_BEAST":
+                                    gameType = GameType.DOUBLE_BEAST;
+                                default:
+                                    gameType = GameType.CLASSIC;
+                            }
+                            plugin.getGameManager().setMode(args[2], gameType);
+                            plugin.getUtils().sendMessage(sender,"&aMode now is &b" + gameType.toString().toUpperCase());
+                            return true;
                         }
                         plugin.getUtils().sendMessage(sender, plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.admin.arenaError").replace("%arena_id%", args[2]));
                         return true;

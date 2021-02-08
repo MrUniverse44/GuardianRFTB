@@ -169,6 +169,10 @@ public class GameManager {
         plugin.getFiles().getControl(RigoxFiles.GAMES).set("games." + gameName + ".min", min);
         plugin.getFiles().save(SaveMode.GAMES_FILES);
     }
+    public void setMode(String gameName,GameType type) {
+        plugin.getFiles().getControl(RigoxFiles.GAMES).set("games." + gameName + ".gameType", type.toString().toUpperCase());
+        plugin.getFiles().save(SaveMode.GAMES_FILES);
+    }
 
 
 
