@@ -37,7 +37,7 @@ public class MainCMD implements CommandExecutor {
         }
         return true;
     }
-    @SuppressWarnings("ConstantConditions")
+    @SuppressWarnings({"ConstantConditions"})
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
         try {
             if (args.length == 0 || args[0].equalsIgnoreCase("help")) {
@@ -280,15 +280,9 @@ public class MainCMD implements CommandExecutor {
                             return true;
                         }
                         if (plugin.getFiles().getControl(RigoxFiles.GAMES).contains("games." + args[2])) {
-                            GameType gameType;
-                            switch (args[3]) {
-                                case "INFECTED":
-                                    gameType = GameType.INFECTED;
-                                case "DOUBLE_BEAST":
-                                    gameType = GameType.DOUBLE_BEAST;
-                                default:
-                                    gameType = GameType.CLASSIC;
-                            }
+                            GameType gameType = GameType.CLASSIC;
+                            if(args[3].equalsIgnoreCase("INFECTED")) gameType = GameType.INFECTED;
+                            if(args[3].equalsIgnoreCase("DOUBLE_BEAST")) gameType = GameType.DOUBLE_BEAST;
                             plugin.getGameManager().setMode(args[2], gameType);
                             plugin.getUtils().sendMessage(sender,"&aMode now is &b" + gameType.toString().toUpperCase());
                             return true;
