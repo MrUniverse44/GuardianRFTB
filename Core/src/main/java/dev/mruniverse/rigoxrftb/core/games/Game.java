@@ -61,6 +61,7 @@ public class Game {
     public boolean invincible = true;
     public boolean preparingStage;
     public boolean startingStage;
+    public boolean selectingStage;
     public boolean inGameStage;
     public boolean playingStage;
     public boolean endingStage;
@@ -87,6 +88,7 @@ public class Game {
         runners = new ArrayList<>();
         beasts = new ArrayList<>();
         preparingStage = true;
+        selectingStage = false;
         startingStage = false;
         inGameStage = false;
         playingStage = false;
@@ -314,10 +316,17 @@ public class Game {
         player.getInventory().clear();
         player.setGameMode(GameMode.ADVENTURE);
         player.teleport(this.waiting);
+        plugin.getPlayerData(player.getUniqueId()).setBoard(RigoxBoard.WAITING);
+        if(gameStatus.equals(GameStatus.STARTING)) {
+            if(selectingStage) {
+                plugin.getPlayerData(player.getUniqueId()).setBoard(RigoxBoard.SELECTING);
+            } else {
+                plugin.getPlayerData(player.getUniqueId()).setBoard(RigoxBoard.STARTING);
+            }
+        }
         players.add(player);
         runners.add(player);
         plugin.getPlayerData(player.getUniqueId()).setGame(this);
-        plugin.getPlayerData(player.getUniqueId()).setBoard(RigoxBoard.WAITING);
         plugin.getPlayerData(player.getUniqueId()).setStatus(PlayerStatus.IN_GAME);
         checkPlayers();
         player.setGameMode(GameMode.ADVENTURE);
@@ -352,6 +361,7 @@ public class Game {
         }
         if (players.size() == realMin && !startingStage && !gameStatus.equals(GameStatus.STARTING)) {
             gameStatus = GameStatus.STARTING;
+            selectingStage = true;
             startingStage = true;
             gameTimer = 1;
             for(Player runner : runners) {
@@ -372,6 +382,7 @@ public class Game {
                 if(gameStatus.equals(GameStatus.STARTING)) {
                     if(players.size() < realMin) {
                         startingStage = false;
+                        selectingStage = false;
                         gameTimer = 0;
                         gameStatus = GameStatus.WAITING;
                         for(Player player : players) {
@@ -471,6 +482,7 @@ public class Game {
                 if (runners.size() < 1) {
                     if (!inGameStage) {
                         startingStage = false;
+                        selectingStage = false;
                         gameStatus = GameStatus.WAITING;
                         starting = 30;
                         for (Player player : players) {
@@ -993,6 +1005,7 @@ public class Game {
         this.endingStage = false;
         this.preparingStage = true;
         this.startingStage = false;
+        this.selectingStage = false;
         this.inGameStage = false;
         this.gameStatus = GameStatus.PREPARING;
         this.starting = 30;
