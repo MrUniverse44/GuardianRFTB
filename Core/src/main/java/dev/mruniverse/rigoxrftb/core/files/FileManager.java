@@ -318,7 +318,7 @@ public class FileManager {
         addConfig(RigoxFiles.MESSAGES,"messages.inGame.deathMessages.pvp","&7%victim% was killed by %attacker%");
         addConfig(RigoxFiles.MESSAGES,"messages.inGame.deathMessages.void","&7%victim% was searching a diamond.");
         addConfig(RigoxFiles.MESSAGES,"messages.inGame.deathMessages.lava","&7%victim% was on fire!");
-        addConfig(RigoxFiles.MESSAGES,"messages.inGame.deathMessages.bow","&7%attacker% is the best with the bow vs %victim%");
+        addConfig(RigoxFiles.MESSAGES,"messages.inGame.deathMessages.bow","&7%victim% was shot by %attacker%");
         addConfig(RigoxFiles.MESSAGES,"messages.inGame.deathMessages.otherCause","&7%victim% died");
         addConfig(RigoxFiles.MESSAGES,"messages.inGame.cantStartGame","&cThis game can't start, not enough players");
         addConfig(RigoxFiles.MESSAGES,"messages.inGame.others.winCoins","&6+%winCoins% coins (Win)!");

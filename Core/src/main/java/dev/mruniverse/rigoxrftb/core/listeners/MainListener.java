@@ -339,7 +339,11 @@ public class MainListener implements Listener {
             player.getInventory().setHelmet(null);
             player.getInventory().setChestplate(null);
             player.getInventory().setLeggings(null);
-
+            String deathMessage;
+            deathMessage = getDeathMessage(player,event.getCause());
+            for(Player inGamePlayer : game.getPlayers()) {
+                plugin.getUtils().sendMessage(inGamePlayer,deathMessage);
+            }
             if(game.getBeasts().contains(player)) {
                 player.setGameMode(GameMode.SPECTATOR);
                 game.deathBeast(player);
@@ -353,6 +357,23 @@ public class MainListener implements Listener {
             }
 
 
+        }
+    }
+    private String getDeathMessage(Player player, EntityDamageEvent.DamageCause cause) {
+        String returnMsg;
+        switch (cause) {
+            case LAVA:
+                returnMsg = plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.inGame.deathMessages.lava");
+                if(returnMsg == null) returnMsg = "&7%victim% was on fire!";
+                return returnMsg.replace("%victim%",player.getName());
+            case VOID:
+                returnMsg = plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.inGame.deathMessages.void");
+                if(returnMsg == null) returnMsg = "&7%victim% was searching a diamond.";
+                return returnMsg.replace("%victim%",player.getName());
+            default:
+                returnMsg = plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.inGame.deathMessages.otherCause");
+                if(returnMsg == null) returnMsg = "&7%victim% died";
+                return returnMsg.replace("%victim%",player.getName());
         }
     }
     @EventHandler(priority = EventPriority.HIGH)
@@ -414,6 +435,16 @@ public class MainListener implements Listener {
                         Game game = plugin.getPlayerData(victim.getUniqueId()).getGame();
                         if(game.getRunners().contains(victim) && game.getRunners().contains(attacker)) {
                             event.setCancelled(true);
+                        } else {
+                            if((victim.getHealth() - event.getFinalDamage()) <= 0) {
+                                String deathMessage;
+                                deathMessage = plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.inGame.deathMessages.pvp");
+                                if(deathMessage == null) deathMessage = "&7%victim% was killed by %attacker%";
+                                deathMessage = deathMessage.replace("%victim%",victim.getName()).replace("%attacker%",attacker.getName());
+                                for(Player inGamePlayer : game.getPlayers()) {
+                                    plugin.getUtils().sendMessage(inGamePlayer,deathMessage);
+                                }
+                            }
                         }
                     }
                 }
@@ -435,10 +466,24 @@ public class MainListener implements Listener {
                 } else {
                     if (!game.getPlayers().contains(shooter)) {
                         event.setCancelled(true);
-                        return;
                     }
                     if (game.getBeasts().contains(victim) && game.getBeasts().contains(shooter)) {
                         event.setCancelled(true);
+                    }
+                }
+                if(!event.isCancelled()) {
+                    if((victim.getHealth() - event.getFinalDamage()) <= 0) {
+                        String deathMessage;
+                        deathMessage = plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.inGame.deathMessages.bow");
+                        if(deathMessage == null) deathMessage = "&7%victim% was shot by %attacker%";
+                        if(shooter != null) {
+                            deathMessage = deathMessage.replace("%victim%", victim.getName()).replace("%attacker%", shooter.getName());
+                        } else {
+                            deathMessage = deathMessage.replace("%victim%", victim.getName()).replace("%attacker%", "Unknown Player");
+                        }
+                        for(Player inGamePlayer : game.getPlayers()) {
+                            plugin.getUtils().sendMessage(inGamePlayer,deathMessage);
+                        }
                     }
                 }
             }
@@ -452,7 +497,7 @@ public class MainListener implements Listener {
         if (!lC.equalsIgnoreCase("notSet")) {
             String[] loc = lC.split(",");
             World w = Bukkit.getWorld(loc[0]);
-            if (event.getPlayer().getWorld().equals(w)) {
+            if (player.getWorld().equals(w)) {
                 event.setCancelled(true);
             }
         }
