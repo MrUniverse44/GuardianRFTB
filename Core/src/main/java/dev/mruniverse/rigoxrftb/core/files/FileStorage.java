@@ -18,26 +18,26 @@ import java.util.List;
 public class FileStorage {
     private final RigoxRFTB plugin;
     private FileConfiguration settings,messages,mysql,data,menus,items,games,boards,chests;
-    private final File Settings;
-    private final File Messages;
-    private final File MySQL;
-    private final File Data;
-    private final File Menus;
-    private final File Items;
-    private final File Games;
-    private final File Boards;
-    private final File Chests;
+    private final File rxSettings;
+    private final File rxMessages;
+    private final File rxMySQL;
+    private final File rxData;
+    private final File rxMenus;
+    private final File rxItems;
+    private final File rxGames;
+    private final File rxBoards;
+    private final File rxChests;
     public FileStorage(RigoxRFTB main) {
         plugin = main;
-        Settings = new File(main.getDataFolder(), "settings.yml");
-        Messages = new File(main.getDataFolder(), "messages.yml");
-        MySQL = new File(main.getDataFolder(), "mysql.yml");
-        Data = new File(main.getDataFolder(), "data.yml");
-        Menus = new File(main.getDataFolder(), "menus.yml");
-        Items = new File(main.getDataFolder(), "items.yml");
-        Games = new File(main.getDataFolder(), "games.yml");
-        Boards = new File(main.getDataFolder(), "scoreboards.yml");
-        Chests = new File(main.getDataFolder(), "chests.yml");
+        rxSettings = new File(main.getDataFolder(), "settings.yml");
+        rxMessages = new File(main.getDataFolder(), "messages.yml");
+        rxMySQL = new File(main.getDataFolder(), "mysql.yml");
+        rxData = new File(main.getDataFolder(), "data.yml");
+        rxMenus = new File(main.getDataFolder(), "menus.yml");
+        rxItems = new File(main.getDataFolder(), "items.yml");
+        rxGames = new File(main.getDataFolder(), "games.yml");
+        rxBoards = new File(main.getDataFolder(), "scoreboards.yml");
+        rxChests = new File(main.getDataFolder(), "chests.yml");
         settings = loadConfig("settings");
         menus = loadConfig("menus");
         messages = loadConfig("messages");
@@ -52,24 +52,24 @@ public class FileStorage {
     public File getFile(RigoxFiles fileToGet) {
         switch (fileToGet) {
             case CHESTS:
-                return Chests;
+                return rxChests;
             case ITEMS:
-                return Items;
+                return rxItems;
             case DATA:
-                return Data;
+                return rxData;
             case GAMES:
-                return Games;
+                return rxGames;
             case MENUS:
-                return Menus;
+                return rxMenus;
             case SCOREBOARD:
-                return Boards;
+                return rxBoards;
             case MYSQL:
-                return MySQL;
+                return rxMySQL;
             case MESSAGES:
-                return Messages;
+                return rxMessages;
             case SETTINGS:
             default:
-                return Settings;
+                return rxSettings;
         }
     }
 
@@ -106,43 +106,43 @@ public class FileStorage {
     public void reloadFile(SaveMode Mode) {
         switch (Mode) {
             case CHESTS:
-                chests = YamlConfiguration.loadConfiguration(Chests);
+                chests = YamlConfiguration.loadConfiguration(rxChests);
                 break;
             case ITEMS:
-                items = YamlConfiguration.loadConfiguration(Items);
+                items = YamlConfiguration.loadConfiguration(rxItems);
                 break;
             case DATA:
-                data = YamlConfiguration.loadConfiguration(Data);
+                data = YamlConfiguration.loadConfiguration(rxData);
                 break;
             case MENUS:
-                menus = YamlConfiguration.loadConfiguration(Menus);
+                menus = YamlConfiguration.loadConfiguration(rxMenus);
                 break;
             case MESSAGES:
-                messages = YamlConfiguration.loadConfiguration(Messages);
+                messages = YamlConfiguration.loadConfiguration(rxMessages);
                 break;
             case MYSQL:
-                mysql = YamlConfiguration.loadConfiguration(MySQL);
+                mysql = YamlConfiguration.loadConfiguration(rxMySQL);
                 break;
             case SETTINGS:
-                settings = YamlConfiguration.loadConfiguration(Settings);
+                settings = YamlConfiguration.loadConfiguration(rxSettings);
                 break;
             case SCOREBOARDS:
-                boards = YamlConfiguration.loadConfiguration(Boards);
+                boards = YamlConfiguration.loadConfiguration(rxBoards);
                 break;
             case GAMES_FILES:
-                games = YamlConfiguration.loadConfiguration(Games);
+                games = YamlConfiguration.loadConfiguration(rxGames);
                 break;
             case ALL:
             default:
-                messages = YamlConfiguration.loadConfiguration(Messages);
-                data = YamlConfiguration.loadConfiguration(Data);
-                items = YamlConfiguration.loadConfiguration(Items);
-                chests = YamlConfiguration.loadConfiguration(Chests);
-                menus = YamlConfiguration.loadConfiguration(Menus);
-                mysql = YamlConfiguration.loadConfiguration(MySQL);
-                settings = YamlConfiguration.loadConfiguration(Settings);
-                boards = YamlConfiguration.loadConfiguration(Boards);
-                games = YamlConfiguration.loadConfiguration(Games);
+                messages = YamlConfiguration.loadConfiguration(rxMessages);
+                data = YamlConfiguration.loadConfiguration(rxData);
+                items = YamlConfiguration.loadConfiguration(rxItems);
+                chests = YamlConfiguration.loadConfiguration(rxChests);
+                menus = YamlConfiguration.loadConfiguration(rxMenus);
+                mysql = YamlConfiguration.loadConfiguration(rxMySQL);
+                settings = YamlConfiguration.loadConfiguration(rxSettings);
+                boards = YamlConfiguration.loadConfiguration(rxBoards);
+                games = YamlConfiguration.loadConfiguration(rxGames);
                 break;
         }
     }
@@ -156,43 +156,43 @@ public class FileStorage {
         try {
             switch (fileToSave) {
                 case CHESTS:
-                    getControl(RigoxFiles.CHESTS).save(Chests);
+                    getControl(RigoxFiles.CHESTS).save(rxChests);
                     break;
                 case ITEMS:
-                    getControl(RigoxFiles.ITEMS).save(Items);
+                    getControl(RigoxFiles.ITEMS).save(rxItems);
                     break;
                 case DATA:
-                    getControl(RigoxFiles.DATA).save(Data);
+                    getControl(RigoxFiles.DATA).save(rxData);
                     break;
                 case GAMES_FILES:
-                    getControl(RigoxFiles.GAMES).save(Games);
+                    getControl(RigoxFiles.GAMES).save(rxGames);
                     break;
                 case MENUS:
-                    getControl(RigoxFiles.MENUS).save(Menus);
+                    getControl(RigoxFiles.MENUS).save(rxMenus);
                     break;
                 case SCOREBOARDS:
-                    getControl(RigoxFiles.SCOREBOARD).save(Boards);
+                    getControl(RigoxFiles.SCOREBOARD).save(rxBoards);
                     break;
                 case MYSQL:
-                    getControl(RigoxFiles.MYSQL).save(MySQL);
+                    getControl(RigoxFiles.MYSQL).save(rxMySQL);
                     break;
                 case MESSAGES:
-                    getControl(RigoxFiles.MESSAGES).save(Messages);
+                    getControl(RigoxFiles.MESSAGES).save(rxMessages);
                     break;
                 case SETTINGS:
-                    getControl(RigoxFiles.SETTINGS).save(Settings);
+                    getControl(RigoxFiles.SETTINGS).save(rxSettings);
                     break;
                 case ALL:
                 default:
-                    getControl(RigoxFiles.SETTINGS).save(Settings);
-                    getControl(RigoxFiles.CHESTS).save(Chests);
-                    getControl(RigoxFiles.DATA).save(Data);
-                    getControl(RigoxFiles.GAMES).save(Games);
-                    getControl(RigoxFiles.SCOREBOARD).save(Boards);
-                    getControl(RigoxFiles.ITEMS).save(Items);
-                    getControl(RigoxFiles.MENUS).save(Menus);
-                    getControl(RigoxFiles.MYSQL).save(MySQL);
-                    getControl(RigoxFiles.MESSAGES).save(Messages);
+                    getControl(RigoxFiles.SETTINGS).save(rxSettings);
+                    getControl(RigoxFiles.CHESTS).save(rxChests);
+                    getControl(RigoxFiles.DATA).save(rxData);
+                    getControl(RigoxFiles.GAMES).save(rxGames);
+                    getControl(RigoxFiles.SCOREBOARD).save(rxBoards);
+                    getControl(RigoxFiles.ITEMS).save(rxItems);
+                    getControl(RigoxFiles.MENUS).save(rxMenus);
+                    getControl(RigoxFiles.MYSQL).save(rxMySQL);
+                    getControl(RigoxFiles.MESSAGES).save(rxMessages);
                     break;
             }
         } catch (Throwable throwable) {
