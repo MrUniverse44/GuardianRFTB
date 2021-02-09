@@ -372,6 +372,12 @@ public class MainListener implements Listener {
                 World w = Bukkit.getWorld(loc[0]);
                 if (event.getEntity().getWorld().equals(w)) {
                     event.setCancelled(true);
+                    if(plugin.getFiles().getControl(RigoxFiles.SETTINGS).getBoolean("settings.options.lobby-voidSpawnTP")) {
+                        if (event.getCause().equals(EntityDamageEvent.DamageCause.VOID)) {
+                            Location location = plugin.getUtils().getLocationFromString(lC);
+                            event.getEntity().teleport(location);
+                        }
+                    }
                 }
             }
             Player player = (Player)event.getEntity();

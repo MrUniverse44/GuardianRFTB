@@ -92,6 +92,7 @@ public class FileManager {
         addConfig(RigoxFiles.SETTINGS,"settings.options.hideServerQuitMessage",true);
         addConfig(RigoxFiles.SETTINGS,"settings.options.lobby-bossBar",true);
         addConfig(RigoxFiles.SETTINGS,"settings.options.lobby-noDamage",true);
+        addConfig(RigoxFiles.SETTINGS,"settings.options.lobby-voidSpawnTP",true);
         addConfig(RigoxFiles.SETTINGS,"settings.options.lobby-noHunger",true);
         addConfig(RigoxFiles.SETTINGS,"settings.options.lobby-actionBar",true);
         addConfig(RigoxFiles.SETTINGS,"settings.tags.runners.toggle",true);
