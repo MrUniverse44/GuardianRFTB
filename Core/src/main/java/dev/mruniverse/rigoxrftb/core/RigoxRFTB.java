@@ -10,10 +10,7 @@ import dev.mruniverse.rigoxrftb.core.games.GameEquip;
 import dev.mruniverse.rigoxrftb.core.games.GameManager;
 import dev.mruniverse.rigoxrftb.core.listeners.ListenerUtil;
 import dev.mruniverse.rigoxrftb.core.nms.NMS;
-import dev.mruniverse.rigoxrftb.core.utils.Logger;
-import dev.mruniverse.rigoxrftb.core.utils.RigoxUpdater;
-import dev.mruniverse.rigoxrftb.core.utils.RigoxUtils;
-import dev.mruniverse.rigoxrftb.core.utils.TextUtilities;
+import dev.mruniverse.rigoxrftb.core.utils.*;
 import dev.mruniverse.rigoxrftb.core.utils.players.PlayerManager;
 import dev.mruniverse.rigoxrftb.core.utils.players.PlayerRunnable;
 import dev.mruniverse.rigoxrftb.core.utils.scoreboards.BoardManager;
@@ -326,6 +323,13 @@ public final class RigoxRFTB extends JavaPlugin {
 
         dataStorage = new DataStorage(this);
         dataStorage.loadDatabase();
+
+        // * bStats
+
+        if(getStorage().getControl(RigoxFiles.SETTINGS).getBoolean("settings.bStats")) {
+            BukkitMetrics bukkitMetrics = new BukkitMetrics(this, 10282);
+            getLogs().debug(String.format("Spigot metrics has been enabled &7(%s)", bukkitMetrics.isEnabled()));
+        }
 
         // * Rigox Updater
 
