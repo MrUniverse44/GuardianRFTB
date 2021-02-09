@@ -20,7 +20,7 @@ settings:
   # Enable bStats to show your users online and add your server to stats of the plugin in plugin's overview
   bStats: true
   # Lobby Location ("notSet" by default)
-  lobbyLocation: TropicLobby,0.46674262331437966,60.0,15.586915531723298,-0.2021359,0.13206083
+  lobbyLocation: notSet
   # Extra Options
   options:
     # Teleport to the lobby when the player join
