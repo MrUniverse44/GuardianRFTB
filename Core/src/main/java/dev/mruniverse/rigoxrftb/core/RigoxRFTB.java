@@ -342,7 +342,7 @@ public final class RigoxRFTB extends JavaPlugin {
                     getLogs().info("&aYou're using latest version of PixelMOTD, You're Awesome!");
                     switch (versionResult.toUpperCase()) {
                         case "RED_PROBLEM":
-                            getLogs().info("&aPixelMOTD can't connect to WiFi to check plugin version.");
+                            getLogs().info("&aRigoxRFTB can't connect to WiFi to check plugin version.");
                             break;
                         case "PRE_ALPHA_VERSION":
                             getLogs().info("&cYou are Running a &aPre Alpha version&c, it is normal to find several errors, please report these errors so that they can be solved. &eWARNING: &cI (MrUniverse) recommend a Stable version, PreAlpha aren't stable versions!");
@@ -361,13 +361,13 @@ public final class RigoxRFTB extends JavaPlugin {
                     }
                     break;
                 case "NEW_VERSION":
-                    getLogs().info("&aA new update is available: &bhttps://www.spigotmc.org/resources/37177/");
+                    getLogs().info("&aA new update is available: &bhttps://www.spigotmc.org/resources/88817/");
                     break;
                 case "BETA_VERSION":
                     getLogs().info("&aYou are Running a Pre-Release version, please report bugs ;)");
                     break;
                 case "RED_PROBLEM":
-                    getLogs().info("&aPixelMOTD can't connect to WiFi to check plugin version.");
+                    getLogs().info("&aRigoxRFTB can't connect to WiFi to check plugin version.");
                     break;
                 case "ALPHA_VERSION":
                     getLogs().info("&bYou are Running a &aAlpha version&b, it is normal to find several errors, please report these errors so that they can be solved.");
