@@ -1,0 +1,115 @@
+#_____  _                   _____  ______ _______ ____
+#|  __ \(_)                 |  __ \|  ____|__   __|  _ \
+#| |__) |_  __ _  _____  __ | |__) | |__     | |  | |_) |
+#|  _  /| |/ _` |/ _ \ \/ / |  _  /|  __|    | |  |  _ <
+#| | \ \| | (_| | (_) >  <  | | \ \| |       | |  | |_) |
+#|_|  \_\_|\__, |\___/_/\_\ |_|  \_\_|       |_|  |____/
+#          __/ |
+#         |___/
+#
+# Created by: MrUniverse44
+# Sponsor: WHost.es
+# SpigotMC Link: https://www.spigotmc.org/resources/88817/
+#
+menus:
+  shop:
+    inventoryName: '&8Shop Menu'
+    inventoryRows: 6
+    inventorySounds:
+      - ORB_PICKUP
+    items:
+      KitRunner:
+        name: '&aKits: Runner'
+        slot: 21
+        lore:
+          - '&8RigoxRFTB'
+          - '&eClick to open kit runners menu'
+        item: MAP
+      Craft:
+        name: '&aCraft Coins'
+        slot: 22
+        lore:
+          - '&8RigoxRFTB'
+          - '&eClick to open Craft Coins menu'
+        item: BREWING_STAND
+      KitBeast:
+        name: '&aKits: Beast'
+        slot: 23
+        lore:
+          - '&8RigoxRFTB'
+          - '&eClick to open kit beasts menu'
+        item: FIREWORK
+      Boost:
+        name: '&aGame Booster'
+        slot: 31
+        lore:
+          - '&8RigoxRFTB'
+          - '&eClick to open boost menu'
+        item: EXPERIENCE_BOTTLE
+  game:
+    inventoryName: '&8Game Menu'
+    inventoryRows: 3
+    inventorySounds:
+      - ORB_PICKUP
+    item-status:
+      waiting: STAINED_CLAY:5
+      starting: STAINED_CLAY:4
+      playing: STAINED_CLAY:14
+      ending: STAINED_CLAY:11
+    item:
+      name: '&e&nMap: %map_name%'
+      lore:
+        - ' '
+        - '&7Status: &b%map_status%'
+        - '&7Mode: &b%map_mode%'
+        - '&7Players: &b%map_on%/%map_max%'
+        - ' '
+        - '&erigox.club'
+fill-inventory:
+  shop:
+    fillOne:
+      item: STAINED_GLASS_PANE:5
+      name: '&aRFTB Shop'
+      lore:
+        - '&8RigoxRFTB &7F-1'
+        - '&erigox.club'
+      list:
+        type: ONLY
+        values:
+          - 0
+          - 1
+          - 7
+          - 8
+          - 9
+          - 17
+          - 36
+          - 44
+          - 45
+          - 46
+          - 52
+          - 53
+    fillTwo:
+      item: STAINED_GLASS_PANE:15
+      name: '&aRFTB Shop'
+      lore:
+        - '&8RigoxRFTB &7F-2'
+        - '&erigox.club'
+      list:
+        type: IGNORE
+        values:
+          - 0
+          - 1
+          - 7
+          - 8
+          - 9
+          - 17
+          - 36
+          - 44
+          - 45
+          - 46
+          - 52
+          - 53
+          - 21
+          - 22
+          - 23
+          - 31

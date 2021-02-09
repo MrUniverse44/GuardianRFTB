@@ -1,0 +1,110 @@
+#_____  _                   _____  ______ _______ ____
+#|  __ \(_)                 |  __ \|  ____|__   __|  _ \
+#| |__) |_  __ _  _____  __ | |__) | |__     | |  | |_) |
+#|  _  /| |/ _` |/ _ \ \/ / |  _  /|  __|    | |  |  _ <
+#| | \ \| | (_| | (_) >  <  | | \ \| |       | |  | |_) |
+#|_|  \_\_|\__, |\___/_/\_\ |_|  \_\_|       |_|  |____/
+#          __/ |
+#         |___/
+#
+# Created by: MrUniverse44
+# Sponsor: WHost.es
+# SpigotMC Link: https://www.spigotmc.org/resources/88817/
+#
+settings:
+  #enable Check update when the plugin load
+  update-check: true
+  # Default Max Time for play in a Game
+  maxTime: 500
+  # Lobby Location ("notSet" by default)
+  lobbyLocation: TropicLobby,0.46674262331437966,60.0,15.586915531723298,-0.2021359,0.13206083
+  # Extra Options
+  options:
+    # Teleport to the lobby when the player join
+    joinLobbyTeleport: true
+    # Plugin Custom Chat System
+    pluginChat: true
+    # PerWorldTab-Users System
+    PerWorldTab: true
+    # Show All players in Game to all players in the lobby (This option only work if PerWorldTab is enabled)
+    showInTabLobby-GamePlayers: true
+    # PerWorldChat System
+    PerWorldChat: true
+    # Heal user when join to the server
+    joinHeal: true
+    # Give /gamemode 2 when player join
+    joinAdventureGamemode: true
+    # Hide default minecraft join message
+    hideServerJoinMessage: true
+    # Hide default minecraft quit message
+    hideServerQuitMessage: true
+    # Toggle Lobby-BossBar (this option will toggle Waiting,Starting,Ending bossBar in game)
+    lobby-bossBar: true
+    # Toggle Lobby-ActionBar
+    lobby-actionBar: true
+    # Toggle Damage in Lobby
+    lobby-noDamage: true
+    # Toggle Hunger in Lobby
+    lobby-noHunger: true
+    # Clear Inventory On Join
+    clearInventory-onJoin: true
+  # Lobby Scoreboard only in the lobby World
+  lobbyScoreboard-only-in-lobby-world: false
+  pointSystem:
+    onRunnerDeath: -4
+    onBeastDeath: -4
+    onRunnersWin: 8
+    onBeastWin: 4
+    onKillBeast: 4
+    onBeastKill: 1
+  leaveCMDs:
+  - /leave
+    - /quit
+    - /salir
+    dateFormat: dd/MM/yyyy
+    tags:
+      runners:
+        toggle: true
+        tag: '&b&lRUNNER'
+      beasts:
+        toggle: true
+        tag: '&c&lBEAST'
+    signs:
+      line1: '&l%arena%'
+      line2: '%gameStatus%'
+      line3: '%on%/%max%'
+      line4: '&nClick to join'
+    gameStatus:
+      preparing: '&5Config'
+      waiting: '&aWaiting'
+      starting: '&eStarting'
+      playing: '&cPlaying'
+      InGame: '&4InGame'
+      ending: '&9Restarting'
+    defaultSounds:
+      sound1: NOTE_STICKS
+      sound2: ENDERDRAGON_GROWL
+      sound3: ORB_PICKUP
+    ShowBeastDistance:
+      toggle: true
+      #ShowBeast distance formats:
+      # - ACTIONBAR (ACTION_BAR,ACTION BAR)
+      # - BOSSBAR (BOSS BAR,BOSS_BAR)
+      Format: BOSSBAR
+# Here you can edit Role Names
+roles:
+  beast: Beast
+  runner: Runner
+  beasts: Beasts
+  runners: Runners
+# Here you can edit timing
+times:
+  minutes: minutes
+  minute: minute
+  seconds: seconds
+  second: second
+# Here you can edit GameType names
+gameType:
+  DOUBLE_BEAST: Double Beast
+  CLASSIC: Classic
+  INFECTED: Infected

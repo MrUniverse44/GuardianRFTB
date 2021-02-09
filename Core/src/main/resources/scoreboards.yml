@@ -1,0 +1,88 @@
+scoreboards:
+  lobby:
+    toggle: true
+    title: '&e&lRigoxRFTB'
+    lines:
+      - ' '
+      - '&fUser: &b<player_name>'
+      - '&fCoins: &b<player_coins>'
+      - '&fWins: &b<player_wins>'
+      - ' '
+      - '&fBeast Selected Kit:'
+      - '&b<player_beast_kit>'
+      - '&fRunner Selected Kit:'
+      - '&b<player_runner_kit>'
+      - ' '
+      - '&fOnline: &b<server_online>'
+      - ' '
+      - '&erigox.club'
+  # Variables:
+  # - <isWaiting> = This line only appear if the game is Waiting.
+  # - <isSelecting> = This line only appear when the game is selecting a beast.
+  # - <isStarting> = This line only appear when the game is starting.
+  # - <BeastAppear> = This line only appear when the beast is waiting to appear in the map.
+  waiting:
+    title: '&e&lRigoxRFTB'
+    lines:
+    - '&7<arena_mode> | <timeFormat>'
+      - ' '
+      - '&fMap: &a<arena_name>'
+      - '&fPlayers: &a<arena_online>/<arena_max>'
+      - ' '
+      - '&f<isWaiting>Waiting for'
+      - '&a<isWaiting><arena_need> &fplayers to start'
+      - '&f<isSelecting>Selecting beast in &a<arena_time_number>'
+      - '&f<isStarting>Starting in &a<arena_time_number> &f<arena_time_text>.'
+      - '&f<BeastAppear>You will spawn in &a<arena_time_number>&f!'
+      - ' '
+      - '&erigox.club'
+  playing:
+    title: '&e&lRigoxRFTB'
+    lines:
+      - '&7<timeFormat>'
+      - ' '
+      - '&fRunners Left: &a<arena_runners>'
+      - '&fTime Left: &a<arena_timeLeft>'
+      - ' '
+      - '&fMap: &a<arena_name>'
+      - '&fBeast(s): &a<arena_beast>'
+      - '&fYour role: &a<player_role>'
+      - ' '
+      - '&erigox.club'
+  beastWin:
+    forBeast:
+      title: '&e&lRigoxRFTB'
+      lines:
+        - '&7<timeFormat>'
+        - ' '
+        - '&fYou are the best beast'
+        - '&aWell played&f!'
+        - ' '
+        - '&erigox.club'
+    forRunners:
+      title: '&e&lRigoxRFTB'
+      lines:
+        - '&7<timeFormat>'
+        - ' '
+        - '&fWell.. you tried'
+        - ' '
+        - '&erigox.club'
+  runnersWin:
+    forBeast:
+      title: '&e&lRigoxRFTB'
+      lines:
+        - '&7<timeFormat>'
+        - ' '
+        - '&fBad played!'
+        - '&cGood luck for next game&f!'
+        - ' '
+        - '&erigox.club'
+    forRunners:
+      title: '&e&lRigoxRFTB'
+      lines:
+        - '&7<timeFormat>'
+        - ' '
+        - '&fRunners Win!'
+        - '&aWell played!'
+        - ' '
+        - '&erigox.club'
