@@ -11,6 +11,7 @@ import dev.mruniverse.rigoxrftb.core.games.GameManager;
 import dev.mruniverse.rigoxrftb.core.listeners.ListenerUtil;
 import dev.mruniverse.rigoxrftb.core.nms.NMS;
 import dev.mruniverse.rigoxrftb.core.utils.Logger;
+import dev.mruniverse.rigoxrftb.core.utils.RigoxUpdater;
 import dev.mruniverse.rigoxrftb.core.utils.RigoxUtils;
 import dev.mruniverse.rigoxrftb.core.utils.TextUtilities;
 import dev.mruniverse.rigoxrftb.core.utils.players.PlayerManager;
@@ -325,6 +326,56 @@ public final class RigoxRFTB extends JavaPlugin {
 
         dataStorage = new DataStorage(this);
         dataStorage.loadDatabase();
+
+        // * Rigox Updater
+
+        if(getStorage().getControl(RigoxFiles.SETTINGS).getBoolean("settings.update-check")) {
+            RigoxUpdater updater = new RigoxUpdater(this,88817);
+            String updaterResult = updater.getUpdateResult();
+            String versionResult = updater.getVersionResult();
+            switch (updaterResult.toUpperCase()) {
+                case "UPDATED":
+                    getLogs().info("&aYou're using latest version of PixelMOTD, You're Awesome!");
+                    switch (versionResult.toUpperCase()) {
+                        case "RED_PROBLEM":
+                            getLogs().info("&aPixelMOTD can't connect to WiFi to check plugin version.");
+                            break;
+                        case "PRE_ALPHA_VERSION":
+                            getLogs().info("&cYou are Running a &aPre Alpha version&c, it is normal to find several errors, please report these errors so that they can be solved. &eWARNING: &cI (MrUniverse) recommend a Stable version, PreAlpha aren't stable versions!");
+                            break;
+                        case "ALPHA_VERSION":
+                            getLogs().info("&bYou are Running a &aAlpha version&b, it is normal to find several errors, please report these errors so that they can be solved.");
+                            break;
+                        case "RELEASE":
+                            getLogs().info("&aYou are Running a &bRelease Version&a, this is a stable version, awesome!");
+                            break;
+                        case "PRE_RELEASE":
+                            getLogs().info("&aYou are Running a &bPreRelease Version&a, this is a stable version but is not the final version or don't have finished all things of the final version, but is a stable version,awesome!");
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                case "NEW_VERSION":
+                    getLogs().info("&aA new update is available: &bhttps://www.spigotmc.org/resources/37177/");
+                    break;
+                case "BETA_VERSION":
+                    getLogs().info("&aYou are Running a Pre-Release version, please report bugs ;)");
+                    break;
+                case "RED_PROBLEM":
+                    getLogs().info("&aPixelMOTD can't connect to WiFi to check plugin version.");
+                    break;
+                case "ALPHA_VERSION":
+                    getLogs().info("&bYou are Running a &aAlpha version&b, it is normal to find several errors, please report these errors so that they can be solved.");
+                    break;
+                case "PRE_ALPHA_VERSION":
+                    getLogs().info("&cYou are Running a &aPre Alpha version&c, it is normal to find several errors, please report these errors so that they can be solved. &eWARNING: &cI (MrUniverse) recommend a Stable version, PreAlpha aren't stable versions!");
+                    break;
+                default:
+                    break;
+            }
+        }
+
 
         // * Scoreboard Setup
 
