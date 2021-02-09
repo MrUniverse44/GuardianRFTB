@@ -716,7 +716,7 @@ public class Game {
         NextBeast.getInventory().setItem(plugin.exitSlot,plugin.exitItem);
         NextBeast.updateInventory();
         plugin.getItems(GameEquip.BEAST_KIT,NextBeast);
-        nextBeast.teleport(selectedBeast);
+        NextBeast.teleport(selectedBeast);
         changeToStartingBoard();
         this.runners.remove(nextBeast);
         this.times = 0;
