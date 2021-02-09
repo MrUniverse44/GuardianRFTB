@@ -321,9 +321,17 @@ public class MainListener implements Listener {
         Player player = (Player)event.getEntity();
         if(plugin.getPlayerData(player.getUniqueId()) == null) return;
         if(plugin.getPlayerData(player.getUniqueId()).getGame() == null) return;
+        Game game = plugin.getPlayerData(player.getUniqueId()).getGame();
+        if(game.gameStatus.equals(GameStatus.WAITING) || game.gameStatus.equals(GameStatus.STARTING)) {
+            event.setCancelled(true);
+            if(event.getCause().equals(EntityDamageEvent.DamageCause.VOID)) {
+                player.teleport(game.waiting);
+                player.setHealth(20);
+                player.setFoodLevel(20);
+            }
+        }
         if((player.getHealth() - event.getFinalDamage()) <= 0) {
             event.setCancelled(true);
-            Game game = plugin.getPlayerData(player.getUniqueId()).getGame();
             player.getInventory().clear();
             player.setHealth(20);
             player.setFoodLevel(20);
