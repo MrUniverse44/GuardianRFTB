@@ -444,7 +444,26 @@ public class MainListener implements Listener {
             }
         }
     }
-
+    @EventHandler
+    public void lobbyDrop(PlayerDropItemEvent event) {
+        String lC = plugin.getFiles().getControl(RigoxFiles.SETTINGS).getString("settings.lobbyLocation");
+        Player player = event.getPlayer();
+        if(lC == null) lC = "notSet";
+        if (!lC.equalsIgnoreCase("notSet")) {
+            String[] loc = lC.split(",");
+            World w = Bukkit.getWorld(loc[0]);
+            if (event.getPlayer().getWorld().equals(w)) {
+                event.setCancelled(true);
+            }
+        }
+    }
+    @EventHandler
+    public void gameDrop(PlayerDropItemEvent event) {
+        Game game = plugin.getPlayerData(event.getPlayer().getUniqueId()).getGame();
+        if(game != null) {
+            event.setCancelled(true);
+        }
+    }
     @EventHandler
     public void lobbyHunger(FoodLevelChangeEvent event) {
         if(event.getEntity().getType().equals(EntityType.PLAYER)) {
