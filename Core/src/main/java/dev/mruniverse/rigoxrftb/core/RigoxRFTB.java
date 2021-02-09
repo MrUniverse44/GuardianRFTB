@@ -6,6 +6,7 @@ import dev.mruniverse.rigoxrftb.core.enums.NMSenum;
 import dev.mruniverse.rigoxrftb.core.enums.SaveMode;
 import dev.mruniverse.rigoxrftb.core.files.DataStorage;
 import dev.mruniverse.rigoxrftb.core.files.FileManager;
+import dev.mruniverse.rigoxrftb.core.files.FileStorage;
 import dev.mruniverse.rigoxrftb.core.games.GameEquip;
 import dev.mruniverse.rigoxrftb.core.games.GameManager;
 import dev.mruniverse.rigoxrftb.core.listeners.ListenerUtil;
@@ -33,6 +34,7 @@ import java.util.UUID;
 
 public final class RigoxRFTB extends JavaPlugin {
     private FileManager fileManager;
+    private FileStorage fileStorage;
     private boolean hasPAPI = false;
     private static RigoxRFTB instance;
     private Logger logger;
@@ -73,6 +75,10 @@ public final class RigoxRFTB extends JavaPlugin {
         logger = new Logger(this);
 
         // * RigoxFiles Setup
+
+        fileStorage = new FileStorage(this);
+        fileStorage.save(SaveMode.ALL);
+
 
         fileManager = new FileManager(this);
         fileManager.loadFiles();

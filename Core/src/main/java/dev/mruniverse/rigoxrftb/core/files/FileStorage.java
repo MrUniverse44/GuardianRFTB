@@ -35,6 +35,15 @@ public class FileStorage {
         Games = new File(main.getDataFolder(), "games.yml");
         Boards = new File(main.getDataFolder(), "scoreboards.yml");
         Chests = new File(main.getDataFolder(), "chests.yml");
+        settings = loadConfig("settings");
+        menus = loadConfig("menus");
+        messages = loadConfig("messages");
+        items = loadConfig("items");
+        mysql = loadConfig("mysql");
+        data = loadConfig("data");
+        games = loadConfig("games");
+        boards = loadConfig("scoreboards");
+        chests = loadConfig("chests");
     }
 
     public File getFile(RigoxFiles fileToGet) {
@@ -138,29 +147,54 @@ public class FileStorage {
     /**
      * Save config File using FileStorage
      *
-     * @param fileToSave config to save/create.
+     * @param fileToSave config to save/create with saveMode.
      */
-    public void save(RigoxFiles fileToSave) {
-        switch (fileToSave) {
-            case CHESTS:
-                saveConfig("chests");
-            case ITEMS:
-                saveConfig("items");
-            case DATA:
-                saveConfig("data");
-            case GAMES:
-                saveConfig("games");
-            case MENUS:
-                saveConfig("menus");
-            case SCOREBOARD:
-                saveConfig("scoreboards");
-            case MYSQL:
-                saveConfig("mysql");
-            case MESSAGES:
-                saveConfig("messages");
-            case SETTINGS:
-            default:
-                saveConfig("settings");
+    public void save(SaveMode fileToSave) {
+        try {
+            switch (fileToSave) {
+                case CHESTS:
+                    getControl(RigoxFiles.CHESTS).save(Chests);
+                    break;
+                case ITEMS:
+                    getControl(RigoxFiles.ITEMS).save(Items);
+                    break;
+                case DATA:
+                    getControl(RigoxFiles.DATA).save(Data);
+                    break;
+                case GAMES_FILES:
+                    getControl(RigoxFiles.GAMES).save(Games);
+                    break;
+                case MENUS:
+                    getControl(RigoxFiles.MENUS).save(Menus);
+                    break;
+                case SCOREBOARDS:
+                    getControl(RigoxFiles.SCOREBOARD).save(Boards);
+                    break;
+                case MYSQL:
+                    getControl(RigoxFiles.MYSQL).save(MySQL);
+                    break;
+                case MESSAGES:
+                    getControl(RigoxFiles.MESSAGES).save(Messages);
+                    break;
+                case SETTINGS:
+                    getControl(RigoxFiles.SETTINGS).save(Settings);
+                    break;
+                case ALL:
+                default:
+                    getControl(RigoxFiles.SETTINGS).save(Settings);
+                    getControl(RigoxFiles.CHESTS).save(Chests);
+                    getControl(RigoxFiles.DATA).save(Data);
+                    getControl(RigoxFiles.GAMES).save(Games);
+                    getControl(RigoxFiles.SCOREBOARD).save(Boards);
+                    getControl(RigoxFiles.ITEMS).save(Items);
+                    getControl(RigoxFiles.MENUS).save(Menus);
+                    getControl(RigoxFiles.MYSQL).save(MySQL);
+                    getControl(RigoxFiles.MESSAGES).save(Messages);
+                    break;
+            }
+        } catch (Throwable throwable) {
+            plugin.getLogs().error("Can't save a file!");
+
         }
     }
     /**
