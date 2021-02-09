@@ -60,39 +60,39 @@ settings:
     onKillBeast: 4
     onBeastKill: 1
   leaveCMDs:
-  - /leave
+    - /leave
     - /quit
     - /salir
-    dateFormat: dd/MM/yyyy
-    tags:
-      runners:
-        toggle: true
-        tag: '&b&lRUNNER'
-      beasts:
-        toggle: true
-        tag: '&c&lBEAST'
-    signs:
-      line1: '&l%arena%'
-      line2: '%gameStatus%'
-      line3: '%on%/%max%'
-      line4: '&nClick to join'
-    gameStatus:
-      preparing: '&5Config'
-      waiting: '&aWaiting'
-      starting: '&eStarting'
-      playing: '&cPlaying'
-      InGame: '&4InGame'
-      ending: '&9Restarting'
-    defaultSounds:
-      sound1: NOTE_STICKS
-      sound2: ENDERDRAGON_GROWL
-      sound3: ORB_PICKUP
-    ShowBeastDistance:
+  dateFormat: 'dd/MM/yyyy'
+  tags:
+    runners:
       toggle: true
-      #ShowBeast distance formats:
-      # - ACTIONBAR (ACTION_BAR,ACTION BAR)
-      # - BOSSBAR (BOSS BAR,BOSS_BAR)
-      Format: BOSSBAR
+      tag: '&b&lRUNNER'
+    beasts:
+      toggle: true
+      tag: '&c&lBEAST'
+  signs:
+    line1: '&l%arena%'
+    line2: '%gameStatus%'
+    line3: '%on%/%max%'
+    line4: '&nClick to join'
+  gameStatus:
+    preparing: '&5Config'
+    waiting: '&aWaiting'
+    starting: '&eStarting'
+    playing: '&cPlaying'
+    InGame: '&4InGame'
+    ending: '&9Restarting'
+  defaultSounds:
+    sound1: NOTE_STICKS
+    sound2: ENDERDRAGON_GROWL
+    sound3: ORB_PICKUP
+  ShowBeastDistance:
+    toggle: true
+    #ShowBeast distance formats:
+    # - ACTIONBAR (ACTION_BAR,ACTION BAR)
+    # - BOSSBAR (BOSS BAR,BOSS_BAR)
+    Format: BOSSBAR
 # Here you can edit Role Names
 roles:
   beast: Beast

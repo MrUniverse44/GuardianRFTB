@@ -24,7 +24,7 @@ scoreboards:
   waiting:
     title: '&e&lRigoxRFTB'
     lines:
-    - '&7<arena_mode> | <timeFormat>'
+      - '&7<arena_mode> | <timeFormat>'
       - ' '
       - '&fMap: &a<arena_name>'
       - '&fPlayers: &a<arena_online>/<arena_max>'
