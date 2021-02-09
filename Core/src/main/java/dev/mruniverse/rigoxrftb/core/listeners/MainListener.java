@@ -15,6 +15,7 @@ import org.bukkit.block.Chest;
 import org.bukkit.block.DoubleChest;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -24,10 +25,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.SignChangeEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.InventoryHolder;
@@ -413,6 +411,30 @@ public class MainListener implements Listener {
             }
         }
     }
+    @EventHandler
+    public void GameProjectile(EntityDamageByEntityEvent event) {
+        if(event.getEntity().getType().equals(EntityType.PLAYER)) {
+            Player victim = (Player)event.getEntity();
+            if(event.getDamager() instanceof Arrow) {
+                Arrow arrow = (Arrow) event.getDamager();
+                Player shooter = (Player) arrow.getShooter();
+                if (plugin.getPlayerData(victim.getUniqueId()).getGame() == null) return;
+                Game game = plugin.getPlayerData(victim.getUniqueId()).getGame();
+                if (game.getRunners().contains(victim) && game.getRunners().contains(shooter)) {
+                    event.setCancelled(true);
+                } else {
+                    if (!game.getPlayers().contains(shooter)) {
+                        event.setCancelled(true);
+                        return;
+                    }
+                    if (game.getBeasts().contains(victim) && game.getBeasts().contains(shooter)) {
+                        event.setCancelled(true);
+                    }
+                }
+            }
+        }
+    }
+
     @EventHandler
     public void lobbyHunger(FoodLevelChangeEvent event) {
         if(event.getEntity().getType().equals(EntityType.PLAYER)) {
