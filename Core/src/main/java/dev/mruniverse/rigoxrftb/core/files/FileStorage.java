@@ -3,6 +3,7 @@ package dev.mruniverse.rigoxrftb.core.files;
 import dev.mruniverse.rigoxrftb.core.RigoxRFTB;
 import dev.mruniverse.rigoxrftb.core.enums.RigoxFiles;
 import dev.mruniverse.rigoxrftb.core.enums.SaveMode;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -10,6 +11,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class FileStorage {
@@ -259,6 +262,14 @@ public class FileStorage {
                 if(settings == null) settings = loadConfig("settings");
                 return settings;
         }
+    }
+
+    public List<String> getContent(RigoxFiles file, String path, boolean getKeys) {
+        List<String> rx = new ArrayList<>();
+        ConfigurationSection section = getControl(file).getConfigurationSection(path);
+        if(section == null) return rx;
+        rx.addAll(section.getKeys(getKeys));
+        return rx;
     }
 
 }

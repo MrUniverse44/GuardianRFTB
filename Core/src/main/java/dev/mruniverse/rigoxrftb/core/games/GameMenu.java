@@ -33,13 +33,13 @@ public class GameMenu {
         loadItems();
     }
     private void createInv() {
-        String invName = plugin.getFiles().getControl(RigoxFiles.MENUS).getString("menus.game.inventoryName");
+        String invName = plugin.getStorage().getControl(RigoxFiles.MENUS).getString("menus.game.inventoryName");
 
         if(invName == null) invName = "&8Games";
 
         invName = ChatColor.translateAlternateColorCodes('&',invName);
 
-        int rows = getRows(plugin.getFiles().getControl(RigoxFiles.MENUS).getInt("menus.game.inventoryRows"));
+        int rows = getRows(plugin.getStorage().getControl(RigoxFiles.MENUS).getInt("menus.game.inventoryRows"));
 
         chestInventory = plugin.getServer().createInventory(null,rows,invName);
     }
@@ -145,7 +145,7 @@ public class GameMenu {
     }
 
     private void loadItems() {
-        FileConfiguration loadConfig = plugin.getFiles().getControl(RigoxFiles.MENUS);
+        FileConfiguration loadConfig = plugin.getStorage().getControl(RigoxFiles.MENUS);
         try {
             ConfigurationSection section = loadConfig.getConfigurationSection("menus.game.item-status");
             if(section == null) throw new Throwable("Can't found beast items in menus.yml (Game Menu)");

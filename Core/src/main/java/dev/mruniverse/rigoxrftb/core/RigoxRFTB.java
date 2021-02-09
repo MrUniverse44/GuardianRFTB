@@ -5,7 +5,6 @@ import dev.mruniverse.rigoxrftb.core.enums.RigoxFiles;
 import dev.mruniverse.rigoxrftb.core.enums.NMSenum;
 import dev.mruniverse.rigoxrftb.core.enums.SaveMode;
 import dev.mruniverse.rigoxrftb.core.files.DataStorage;
-import dev.mruniverse.rigoxrftb.core.files.FileManager;
 import dev.mruniverse.rigoxrftb.core.files.FileStorage;
 import dev.mruniverse.rigoxrftb.core.games.GameEquip;
 import dev.mruniverse.rigoxrftb.core.games.GameManager;
@@ -33,7 +32,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 public final class RigoxRFTB extends JavaPlugin {
-    private FileManager fileManager;
     private FileStorage fileStorage;
     private boolean hasPAPI = false;
     private static RigoxRFTB instance;
@@ -79,12 +77,6 @@ public final class RigoxRFTB extends JavaPlugin {
         fileStorage = new FileStorage(this);
         fileStorage.save(SaveMode.ALL);
 
-
-        fileManager = new FileManager(this);
-        fileManager.loadFiles();
-        fileManager.loadConfiguration();
-        fileManager.save(SaveMode.ALL);
-
         hasPAPI = getServer().getPluginManager().isPluginEnabled("PlaceholderAPI");
 
         // * Listener Setup
@@ -107,7 +99,7 @@ public final class RigoxRFTB extends JavaPlugin {
         rigoxGameManager.loadChests();
         rigoxGameManager.loadGames();
 
-        FileConfiguration items = getFiles().getControl(RigoxFiles.ITEMS);
+        FileConfiguration items = getStorage().getControl(RigoxFiles.ITEMS);
         ConfigurationSection section;
         // * Beast Items
         try {
@@ -358,7 +350,7 @@ public final class RigoxRFTB extends JavaPlugin {
     }
     @SuppressWarnings("ConstantConditions")
     public ItemStack getEnchantmentList(ItemStack item, RigoxFiles fileOfPath, String path) {
-        for(String enchants : getFiles().getControl(fileOfPath).getStringList(path)) {
+        for(String enchants : getStorage().getControl(fileOfPath).getStringList(path)) {
             try {
                 item = XEnchantment.addEnchantFromString(item, enchants);
             } catch(Throwable throwable) {
@@ -408,7 +400,7 @@ public final class RigoxRFTB extends JavaPlugin {
     public boolean hasPAPI() { return hasPAPI; }
     public ListenerUtil getListener() { return rigoxListeners; }
     public static RigoxRFTB getInstance() { return instance; }
-    public FileManager getFiles() { return fileManager; }
+    public FileStorage getStorage() { return fileStorage; }
     public GameManager getGameManager() { return rigoxGameManager; }
     public DataStorage getData() { return dataStorage; }
     public Logger getLogs() { return logger; }

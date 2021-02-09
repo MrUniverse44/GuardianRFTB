@@ -14,18 +14,18 @@ public enum GameStatus {
     public String getStatus() {
         switch (this) {
             case WAITING:
-                return RigoxRFTB.getInstance().getFiles().getControl(RigoxFiles.SETTINGS).getString("settings.gameStatus.waiting");
+                return RigoxRFTB.getInstance().getStorage().getControl(RigoxFiles.SETTINGS).getString("settings.gameStatus.waiting");
             case IN_GAME:
-                return RigoxRFTB.getInstance().getFiles().getControl(RigoxFiles.SETTINGS).getString("settings.gameStatus.InGame");
+                return RigoxRFTB.getInstance().getStorage().getControl(RigoxFiles.SETTINGS).getString("settings.gameStatus.InGame");
             case STARTING:
-                return RigoxRFTB.getInstance().getFiles().getControl(RigoxFiles.SETTINGS).getString("settings.gameStatus.starting");
+                return RigoxRFTB.getInstance().getStorage().getControl(RigoxFiles.SETTINGS).getString("settings.gameStatus.starting");
             case PREPARING:
-                return RigoxRFTB.getInstance().getFiles().getControl(RigoxFiles.SETTINGS).getString("settings.gameStatus.preparing");
+                return RigoxRFTB.getInstance().getStorage().getControl(RigoxFiles.SETTINGS).getString("settings.gameStatus.preparing");
             case PLAYING:
-                return RigoxRFTB.getInstance().getFiles().getControl(RigoxFiles.SETTINGS).getString("settings.gameStatus.playing");
+                return RigoxRFTB.getInstance().getStorage().getControl(RigoxFiles.SETTINGS).getString("settings.gameStatus.playing");
             case RESTARTING:
             default:
-                return RigoxRFTB.getInstance().getFiles().getControl(RigoxFiles.SETTINGS).getString("settings.gameStatus.ending");
+                return RigoxRFTB.getInstance().getStorage().getControl(RigoxFiles.SETTINGS).getString("settings.gameStatus.ending");
         }
     }
 }

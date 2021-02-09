@@ -91,8 +91,8 @@ public class DataStorage {
     }
 
     public void loadDatabase() {
-        if (plugin.getFiles().getControl(RigoxFiles.MYSQL).getBoolean("mysql.enabled")) {
-            mySQL.connect(plugin.getFiles().getControl(RigoxFiles.MYSQL).getString("mysql.host"),plugin.getFiles().getControl(RigoxFiles.MYSQL).getString("mysql.database"),plugin.getFiles().getControl(RigoxFiles.MYSQL).getString("mysql.username"),plugin.getFiles().getControl(RigoxFiles.MYSQL).getString("mysql.password"));
+        if (plugin.getStorage().getControl(RigoxFiles.MYSQL).getBoolean("mysql.enabled")) {
+            mySQL.connect(plugin.getStorage().getControl(RigoxFiles.MYSQL).getString("mysql.host"),plugin.getStorage().getControl(RigoxFiles.MYSQL).getString("mysql.database"),plugin.getStorage().getControl(RigoxFiles.MYSQL).getString("mysql.username"),plugin.getStorage().getControl(RigoxFiles.MYSQL).getString("mysql.password"));
         } else {
             sql.loadData();
             plugin.getLogs().info("MySQL is disabled, using data.yml");
@@ -100,7 +100,7 @@ public class DataStorage {
     }
 
     public void disableDatabase() {
-        if (plugin.getFiles().getControl(RigoxFiles.MYSQL).getBoolean("mysql.enabled")) {
+        if (plugin.getStorage().getControl(RigoxFiles.MYSQL).getBoolean("mysql.enabled")) {
             mySQL.close();
         } else {
             sql.putData();

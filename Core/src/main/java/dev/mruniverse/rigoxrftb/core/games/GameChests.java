@@ -28,13 +28,13 @@ public class GameChests {
         loadItems();
     }
     private void createInv() {
-        String invName = plugin.getFiles().getControl(RigoxFiles.CHESTS).getString("chests." + chestID + ".inventoryName");
+        String invName = plugin.getStorage().getControl(RigoxFiles.CHESTS).getString("chests." + chestID + ".inventoryName");
 
         if(invName == null) invName = "&8Chest";
 
         invName = ChatColor.translateAlternateColorCodes('&',invName);
 
-        int rows = getRows(plugin.getFiles().getControl(RigoxFiles.CHESTS).getInt("chests.armor.inventoryRows"));
+        int rows = getRows(plugin.getStorage().getControl(RigoxFiles.CHESTS).getInt("chests.armor.inventoryRows"));
 
         chestInventory = plugin.getServer().createInventory(null,rows,invName);
     }
@@ -53,7 +53,7 @@ public class GameChests {
         }
     }
     private void loadItems() {
-        FileConfiguration loadConfig = plugin.getFiles().getControl(RigoxFiles.CHESTS);
+        FileConfiguration loadConfig = plugin.getStorage().getControl(RigoxFiles.CHESTS);
         String path = "chests." + chestID + ".items.";
         try {
             ConfigurationSection section = loadConfig.getConfigurationSection("chests." + chestID + ".items");

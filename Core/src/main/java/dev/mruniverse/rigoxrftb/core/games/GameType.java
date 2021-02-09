@@ -11,11 +11,11 @@ public enum GameType {
     public String getType() {
         switch (this) {
             case DOUBLE_BEAST:
-                return RigoxRFTB.getInstance().getFiles().getControl(RigoxFiles.SETTINGS).getString("gameType.DOUBLE_BEAST");
+                return RigoxRFTB.getInstance().getStorage().getControl(RigoxFiles.SETTINGS).getString("gameType.DOUBLE_BEAST");
             case INFECTED:
-                return RigoxRFTB.getInstance().getFiles().getControl(RigoxFiles.SETTINGS).getString("gameType.INFECTED");
+                return RigoxRFTB.getInstance().getStorage().getControl(RigoxFiles.SETTINGS).getString("gameType.INFECTED");
             default:
-                return RigoxRFTB.getInstance().getFiles().getControl(RigoxFiles.SETTINGS).getString("gameType.CLASSIC");
+                return RigoxRFTB.getInstance().getStorage().getControl(RigoxFiles.SETTINGS).getString("gameType.CLASSIC");
         }
     }
 }

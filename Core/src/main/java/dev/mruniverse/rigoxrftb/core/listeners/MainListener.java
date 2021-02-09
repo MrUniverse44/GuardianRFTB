@@ -43,9 +43,9 @@ public class MainListener implements Listener {
     @EventHandler
     public void joinOptions(PlayerJoinEvent event) {
         plugin.addPlayer(event.getPlayer());
-        FileConfiguration file = plugin.getFiles().getControl(RigoxFiles.SETTINGS);
+        FileConfiguration file = plugin.getStorage().getControl(RigoxFiles.SETTINGS);
         Player player = event.getPlayer();
-        if (!plugin.getFiles().getControl(RigoxFiles.MYSQL).getBoolean("mysql.enabled") && !plugin.getData().getSQL().deaths.containsKey(player.getUniqueId().toString())) {
+        if (!plugin.getStorage().getControl(RigoxFiles.MYSQL).getBoolean("mysql.enabled") && !plugin.getData().getSQL().deaths.containsKey(player.getUniqueId().toString())) {
             plugin.getData().getSQL().createPlayer(player);
         }
         if(file.getBoolean("settings.options.hideServerJoinMessage")) {
@@ -185,7 +185,7 @@ public class MainListener implements Listener {
     @EventHandler
     public void joinScoreboard(PlayerJoinEvent event) {
         try {
-            FileConfiguration file = plugin.getFiles().getControl(RigoxFiles.SETTINGS);
+            FileConfiguration file = plugin.getStorage().getControl(RigoxFiles.SETTINGS);
             if (file.getBoolean("settings.lobbyScoreboard-only-in-lobby-world")) {
                 String lC = file.getString("settings.lobbyLocation");
                 if(lC == null ) lC = "notSet";
@@ -197,13 +197,13 @@ public class MainListener implements Listener {
                     String[] loc = lC.split(",");
                     World w = Bukkit.getWorld(loc[0]);
                     if (event.getPlayer().getWorld().equals(w)) {
-                        if(plugin.getFiles().getControl(RigoxFiles.SCOREBOARD).getBoolean("scoreboards.lobby.toggle")) {
+                        if(plugin.getStorage().getControl(RigoxFiles.SCOREBOARD).getBoolean("scoreboards.lobby.toggle")) {
                             plugin.getScoreboards().setScoreboard(RigoxBoard.LOBBY,event.getPlayer());
                         }
                     }
                 }
             } else {
-                if(plugin.getFiles().getControl(RigoxFiles.SCOREBOARD).getBoolean("scoreboards.lobby.toggle")) {
+                if(plugin.getStorage().getControl(RigoxFiles.SCOREBOARD).getBoolean("scoreboards.lobby.toggle")) {
                     plugin.getScoreboards().setScoreboard(RigoxBoard.LOBBY,event.getPlayer());
                 }
             }
@@ -215,12 +215,12 @@ public class MainListener implements Listener {
     @EventHandler
     public void pluginChat(AsyncPlayerChatEvent event) {
         if(event.isCancelled()) return;
-        if(!plugin.getFiles().getControl(RigoxFiles.SETTINGS).getBoolean("settings.options.pluginChat")) return;
+        if(!plugin.getStorage().getControl(RigoxFiles.SETTINGS).getBoolean("settings.options.pluginChat")) return;
         Player player = event.getPlayer();
         PlayerManager playerManager = plugin.getPlayerData(player.getUniqueId());
         if(playerManager == null || playerManager.getGame() == null) {
-            String lC = plugin.getFiles().getControl(RigoxFiles.SETTINGS).getString("settings.lobbyLocation");
-            String lobbyChat = plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.others.customChat.lobby");
+            String lC = plugin.getStorage().getControl(RigoxFiles.SETTINGS).getString("settings.lobbyLocation");
+            String lobbyChat = plugin.getStorage().getControl(RigoxFiles.MESSAGES).getString("messages.others.customChat.lobby");
             if(lobbyChat == null) lobbyChat = "&7<player_name>&8: &f%message%";
             if(lC == null ) lC = "notSet";
             if (lC.equalsIgnoreCase("notSet")) {
@@ -244,7 +244,7 @@ public class MainListener implements Listener {
         plugin.getLogs().debug("CHAT | " + player.getName() + ": " + event.getMessage());
         Game game = playerManager.getGame();
         if(game.getSpectators().contains(player)) {
-            String spectatorChat = plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.others.customChat.spectator");
+            String spectatorChat = plugin.getStorage().getControl(RigoxFiles.MESSAGES).getString("messages.others.customChat.spectator");
             if(spectatorChat == null) spectatorChat = "&8[SPECTATOR] &7<player_name>&8: &f%message%";
             for(Player spectator : game.getSpectators()) {
                 plugin.getUtils().sendMessage(spectator,spectatorChat.replace("<player_name>",player.getName())
@@ -252,13 +252,13 @@ public class MainListener implements Listener {
             }
             return;
         }
-        String inGameChat = plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.others.customChat.inGame");
+        String inGameChat = plugin.getStorage().getControl(RigoxFiles.MESSAGES).getString("messages.others.customChat.inGame");
         String playerRole;
         if(inGameChat == null) inGameChat = "&a[%player_role%&a] &7<player_name>&8: &f%message%";
         if(game.getBeasts().contains(player)) {
-            playerRole = plugin.getFiles().getControl(RigoxFiles.SETTINGS).getString("roles.beast");
+            playerRole = plugin.getStorage().getControl(RigoxFiles.SETTINGS).getString("roles.beast");
         } else {
-            playerRole = plugin.getFiles().getControl(RigoxFiles.SETTINGS).getString("roles.runner");
+            playerRole = plugin.getStorage().getControl(RigoxFiles.SETTINGS).getString("roles.runner");
         }
         if(playerRole == null) playerRole = "Runner";
         for(Player spectator : game.getPlayers()) {
@@ -286,7 +286,7 @@ public class MainListener implements Listener {
         }
         plugin.removePlayer(event.getPlayer());
         plugin.getNMSHandler().deleteBossBar(event.getPlayer());
-        if(plugin.getFiles().getControl(RigoxFiles.SETTINGS).getBoolean("settings.options.hideServerQuitMessage")) {
+        if(plugin.getStorage().getControl(RigoxFiles.SETTINGS).getBoolean("settings.options.hideServerQuitMessage")) {
             event.setQuitMessage(null);
         }
     }
@@ -363,15 +363,15 @@ public class MainListener implements Listener {
         String returnMsg;
         switch (cause) {
             case LAVA:
-                returnMsg = plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.inGame.deathMessages.lava");
+                returnMsg = plugin.getStorage().getControl(RigoxFiles.MESSAGES).getString("messages.inGame.deathMessages.lava");
                 if(returnMsg == null) returnMsg = "&7%victim% was on fire!";
                 return returnMsg.replace("%victim%",player.getName());
             case VOID:
-                returnMsg = plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.inGame.deathMessages.void");
+                returnMsg = plugin.getStorage().getControl(RigoxFiles.MESSAGES).getString("messages.inGame.deathMessages.void");
                 if(returnMsg == null) returnMsg = "&7%victim% was searching a diamond.";
                 return returnMsg.replace("%victim%",player.getName());
             default:
-                returnMsg = plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.inGame.deathMessages.otherCause");
+                returnMsg = plugin.getStorage().getControl(RigoxFiles.MESSAGES).getString("messages.inGame.deathMessages.otherCause");
                 if(returnMsg == null) returnMsg = "&7%victim% died";
                 return returnMsg.replace("%victim%",player.getName());
         }
@@ -394,14 +394,14 @@ public class MainListener implements Listener {
     @EventHandler
     public void lobbyDamage(EntityDamageEvent event) {
         if(event.getEntity().getType().equals(EntityType.PLAYER)) {
-            String lC = plugin.getFiles().getControl(RigoxFiles.SETTINGS).getString("settings.lobbyLocation");
+            String lC = plugin.getStorage().getControl(RigoxFiles.SETTINGS).getString("settings.lobbyLocation");
             if(lC == null) lC = "notSet";
             if (!lC.equalsIgnoreCase("notSet")) {
                 String[] loc = lC.split(",");
                 World w = Bukkit.getWorld(loc[0]);
                 if (event.getEntity().getWorld().equals(w)) {
                     event.setCancelled(true);
-                    if(plugin.getFiles().getControl(RigoxFiles.SETTINGS).getBoolean("settings.options.lobby-voidSpawnTP")) {
+                    if(plugin.getStorage().getControl(RigoxFiles.SETTINGS).getBoolean("settings.options.lobby-voidSpawnTP")) {
                         if (event.getCause().equals(EntityDamageEvent.DamageCause.VOID)) {
                             Location location = plugin.getUtils().getLocationFromString(lC);
                             event.getEntity().teleport(location);
@@ -438,7 +438,7 @@ public class MainListener implements Listener {
                         } else {
                             if((victim.getHealth() - event.getFinalDamage()) <= 0) {
                                 String deathMessage;
-                                deathMessage = plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.inGame.deathMessages.pvp");
+                                deathMessage = plugin.getStorage().getControl(RigoxFiles.MESSAGES).getString("messages.inGame.deathMessages.pvp");
                                 if(deathMessage == null) deathMessage = "&7%victim% was killed by %attacker%";
                                 deathMessage = deathMessage.replace("%victim%",victim.getName()).replace("%attacker%",attacker.getName());
                                 for(Player inGamePlayer : game.getPlayers()) {
@@ -474,7 +474,7 @@ public class MainListener implements Listener {
                 if(!event.isCancelled()) {
                     if((victim.getHealth() - event.getFinalDamage()) <= 0) {
                         String deathMessage;
-                        deathMessage = plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.inGame.deathMessages.bow");
+                        deathMessage = plugin.getStorage().getControl(RigoxFiles.MESSAGES).getString("messages.inGame.deathMessages.bow");
                         if(deathMessage == null) deathMessage = "&7%victim% was shot by %attacker%";
                         if(shooter != null) {
                             deathMessage = deathMessage.replace("%victim%", victim.getName()).replace("%attacker%", shooter.getName());
@@ -491,7 +491,7 @@ public class MainListener implements Listener {
     }
     @EventHandler
     public void lobbyDrop(PlayerDropItemEvent event) {
-        String lC = plugin.getFiles().getControl(RigoxFiles.SETTINGS).getString("settings.lobbyLocation");
+        String lC = plugin.getStorage().getControl(RigoxFiles.SETTINGS).getString("settings.lobbyLocation");
         Player player = event.getPlayer();
         if(lC == null) lC = "notSet";
         if (!lC.equalsIgnoreCase("notSet")) {
@@ -512,7 +512,7 @@ public class MainListener implements Listener {
     @EventHandler
     public void lobbyHunger(FoodLevelChangeEvent event) {
         if(event.getEntity().getType().equals(EntityType.PLAYER)) {
-            String lC = plugin.getFiles().getControl(RigoxFiles.SETTINGS).getString("settings.lobbyLocation");
+            String lC = plugin.getStorage().getControl(RigoxFiles.SETTINGS).getString("settings.lobbyLocation");
             if(lC == null) lC = "notSet";
             if (!lC.equalsIgnoreCase("notSet")) {
                 String[] loc = lC.split(",");
@@ -540,16 +540,16 @@ public class MainListener implements Listener {
                 if(name == null) name = "null";
                 final Game game = plugin.getGameManager().getGame(name);
                 if (game == null) {
-                    String errorMsg = plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.admin.arenaError");
+                    String errorMsg = plugin.getStorage().getControl(RigoxFiles.MESSAGES).getString("messages.admin.arenaError");
                     if(errorMsg == null) errorMsg = "&c%arena_id% don't exists";
                     errorMsg = errorMsg.replace("%arena_id%", name);
                     plugin.getUtils().sendMessage(player,errorMsg);
                     return;
                 }
-                List<String> signs = plugin.getFiles().getControl(RigoxFiles.GAMES).getStringList("games." + name + ".signs");
+                List<String> signs = plugin.getStorage().getControl(RigoxFiles.GAMES).getStringList("games." + name + ".signs");
                 signs.add(plugin.getUtils().getStringFromLocation(event.getBlock().getLocation()));
-                plugin.getFiles().getControl(RigoxFiles.GAMES).set("games." + name + ".signs",signs);
-                plugin.getFiles().save(SaveMode.GAMES_FILES);
+                plugin.getStorage().getControl(RigoxFiles.GAMES).set("games." + name + ".signs",signs);
+                plugin.getStorage().save(SaveMode.GAMES_FILES);
                 game.loadSigns();
             }
         }catch (Throwable throwable) {
@@ -578,7 +578,7 @@ public class MainListener implements Listener {
     @EventHandler
     public void joinTeleport(PlayerJoinEvent event) {
         try {
-            FileConfiguration file = plugin.getFiles().getControl(RigoxFiles.SETTINGS);
+            FileConfiguration file = plugin.getStorage().getControl(RigoxFiles.SETTINGS);
             if (file.getBoolean("settings.options.joinLobbyTeleport")) {
                 String lC = file.getString("settings.lobbyLocation");
                 if(lC == null) lC = "notSet";
@@ -602,7 +602,7 @@ public class MainListener implements Listener {
                             plugin.getLogs().error("Can't teleport player to lobby on join");
                         }
                     });
-                    if(plugin.getFiles().getControl(RigoxFiles.SCOREBOARD).getBoolean("scoreboards.lobby.toggle")) {
+                    if(plugin.getStorage().getControl(RigoxFiles.SCOREBOARD).getBoolean("scoreboards.lobby.toggle")) {
                         plugin.getScoreboards().setScoreboard(RigoxBoard.LOBBY,event.getPlayer());
                     }
                     if(file.getBoolean("settings.options.joinHeal")) {
@@ -612,7 +612,7 @@ public class MainListener implements Listener {
                         event.getPlayer().setExp(0.0F);
                     }
                     if(file.getBoolean("settings.options.lobby-actionBar")) {
-                        plugin.getUtils().sendActionbar(event.getPlayer(),plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.lobby.actionBar"));
+                        plugin.getUtils().sendActionbar(event.getPlayer(),plugin.getStorage().getControl(RigoxFiles.MESSAGES).getString("messages.lobby.actionBar"));
                     }
                     if(file.getBoolean("settings.options.joinAdventureGamemode")) {
                         event.getPlayer().setGameMode(GameMode.ADVENTURE);

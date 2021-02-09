@@ -68,11 +68,11 @@ public class Game {
 
     public Game(RigoxRFTB main, String name) {
         gameTimer = 0;
-        gameFile = main.getFiles().getControl(RigoxFiles.GAMES);
+        gameFile = main.getStorage().getControl(RigoxFiles.GAMES);
         gameChestsTypes = new ArrayList<>();
-        settingsFile = main.getFiles().getControl(RigoxFiles.SETTINGS);
+        settingsFile = main.getStorage().getControl(RigoxFiles.SETTINGS);
         gameChests = new HashMap<>();
-        messagesFile = main.getFiles().getControl(RigoxFiles.MESSAGES);
+        messagesFile = main.getStorage().getControl(RigoxFiles.MESSAGES);
         plugin = main;
         players = new ArrayList<>();
         signs = new ArrayList<>();

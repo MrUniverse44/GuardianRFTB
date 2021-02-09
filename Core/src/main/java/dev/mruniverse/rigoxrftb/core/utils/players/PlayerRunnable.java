@@ -20,14 +20,14 @@ public class PlayerRunnable extends BukkitRunnable {
     public PlayerRunnable(RigoxRFTB main) {
         plugin = main;
         floatConverter = new FloatConverter();
-        bossLb = plugin.getFiles().getControl(RigoxFiles.SETTINGS).getBoolean("settings.options.lobby-bossBar");
-        bossLobby = plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.lobby.bossBar");
-        actionLb = plugin.getFiles().getControl(RigoxFiles.SETTINGS).getBoolean("settings.options.lobby-actionBar");
-        actionLobby = plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.lobby.actionBar");
-        bossGm = plugin.getFiles().getControl(RigoxFiles.SETTINGS).getBoolean("settings.ShowBeastDistance.toggle");
-        bossGameRunners = plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.inGame.others.bossBar.toRunners");
-        bossGameBeast = plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.inGame.others.bossBar.toBeasts");
-        String format = plugin.getFiles().getControl(RigoxFiles.SETTINGS).getString("settings.ShowBeastDistance.Format");
+        bossLb = plugin.getStorage().getControl(RigoxFiles.SETTINGS).getBoolean("settings.options.lobby-bossBar");
+        bossLobby = plugin.getStorage().getControl(RigoxFiles.MESSAGES).getString("messages.lobby.bossBar");
+        actionLb = plugin.getStorage().getControl(RigoxFiles.SETTINGS).getBoolean("settings.options.lobby-actionBar");
+        actionLobby = plugin.getStorage().getControl(RigoxFiles.MESSAGES).getString("messages.lobby.actionBar");
+        bossGm = plugin.getStorage().getControl(RigoxFiles.SETTINGS).getBoolean("settings.ShowBeastDistance.toggle");
+        bossGameRunners = plugin.getStorage().getControl(RigoxFiles.MESSAGES).getString("messages.inGame.others.bossBar.toRunners");
+        bossGameBeast = plugin.getStorage().getControl(RigoxFiles.MESSAGES).getString("messages.inGame.others.bossBar.toBeasts");
+        String format = plugin.getStorage().getControl(RigoxFiles.SETTINGS).getString("settings.ShowBeastDistance.Format");
         if(format == null) format = "BOSSBAR";
         if(format.equalsIgnoreCase("ACTIONBAR") || format.equalsIgnoreCase("ACTION BAR") || format.equalsIgnoreCase("ACTION_BAR")) {
             gameBossFormat = GameBossFormat.ACTIONBAR;
@@ -36,14 +36,14 @@ public class PlayerRunnable extends BukkitRunnable {
         }
     }
     public void update() {
-        bossLb = plugin.getFiles().getControl(RigoxFiles.SETTINGS).getBoolean("settings.options.lobby-bossBar");
-        bossLobby = plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.lobby.bossBar");
-        actionLb = plugin.getFiles().getControl(RigoxFiles.SETTINGS).getBoolean("settings.options.lobby-actionBar");
-        actionLobby = plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.lobby.actionBar");
-        bossGm = plugin.getFiles().getControl(RigoxFiles.SETTINGS).getBoolean("settings.ShowBeastDistance.toggle");
-        bossGameRunners = plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.inGame.others.bossBar.toRunners");
-        bossGameBeast = plugin.getFiles().getControl(RigoxFiles.MESSAGES).getString("messages.inGame.others.bossBar.toBeasts");
-        String format = plugin.getFiles().getControl(RigoxFiles.SETTINGS).getString("settings.ShowBeastDistance.Format");
+        bossLb = plugin.getStorage().getControl(RigoxFiles.SETTINGS).getBoolean("settings.options.lobby-bossBar");
+        bossLobby = plugin.getStorage().getControl(RigoxFiles.MESSAGES).getString("messages.lobby.bossBar");
+        actionLb = plugin.getStorage().getControl(RigoxFiles.SETTINGS).getBoolean("settings.options.lobby-actionBar");
+        actionLobby = plugin.getStorage().getControl(RigoxFiles.MESSAGES).getString("messages.lobby.actionBar");
+        bossGm = plugin.getStorage().getControl(RigoxFiles.SETTINGS).getBoolean("settings.ShowBeastDistance.toggle");
+        bossGameRunners = plugin.getStorage().getControl(RigoxFiles.MESSAGES).getString("messages.inGame.others.bossBar.toRunners");
+        bossGameBeast = plugin.getStorage().getControl(RigoxFiles.MESSAGES).getString("messages.inGame.others.bossBar.toBeasts");
+        String format = plugin.getStorage().getControl(RigoxFiles.SETTINGS).getString("settings.ShowBeastDistance.Format");
         if(format == null) format = "BOSSBAR";
         if(format.equalsIgnoreCase("ACTIONBAR") || format.equalsIgnoreCase("ACTION BAR") || format.equalsIgnoreCase("ACTION_BAR")) {
             gameBossFormat = GameBossFormat.ACTIONBAR;
