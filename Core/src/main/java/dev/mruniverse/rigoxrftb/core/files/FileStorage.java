@@ -92,32 +92,46 @@ public class FileStorage {
      * @param Mode mode of reload.
      */
     public void reloadFile(SaveMode Mode) {
-        if(Mode.equals(SaveMode.MESSAGES) || Mode.equals(SaveMode.ALL)) {
-            messages = YamlConfiguration.loadConfiguration(Messages);
-        }
-        if(Mode.equals(SaveMode.DATA) || Mode.equals(SaveMode.ALL)) {
-            data = YamlConfiguration.loadConfiguration(Data);
-        }
-        if(Mode.equals(SaveMode.CHESTS) || Mode.equals(SaveMode.ALL)) {
-            chests = YamlConfiguration.loadConfiguration(Chests);
-        }
-        if(Mode.equals(SaveMode.ITEMS) || Mode.equals(SaveMode.ALL)) {
-            items = YamlConfiguration.loadConfiguration(Items);
-        }
-        if(Mode.equals(SaveMode.MENUS) || Mode.equals(SaveMode.ALL)) {
-            menus = YamlConfiguration.loadConfiguration(Menus);
-        }
-        if(Mode.equals(SaveMode.SETTINGS) || Mode.equals(SaveMode.ALL)) {
-            settings = YamlConfiguration.loadConfiguration(Settings);
-        }
-        if(Mode.equals(SaveMode.SCOREBOARDS) || Mode.equals(SaveMode.ALL)) {
-            boards = YamlConfiguration.loadConfiguration(Boards);
-        }
-        if(Mode.equals(SaveMode.MYSQL) || Mode.equals(SaveMode.ALL)) {
-            mysql = YamlConfiguration.loadConfiguration(MySQL);
-        }
-        if(Mode.equals(SaveMode.GAMES_FILES) || Mode.equals(SaveMode.ALL)) {
-            games = YamlConfiguration.loadConfiguration(Games);
+        switch (Mode) {
+            case CHESTS:
+                chests = YamlConfiguration.loadConfiguration(Chests);
+                break;
+            case ITEMS:
+                items = YamlConfiguration.loadConfiguration(Items);
+                break;
+            case DATA:
+                data = YamlConfiguration.loadConfiguration(Data);
+                break;
+            case MENUS:
+                menus = YamlConfiguration.loadConfiguration(Menus);
+                break;
+            case MESSAGES:
+                messages = YamlConfiguration.loadConfiguration(Messages);
+                break;
+            case MYSQL:
+                mysql = YamlConfiguration.loadConfiguration(MySQL);
+                break;
+            case SETTINGS:
+                settings = YamlConfiguration.loadConfiguration(Settings);
+                break;
+            case SCOREBOARDS:
+                boards = YamlConfiguration.loadConfiguration(Boards);
+                break;
+            case GAMES_FILES:
+                games = YamlConfiguration.loadConfiguration(Games);
+                break;
+            case ALL:
+            default:
+                messages = YamlConfiguration.loadConfiguration(Messages);
+                data = YamlConfiguration.loadConfiguration(Data);
+                items = YamlConfiguration.loadConfiguration(Items);
+                chests = YamlConfiguration.loadConfiguration(Chests);
+                menus = YamlConfiguration.loadConfiguration(Menus);
+                mysql = YamlConfiguration.loadConfiguration(MySQL);
+                settings = YamlConfiguration.loadConfiguration(Settings);
+                boards = YamlConfiguration.loadConfiguration(Boards);
+                games = YamlConfiguration.loadConfiguration(Games);
+                break;
         }
     }
 
