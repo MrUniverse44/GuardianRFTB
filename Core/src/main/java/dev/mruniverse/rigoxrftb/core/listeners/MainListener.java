@@ -365,7 +365,9 @@ public class MainListener implements Listener {
             } else {
                 player.teleport(game.runnersLocation);
             }
-            player.setGameMode(GameMode.SPECTATOR);
+            if(!game.getGameType().equals(GameType.INFECTED)) {
+                player.setGameMode(GameMode.SPECTATOR);
+            }
         }
     }
     @EventHandler

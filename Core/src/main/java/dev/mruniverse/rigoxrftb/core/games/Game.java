@@ -765,6 +765,7 @@ public class Game {
             beasts.add(runner);
             runner.getInventory().clear();
             giveBeastInv(runner);
+            runner.setGameMode(GameMode.ADVENTURE);
             runner.teleport(beastLocation);
         }
         plugin.getPlayerData(runner.getUniqueId()).addDeaths();
