@@ -8,7 +8,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -95,6 +94,28 @@ public class FileStorage {
         }
 
         plugin.getLogs().info(String.format("&7File &e%s.yml &7has been loaded", configName));
+        return cnf;
+    }
+    /**
+     * Creates a config File if it doesn't exists,
+     * reloads if specified file exists.
+     *
+     * @param rigoxFile config to create/reload.
+     */
+    public FileConfiguration loadConfig(File rigoxFile) {
+        if (!rigoxFile.exists()) {
+            saveConfig(rigoxFile);
+        }
+
+        FileConfiguration cnf = null;
+        try {
+            cnf = YamlConfiguration.loadConfiguration(rigoxFile);
+        } catch (Exception e) {
+            plugin.getLogs().warn(String.format("A error occurred while loading the settings file. Error: %s", e));
+            e.printStackTrace();
+        }
+
+        plugin.getLogs().info(String.format("&7File &e%s.yml &7has been loaded", rigoxFile));
         return cnf;
     }
 
@@ -208,20 +229,42 @@ public class FileStorage {
     public void saveConfig(String configName) {
         File folderDir = plugin.getDataFolder();
         File file = new File(plugin.getDataFolder(), configName + ".yml");
-
         if (!folderDir.exists()) {
             boolean createFile = folderDir.mkdir();
-            if(createFile) plugin.getLogs().info("&fFile &3" + configName + ".yml &fcreated!");
+            if(createFile) plugin.getLogs().info("&7Folder created!");
         }
 
         if (!file.exists()) {
             try (InputStream in = plugin.getResource(configName + ".yml")) {
                 if(in != null) {
-                    Files.copy(in, file.toPath());
+                     Files.copy(in, file.toPath());
                 }
-            } catch (IOException e) {
-                plugin.getLogs().warn(String.format("A error occurred while copying the config %s to the plugin data folder. Error: %s", configName, e));
-                e.printStackTrace();
+            } catch (Throwable throwable) {
+                plugin.getLogs().error(String.format("A error occurred while copying the config %s to the plugin data folder. Error: %s", configName, throwable));
+                plugin.getLogs().error(throwable);
+            }
+        }
+    }
+    /**
+     * Save config File Changes & Paths
+     *
+     * @param fileToSave config to save/create.
+     */
+    public void saveConfig(File fileToSave) {
+        if (!fileToSave.getParentFile().exists()) {
+            boolean createFile = fileToSave.mkdir();
+            if(createFile) plugin.getLogs().info("&7Folder created!!");
+        }
+
+        if (!fileToSave.exists()) {
+            plugin.getLogs().debug(fileToSave.getName());
+            try (InputStream in = plugin.getResource(fileToSave.getName() + ".yml")) {
+                if(in != null) {
+                    Files.copy(in, fileToSave.toPath());
+                }
+            } catch (Throwable throwable) {
+                plugin.getLogs().error(String.format("A error occurred while copying the config %s to the plugin data folder. Error: %s", fileToSave.getName(), throwable));
+                plugin.getLogs().error(throwable);
             }
         }
     }
@@ -234,32 +277,32 @@ public class FileStorage {
     public FileConfiguration getControl(RigoxFiles fileToControl) {
         switch (fileToControl) {
             case CHESTS:
-                if(chests == null) items = loadConfig("chests");
+                if(chests == null) items = loadConfig(rxChests);
                 return chests;
             case ITEMS:
-                if(items == null) items = loadConfig("items");
+                if(items == null) items = loadConfig(rxItems);
                 return items;
             case DATA:
-                if(data == null) data = loadConfig("data");
+                if(data == null) data = loadConfig(rxData);
                 return data;
             case GAMES:
-                if(games == null) games = loadConfig("games");
+                if(games == null) games = loadConfig(rxGames);
                 return games;
             case MENUS:
-                if(menus == null) menus = loadConfig("menus");
+                if(menus == null) menus = loadConfig(rxMenus);
                 return menus;
             case SCOREBOARD:
-                if(boards == null) boards = loadConfig("scoreboards");
+                if(boards == null) boards = loadConfig(rxBoards);
                 return boards;
             case MYSQL:
-                if(mysql == null) mysql = loadConfig("mysql");
+                if(mysql == null) mysql = loadConfig(rxMySQL);
                 return mysql;
             case MESSAGES:
-                if(messages == null) messages = loadConfig("messages");
+                if(messages == null) messages = loadConfig(rxMessages);
                 return messages;
             case SETTINGS:
             default:
-                if(settings == null) settings = loadConfig("settings");
+                if(settings == null) settings = loadConfig(rxSettings);
                 return settings;
         }
     }

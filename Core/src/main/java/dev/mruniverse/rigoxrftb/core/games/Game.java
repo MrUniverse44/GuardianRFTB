@@ -210,7 +210,7 @@ public class Game {
         for(String sign : gameFile.getStringList(gamePath + "signs")) {
             Location signLocation = plugin.getUtils().getLocationFromString(sign);
             if(signLocation != null) {
-                if (signLocation.getBlock().getState() instanceof Sign) {
+                if(signLocation.getBlock().getState() instanceof Sign) {
                     signs.add(signLocation);
                 }
             }

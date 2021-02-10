@@ -51,6 +51,8 @@ settings:
     lobby-noHunger: true
     # Clear Inventory On Join
     clearInventory-onJoin: true
+    # Teleport to the lobby when the player is in the void of the lobby world.
+    lobby-voidSpawnTP: true
   # Lobby Scoreboard only in the lobby World
   lobbyScoreboard-only-in-lobby-world: false
   pointSystem:

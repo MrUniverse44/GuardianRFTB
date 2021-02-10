@@ -7,6 +7,7 @@ import dev.mruniverse.rigoxrftb.core.games.Game;
 import dev.mruniverse.rigoxrftb.core.games.GameTeam;
 import dev.mruniverse.rigoxrftb.core.games.GameType;
 import me.clip.placeholderapi.PlaceholderAPI;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -308,13 +309,17 @@ public class RigoxUtils {
     public Location getLocationFromString(String location) {
         if(!location.equalsIgnoreCase("notSet")) {
             String[] loc = location.split(",");
-            World w = plugin.getServer().getWorld(loc[0]);
-            double x = Double.parseDouble(loc[1]);
-            double y = Double.parseDouble(loc[2]);
-            double z = Double.parseDouble(loc[3]);
-            float yaw = Float.parseFloat(loc[4]);
-            float pitch = Float.parseFloat(loc[5]);
-            return new Location(w, x, y, z, yaw, pitch);
+            World w = Bukkit.getWorld(loc[0]);
+            if(w != null) {
+                double x = Double.parseDouble(loc[1]);
+                double y = Double.parseDouble(loc[2]);
+                double z = Double.parseDouble(loc[3]);
+                float yaw = Float.parseFloat(loc[4]);
+                float pitch = Float.parseFloat(loc[5]);
+                return new Location(w, x, y, z, yaw, pitch);
+            }
+            plugin.getLogs().error("Can't get world named: " + loc[0]);
+            return null;
         }
         return null;
     }
