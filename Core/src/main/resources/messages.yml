@@ -13,7 +13,6 @@
 # SpigotMC Link: https://www.spigotmc.org/resources/88817/
 #
 messages:
-  # All messages in this section are only for In-Game messages.
   inGame:
     join: '&7%player% &ehas joined &e(&b%online%&e/&b%max%&e)!'
     quit: '&7%player% &ehas quit!'
@@ -85,7 +84,6 @@ messages:
       bossBar:
         toRunners: '&bDistance between you and &e&lBEAST &f%beastName%'
         toBeasts: '&bRunners with life: &e&l%runners%'
-  # The Lobby BossBar Appear In-Game When the game is Waiting,Starting,Selecting Beast or Ending.
   lobby:
     actionBar: '&bYou are playing &e&lRFTB &bwith &e&lRigoxRFTB'
     bossBar: '&bYou are playing on &e&nRigox Network&b.'

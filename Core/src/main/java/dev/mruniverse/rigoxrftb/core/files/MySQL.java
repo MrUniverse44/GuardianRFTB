@@ -23,7 +23,6 @@ public class MySQL {
             .replace("[port]",port + "")
             .replace("[db]",db);
             con = DriverManager.getConnection(url,user,password);
-            //con = DriverManager.getConnection("jdbc:mysql://" + host + ":" + plugin.getStorage().getControl(RigoxFiles.MYSQL).getInt("mysql.port") + "/" + db + "?autoReconnect=true", user, password);
             plugin.getLogs().info("Connected with MySQL! creating tables");
             List<String> integers = new ArrayList<>();
             integers.add("Kills");

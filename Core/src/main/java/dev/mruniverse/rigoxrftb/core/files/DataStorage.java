@@ -18,12 +18,12 @@ public class DataStorage {
     }
 
     public void createMultiTable(String tableName, List<String> intLists, List<String> sLists) {
-        String intList = "";
+        StringBuilder intList = new StringBuilder();
         for (String text : intLists)
-            intList = intList + ", " + text + " INT(255)";
-        String vList = "";
+            intList.append(", ").append(text).append(" INT(255)");
+        StringBuilder vList = new StringBuilder();
         for (String string : sLists)
-            vList = vList + ", " + string + " VARCHAR(255)";
+            vList.append(", ").append(string).append(" VARCHAR(255)");
         mySQL.Update("CREATE TABLE IF NOT EXISTS " + tableName + " (id INT AUTO_INCREMENT PRIMARY KEY" + vList + intList + ")");
     }
 
@@ -78,15 +78,15 @@ public class DataStorage {
     }
 
     public void register(String tableName, List<String> values) {
-        String names = "";
-        String names2 = "";
+        StringBuilder names = new StringBuilder();
+        StringBuilder names2 = new StringBuilder();
         for (String value : values) {
             String[] valSplit = value.split("-");
-            names = names + valSplit[0] + ", ";
-            names2 = names2 + "'" + valSplit[1] + "', ";
+            names.append(valSplit[0]).append(", ");
+            names2.append("'").append(valSplit[1]).append("', ");
         }
-        names = names.substring(0, names.length() - 2);
-        names2 = names2.substring(0, names2.length() - 2);
+        names = new StringBuilder(names.substring(0, names.length() - 2));
+        names2 = new StringBuilder(names2.substring(0, names2.length() - 2));
         mySQL.Update("INSERT INTO " + tableName + " (" + names + ") VALUES (" + names2 + ")");
     }
 

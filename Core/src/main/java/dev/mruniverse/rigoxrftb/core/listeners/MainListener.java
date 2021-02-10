@@ -124,7 +124,7 @@ public class MainListener implements Listener {
         if(!event.getInventory().equals(plugin.getGameManager().gameMenu.getInventory())) return;
         HashMap<ItemStack,String> hash = plugin.getGameManager().gameMenu.getGameItems();
         ItemStack clickedItem = event.getCurrentItem();
-        if(hash.containsKey(event.getCurrentItem())) {
+        if(hash.containsKey(clickedItem)) {
             plugin.getGameManager().joinGame(player,hash.get(clickedItem));
         }
     }
@@ -555,6 +555,12 @@ public class MainListener implements Listener {
         }catch (Throwable throwable) {
             plugin.getLogs().error("Can't create plugin sign");
             plugin.getLogs().error(throwable);
+        }
+    }
+    @EventHandler
+    public void lobbyClickInventory(InventoryClickEvent event) {
+        if(plugin.getStorage().getControl(RigoxFiles.SETTINGS).getBoolean("settings.options.lobby-blockInventoryClick")) {
+            event.setCancelled(true);
         }
     }
     @EventHandler

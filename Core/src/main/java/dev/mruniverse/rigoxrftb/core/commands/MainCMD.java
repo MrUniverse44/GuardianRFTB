@@ -83,6 +83,7 @@ public class MainCMD implements CommandExecutor {
             if(args[0].equalsIgnoreCase("admin")) {
                 if(args.length == 1 || args[1].equalsIgnoreCase("help")) {
                     if(hasPermission(sender,"RigoxRFTB.admin.help")) {
+                        plugin.getUtils().sendMessage(sender, "&8» &7/" + command + " &cadmin setlobby &b- &eset lobby location.");
                         plugin.getUtils().sendMessage(sender, "&8» &7/" + command + " &cadmin create (gameName) &b- &eCreate arena.");
                         plugin.getUtils().sendMessage(sender, "&8» &7/" + command + " &cadmin delete (gameName) &b- &eDelete arena.");
                         plugin.getUtils().sendMessage(sender, "&8» &7/" + command + " &cadmin setWaiting (gameName) &b- &eSet waitingLocation.");
@@ -308,6 +309,14 @@ public class MainCMD implements CommandExecutor {
                 }
                 if(sender instanceof Player) {
                     Player player = (Player)sender;
+                    if(args[1].equalsIgnoreCase("setlobby")) {
+                        if(hasPermission(sender,"RigoxRFTB.admin.setlobby")) {
+                            String location = plugin.getUtils().getStringFromLocation(player.getLocation());
+                            plugin.getStorage().getControl(RigoxFiles.SETTINGS).set("settings.lobbyLocation",location);
+                            plugin.getStorage().save(SaveMode.SETTINGS);
+                            plugin.getUtils().sendMessage(sender,"&aLocation now is &b" + location + ".");
+                        }
+                    }
                     if (args[1].equalsIgnoreCase("setWaiting")) {
                         if (hasPermission(sender, "RigoxRFTB.admin.locations")) {
                             if (plugin.getStorage().getControl(RigoxFiles.GAMES).contains("games." + args[2])) {

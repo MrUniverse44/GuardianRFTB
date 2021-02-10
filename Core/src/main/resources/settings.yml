@@ -47,6 +47,8 @@ settings:
     lobby-actionBar: true
     # Toggle Damage in Lobby
     lobby-noDamage: true
+    # Toggle Inventory Click
+    lobby-blockInventoryClick: true
     # Toggle Hunger in Lobby
     lobby-noHunger: true
     # Clear Inventory On Join

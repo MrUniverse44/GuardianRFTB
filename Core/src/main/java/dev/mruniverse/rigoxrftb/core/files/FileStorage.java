@@ -115,7 +115,7 @@ public class FileStorage {
             e.printStackTrace();
         }
 
-        plugin.getLogs().info(String.format("&7File &e%s.yml &7has been loaded", rigoxFile));
+        plugin.getLogs().info(String.format("&7File &e%s &7has been loaded", rigoxFile.getName()));
         return cnf;
     }
 
