@@ -557,6 +557,48 @@ public class MainListener implements Listener {
             plugin.getLogs().error(throwable);
         }
     }
+    @SuppressWarnings("deprecation")
+    @EventHandler
+    public void perWorldTab(PlayerChangedWorldEvent event) {
+        Player player = event.getPlayer();
+        World world = player.getWorld();
+        if(plugin.getStorage().getControl(RigoxFiles.SETTINGS).getBoolean("settings.options.PerWorldTab")) {
+            for (Player players : Bukkit.getServer().getOnlinePlayers()) {
+                if (players.getWorld() == world) {
+                    if(!player.getGameMode().equals(GameMode.SPECTATOR)) {
+                        players.showPlayer(player);
+                    }
+                    if(!players.getGameMode().equals(GameMode.SPECTATOR)) {
+                        player.showPlayer(players);
+                    }
+                    continue;
+                }
+                players.hidePlayer(player);
+                player.hidePlayer(players);
+            }
+        }
+    }
+    @SuppressWarnings("deprecation")
+    @EventHandler
+    public void onJoinTab(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+        World world = player.getWorld();
+        if(plugin.getStorage().getControl(RigoxFiles.SETTINGS).getBoolean("settings.options.PerWorldTab")) {
+            for (Player players : Bukkit.getServer().getOnlinePlayers()) {
+                if (players.getWorld() == world) {
+                    if(!player.getGameMode().equals(GameMode.SPECTATOR)) {
+                        players.showPlayer(player);
+                    }
+                    if(!players.getGameMode().equals(GameMode.SPECTATOR)) {
+                        player.showPlayer(players);
+                    }
+                    continue;
+                }
+                players.hidePlayer(player);
+                player.hidePlayer(players);
+            }
+        }
+    }
     @EventHandler
     public void lobbyClickInventory(InventoryClickEvent event) {
         if(plugin.getStorage().getControl(RigoxFiles.SETTINGS).getBoolean("settings.options.lobby-blockInventoryClick")) {
