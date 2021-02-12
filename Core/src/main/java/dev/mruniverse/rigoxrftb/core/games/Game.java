@@ -504,7 +504,9 @@ public class Game {
                         Location location = plugin.getUtils().getLocationFromString(LST);
                         for (Player player : players) {
                             if(location != null) {
-                                player.teleport(location);
+                                if(player.isOnline()) {
+                                    player.teleport(location);
+                                }
                             }
                             player.getInventory().setHelmet(null);
                             player.getInventory().setChestplate(null);
