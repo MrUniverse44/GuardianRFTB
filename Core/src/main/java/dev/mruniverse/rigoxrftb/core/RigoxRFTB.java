@@ -14,6 +14,7 @@ import dev.mruniverse.rigoxrftb.core.utils.*;
 import dev.mruniverse.rigoxrftb.core.utils.players.PlayerManager;
 import dev.mruniverse.rigoxrftb.core.utils.players.PlayerRunnable;
 import dev.mruniverse.rigoxrftb.core.utils.scoreboards.BoardManager;
+import dev.mruniverse.rigoxrftb.core.utils.scoreboards.TitleRunnable;
 import dev.mruniverse.rigoxrftb.core.xseries.XEnchantment;
 import dev.mruniverse.rigoxrftb.core.xseries.XMaterial;
 import org.bukkit.World;
@@ -41,6 +42,7 @@ public final class RigoxRFTB extends JavaPlugin {
     private GameManager rigoxGameManager;
     private DataStorage dataStorage;
     private PlayerRunnable runnable;
+    private TitleRunnable titleRunnable = null;
 
     public ItemStack exitItem;
     public ItemStack kitRunner;
@@ -387,6 +389,10 @@ public final class RigoxRFTB extends JavaPlugin {
 
         // * Tasks
         runnable = new PlayerRunnable(this);
+        if(getStorage().getControl(RigoxFiles.SCOREBOARD).getBoolean("scoreboards.animatedTitle.toggle")) {
+            titleRunnable = new TitleRunnable(this);
+            getServer().getScheduler().runTaskTimerAsynchronously(this,runnable,0L,getStorage().getControl(RigoxFiles.SCOREBOARD).getLong("scoreboards.animatedTitle.repeatTime"));
+        }
         getServer().getScheduler().runTaskTimerAsynchronously(this,runnable,0L,20L);
     }
     public ItemStack getItem(XMaterial xItem,String name,List<String> lore) {
@@ -461,6 +467,7 @@ public final class RigoxRFTB extends JavaPlugin {
     public Logger getLogs() { return logger; }
     public RigoxUtils getUtils() { return rigoxUtils; }
     public PlayerRunnable getRunnable() { return runnable; }
+    public TitleRunnable getTitleRunnable() { return titleRunnable; }
     public BoardManager getScoreboards() { return rigoxScoreboards; }
     public void addPlayer(Player player){
         if(!existPlayer(player)) {
