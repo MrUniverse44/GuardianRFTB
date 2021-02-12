@@ -29,7 +29,7 @@ public class TitleRunnable extends BukkitRunnable {
             PlayerManager playerManager = plugin.getPlayerData(uuid);
             String currentTitle = titles.get(showingTitle);
             plugin.getScoreboards().setTitle(playerManager.getPlayer(),currentTitle);
-            if(showingTitle == titles.size()) {
+            if(showingTitle == (titles.size() - 1)) {
                 showingTitle = 0;
             } else {
                 showingTitle++;
