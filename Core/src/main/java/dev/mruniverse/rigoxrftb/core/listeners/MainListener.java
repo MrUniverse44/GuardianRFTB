@@ -298,6 +298,14 @@ public class MainListener implements Listener {
             event.getDrops().clear();
             event.setDeathMessage(null);
             event.setDroppedExp(0);
+            if(game.gameStatus.equals(GameStatus.WAITING) || game.gameStatus.equals(GameStatus.STARTING)) {
+                player.spigot().respawn();
+                player.setGameMode(GameMode.ADVENTURE);
+                player.teleport(game.waiting);
+                player.setHealth(20);
+                player.setFoodLevel(20);
+                return;
+            }
             if(game.getBeasts().contains(player)) {
                 player.spigot().respawn();
                 player.setGameMode(GameMode.SPECTATOR);
@@ -329,6 +337,7 @@ public class MainListener implements Listener {
                 player.setHealth(20);
                 player.setFoodLevel(20);
             }
+            return;
         }
         if((player.getHealth() - event.getFinalDamage()) <= 0) {
             event.setCancelled(true);
