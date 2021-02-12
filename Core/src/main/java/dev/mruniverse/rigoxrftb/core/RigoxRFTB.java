@@ -391,7 +391,7 @@ public final class RigoxRFTB extends JavaPlugin {
         runnable = new PlayerRunnable(this);
         if(getStorage().getControl(RigoxFiles.SCOREBOARD).getBoolean("scoreboards.animatedTitle.toggle")) {
             titleRunnable = new TitleRunnable(this);
-            getServer().getScheduler().runTaskTimerAsynchronously(this,runnable,0L,getStorage().getControl(RigoxFiles.SCOREBOARD).getLong("scoreboards.animatedTitle.repeatTime"));
+            getServer().getScheduler().runTaskTimerAsynchronously(this,titleRunnable,0L,getStorage().getControl(RigoxFiles.SCOREBOARD).getLong("scoreboards.animatedTitle.repeatTime"));
         }
         getServer().getScheduler().runTaskTimerAsynchronously(this,runnable,0L,20L);
     }
