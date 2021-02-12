@@ -19,7 +19,7 @@ import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.potion.PotionEffect;
 
 import java.util.*;
-
+@SuppressWarnings("deprecation")
 public class Game {
     private final String gameName;
     private final String gamePath;
@@ -759,6 +759,9 @@ public class Game {
         spectators.add(beast);
         plugin.getPlayerData(beast.getUniqueId()).addDeaths();
         beast.setGameMode(GameMode.SPECTATOR);
+        for(Player player : players) {
+            player.hidePlayer(beast);
+        }
         BeastDeathEvent event = new BeastDeathEvent(this,beast);
         plugin.getServer().getPluginManager().callEvent(event);
         if(beasts.size() == 0) {
@@ -772,6 +775,9 @@ public class Game {
         plugin.getServer().getPluginManager().callEvent(event);
         if(!gameType.equals(GameType.INFECTED)) {
             spectators.add(runner);
+            for(Player player : players) {
+                player.hidePlayer(runner);
+            }
             runner.setGameMode(GameMode.SPECTATOR);
         } else {
             beasts.add(runner);

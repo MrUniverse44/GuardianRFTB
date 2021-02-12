@@ -31,8 +31,6 @@ settings:
     PerWorldTab: true
     # Show All players in Game to all players in the lobby (This option only work if PerWorldTab is enabled)
     showInTabLobby-GamePlayers: true
-    # PerWorldChat System
-    PerWorldChat: true
     # Heal user when join to the server
     joinHeal: true
     # Give /gamemode 2 when player join

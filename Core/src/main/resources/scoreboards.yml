@@ -1,4 +1,30 @@
 scoreboards:
+  animatedTitle:
+    toggle: false
+    repeatTime: 20
+    titles:
+      - '&e&lRigoxRFTB'
+      - '&f&lR&e&ligoxRFTB'
+      - '&f&lRi&e&lgoxRFTB'
+      - '&e&lR&f&lig&e&loxRFTB'
+      - '&e&lRi&f&lgo&e&lxRFTB'
+      - '&e&lRig&f&lox&e&lRFTB'
+      - '&e&lRigo&f&lxR&e&lFTB'
+      - '&e&lRigox&f&lRF&e&lTB'
+      - '&e&lRigoxR&f&lFT&e&lB'
+      - '&e&lRigoxRF&f&lTB'
+      - '&e&lRigoxRFT&f&lB'
+      - '&e&lRigoxRFTB'
+      - '&e&lRigoxRFT&f&lB'
+      - '&e&lRigoxRF&f&lTB'
+      - '&e&lRigoxR&f&lFT&e&lB'
+      - '&e&lRigox&f&lRF&e&lTB'
+      - '&e&lRigo&f&lxR&e&lFTB'
+      - '&e&lRig&f&lox&e&lRFTB'
+      - '&e&lRi&f&lgo&e&lxRFTB'
+      - '&e&lR&f&lig&e&loxRFTB'
+      - '&f&lRi&e&lgoxRFTB'
+      - '&f&lR&e&ligoxRFTB'
   lobby:
     toggle: true
     title: '&e&lRigoxRFTB'
