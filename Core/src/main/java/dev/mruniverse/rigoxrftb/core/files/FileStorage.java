@@ -16,7 +16,7 @@ import java.util.List;
 
 public class FileStorage {
     private final RigoxRFTB plugin;
-    private FileConfiguration settings,messages,mysql,data,menus,items,games,boards,chests;
+    private FileConfiguration settings,messages,mysql,data,menus,items,games,boards,chests,kits;
     private final File rxSettings;
     private final File rxMessages;
     private final File rxMySQL;
@@ -26,6 +26,7 @@ public class FileStorage {
     private final File rxGames;
     private final File rxBoards;
     private final File rxChests;
+    private final File rxKits;
     public FileStorage(RigoxRFTB main) {
         plugin = main;
         rxSettings = new File(main.getDataFolder(), "settings.yml");
@@ -37,6 +38,7 @@ public class FileStorage {
         rxGames = new File(main.getDataFolder(), "games.yml");
         rxBoards = new File(main.getDataFolder(), "scoreboards.yml");
         rxChests = new File(main.getDataFolder(), "chests.yml");
+        rxKits = new File(main.getDataFolder(), "kits.yml");
         settings = loadConfig("settings");
         menus = loadConfig("menus");
         messages = loadConfig("messages");
@@ -46,6 +48,7 @@ public class FileStorage {
         games = loadConfig("games");
         boards = loadConfig("scoreboards");
         chests = loadConfig("chests");
+        kits = loadConfig("kits");
     }
 
     public File getFile(RigoxFiles fileToGet) {
@@ -66,6 +69,8 @@ public class FileStorage {
                 return rxMySQL;
             case MESSAGES:
                 return rxMessages;
+            case KITS:
+                return rxKits;
             case SETTINGS:
             default:
                 return rxSettings;
@@ -141,6 +146,9 @@ public class FileStorage {
             case MESSAGES:
                 messages = YamlConfiguration.loadConfiguration(rxMessages);
                 break;
+            case KITS:
+                kits = YamlConfiguration.loadConfiguration(rxKits);
+                break;
             case MYSQL:
                 mysql = YamlConfiguration.loadConfiguration(rxMySQL);
                 break;
@@ -159,6 +167,7 @@ public class FileStorage {
                 data = YamlConfiguration.loadConfiguration(rxData);
                 items = YamlConfiguration.loadConfiguration(rxItems);
                 chests = YamlConfiguration.loadConfiguration(rxChests);
+                kits = YamlConfiguration.loadConfiguration(rxKits);
                 menus = YamlConfiguration.loadConfiguration(rxMenus);
                 mysql = YamlConfiguration.loadConfiguration(rxMySQL);
                 settings = YamlConfiguration.loadConfiguration(rxSettings);
@@ -185,6 +194,9 @@ public class FileStorage {
                 case DATA:
                     getControl(RigoxFiles.DATA).save(rxData);
                     break;
+                case KITS:
+                    getControl(RigoxFiles.KITS).save(rxKits);
+                    break;
                 case GAMES_FILES:
                     getControl(RigoxFiles.GAMES).save(rxGames);
                     break;
@@ -208,6 +220,7 @@ public class FileStorage {
                     getControl(RigoxFiles.SETTINGS).save(rxSettings);
                     getControl(RigoxFiles.CHESTS).save(rxChests);
                     getControl(RigoxFiles.DATA).save(rxData);
+                    getControl(RigoxFiles.KITS).save(rxKits);
                     getControl(RigoxFiles.GAMES).save(rxGames);
                     getControl(RigoxFiles.SCOREBOARD).save(rxBoards);
                     getControl(RigoxFiles.ITEMS).save(rxItems);
@@ -285,6 +298,9 @@ public class FileStorage {
             case DATA:
                 if(data == null) data = loadConfig(rxData);
                 return data;
+            case KITS:
+                if(kits == null) kits = loadConfig(rxKits);
+                return kits;
             case GAMES:
                 if(games == null) games = loadConfig(rxGames);
                 return games;

@@ -1,6 +1,7 @@
 package dev.mruniverse.rigoxrftb.core.kits;
 
 import dev.mruniverse.rigoxrftb.core.RigoxRFTB;
+import dev.mruniverse.rigoxrftb.core.enums.RigoxFiles;
 
 import java.util.HashMap;
 
@@ -13,24 +14,51 @@ public class KitLoader {
         beastKits = new HashMap<>();
         runnerKits = new HashMap<>();
         loadKits(KitType.BEAST);
-        plugin.getLogs().info("Kits loaded!");
+        plugin.getLogs().info(beastKits.keySet().size() + " Beast(s) Kit(s) loaded!");
         loadKits(KitType.RUNNER);
+        plugin.getLogs().info(runnerKits.keySet().size() + " Runner(s) Kit(s) loaded!");
 
     }
     public void loadKits(KitType kitType) {
         switch (kitType) {
             case RUNNER:
-                //load runner kit
+                for(String kit : plugin.getStorage().getContent(RigoxFiles.KITS,"runnerKits",false)) {
+                    loadKit(KitType.RUNNER,kit);
+                }
                 return;
             case BEAST:
-                //load beast kit
+                for(String kit : plugin.getStorage().getContent(RigoxFiles.KITS,"beastKits",false)) {
+                    loadKit(KitType.RUNNER,kit);
+                }
         }
     }
+    public void updateKits() {
+        beastKits = new HashMap<>();
+        runnerKits = new HashMap<>();
+        loadKits(KitType.BEAST);
+        plugin.getLogs().info(beastKits.keySet().size() + " Beast(s) Kit(s) loaded!");
+        loadKits(KitType.RUNNER);
+        plugin.getLogs().info(runnerKits.keySet().size() + " Runner(s) Kit(s) loaded!");
+    }
     public void loadKit(KitType kitType,String kitName) {
-        //load kit
+        KitInfo kitInfo = new KitInfo(plugin,kitType,kitName);
+        switch (kitType) {
+            case RUNNER:
+                runnerKits.put(kitName,kitInfo);
+                return;
+            case BEAST:
+            default:
+                beastKits.put(kitName,kitInfo);
+        }
     }
     public void unloadKit(KitType kitType,String kitName) {
-        //unload kit
+        switch (kitType) {
+            case RUNNER:
+                runnerKits.remove(kitName);
+                return;
+            case BEAST:
+                beastKits.remove(kitName);
+        }
     }
     public HashMap<String,KitInfo> getKits(KitType kitType) {
         switch (kitType) {

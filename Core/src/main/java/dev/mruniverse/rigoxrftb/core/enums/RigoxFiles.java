@@ -8,6 +8,7 @@ public enum RigoxFiles {
     SCOREBOARD,
     MYSQL,
     GAMES,
+    KITS,
     MENUS,
     ITEMS
 }
