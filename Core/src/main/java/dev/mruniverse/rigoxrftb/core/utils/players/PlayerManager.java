@@ -47,18 +47,12 @@ public class PlayerManager {
     public int getWins() {
         if (plugin.getStorage().getControl(RigoxFiles.MYSQL).getBoolean("mysql.enabled")) {
             String table = plugin.getStorage().getControl(RigoxFiles.MYSQL).getString("mysql.table");
-            // integers.add("Kills");
-            //            integers.add("Deaths");
-            //            integers.add("Score");
-            //            integers.add("Wins");
-            //            integers.add("Coins");
-            //            integers.add("LevelXP");
-            //            List<String> strings = new ArrayList<>();
-            //            strings.add("Player");
-            //            integers.add("Rank");
             return plugin.getData().getInt(table, "Wins", "Player", player.getUniqueId().toString());
         }
-        return plugin.getData().getSQL().wins.get(player.getUniqueId().toString());
+        if(plugin.getData().getSQL().wins.get(player.getUniqueId().toString()) != null) {
+            return plugin.getData().getSQL().wins.get(player.getUniqueId().toString());
+        }
+        return 0;
     }
 
     public void setWins(int wins) {
@@ -81,7 +75,10 @@ public class PlayerManager {
             String table = plugin.getStorage().getControl(RigoxFiles.MYSQL).getString("mysql.table");
             return plugin.getData().getInt(table, "Coins", "Player", player.getUniqueId().toString());
         }
-        return plugin.getData().getSQL().coins.get(player.getUniqueId().toString());
+        if(plugin.getData().getSQL().coins.get(player.getUniqueId().toString()) != null) {
+            return plugin.getData().getSQL().coins.get(player.getUniqueId().toString());
+        }
+        return 0;
     }
 
     public int getKills() {
@@ -89,7 +86,10 @@ public class PlayerManager {
             String table = plugin.getStorage().getControl(RigoxFiles.MYSQL).getString("mysql.table");
             return plugin.getData().getInt(table, "Kills", "Player", player.getUniqueId().toString());
         }
-        return plugin.getData().getSQL().kills.get(player.getUniqueId().toString());
+        if(plugin.getData().getSQL().kills.get(player.getUniqueId().toString()) != null) {
+            return plugin.getData().getSQL().kills.get(player.getUniqueId().toString());
+        }
+        return 0;
     }
 
     public void setKills(int kills) {
@@ -102,7 +102,7 @@ public class PlayerManager {
             plugin.getData().getSQL().kills.put(playerName, kills);
         }
     }
-
+    @SuppressWarnings("unused")
     public void addKills() {
         setKills(getKills() + 1);
     }
@@ -112,7 +112,10 @@ public class PlayerManager {
             String table = plugin.getStorage().getControl(RigoxFiles.MYSQL).getString("mysql.table");
             return plugin.getData().getInt(table, "Deaths", "Player", this.player.getUniqueId().toString());
         }
-        return plugin.getData().getSQL().deaths.get(this.player.getUniqueId().toString());
+        if(plugin.getData().getSQL().deaths.get(this.player.getUniqueId().toString()) != null) {
+            return plugin.getData().getSQL().deaths.get(this.player.getUniqueId().toString());
+        }
+        return 0;
     }
 
     public void setDeaths(int deaths) {

@@ -159,10 +159,13 @@ public class MainListener implements Listener {
     private void checkGameChest(Player player,Location location) {
         Game game = plugin.getPlayerData(player.getUniqueId()).getGame();
         if(game == null) return;
+        if(game.getGameChests() == null) return;
         for(String chests : game.getGameChestsTypes()) {
-            if(game.getGameChests().get(chests).contains(location)) {
-                openGameChest(player,chests);
-                return;
+            if(game.getGameChests().get(chests) != null) {
+                if (game.getGameChests().get(chests).contains(location)) {
+                    openGameChest(player, chests);
+                    return;
+                }
             }
         }
     }
