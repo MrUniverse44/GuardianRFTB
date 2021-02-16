@@ -5,6 +5,7 @@ import net.md_5.bungee.api.ChatColor;
 import net.minecraft.server.v1_8_R1.*;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.WorldCreator;
 import org.bukkit.craftbukkit.v1_8_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
