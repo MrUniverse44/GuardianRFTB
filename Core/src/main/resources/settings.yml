@@ -19,6 +19,8 @@ settings:
   maxTime: 500
   # Enable bStats to show your users online and add your server to stats of the plugin in plugin's overview
   bStats: true
+  # Lobby Location ("notSet" by default)
+  lobbyLocation: notSet
   # Extra Options
   options:
     # Teleport to the lobby when the player join
