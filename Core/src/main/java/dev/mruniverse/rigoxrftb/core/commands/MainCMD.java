@@ -4,6 +4,7 @@ import dev.mruniverse.rigoxrftb.core.RigoxRFTB;
 import dev.mruniverse.rigoxrftb.core.enums.RigoxFiles;
 import dev.mruniverse.rigoxrftb.core.enums.SaveMode;
 import dev.mruniverse.rigoxrftb.core.games.GameType;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -14,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("unchecked")
 public class MainCMD implements CommandExecutor {
     private final String command;
     private final RigoxRFTB plugin;
@@ -339,7 +341,7 @@ public class MainCMD implements CommandExecutor {
                             }
                             if (plugin.getStorage().getControl(RigoxFiles.GAMES).contains("games." + args[2])) {
                                 String path = "games." + args[2] + ".chests-location." + args[3];
-                                String toAdd = plugin.getUtils().getStringFromLocation(player.getTargetBlock(null,5).getLocation());
+                                Location toAdd = player.getTargetBlock(null,5).getLocation();
                                 if(falseChest(player.getTargetBlock(null,5).getType())) {
                                     plugin.getUtils().sendMessage(sender,"&cThis block is not a chest.");
                                     return true;
@@ -357,14 +359,14 @@ public class MainCMD implements CommandExecutor {
                                         plugin.getUtils().sendMessage(sender,"&cThis chest location already exists in game '&e" + args[2] + "&c'");
                                         return true;
                                     }
-                                    List<String> chests = plugin.getStorage().getControl(RigoxFiles.GAMES).getStringList(path);
+                                    List<Location> chests = (List<Location>)plugin.getStorage().getControl(RigoxFiles.GAMES).getList(path);
                                     chests.add(toAdd);
                                     plugin.getUtils().sendMessage(sender,"&aChest Location added to chest &b" + args[3] + " &ain game&b " + args[2] + "&a.");
                                     plugin.getStorage().getControl(RigoxFiles.GAMES).set(path,chests);
                                     plugin.getStorage().save(SaveMode.GAMES_FILES);
                                     return true;
                                 }
-                                List<String> chests = new ArrayList<>();
+                                List<Location> chests = new ArrayList<>();
                                 chests.add(toAdd);
                                 plugin.getUtils().sendMessage(sender,"&aChest Location added to chest &b" + args[3] + " &ain game&b " + args[2] + "&a.");
                                 plugin.getStorage().getControl(RigoxFiles.GAMES).set(path,chests);
@@ -387,7 +389,7 @@ public class MainCMD implements CommandExecutor {
                                     return true;
                                 }
                                 String path = "games." + args[2] + ".chests-location." + args[3];
-                                String toRemove = plugin.getUtils().getStringFromLocation(player.getTargetBlock(null,5).getLocation());
+                                Location toRemove = player.getTargetBlock(null,5).getLocation();
                                 if(plugin.getStorage().getControl(RigoxFiles.GAMES).get("games." + args[2] + ".chests") == null) {
                                     plugin.getUtils().sendMessage(sender,"&cThe chest &f" + args[3] + " &cis not added in chest list of game &f" + args[2]);
                                     return true;
@@ -401,7 +403,7 @@ public class MainCMD implements CommandExecutor {
                                         plugin.getUtils().sendMessage(sender,"&cThis chest location already doesn't exists in game '&e" + args[2] + "&c'");
                                         return true;
                                     }
-                                    List<String> chests = plugin.getStorage().getControl(RigoxFiles.GAMES).getStringList(path);
+                                    List<Location> chests = (List<Location>)plugin.getStorage().getControl(RigoxFiles.GAMES).getList(path);
                                     chests.remove(toRemove);
                                     plugin.getUtils().sendMessage(sender,"&aChest Location removed from chest &b" + args[3] + " &ain game&b " + args[2] + "&a.");
                                     plugin.getStorage().getControl(RigoxFiles.GAMES).set(path,chests);
