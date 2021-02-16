@@ -499,9 +499,13 @@ public class Game {
                         return;
                     }
                     if (!playingStage) {
-                        String LST = settingsFile.getString("settings.lobbyLocation");
-                        if(LST == null) LST = "notSet";
-                        Location location = plugin.getUtils().getLocationFromString(LST);
+                        if(settingsFile.get("settings.lobbyLocation") == null) {
+                            plugin.getLogs().error("-----------------------------");
+                            plugin.getLogs().error("Can't show lobby-scoreboard, lobby location is not set");
+                            plugin.getLogs().error("-----------------------------");
+                            return;
+                        }
+                        Location location = settingsFile.getLocation("settings.lobbyLocation");
                         for (Player player : players) {
                             if(location != null) {
                                 if(player.isOnline()) {
@@ -844,9 +848,13 @@ public class Game {
         timerToLobby(GameTeam.BEASTS);
     }
     public void timerToLobby(GameTeam winnerTeam) {
-        String LST = settingsFile.getString("settings.lobbyLocation");
-        if(LST == null) LST = "notSet";
-        Location location = plugin.getUtils().getLocationFromString(LST);
+        if(settingsFile.get("settings.lobbyLocation") == null) {
+            plugin.getLogs().error("-----------------------------");
+            plugin.getLogs().error("Can't show lobby-scoreboard, lobby location is not set");
+            plugin.getLogs().error("-----------------------------");
+            return;
+        }
+        Location location = settingsFile.getLocation("settings.lobbyLocation");
         if (this.players.size() < 1) {
             restart();
             this.gameTimer = 0;
@@ -970,10 +978,14 @@ public class Game {
         player.getInventory().setChestplate(null);
         player.getInventory().setLeggings(null);
         player.getInventory().setBoots(null);
-        String LST = settingsFile.getString("settings.lobbyLocation");
-        if(LST == null) LST = "notSet";
+        if(settingsFile.get("settings.lobbyLocation") == null) {
+            plugin.getLogs().error("-----------------------------");
+            plugin.getLogs().error("Can't show lobby-scoreboard, lobby location is not set");
+            plugin.getLogs().error("-----------------------------");
+            return;
+        }
+        Location location = settingsFile.getLocation("settings.lobbyLocation");
         if(player.isOnline()) {
-            Location location = plugin.getUtils().getLocationFromString(LST);
             if (location != null) {
                 player.teleport(location);
                 player.setGameMode(GameMode.ADVENTURE);

@@ -315,7 +315,7 @@ public class MainCMD implements CommandExecutor {
                     if(args[1].equalsIgnoreCase("setlobby")) {
                         if(hasPermission(sender,"RigoxRFTB.admin.setlobby")) {
                             String location = plugin.getUtils().getStringFromLocation(player.getLocation());
-                            plugin.getStorage().getControl(RigoxFiles.SETTINGS).set("settings.lobbyLocation",location);
+                            plugin.getStorage().getControl(RigoxFiles.SETTINGS).set("settings.lobbyLocation",player.getLocation());
                             plugin.getStorage().save(SaveMode.SETTINGS);
                             plugin.getUtils().sendMessage(sender,"&aLocation now is &b" + location + ".");
                         }

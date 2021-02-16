@@ -20,6 +20,12 @@ public class KitInfo {
         plugin = main;
         type = kitType;
     }
+    public void loadInventory() {
+
+    }
+    public void loadArmor() {
+
+    }
     public String getName() {
         return name;
     }
