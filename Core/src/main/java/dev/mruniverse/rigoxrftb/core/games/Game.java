@@ -148,21 +148,15 @@ public class Game {
         min = gameFile.getInt(gamePath + "min");
         if(min == 1) min = 2;
         gameType = GameType.valueOf(gameFile.getString(gamePath + "gameType"));
-        String bL = gameFile.getString(gamePath + "locations.beast");
-        if(bL == null) bL = "notSet";
-        beastLocation = plugin.getUtils().getLocationFromString(bL);
-        String sbL = gameFile.getString(gamePath + "locations.selected-beast");
-        if(sbL == null) sbL = "notSet";
-        selectedBeast = plugin.getUtils().getLocationFromString(sbL);
-        String rL = gameFile.getString(gamePath + "locations.runners");
-        if(rL == null) rL = "notSet";
-        runnersLocation = plugin.getUtils().getLocationFromString(rL);
-        String wL = gameFile.getString(gamePath + "locations.waiting");
-        if(wL == null) wL = "notSet";
-        waiting = plugin.getUtils().getLocationFromString(wL);
+        beastLocation = gameFile.getLocation(gamePath + "locations.beast");
+        selectedBeast = gameFile.getLocation(gamePath + "locations.selected-beast");
+        runnersLocation = gameFile.getLocation(gamePath + "locations.runners");
+        waiting = gameFile.getLocation(gamePath + "locations.waiting");
         if (beastLocation == null || runnersLocation == null || selectedBeast == null || waiting == null) {
             preparingStage = false;
             gameStatus = GameStatus.PREPARING;
+            plugin.getLogs().error("Can't load gameLocations of " + gameName);
+            return;
         }
         gameStatus = GameStatus.WAITING;
         loadSigns();
@@ -180,8 +174,13 @@ public class Game {
         try {
             if(gameFile.get(gamePath + "chests-location." + chestName) != null) {
                 List<Location> newLocations = new ArrayList<>();
-                for(String locations : gameFile.getStringList(gamePath + "chests-location." + chestName)) {
-                    newLocations.add(plugin.getUtils().getLocationFromString(locations));
+                //for(String locations : gameFile.getStringList(gamePath + "chests-location." + chestName)) {
+                //    newLocations.add(plugin.getUtils().getLocationFromString(locations));
+                //}
+                for (Location signLocation : (List<Location>) Objects.requireNonNull(gameFile.getList(gamePath + "chests-location." + chestName))) {
+                    if (signLocation != null) {
+                        newLocations.add(signLocation);
+                    }
                 }
                 gameChests.put(chestName,newLocations);
             }
@@ -207,13 +206,16 @@ public class Game {
 
     public void loadSigns() {
         signs.clear();
-        for(String sign : gameFile.getStringList(gamePath + "signs")) {
-            Location signLocation = plugin.getUtils().getLocationFromString(sign);
-            if(signLocation != null) {
-                if(signLocation.getBlock().getState() instanceof Sign) {
-                    signs.add(signLocation);
+        try {
+            for (Location signLocation : (List<Location>) Objects.requireNonNull(gameFile.getList(gamePath + "signs"))) {
+                if (signLocation != null) {
+                    if (signLocation.getBlock().getState() instanceof Sign) {
+                        signs.add(signLocation);
+                    }
                 }
             }
+        } catch (Throwable throwable) {
+            plugin.getLogs().error("Can't generate game-signs of " + gameName);
         }
         updateSigns();
     }
