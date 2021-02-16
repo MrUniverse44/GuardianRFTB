@@ -190,22 +190,18 @@ public class MainListener implements Listener {
         try {
             FileConfiguration file = plugin.getStorage().getControl(RigoxFiles.SETTINGS);
             if (file.getBoolean("settings.lobbyScoreboard-only-in-lobby-world")) {
-                if(file.get("settings.lobbyLocation") == null) {
+                String lC = plugin.getStorage().getControl(RigoxFiles.SETTINGS).getString("settings.lobbyLocation");
+                if(lC == null ) lC = "notSet";
+                if (lC.equalsIgnoreCase("notSet")) {
                     plugin.getLogs().error("-----------------------------");
                     plugin.getLogs().error("Can't show lobby-scoreboard, lobby location is not set");
                     plugin.getLogs().error("-----------------------------");
-                    return;
-                }
-                Location location = file.getLocation("settings.lobbyLocation");
-                if(location == null) {
-                    plugin.getLogs().error("-----------------------------");
-                    plugin.getLogs().error("Can't show lobby-scoreboard, lobby location is not set");
-                    plugin.getLogs().error("-----------------------------");
-                    return;
-                }
-                if (event.getPlayer().getWorld().equals(location.getWorld())) {
-                    if(plugin.getStorage().getControl(RigoxFiles.SCOREBOARD).getBoolean("scoreboards.lobby.toggle")) {
-                        plugin.getScoreboards().setScoreboard(RigoxBoard.LOBBY,event.getPlayer());
+                } else {
+                    Location location = plugin.getUtils().getLocationFromString(lC);
+                    if (event.getPlayer().getWorld().equals(location.getWorld())) {
+                        if(plugin.getStorage().getControl(RigoxFiles.SCOREBOARD).getBoolean("scoreboards.lobby.toggle")) {
+                            plugin.getScoreboards().setScoreboard(RigoxBoard.LOBBY,event.getPlayer());
+                        }
                     }
                 }
             } else {
@@ -224,29 +220,25 @@ public class MainListener implements Listener {
         if(!plugin.getStorage().getControl(RigoxFiles.SETTINGS).getBoolean("settings.options.pluginChat")) return;
         Player player = event.getPlayer();
         PlayerManager playerManager = plugin.getPlayerData(player.getUniqueId());
-        FileConfiguration file = plugin.getStorage().getControl(RigoxFiles.SETTINGS);
         if(playerManager == null || playerManager.getGame() == null) {
+            String lC = plugin.getStorage().getControl(RigoxFiles.SETTINGS).getString("settings.lobbyLocation");
             String lobbyChat = plugin.getStorage().getControl(RigoxFiles.MESSAGES).getString("messages.others.customChat.lobby");
             if(lobbyChat == null) lobbyChat = "&7<player_name>&8: &f%message%";
-            if(file.get("settings.lobbyLocation") == null) {
+            if(lC == null ) lC = "notSet";
+            if (lC.equalsIgnoreCase("notSet")) {
                 plugin.getLogs().error("-----------------------------");
                 plugin.getLogs().error("Can't show lobby-scoreboard, lobby location is not set");
                 plugin.getLogs().error("-----------------------------");
-                return;
-            }
-            Location location = file.getLocation("settings.lobbyLocation");
-            if(location == null) {
-                plugin.getLogs().error("-----------------------------");
-                plugin.getLogs().error("Can't show lobby-scoreboard, lobby location is not set");
-                plugin.getLogs().error("-----------------------------");
-                return;
-            }
-            event.setCancelled(true);
-            plugin.getLogs().debug("CHAT | " + player.getName() + ": " + event.getMessage());
-            if(location.getWorld() == null) return;
-            for(Player lPlayer : location.getWorld().getPlayers()) {
-                plugin.getUtils().sendMessage(lPlayer,lobbyChat.replace("<player_name>",player.getName())
-                .replace("%message%",event.getMessage()));
+            } else {
+                event.setCancelled(true);
+                plugin.getLogs().debug("CHAT | " + player.getName() + ": " + event.getMessage());
+                String[] loc = lC.split(",");
+                World w = Bukkit.getWorld(loc[0]);
+                if(w == null) return;
+                for(Player lPlayer : w.getPlayers()) {
+                    plugin.getUtils().sendMessage(lPlayer,lobbyChat.replace("<player_name>",player.getName())
+                    .replace("%message%",event.getMessage()));
+                }
             }
             return;
         }
@@ -531,21 +523,17 @@ public class MainListener implements Listener {
     @EventHandler
     public void lobbyHunger(FoodLevelChangeEvent event) {
         if(event.getEntity().getType().equals(EntityType.PLAYER)) {
-            if(plugin.getStorage().getControl(RigoxFiles.SETTINGS).get("settings.lobbyLocation") == null) {
-                plugin.getLogs().error("-----------------------------");
-                plugin.getLogs().error("Can't show lobby-scoreboard, lobby location is not set");
-                plugin.getLogs().error("-----------------------------");
-                return;
-            }
-            Location location = plugin.getStorage().getControl(RigoxFiles.SETTINGS).getLocation("settings.lobbyLocation");
-            if(location == null) {
-                plugin.getLogs().error("-----------------------------");
-                plugin.getLogs().error("Can't show lobby-scoreboard, lobby location is not set");
-                plugin.getLogs().error("-----------------------------");
-                return;
+            String lC = plugin.getStorage().getControl(RigoxFiles.SETTINGS).getString("settings.lobbyLocation");
+            if(lC == null) lC = "notSet";
+            if (!lC.equalsIgnoreCase("notSet")) {
+                String[] loc = lC.split(",");
+                World w = Bukkit.getWorld(loc[0]);
+                if (event.getEntity().getWorld().equals(w)) {
+                    event.setFoodLevel(20);
+                }
             }
             Player player = (Player)event.getEntity();
-            if(plugin.getPlayerData(player.getUniqueId()).getGame() != null && player.getWorld().equals(location.getWorld())) {
+            if(plugin.getPlayerData(player.getUniqueId()).getGame() != null) {
                 event.setFoodLevel(20);
             }
         }
@@ -651,40 +639,43 @@ public class MainListener implements Listener {
         try {
             FileConfiguration file = plugin.getStorage().getControl(RigoxFiles.SETTINGS);
             if (file.getBoolean("settings.options.joinLobbyTeleport")) {
-                if(file.get("settings.lobbyLocation") == null) {
+                String lC = file.getString("settings.lobbyLocation");
+                if(lC == null) lC = "notSet";
+                if (lC.equalsIgnoreCase("notSet")) {
                     plugin.getLogs().error("-----------------------------");
-                    plugin.getLogs().error("Can't show lobby-scoreboard, lobby location is not set");
+                    plugin.getLogs().error("Can't teleport player to lobby location, lobby location is not set");
                     plugin.getLogs().error("-----------------------------");
-                    return;
-                }
-                Location location = file.getLocation("settings.lobbyLocation");
-                if(location == null) {
-                    plugin.getLogs().error("-----------------------------");
-                    plugin.getLogs().error("Can't show lobby-scoreboard, lobby location is not set");
-                    plugin.getLogs().error("-----------------------------");
-                    return;
-                }
-                plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin,() -> {
-                try {
-                    event.getPlayer().teleport(location);
-                } catch (Exception ex) {
-                    plugin.getLogs().error("Can't teleport player to lobby on join");
-                }
-                });
-                if(plugin.getStorage().getControl(RigoxFiles.SCOREBOARD).getBoolean("scoreboards.lobby.toggle")) {
-                    plugin.getScoreboards().setScoreboard(RigoxBoard.LOBBY,event.getPlayer());
-                }
-                if(file.getBoolean("settings.options.joinHeal")) {
-                    event.getPlayer().setHealth(20.0D);
-                    event.getPlayer().setLevel(0);
-                    event.getPlayer().setFoodLevel(20);
-                    event.getPlayer().setExp(0.0F);
-                }
-                if(file.getBoolean("settings.options.lobby-actionBar")) {
-                    plugin.getUtils().sendActionbar(event.getPlayer(),plugin.getStorage().getControl(RigoxFiles.MESSAGES).getString("messages.lobby.actionBar"));
-                }
-                if(file.getBoolean("settings.options.joinAdventureGamemode")) {
-                    event.getPlayer().setGameMode(GameMode.ADVENTURE);
+                } else {
+                    String[] loc = lC.split(",");
+                    World w = Bukkit.getWorld(loc[0]);
+                    double x = Double.parseDouble(loc[1]);
+                    double y = Double.parseDouble(loc[2]);
+                    double z = Double.parseDouble(loc[3]);
+                    float yaw = Float.parseFloat(loc[4]);
+                    float pitch = Float.parseFloat(loc[5]);
+                    Location location = new Location(w, x, y, z, yaw, pitch);
+                    plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin,() -> {
+                        try {
+                            event.getPlayer().teleport(location);
+                        } catch (Exception ex) {
+                            plugin.getLogs().error("Can't teleport player to lobby on join");
+                        }
+                    });
+                    if(plugin.getStorage().getControl(RigoxFiles.SCOREBOARD).getBoolean("scoreboards.lobby.toggle")) {
+                        plugin.getScoreboards().setScoreboard(RigoxBoard.LOBBY,event.getPlayer());
+                    }
+                    if(file.getBoolean("settings.options.joinHeal")) {
+                        event.getPlayer().setHealth(20.0D);
+                        event.getPlayer().setLevel(0);
+                        event.getPlayer().setFoodLevel(20);
+                        event.getPlayer().setExp(0.0F);
+                    }
+                    if(file.getBoolean("settings.options.lobby-actionBar")) {
+                        plugin.getUtils().sendActionbar(event.getPlayer(),plugin.getStorage().getControl(RigoxFiles.MESSAGES).getString("messages.lobby.actionBar"));
+                    }
+                    if(file.getBoolean("settings.options.joinAdventureGamemode")) {
+                        event.getPlayer().setGameMode(GameMode.ADVENTURE);
+                    }
                 }
             }
         } catch (Throwable throwable) {

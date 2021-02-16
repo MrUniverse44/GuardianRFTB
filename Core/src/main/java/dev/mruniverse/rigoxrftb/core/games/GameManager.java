@@ -114,12 +114,17 @@ public class GameManager {
         gameFiles.set("games." + gameName + ".gameSound1",plugin.getStorage().getControl(RigoxFiles.SETTINGS).getString("settings.defaultSounds.sound1"));
         gameFiles.set("games." + gameName + ".gameSound2",plugin.getStorage().getControl(RigoxFiles.SETTINGS).getString("settings.defaultSounds.sound2"));
         gameFiles.set("games." + gameName + ".gameSound3",plugin.getStorage().getControl(RigoxFiles.SETTINGS).getString("settings.defaultSounds.sound3"));
+        gameFiles.set("games." + gameName + ".locations.waiting", "notSet");
+        gameFiles.set("games." + gameName + ".locations.selected-beast", "notSet");
+        gameFiles.set("games." + gameName + ".locations.beast", "notSet");
+        gameFiles.set("games." + gameName + ".locations.runners", "notSet");
         gameFiles.set("games." + gameName + ".signs", new ArrayList<>());
         plugin.getStorage().save(SaveMode.GAMES_FILES);
     }
     public void setWaiting(String gameName, Location location) {
         try {
-            plugin.getStorage().getControl(RigoxFiles.GAMES).set("games." + gameName + ".locations.waiting", location);
+            String gameLoc = location.getWorld().getName() + "," + location.getX() + "," + location.getY() + "," + location.getZ() + "," + location.getYaw() + "," + location.getPitch();
+            plugin.getStorage().getControl(RigoxFiles.GAMES).set("games." + gameName + ".locations.waiting", gameLoc);
             plugin.getStorage().save(SaveMode.GAMES_FILES);
         }catch (Throwable throwable) {
             plugin.getLogs().error("Can't set waiting lobby for game: " + gameName);
@@ -128,7 +133,8 @@ public class GameManager {
     }
     public void setSelectedBeast(String gameName, Location location) {
         try {
-            plugin.getStorage().getControl(RigoxFiles.GAMES).set("games." + gameName + ".locations.selected-beast", location);
+            String gameLoc = location.getWorld().getName() + "," + location.getX() + "," + location.getY() + "," + location.getZ() + "," + location.getYaw() + "," + location.getPitch();
+            plugin.getStorage().getControl(RigoxFiles.GAMES).set("games." + gameName + ".locations.selected-beast", gameLoc);
             plugin.getStorage().save(SaveMode.GAMES_FILES);
         }catch (Throwable throwable) {
             plugin.getLogs().error("Can't set selected beast location for game: " + gameName);
@@ -137,7 +143,8 @@ public class GameManager {
     }
     public void setBeast(String gameName, Location location) {
         try {
-            plugin.getStorage().getControl(RigoxFiles.GAMES).set("games." + gameName + ".locations.beast", location);
+            String gameLoc = location.getWorld().getName() + "," + location.getX() + "," + location.getY() + "," + location.getZ() + "," + location.getYaw() + "," + location.getPitch();
+            plugin.getStorage().getControl(RigoxFiles.GAMES).set("games." + gameName + ".locations.beast", gameLoc);
             plugin.getStorage().save(SaveMode.GAMES_FILES);
         }catch (Throwable throwable) {
             plugin.getLogs().error("Can't set beast spawn location for game: " + gameName);
@@ -146,7 +153,8 @@ public class GameManager {
     }
     public void setRunners(String gameName, Location location) {
         try {
-            plugin.getStorage().getControl(RigoxFiles.GAMES).set("games." + gameName + ".locations.runners", location);
+            String gameLoc = location.getWorld().getName() + "," + location.getX() + "," + location.getY() + "," + location.getZ() + "," + location.getYaw() + "," + location.getPitch();
+            plugin.getStorage().getControl(RigoxFiles.GAMES).set("games." + gameName + ".locations.runners", gameLoc);
             plugin.getStorage().save(SaveMode.GAMES_FILES);
         }catch (Throwable throwable) {
             plugin.getLogs().error("Can't set runners spawn location for game: " + gameName);
