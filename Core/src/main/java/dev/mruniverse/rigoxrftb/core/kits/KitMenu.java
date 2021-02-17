@@ -6,33 +6,25 @@ import dev.mruniverse.rigoxrftb.core.games.Game;
 import dev.mruniverse.rigoxrftb.core.utils.TextUtilities;
 import dev.mruniverse.rigoxrftb.core.xseries.XMaterial;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class KitMenu {
+
     private final RigoxRFTB plugin;
     private final KitType mode;
+    private final Player player;
     private String name;
     private Inventory chestInventory;
-    private ItemStack Waiting;
-    private ItemStack Starting;
-    private ItemStack Playing;
-    private ItemStack Ending;
-    private List<String> lore;
-    private String iName;
-    public KitMenu(RigoxRFTB main,KitType kitMode) {
+    public KitMenu(RigoxRFTB main,KitType kitMode,Player player) {
         plugin = main;
         mode = kitMode;
+        this.player = player;
         createInv();
-        loadItems();
     }
     private void createInv() {
         String invName = plugin.getStorage().getControl(RigoxFiles.MENUS).getString("menus.kits.inventoryName");
@@ -57,132 +49,38 @@ public class KitMenu {
         chestInventory.clear();
         int slot = 0;
         int maxSlot = chestInventory.getSize();
-        //for(Game game : plugin.getGameManager().getGames()) {
-        //    if(slot != maxSlot) {
-        //        ItemStack gameItem = getGameItem(game);
-        //        ItemMeta itemMeta = gameItem.getItemMeta();
-        //        if(itemMeta != null) {
-        //            itemMeta.setDisplayName(TextUtilities.recolor(iName.replace("%map_name%", game.getName()
-        //                    .replace("%map_status%", game.gameStatus.getStatus()
-        //                            .replace("%map_mode%", game.getGameType().getType())
-        //                            .replace("%map_on%", game.getPlayers().size() + "")
-        //                            .replace("%map_max%", game.max + "")))));
-        //            itemMeta.setLore(getLore(game));
-        //            gameItem.setItemMeta(itemMeta);
-        //        }
-        //        chestInventory.setItem(slot,gameItem);
-        //    }
-        //    slot++;
-        //}
-        for(String kitName : plugin.getKitLoader().getKits(mode).keySet()) {
+        String blockedMaterial = plugin.getStorage().getControl(RigoxFiles.MENUS).getString("menus.kits.blocked-item.item");
+        String blockedName = plugin.getStorage().getControl(RigoxFiles.MENUS).getString("menus.kits.blocked-item.name");
+        List<String> blockedLore = plugin.getStorage().getControl(RigoxFiles.MENUS).getStringList("menus.kits.blocked-item.lore");
+        if(blockedMaterial == null) blockedMaterial = "STAINED_GLASS_PANE:14";
+        if(blockedName == null) blockedName = "&c&nKit: %kit_name%";
+        for(Map.Entry<String, KitInfo> kitData : plugin.getKitLoader().getKits(mode).entrySet()) {
             if(slot != maxSlot) {
-                
+                if(plugin.getPlayerData(player.getUniqueId()).getKits().contains(kitData.getValue().getID())) {
+                    ItemStack kitItem = kitData.getValue().getKitItem();
+                    chestInventory.setItem(slot, kitItem);
+                } else {
+                    ItemStack item = getItem(blockedMaterial,blockedName,getLore(blockedLore,kitData.getValue()));
+                    if(item != null) {
+                        chestInventory.setItem(slot, item);
+                    }
+                }
             }
             slot++;
         }
+    }
+    public List<String> getLore(List<String> lore, KitInfo kitInfo) {
+        List<String> newLore = new ArrayList<>();
+        for(String line : lore) {
+            newLore.add(line.replace("%kit_name%",kitInfo.getName()).replace("%price%",kitInfo.getPrice() + ""));
+        }
+        return newLore;
     }
     public void setSlots() {
         int slot = 0;
         for(Game game : plugin.getGameManager().getGames()) {
             game.menuSlot = slot;
             slot++;
-        }
-    }
-    public void updateSlot(int slot,Game game) {
-        if(slot != -1) {
-            ItemStack gameItem = getGameItem(game);
-            ItemMeta itemMeta = gameItem.getItemMeta();
-            if(itemMeta != null) {
-                itemMeta.setDisplayName(TextUtilities.recolor(iName.replace("%map_name%", game.getName()
-                        .replace("%map_status%", game.gameStatus.getStatus()
-                                .replace("%map_mode%", game.getGameType().getType())
-                                .replace("%map_on%", game.getPlayers().size() + "")
-                                .replace("%map_max%", game.max + "")))));
-                itemMeta.setLore(getLore(game));
-                gameItem.setItemMeta(itemMeta);
-            }
-            chestInventory.setItem(slot, gameItem);
-            return;
-        }
-        setSlots();
-    }
-    public HashMap<ItemStack,String> getGameItems() {
-        HashMap<ItemStack,String> hash = new HashMap<>();
-        for(Game game : plugin.getGameManager().getGames()) {
-            ItemStack gameItem = getGameItem(game);
-            ItemMeta itemMeta = gameItem.getItemMeta();
-            if(itemMeta != null) {
-                itemMeta.setDisplayName(TextUtilities.recolor(iName.replace("%map_name%", game.getName()
-                        .replace("%map_status%", game.gameStatus.getStatus()
-                                .replace("%map_mode%", game.getGameType().getType())
-                                .replace("%map_on%", game.getPlayers().size() + "")
-                                .replace("%map_max%", game.max + "")))));
-                itemMeta.setLore(getLore(game));
-                gameItem.setItemMeta(itemMeta);
-            }
-            hash.put(gameItem,game.getName());
-        }
-        return hash;
-    }
-    private List<String> getLore(Game game) {
-        List<String> newLore = new ArrayList<>();
-        for(String line : lore) {
-            String newLine = "&7" + line.replace("%map_name%", game.getName()).replace("%map_status%", game.gameStatus.getStatus()).replace("%map_mode%", game.getGameType().getType()).replace("%map_on%", game.getPlayers().size() + "").replace("%map_max%", game.max + "");
-            newLore.add(newLine);
-        }
-        return TextUtilities.recolorLore(newLore);
-    }
-    private ItemStack getGameItem(Game game) {
-        switch (game.gameStatus) {
-            case IN_GAME:
-            case PLAYING:
-                return Playing;
-            case STARTING:
-                return Starting;
-            case PREPARING:
-            case RESTARTING:
-                return Ending;
-            case WAITING:
-            default:
-                return Waiting;
-        }
-    }
-
-    public void reloadMenu() {
-        loadItems();
-    }
-
-    private void loadItems() {
-        FileConfiguration loadConfig = plugin.getStorage().getControl(RigoxFiles.MENUS);
-        try {
-            ConfigurationSection section = loadConfig.getConfigurationSection("menus.game.item-status");
-            if(section == null) throw new Throwable("Can't found beast items in menus.yml (Game Menu)");
-            String WaitingMaterial = loadConfig.getString("menus.game.item-status.waiting");
-            String StartingMaterial = loadConfig.getString("menus.game.item-status.starting");
-            String PlayingMaterial = loadConfig.getString("menus.game.item-status.playing");
-            String EndingMaterial = loadConfig.getString("menus.game.item-status.ending");
-            String itemName = loadConfig.getString("menus.game.item.name");
-
-            List<String> itemLore = loadConfig.getStringList("menus.game.item.lore");
-
-            if(WaitingMaterial == null) WaitingMaterial = "STAINED_CLAY:5";
-            if(StartingMaterial == null) StartingMaterial = "STAINED_CLAY:4";
-            if(PlayingMaterial == null) PlayingMaterial = "STAINED_CLAY:14";
-            if(EndingMaterial == null) EndingMaterial = "STAINED_CLAY:3";
-            if(itemName == null) itemName = "&e&nMap: %map_name%";
-
-            lore = itemLore;
-            iName = itemName;
-
-            Waiting = getItem(WaitingMaterial,itemName,itemLore);
-            Starting = getItem(StartingMaterial,itemName,itemLore);
-            Playing = getItem(PlayingMaterial,itemName,itemLore);
-            Ending = getItem(EndingMaterial,itemName,itemLore);
-
-            pasteItems();
-        } catch (Throwable throwable) {
-            plugin.getLogs().error("Can't get chests items on startup");
-            plugin.getLogs().error(throwable);
         }
     }
     private ItemStack getItem(String material,String itemName,List<String> itemLore) {

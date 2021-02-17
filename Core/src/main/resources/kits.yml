@@ -16,7 +16,7 @@ runnerKits:
   default:
     KitInfo:
       name: '&e&lDEFAULT'
-      kitID: 0
+      kitID: '0'
       price: 0
       lore:
         - '&7Kit Default:'
@@ -58,7 +58,7 @@ beastKits:
   default:
     KitInfo:
       name: '&e&lDEFAULT'
-      kitID: 0
+      kitID: '0'
       price: 0
       lore:
         - '&7Kit Default:'
