@@ -33,7 +33,9 @@ public class MySQL {
             integers.add("LevelXP");
             List<String> strings = new ArrayList<>();
             strings.add("Player");
-            integers.add("Rank");
+            strings.add("Kits");
+            strings.add("SelectedKit");
+            strings.add("Rank");
             plugin.getData().createMultiTable(plugin.getStorage().getControl(RigoxFiles.MYSQL).getString("mysql.table"), integers, strings);
             plugin.getLogs().info("Tables created!");
         } catch (SQLException e) {

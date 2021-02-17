@@ -8,6 +8,7 @@ import dev.mruniverse.rigoxrftb.core.files.DataStorage;
 import dev.mruniverse.rigoxrftb.core.files.FileStorage;
 import dev.mruniverse.rigoxrftb.core.games.GameEquip;
 import dev.mruniverse.rigoxrftb.core.games.GameManager;
+import dev.mruniverse.rigoxrftb.core.kits.KitLoader;
 import dev.mruniverse.rigoxrftb.core.listeners.ListenerUtil;
 import dev.mruniverse.rigoxrftb.core.nms.NMS;
 import dev.mruniverse.rigoxrftb.core.utils.*;
@@ -44,6 +45,7 @@ public final class RigoxRFTB extends JavaPlugin {
     private DataStorage dataStorage;
     private PlayerRunnable runnable;
     private TitleRunnable titleRunnable = null;
+    private KitLoader kitLoader;
 
     public ItemStack exitItem;
     public ItemStack kitRunner;
@@ -95,6 +97,7 @@ public final class RigoxRFTB extends JavaPlugin {
                 // * Utils Setup
 
                 instance.rigoxUtils = new RigoxUtils(instance);
+                instance.kitLoader = new KitLoader(instance);
 
                 // * NMS Setup
 
@@ -467,6 +470,7 @@ public final class RigoxRFTB extends JavaPlugin {
     }
     public HashMap<ItemStack,Integer> getBeastInventory() { return beastInventory; }
     public HashMap<ItemStack,Integer> getLobbyItems() { return lobbyItems; }
+    public KitLoader getKitLoader() { return kitLoader; }
     public int getSlot(ItemStack itemStack) { return lobbyItems.get(itemStack); }
     public NMS getNMSHandler() { return nmsHandler; }
     public boolean hasPAPI() { return hasPAPI; }
@@ -485,7 +489,6 @@ public final class RigoxRFTB extends JavaPlugin {
             rigoxPlayers.put(player.getUniqueId(),new PlayerManager(player,this));
         }
     }
-    @SuppressWarnings("unused")
     public void getItems(GameEquip gameEquipment, Player player) {
 
     }

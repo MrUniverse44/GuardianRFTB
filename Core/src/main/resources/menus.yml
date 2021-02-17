@@ -47,6 +47,19 @@ menus:
           - '&8RigoxRFTB'
           - '&eClick to open boost menu'
         item: EXPERIENCE_BOTTLE
+  kits:
+    inventoryName: '&8Kit Menu'
+    inventoryRows: 3
+    inventorySounds:
+      - ORB_PICKUP
+    blocked-item:
+      item: STAINED_GLASS_PANE:14
+      name: '&c&nKit: %kit_name%'
+      lore:
+        - ' '
+        - '&7Price: &6%price%'
+        - ' '
+        - '&erigox.club'
   game:
     inventoryName: '&8Game Menu'
     inventoryRows: 3

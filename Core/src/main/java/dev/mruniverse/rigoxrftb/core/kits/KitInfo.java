@@ -22,6 +22,7 @@ public class KitInfo {
     private ItemStack leggings = null;
     private ItemStack boots = null;
     private final int price;
+    private final int id;
     public KitInfo(RigoxRFTB main,KitType kitType,String name) {
         this.name = name;
         inventoryItems = new HashMap<>();
@@ -31,6 +32,7 @@ public class KitInfo {
         loadKitItem();
         loadInventory();
         price = plugin.getStorage().getControl(RigoxFiles.KITS).getInt(getPath() + ".KitInfo.price");
+        id = plugin.getStorage().getControl(RigoxFiles.KITS).getInt(getPath() + ".KitInfo.kitID");
     }
     public void loadKitItem() {
         FileConfiguration items = plugin.getStorage().getControl(RigoxFiles.KITS);
@@ -132,10 +134,8 @@ public class KitInfo {
         return kitItem;
     }
 
-    public String getName() {
-        return name;
-    }
-
+    public String getName() { return name; }
+    public int getID() { return id; }
     public int getPrice() {
         return price;
     }

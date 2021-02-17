@@ -8,6 +8,7 @@ import dev.mruniverse.rigoxrftb.core.games.Game;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class PlayerManager {
@@ -102,6 +103,60 @@ public class PlayerManager {
             plugin.getData().getSQL().kills.put(playerName, kills);
         }
     }
+
+    public void setSelectedKit(String kitID) {
+        String playerName = this.player.getUniqueId().toString();
+        if (plugin.getStorage().getControl(RigoxFiles.MYSQL).getBoolean("mysql.enabled")) {
+            registerDefault();
+            String table = plugin.getStorage().getControl(RigoxFiles.MYSQL).getString("mysql.table");
+            plugin.getData().setString(table, "SelectedKit", "Player", playerName, kitID);
+        } else {
+            plugin.getData().getSQL().selectedKits.put(playerName, kitID);
+        }
+    }
+
+    public String getSelectedKit() {
+        if (plugin.getStorage().getControl(RigoxFiles.MYSQL).getBoolean("mysql.enabled")) {
+            String table = plugin.getStorage().getControl(RigoxFiles.MYSQL).getString("mysql.table");
+            String kitsBuy = plugin.getData().getString(table,"SelectedKit","Player",this.player.getUniqueId().toString());
+            return kitsBuy.replace(" ","");
+        }
+        if(plugin.getData().getSQL().kits.get(this.player.getUniqueId().toString()) != null) {
+            String kitsBuy = plugin.getData().getSQL().selectedKits.get(this.player.getUniqueId().toString());
+            return kitsBuy.replace(" ","");
+        }
+        return "NONE";
+    }
+
+    public void addKit(String kitID) {
+        if (plugin.getStorage().getControl(RigoxFiles.MYSQL).getBoolean("mysql.enabled")) {
+            String table = plugin.getStorage().getControl(RigoxFiles.MYSQL).getString("mysql.table");
+            String lastResult = plugin.getData().getString(table,"Kits","Player",this.player.getUniqueId().toString());
+            plugin.getData().setString(table, "Kits", "Player", this.player.getUniqueId().toString(),lastResult + "," + kitID);
+        }
+        if(plugin.getData().getSQL().kits.get(this.player.getUniqueId().toString()) != null) {
+            String lastResult = plugin.getData().getSQL().kits.get(this.player.getUniqueId().toString());
+            plugin.getData().getSQL().kits.put(this.player.getUniqueId().toString(),lastResult + "," + kitID);
+        }
+    }
+
+    public List<String> getKits() {
+        if (plugin.getStorage().getControl(RigoxFiles.MYSQL).getBoolean("mysql.enabled")) {
+            String table = plugin.getStorage().getControl(RigoxFiles.MYSQL).getString("mysql.table");
+            String kitsBuy = plugin.getData().getString(table,"Kits","Player",this.player.getUniqueId().toString());
+            kitsBuy = kitsBuy.replace(" ","");
+            String[] kitShortList = kitsBuy.split(",");
+            return Arrays.asList(kitShortList);
+        }
+        if(plugin.getData().getSQL().kits.get(this.player.getUniqueId().toString()) != null) {
+            String kitsBuy = plugin.getData().getSQL().kits.get(this.player.getUniqueId().toString());
+            kitsBuy = kitsBuy.replace(" ","");
+            String[] kitShortList = kitsBuy.split(",");
+            return Arrays.asList(kitShortList);
+        }
+        return new ArrayList<>();
+    }
+
     @SuppressWarnings("unused")
     public void addKills() {
         setKills(getKills() + 1);
@@ -140,6 +195,9 @@ public class PlayerManager {
         if (!plugin.getData().isRegistered(table, "Player", playerName)) {
             List<String> values = new ArrayList<>();
             values.add("Player-" + playerName);
+            values.add("Coins-0");
+            values.add("Kits-" + plugin.getStorage().getControl(RigoxFiles.SETTINGS).getString("settings.defaultKitID"));
+            values.add("SelectedKit-NONE");
             values.add("Kills-0");
             values.add("Deaths-0");
             values.add("Score-0");

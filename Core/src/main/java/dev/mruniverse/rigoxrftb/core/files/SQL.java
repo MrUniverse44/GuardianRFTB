@@ -15,6 +15,8 @@ public class SQL {
     public HashMap<String, Integer> score = new HashMap<>();
     public HashMap<String, Integer> coins = new HashMap<>();
     public HashMap<String, Integer> levelXP = new HashMap<>();
+    public HashMap<String, String> kits = new HashMap<>();
+    public HashMap<String, String> selectedKits = new HashMap<>();
     private final RigoxRFTB plugin;
     public SQL(RigoxRFTB main) {
         plugin = main;
@@ -39,6 +41,12 @@ public class SQL {
         if (levelXP.size() != 0)
             for (Map.Entry<String, Integer> k : levelXP.entrySet())
                 plugin.getStorage().getControl(RigoxFiles.DATA).set("LevelXP." + k.getKey(), k.getValue());
+        if (kits.size() != 0)
+            for (Map.Entry<String, String> k : kits.entrySet())
+                plugin.getStorage().getControl(RigoxFiles.DATA).set("UserKits." + k.getKey(), k.getValue());
+        if (selectedKits.size() != 0)
+            for (Map.Entry<String, String> k : selectedKits.entrySet())
+                plugin.getStorage().getControl(RigoxFiles.DATA).set("selectedKits." + k.getKey(), k.getValue());
         plugin.getStorage().save(SaveMode.DATA);
     }
 
@@ -52,6 +60,16 @@ public class SQL {
             for (String str : plugin.getStorage().getContent(RigoxFiles.DATA,"Deaths",true)) {
                 int p = plugin.getStorage().getControl(RigoxFiles.DATA).getInt("Deaths." + str);
                 deaths.put(str.replace("Deaths.", ""), p);
+            }
+        if (plugin.getStorage().getControl(RigoxFiles.DATA).contains("UserKits"))
+            for (String str : plugin.getStorage().getContent(RigoxFiles.DATA,"UserKits",true)) {
+                String p = plugin.getStorage().getControl(RigoxFiles.DATA).getString("UserKits." + str);
+                kits.put(str.replace("UserKits.", ""), p);
+            }
+        if (plugin.getStorage().getControl(RigoxFiles.DATA).contains("selectedKits"))
+            for (String str : plugin.getStorage().getContent(RigoxFiles.DATA,"selectedKits",true)) {
+                String p = plugin.getStorage().getControl(RigoxFiles.DATA).getString("selectedKits." + str);
+                selectedKits.put(str.replace("selectedKits.", ""), p);
             }
         if (plugin.getStorage().getControl(RigoxFiles.DATA).contains("Wins"))
             for (String str : plugin.getStorage().getContent(RigoxFiles.DATA,"Wins",true)) {
@@ -81,5 +99,7 @@ public class SQL {
         wins.put(player.getUniqueId().toString(), 0);
         coins.put(player.getUniqueId().toString(), 0);
         levelXP.put(player.getUniqueId().toString(), 0);
+        kits.put(player.getUniqueId().toString(),plugin.getStorage().getControl(RigoxFiles.SETTINGS).getString("settings.defaultKitID"));
+        selectedKits.put(player.getUniqueId().toString(),"NONE");
     }
 }
