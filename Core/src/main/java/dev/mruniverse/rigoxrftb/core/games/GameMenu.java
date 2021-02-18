@@ -21,10 +21,10 @@ public class GameMenu {
     private String name;
     private Inventory chestInventory;
 
-    private ItemStack Waiting;
-    private ItemStack Starting;
-    private ItemStack Playing;
-    private ItemStack Ending;
+    private String waiting;
+    private String starting;
+    private String playing;
+    private String ending;
     private List<String> lore;
     private String iName;
     public GameMenu(RigoxRFTB main) {
@@ -58,16 +58,6 @@ public class GameMenu {
         for(Game game : plugin.getGameManager().getGames()) {
             if(slot != maxSlot) {
                 ItemStack gameItem = getGameItem(game);
-                ItemMeta itemMeta = gameItem.getItemMeta();
-                if(itemMeta != null) {
-                    itemMeta.setDisplayName(TextUtilities.recolor(iName.replace("%map_name%", game.getName()
-                            .replace("%map_status%", game.gameStatus.getStatus()
-                                    .replace("%map_mode%", game.getGameType().getType())
-                                    .replace("%map_on%", game.getPlayers().size() + "")
-                                    .replace("%map_max%", game.max + "")))));
-                    itemMeta.setLore(getLore(game));
-                    gameItem.setItemMeta(itemMeta);
-                }
                 chestInventory.setItem(slot,gameItem);
             }
             slot++;
@@ -83,36 +73,16 @@ public class GameMenu {
     public void updateSlot(int slot,Game game) {
         if(slot != -1) {
             ItemStack gameItem = getGameItem(game);
-            ItemMeta itemMeta = gameItem.getItemMeta();
-            if(itemMeta != null) {
-                itemMeta.setDisplayName(TextUtilities.recolor(iName.replace("%map_name%", game.getName()
-                        .replace("%map_status%", game.gameStatus.getStatus()
-                                .replace("%map_mode%", game.getGameType().getType())
-                                .replace("%map_on%", game.getPlayers().size() + "")
-                                .replace("%map_max%", game.max + "")))));
-                itemMeta.setLore(getLore(game));
-                gameItem.setItemMeta(itemMeta);
-            }
             chestInventory.setItem(slot, gameItem);
             return;
         }
         setSlots();
     }
-    public HashMap<ItemStack,String> getGameItems() {
-        HashMap<ItemStack,String> hash = new HashMap<>();
+    public HashMap<String,ItemStack> getGameItems() {
+        HashMap<String,ItemStack> hash = new HashMap<>();
         for(Game game : plugin.getGameManager().getGames()) {
             ItemStack gameItem = getGameItem(game);
-            ItemMeta itemMeta = gameItem.getItemMeta();
-            if(itemMeta != null) {
-                itemMeta.setDisplayName(TextUtilities.recolor(iName.replace("%map_name%", game.getName()
-                        .replace("%map_status%", game.gameStatus.getStatus()
-                                .replace("%map_mode%", game.getGameType().getType())
-                                .replace("%map_on%", game.getPlayers().size() + "")
-                                .replace("%map_max%", game.max + "")))));
-                itemMeta.setLore(getLore(game));
-                gameItem.setItemMeta(itemMeta);
-            }
-            hash.put(gameItem,game.getName());
+            hash.put(game.getName(),gameItem);
         }
         return hash;
     }
@@ -125,18 +95,23 @@ public class GameMenu {
         return TextUtilities.recolorLore(newLore);
     }
     private ItemStack getGameItem(Game game) {
+        String name = iName.replace("%map_name%", game.getName()
+                .replace("%map_status%", game.gameStatus.getStatus()
+                        .replace("%map_mode%", game.getGameType().getType())
+                        .replace("%map_on%", game.getPlayers().size() + "")
+                        .replace("%map_max%", game.max + "")));
         switch (game.gameStatus) {
             case IN_GAME:
             case PLAYING:
-                return Playing;
+                return getItem(playing,name,getLore(game));
             case STARTING:
-                return Starting;
+                return getItem(starting,name,getLore(game));
             case PREPARING:
             case RESTARTING:
-                return Ending;
+                return getItem(ending,name,getLore(game));
             case WAITING:
             default:
-                return Waiting;
+                return getItem(waiting,name,getLore(game));
         }
     }
 
@@ -166,10 +141,10 @@ public class GameMenu {
             lore = itemLore;
             iName = itemName;
 
-            Waiting = getItem(WaitingMaterial,itemName,itemLore);
-            Starting = getItem(StartingMaterial,itemName,itemLore);
-            Playing = getItem(PlayingMaterial,itemName,itemLore);
-            Ending = getItem(EndingMaterial,itemName,itemLore);
+            waiting = WaitingMaterial;
+            starting = StartingMaterial;
+            playing = PlayingMaterial;
+            ending = EndingMaterial;
 
             pasteItems();
         } catch (Throwable throwable) {
