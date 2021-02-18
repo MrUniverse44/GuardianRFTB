@@ -31,8 +31,8 @@ import org.bukkit.event.player.*;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class MainListener implements Listener {
     private final RigoxRFTB plugin;
@@ -122,12 +122,10 @@ public class MainListener implements Listener {
         Player player = (Player)event.getWhoClicked();
         if(plugin.getPlayerData(player.getUniqueId()).getGame() != null) return;
         if(!event.getInventory().equals(plugin.getGameManager().gameMenu.getInventory())) return;
+        HashMap<ItemStack,String> hash = plugin.getGameManager().gameMenu.getGameItems();
         ItemStack clickedItem = event.getCurrentItem();
-        for(Map.Entry<String,ItemStack> hash : plugin.getGameManager().gameMenu.getGameItems().entrySet()) {
-            if(hash.getValue().equals(clickedItem)) {
-                plugin.getGameManager().joinGame(player,hash.getKey());
-                return;
-            }
+        if(hash.containsKey(clickedItem)) {
+            plugin.getGameManager().joinGame(player,hash.get(clickedItem));
         }
     }
     @EventHandler

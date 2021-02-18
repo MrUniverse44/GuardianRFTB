@@ -5,7 +5,6 @@ import dev.mruniverse.rigoxrftb.core.enums.RigoxFiles;
 import dev.mruniverse.rigoxrftb.core.utils.TextUtilities;
 import dev.mruniverse.rigoxrftb.core.xseries.XMaterial;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -78,11 +77,11 @@ public class GameMenu {
         }
         setSlots();
     }
-    public HashMap<String,ItemStack> getGameItems() {
-        HashMap<String,ItemStack> hash = new HashMap<>();
+    public HashMap<ItemStack,String> getGameItems() {
+        HashMap<ItemStack,String> hash = new HashMap<>();
         for(Game game : plugin.getGameManager().getGames()) {
             ItemStack gameItem = getGameItem(game);
-            hash.put(game.getName(),gameItem);
+            hash.put(gameItem,game.getName());
         }
         return hash;
     }
@@ -122,8 +121,6 @@ public class GameMenu {
     private void loadItems() {
         FileConfiguration loadConfig = plugin.getStorage().getControl(RigoxFiles.MENUS);
         try {
-            ConfigurationSection section = loadConfig.getConfigurationSection("menus.game.item-status");
-            if(section == null) throw new Throwable("Can't found beast items in menus.yml (Game Menu)");
             String WaitingMaterial = loadConfig.getString("menus.game.item-status.waiting");
             String StartingMaterial = loadConfig.getString("menus.game.item-status.starting");
             String PlayingMaterial = loadConfig.getString("menus.game.item-status.playing");
