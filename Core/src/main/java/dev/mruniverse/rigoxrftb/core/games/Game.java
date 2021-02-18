@@ -59,6 +59,7 @@ public class Game {
 
     public GameStatus gameStatus;
     public boolean invincible = true;
+    //"games." + gameName + ".disableRain"
     public boolean preparingStage;
     public boolean startingStage;
     public boolean selectingStage;

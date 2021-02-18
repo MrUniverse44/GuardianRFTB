@@ -4,6 +4,7 @@ import dev.mruniverse.rigoxrftb.core.RigoxRFTB;
 import dev.mruniverse.rigoxrftb.core.enums.RigoxFiles;
 import dev.mruniverse.rigoxrftb.core.enums.SaveMode;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -14,6 +15,7 @@ import java.util.Objects;
 
 public class GameManager {
     private final ArrayList<Game> games = new ArrayList<>();
+    private final HashMap<World,Game> gamesWorlds = new HashMap<>();
     public HashMap<String,GameChests> gameChests = new HashMap<>();
     public GameMenu gameMenu;
     private final RigoxRFTB plugin;
@@ -43,7 +45,7 @@ public class GameManager {
     public void loadGames() {
         try {
             if(plugin.getStorage().getControl(RigoxFiles.GAMES).contains("games")) {
-                for (String gameName : plugin.getStorage().getControl(RigoxFiles.GAMES).getConfigurationSection("games").getKeys(false)) {
+                for (String gameName : Objects.requireNonNull(plugin.getStorage().getControl(RigoxFiles.GAMES).getConfigurationSection("games")).getKeys(false)) {
                     if(plugin.getStorage().getControl(RigoxFiles.GAMES).getBoolean("games." + gameName + ".enabled")) {
                         Game game = new Game(plugin, gameName);
                         this.games.add(game);
@@ -58,9 +60,15 @@ public class GameManager {
             }
             plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin,new GameRunnable(plugin),0L,20L);
             gameMenu = new GameMenu(plugin);
+            loadGameWorlds();
         }catch (Throwable throwable) {
             plugin.getLogs().error("Can't load games plugin games :(");
             plugin.getLogs().error(throwable);
+        }
+    }
+    public void loadGameWorlds() {
+        for(Game game : getGames()) {
+            gamesWorlds.put(game.runnersLocation.getWorld(),game);
         }
     }
     public GameMenu getGameMenu() {
@@ -83,6 +91,7 @@ public class GameManager {
     public ArrayList<Game> getGames() {
         return games;
     }
+    public HashMap<World,Game> getGameWorlds() { return gamesWorlds; }
 
     public Game getGame(Player player) {
         return plugin.getPlayerData(player.getUniqueId()).getGame();
@@ -92,9 +101,9 @@ public class GameManager {
         return (getGame(name) != null);
     }
 
-    public boolean isPlaying(Player player) {
-        return (getGame(player) != null);
-    }
+    //public boolean isPlaying(Player player) {
+    //    return (getGame(player) != null);
+    //}
 
     public void joinGame(Player player,String gameName) {
         if(!existGame(gameName)) {
@@ -107,6 +116,7 @@ public class GameManager {
         FileConfiguration gameFiles = plugin.getStorage().getControl(RigoxFiles.GAMES);
         gameFiles.set("games." + gameName + ".enabled", false);
         gameFiles.set("games." + gameName + ".time", 500);
+        gameFiles.set("games." + gameName + ".disableRain", true);
         gameFiles.set("games." + gameName + ".max", 10);
         gameFiles.set("games." + gameName + ".min", 2);
         gameFiles.set("games." + gameName + ".worldTime", 0);
@@ -123,7 +133,7 @@ public class GameManager {
     }
     public void setWaiting(String gameName, Location location) {
         try {
-            String gameLoc = location.getWorld().getName() + "," + location.getX() + "," + location.getY() + "," + location.getZ() + "," + location.getYaw() + "," + location.getPitch();
+            String gameLoc = Objects.requireNonNull(location.getWorld()).getName() + "," + location.getX() + "," + location.getY() + "," + location.getZ() + "," + location.getYaw() + "," + location.getPitch();
             plugin.getStorage().getControl(RigoxFiles.GAMES).set("games." + gameName + ".locations.waiting", gameLoc);
             plugin.getStorage().save(SaveMode.GAMES_FILES);
         }catch (Throwable throwable) {
@@ -133,7 +143,7 @@ public class GameManager {
     }
     public void setSelectedBeast(String gameName, Location location) {
         try {
-            String gameLoc = location.getWorld().getName() + "," + location.getX() + "," + location.getY() + "," + location.getZ() + "," + location.getYaw() + "," + location.getPitch();
+            String gameLoc = Objects.requireNonNull(location.getWorld()).getName() + "," + location.getX() + "," + location.getY() + "," + location.getZ() + "," + location.getYaw() + "," + location.getPitch();
             plugin.getStorage().getControl(RigoxFiles.GAMES).set("games." + gameName + ".locations.selected-beast", gameLoc);
             plugin.getStorage().save(SaveMode.GAMES_FILES);
         }catch (Throwable throwable) {
@@ -143,7 +153,7 @@ public class GameManager {
     }
     public void setBeast(String gameName, Location location) {
         try {
-            String gameLoc = location.getWorld().getName() + "," + location.getX() + "," + location.getY() + "," + location.getZ() + "," + location.getYaw() + "," + location.getPitch();
+            String gameLoc = Objects.requireNonNull(location.getWorld()).getName() + "," + location.getX() + "," + location.getY() + "," + location.getZ() + "," + location.getYaw() + "," + location.getPitch();
             plugin.getStorage().getControl(RigoxFiles.GAMES).set("games." + gameName + ".locations.beast", gameLoc);
             plugin.getStorage().save(SaveMode.GAMES_FILES);
         }catch (Throwable throwable) {
@@ -153,7 +163,7 @@ public class GameManager {
     }
     public void setRunners(String gameName, Location location) {
         try {
-            String gameLoc = location.getWorld().getName() + "," + location.getX() + "," + location.getY() + "," + location.getZ() + "," + location.getYaw() + "," + location.getPitch();
+            String gameLoc = Objects.requireNonNull(location.getWorld()).getName() + "," + location.getX() + "," + location.getY() + "," + location.getZ() + "," + location.getYaw() + "," + location.getPitch();
             plugin.getStorage().getControl(RigoxFiles.GAMES).set("games." + gameName + ".locations.runners", gameLoc);
             plugin.getStorage().save(SaveMode.GAMES_FILES);
         }catch (Throwable throwable) {

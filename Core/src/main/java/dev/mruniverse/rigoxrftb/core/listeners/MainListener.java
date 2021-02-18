@@ -29,6 +29,7 @@ import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 
@@ -40,6 +41,32 @@ public class MainListener implements Listener {
     public MainListener(RigoxRFTB main) {
         plugin = main;
         main.getLogs().info("PlayerListener registered!");
+    }
+    @EventHandler
+    public void onGameWeather(WeatherChangeEvent event) {
+        if(plugin.getGameManager().getGameWorlds().containsKey(event.getWorld())) {
+            String gameName = plugin.getGameManager().getGameWorlds().get(event.getWorld()).getName();
+            boolean disableRain = true;
+            if(plugin.getStorage().getControl(RigoxFiles.GAMES).get("games." + gameName + ".disableRain") != null) disableRain = plugin.getStorage().getControl(RigoxFiles.GAMES).getBoolean("games." + gameName + ".disableRain");
+            if(disableRain) {
+                event.setCancelled(event.toWeatherState());
+            }
+        }
+    }
+    @EventHandler
+    public void lobbyWeather(WeatherChangeEvent event) {
+        String lC = plugin.getStorage().getControl(RigoxFiles.SETTINGS).getString("settings.lobbyLocation");
+        if(lC == null) lC = "notSet";
+        if (!lC.equalsIgnoreCase("notSet")) {
+            String[] loc = lC.split(",");
+            World w = Bukkit.getWorld(loc[0]);
+            if(w != event.getWorld()) return;
+            boolean disableRain = true;
+            if(plugin.getStorage().getControl(RigoxFiles.SETTINGS).get("settings.options.lobby-disableWeather") != null) disableRain = plugin.getStorage().getControl(RigoxFiles.SETTINGS).getBoolean("settings.options.lobby-disableWeather");
+            if(disableRain) {
+                event.setCancelled(event.toWeatherState());
+            }
+        }
     }
     @EventHandler
     public void joinOptions(PlayerJoinEvent event) {
