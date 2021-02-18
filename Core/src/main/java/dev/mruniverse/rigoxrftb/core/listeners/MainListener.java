@@ -8,6 +8,7 @@ import dev.mruniverse.rigoxrftb.core.enums.SaveMode;
 import dev.mruniverse.rigoxrftb.core.games.Game;
 import dev.mruniverse.rigoxrftb.core.games.GameStatus;
 import dev.mruniverse.rigoxrftb.core.games.GameType;
+import dev.mruniverse.rigoxrftb.core.kits.KitType;
 import dev.mruniverse.rigoxrftb.core.utils.players.PlayerManager;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -126,6 +127,26 @@ public class MainListener implements Listener {
         ItemStack clickedItem = event.getCurrentItem();
         if(hash.containsKey(clickedItem)) {
             plugin.getGameManager().joinGame(player,hash.get(clickedItem));
+        }
+    }
+    @EventHandler
+    public void onKitMenuClick(InventoryClickEvent event) {
+        Player player = (Player)event.getWhoClicked();
+        PlayerManager data = plugin.getPlayerData(player.getUniqueId());
+        if(data.getGame() != null) return;
+        if(event.getInventory() != data.getKitMenu(KitType.BEAST).getInventory() && event.getInventory() != data.getKitMenu(KitType.RUNNER).getInventory()) return;
+        if(event.getInventory() == data.getKitMenu(KitType.BEAST)) {
+            HashMap<ItemStack, String> hash = data.getKitMenu(KitType.BEAST).getItems();
+            ItemStack clickedItem = event.getCurrentItem();
+            if (hash.containsKey(clickedItem)) {
+                plugin.getKitLoader().getToSelect(KitType.BEAST,player,hash.get(clickedItem));
+            }
+        } else {
+            HashMap<ItemStack, String> hash = data.getKitMenu(KitType.RUNNER).getItems();
+            ItemStack clickedItem = event.getCurrentItem();
+            if (hash.containsKey(clickedItem)) {
+                plugin.getKitLoader().getToSelect(KitType.RUNNER,player,hash.get(clickedItem));
+            }
         }
     }
     @EventHandler

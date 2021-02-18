@@ -5,6 +5,8 @@ import dev.mruniverse.rigoxrftb.core.enums.RigoxFiles;
 import dev.mruniverse.rigoxrftb.core.enums.PlayerStatus;
 import dev.mruniverse.rigoxrftb.core.enums.RigoxBoard;
 import dev.mruniverse.rigoxrftb.core.games.Game;
+import dev.mruniverse.rigoxrftb.core.kits.KitMenu;
+import dev.mruniverse.rigoxrftb.core.kits.KitType;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -14,16 +16,29 @@ import java.util.List;
 public class PlayerManager {
     private PlayerStatus playerStatus;
     private RigoxBoard rigoxBoard;
+    private final KitMenu beastMenu;
+    private final KitMenu runnerMenu;
     private final Player player;
     private final RigoxRFTB plugin;
     private Game currentGame;
 
     public PlayerManager(Player p, RigoxRFTB main) {
         plugin = main;
+        beastMenu = new KitMenu(main, KitType.BEAST,p);
+        runnerMenu = new KitMenu(main, KitType.RUNNER,p);
         player = p;
         rigoxBoard = RigoxBoard.LOBBY;
         playerStatus = PlayerStatus.IN_LOBBY;
         currentGame = null;
+    }
+    public KitMenu getKitMenu(KitType kitType) {
+        switch (kitType) {
+            case BEAST:
+                return beastMenu;
+            case RUNNER:
+            default:
+                return runnerMenu;
+        }
     }
     public void setStatus(PlayerStatus status) {
         playerStatus = status;

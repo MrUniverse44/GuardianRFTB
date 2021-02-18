@@ -2,6 +2,7 @@ package dev.mruniverse.rigoxrftb.core.kits;
 
 import dev.mruniverse.rigoxrftb.core.RigoxRFTB;
 import dev.mruniverse.rigoxrftb.core.enums.RigoxFiles;
+import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 
@@ -31,6 +32,9 @@ public class KitLoader {
                     loadKit(KitType.RUNNER,kit);
                 }
         }
+    }
+    public void getToSelect(KitType kitType, Player player,String kitName) {
+
     }
     public void updateKits() {
         beastKits = new HashMap<>();

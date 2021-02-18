@@ -45,6 +45,26 @@ public class KitMenu {
         if(small == 5) return 46;
         return 54;
     }
+    public HashMap<ItemStack,String> getItems() {
+        HashMap<ItemStack,String> kits = new HashMap<>();
+        String blockedMaterial = plugin.getStorage().getControl(RigoxFiles.MENUS).getString("menus.kits.blocked-item.item");
+        String blockedName = plugin.getStorage().getControl(RigoxFiles.MENUS).getString("menus.kits.blocked-item.name");
+        List<String> blockedLore = plugin.getStorage().getControl(RigoxFiles.MENUS).getStringList("menus.kits.blocked-item.lore");
+        if(blockedMaterial == null) blockedMaterial = "STAINED_GLASS_PANE:14";
+        if(blockedName == null) blockedName = "&c&nKit: %kit_name%";
+        for(Map.Entry<String, KitInfo> kitData : plugin.getKitLoader().getKits(mode).entrySet()) {
+            if(plugin.getPlayerData(player.getUniqueId()).getKits().contains(kitData.getValue().getID())) {
+                ItemStack kitItem = kitData.getValue().getKitItem();
+                kits.put(kitItem,kitData.getKey());
+            } else {
+                ItemStack item = getItem(blockedMaterial,blockedName,getLore(blockedLore,kitData.getValue()));
+                if(item != null) {
+                    kits.put(item,kitData.getKey());
+                }
+            }
+        }
+        return kits;
+    }
     private void pasteItems() {
         chestInventory.clear();
         int slot = 0;
