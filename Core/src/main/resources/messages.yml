@@ -52,6 +52,11 @@ messages:
       bow: '&7%attacker% is the best with the bow vs %victim%'
       otherCause: '&7%victim% died'
     cantStartGame: '&cThis game can''t start, not enough players'
+    kits:
+      cantSelect: '&cYou need &6%price% &cto buy this kit.'
+      buyKit: '&aNow you have the kit &b%kit_name% &a(&3-%price%&a)'
+      selectedKit: '&aNow you selected kit &b%kit_name%'
+      resetKitSelected: '&aNow you don''t have kit selected.'
     others:
       winCoins: '&6+%winCoins% coins (Win)!'
       playAgainWin: '&a&lYOU WON! &e&lWant to play again? <clickText>'
