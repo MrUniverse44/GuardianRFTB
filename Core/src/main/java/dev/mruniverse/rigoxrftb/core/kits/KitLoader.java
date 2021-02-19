@@ -52,6 +52,8 @@ public class KitLoader {
                             .replace("%price%",kitInfo.getPrice() + "")
                             .replace("%kit_price%",kitInfo.getPrice() + "");
                     plugin.getUtils().sendMessage(player,selected);
+                } else {
+
                 }
             default:
             case RUNNER:
@@ -64,6 +66,35 @@ public class KitLoader {
                             .replace("%price%",kitInfo.getPrice() + "")
                             .replace("%kit_price%",kitInfo.getPrice() + "");
                     plugin.getUtils().sendMessage(player,selected);
+                } else {
+                    if(data.getCoins() >= kitInfo.getPrice()) {
+                        int coins = data.getCoins() - kitInfo.getPrice();
+                        data.setCoins(coins);
+                        data.addKit(kitID);
+                        data.setSelectedKit(kitID);
+                        String buyKit = plugin.getStorage().getControl(RigoxFiles.MESSAGES).getString("messages.inGame.kits.buyKit");
+                        if(buyKit == null) buyKit = "&aNow you have the kit &b%kit_name% &a(&3-%price%&a)";
+                        buyKit = buyKit.replace("%kit_name%",kitName)
+                                .replace("%name%",kitName)
+                                .replace("%price%",kitInfo.getPrice() + "")
+                                .replace("%kit_price%",kitInfo.getPrice() + "");
+                        String selected = plugin.getStorage().getControl(RigoxFiles.MESSAGES).getString("messages.inGame.kits.selectedKit");
+                        if(selected == null) selected = "&aNow you selected kit &b%kit_name%";
+                        selected = selected.replace("%kit_name%",kitName)
+                                .replace("%name%",kitName)
+                                .replace("%price%",kitInfo.getPrice() + "")
+                                .replace("%kit_price%",kitInfo.getPrice() + "");
+                        plugin.getUtils().sendMessage(player,buyKit);
+                        plugin.getUtils().sendMessage(player,selected);
+                    } else {
+                        String cantBuy = plugin.getStorage().getControl(RigoxFiles.MESSAGES).getString("messages.inGame.kits.selectedKit");
+                        if(cantBuy == null) cantBuy = "&aNow you selected kit &b%kit_name%";
+                        cantBuy = cantBuy.replace("%kit_name%",kitName)
+                                .replace("%name%",kitName)
+                                .replace("%price%",kitInfo.getPrice() + "")
+                                .replace("%kit_price%",kitInfo.getPrice() + "");
+                        plugin.getUtils().sendMessage(player,cantBuy);
+                    }
                 }
         }
     }

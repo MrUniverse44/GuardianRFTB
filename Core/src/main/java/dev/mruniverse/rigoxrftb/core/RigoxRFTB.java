@@ -8,7 +8,9 @@ import dev.mruniverse.rigoxrftb.core.files.DataStorage;
 import dev.mruniverse.rigoxrftb.core.files.FileStorage;
 import dev.mruniverse.rigoxrftb.core.games.GameEquip;
 import dev.mruniverse.rigoxrftb.core.games.GameManager;
+import dev.mruniverse.rigoxrftb.core.kits.KitInfo;
 import dev.mruniverse.rigoxrftb.core.kits.KitLoader;
+import dev.mruniverse.rigoxrftb.core.kits.KitType;
 import dev.mruniverse.rigoxrftb.core.listeners.ListenerUtil;
 import dev.mruniverse.rigoxrftb.core.nms.NMS;
 import dev.mruniverse.rigoxrftb.core.utils.*;
@@ -27,10 +29,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 public final class RigoxRFTB extends JavaPlugin {
     private FileStorage fileStorage;
@@ -126,7 +125,6 @@ public final class RigoxRFTB extends JavaPlugin {
                                 Integer slot = items.getInt("Playing.BeastInventory." + beastDefaultInv + ".slot");
                                 List<String> lore = items.getStringList("Playing.BeastInventory." + beastDefaultInv + ".lore");
                                 ItemStack item = getItem(m, itemName, lore);
-                                //ItemStack item = getNMSHandler().getItemStack(m.parseMaterial(), TextUtilities.recolor(itemName), TextUtilities.recolorLore(lore));
                                 if (items.get("Playing.BeastInventory." + beastDefaultInv + ".lore") != null) {
                                     item = getEnchantmentList(item, RigoxFiles.ITEMS, "Playing.BeastInventory." + beastDefaultInv + ".enchantments");
                                 }
@@ -156,7 +154,6 @@ public final class RigoxRFTB extends JavaPlugin {
                         m = optionalXMaterial.get();
                         if (m.parseMaterial() != null) {
                             item = getItem(m, ItemName, ItemLore);
-                            //item = getNMSHandler().getItemStack(m.parseMaterial(), TextUtilities.recolor(ItemName), TextUtilities.recolorLore(ItemLore));
                             if (items.get("Playing.BeastArmor.Helmet.enchantments") != null) {
                                 item = getEnchantmentList(item, RigoxFiles.ITEMS, "Playing.BeastArmor.Helmet.enchantments");
                             }
@@ -174,7 +171,6 @@ public final class RigoxRFTB extends JavaPlugin {
                         m = optionalXMaterial.get();
                         if (m.parseMaterial() != null) {
                             item = getItem(m, ItemName, ItemLore);
-                            //item = getNMSHandler().getItemStack(m.parseMaterial(), TextUtilities.recolor(ItemName), TextUtilities.recolorLore(ItemLore));
                             if (items.get("Playing.BeastArmor.Helmet.enchantments") != null) {
                                 item = getEnchantmentList(item, RigoxFiles.ITEMS, "Playing.BeastArmor.Chestplate.enchantments");
                             }
@@ -192,7 +188,6 @@ public final class RigoxRFTB extends JavaPlugin {
                         m = optionalXMaterial.get();
                         if (m.parseMaterial() != null) {
                             item = getItem(m, ItemName, ItemLore);
-                            //item = getNMSHandler().getItemStack(m.parseMaterial(), TextUtilities.recolor(ItemName), TextUtilities.recolorLore(ItemLore));
                             if (items.get("Playing.BeastArmor.Helmet.enchantments") != null) {
                                 item = getEnchantmentList(item, RigoxFiles.ITEMS, "Playing.BeastArmor.Leggings.enchantments");
                             }
@@ -210,7 +205,6 @@ public final class RigoxRFTB extends JavaPlugin {
                         m = optionalXMaterial.get();
                         if (m.parseMaterial() != null) {
                             item = getItem(m, ItemName, ItemLore);
-                            //item = getNMSHandler().getItemStack(m.parseMaterial(), TextUtilities.recolor(ItemName), TextUtilities.recolorLore(ItemLore));
                             if (items.get("Playing.BeastArmor.Helmet.enchantments") != null) {
                                 item = getEnchantmentList(item, RigoxFiles.ITEMS, "Playing.BeastArmor.Boots.enchantments");
                             }
@@ -240,7 +234,6 @@ public final class RigoxRFTB extends JavaPlugin {
                                     Integer slot = items.getInt("lobby." + lItems + ".slot");
                                     List<String> lore = items.getStringList("lobby." + lItems + ".lore");
                                     ItemStack item = getItem(m, itemName, lore);
-                                    //ItemStack item = getNMSHandler().getItemStack(m.parseMaterial(), TextUtilities.recolor(itemName), TextUtilities.recolorLore(lore));
                                     if (items.get("lobby." + lItems + ".enchantments") != null) {
                                         item = getEnchantmentList(item, RigoxFiles.ITEMS, "lobby." + lItems + ".enchantments");
                                     }
@@ -267,13 +260,12 @@ public final class RigoxRFTB extends JavaPlugin {
                     ItemName = items.getString("InGame.RunnerKit.name");
                     ItemLore = items.getStringList("InGame.RunnerKit.lore");
                     ItemSlot = items.getInt("InGame.RunnerKit.slot");
-                    if (ItemMaterial == null) ItemMaterial = "MAP";
+                    if (ItemMaterial == null) ItemMaterial = "PAPER";
                     optionalXMaterial = XMaterial.matchXMaterial(ItemMaterial);
                     if (optionalXMaterial.isPresent()) {
                         m = optionalXMaterial.get();
                         if (m.parseMaterial() != null) {
                             item = getItem(m, ItemName, ItemLore);
-                            //item = getNMSHandler().getItemStack(m.parseMaterial(), TextUtilities.recolor(ItemName), TextUtilities.recolorLore(ItemLore));
                             if (items.get("InGame.RunnerKit.enchantments") != null) {
                                 item = getEnchantmentList(item, RigoxFiles.ITEMS, "InGame.RunnerKit.enchantments");
                             }
@@ -288,13 +280,12 @@ public final class RigoxRFTB extends JavaPlugin {
                     ItemName = items.getString("InGame.BeastKit.name");
                     ItemLore = items.getStringList("InGame.BeastKit.lore");
                     ItemSlot = items.getInt("InGame.BeastKit.slot");
-                    if (ItemMaterial == null) ItemMaterial = "MAP";
+                    if (ItemMaterial == null) ItemMaterial = "PAPER";
                     optionalXMaterial = XMaterial.matchXMaterial(ItemMaterial);
                     if (optionalXMaterial.isPresent()) {
                         m = optionalXMaterial.get();
                         if (m.parseMaterial() != null) {
                             item = getItem(m, ItemName, ItemLore);
-                            //item = getNMSHandler().getItemStack(m.parseMaterial(), TextUtilities.recolor(ItemName), TextUtilities.recolorLore(ItemLore));
                             if (items.get("InGame.BeastKit.enchantments") != null) {
                                 item = getEnchantmentList(item, RigoxFiles.ITEMS, "InGame.BeastKit.enchantments");
                             }
@@ -309,13 +300,12 @@ public final class RigoxRFTB extends JavaPlugin {
                     ItemName = items.getString("InGame.Exit.name");
                     ItemLore = items.getStringList("InGame.Exit.lore");
                     ItemSlot = items.getInt("InGame.Exit.slot");
-                    if (ItemMaterial == null) ItemMaterial = "BED";
+                    if (ItemMaterial == null) ItemMaterial = "RED_BED";
                     optionalXMaterial = XMaterial.matchXMaterial(ItemMaterial);
                     if (optionalXMaterial.isPresent()) {
                         m = optionalXMaterial.get();
                         if (m.parseMaterial() != null) {
                             item = getItem(m, ItemName, ItemLore);
-                            //item = getNMSHandler().getItemStack(m.parseMaterial(), TextUtilities.recolor(ItemName), TextUtilities.recolorLore(ItemLore));
                             if (items.get("InGame.Exit.enchantments") != null) {
                                 item = getEnchantmentList(item, RigoxFiles.ITEMS, "InGame.Exit.enchantments");
                             }
@@ -490,7 +480,26 @@ public final class RigoxRFTB extends JavaPlugin {
         }
     }
     public void getItems(GameEquip gameEquipment, Player player) {
-
+        switch (gameEquipment) {
+            case BEAST_KIT:
+                String kitID = getPlayerData(player.getUniqueId()).getSelectedKit();
+                if(kitID.equalsIgnoreCase("NONE")) return;
+                KitInfo kitInfo = getKitLoader().getKitsUsingID(KitType.BEAST).get(kitID);
+                if(kitInfo == null) return;
+                for(Map.Entry<ItemStack,Integer> data : kitInfo.getInventoryItems().entrySet()) {
+                    player.getInventory().setItem(data.getValue(),data.getKey());
+                }
+                return;
+            case RUNNER_KIT:
+            default:
+                String runnerID = getPlayerData(player.getUniqueId()).getSelectedKit();
+                if(runnerID.equalsIgnoreCase("NONE")) return;
+                KitInfo runnerInfo = getKitLoader().getKitsUsingID(KitType.RUNNER).get(runnerID);
+                if(runnerInfo == null) return;
+                for(Map.Entry<ItemStack,Integer> data : runnerInfo.getInventoryItems().entrySet()) {
+                    player.getInventory().setItem(data.getValue(),data.getKey());
+                }
+        }
     }
     public boolean existPlayer(Player player) { return rigoxPlayers.containsKey(player.getUniqueId()); }
     public void removePlayer(Player player) { rigoxPlayers.remove(player.getUniqueId()); }

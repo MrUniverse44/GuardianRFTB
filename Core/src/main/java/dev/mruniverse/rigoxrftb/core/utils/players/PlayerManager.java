@@ -96,6 +96,16 @@ public class PlayerManager {
         }
         return 0;
     }
+    public void setCoins(int coinCounter) {
+        String playerName = this.player.getUniqueId().toString();
+        if (plugin.getStorage().getControl(RigoxFiles.MYSQL).getBoolean("mysql.enabled")) {
+            registerDefault();
+            String table = plugin.getStorage().getControl(RigoxFiles.MYSQL).getString("mysql.table");
+            plugin.getData().setInt(table, "Coins", "Player", playerName, coinCounter);
+        } else {
+            plugin.getData().getSQL().coins.put(playerName, coinCounter);
+        }
+    }
 
     public int getKills() {
         if (plugin.getStorage().getControl(RigoxFiles.MYSQL).getBoolean("mysql.enabled")) {

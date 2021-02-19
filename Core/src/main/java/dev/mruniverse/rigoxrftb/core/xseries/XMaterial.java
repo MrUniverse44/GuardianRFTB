@@ -1315,6 +1315,7 @@ public enum XMaterial {
 
 
     public static Optional<XMaterial> matchXMaterial(String name) {
+        if(name.equalsIgnoreCase("BED")) name = "RED_BED";
         Validate.notEmpty(name, "Cannot match a material with null or empty material name");
         Optional<XMaterial> oldMatch = matchXMaterialWithData(name);
         return oldMatch.isPresent() ? oldMatch : matchDefinedXMaterial(format(name), UNKNOWN_DATA_VALUE);

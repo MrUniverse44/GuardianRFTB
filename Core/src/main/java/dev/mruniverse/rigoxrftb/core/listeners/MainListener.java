@@ -120,10 +120,10 @@ public class MainListener implements Listener {
                             plugin.getUtils().sendMessage(player,"&cShop currently is in development");
                             return;
                         case KIT_BEASTS:
-                            plugin.getUtils().sendMessage(player,"&cBeast Kits currently in development");
+                            player.openInventory(plugin.getPlayerData(player.getUniqueId()).getKitMenu(KitType.BEAST).getInventory());
                             return;
                         case KIT_RUNNERS:
-                            plugin.getUtils().sendMessage(player,"&cRunners Kits currently in development");
+                            player.openInventory(plugin.getPlayerData(player.getUniqueId()).getKitMenu(KitType.RUNNER).getInventory());
                             return;
                         case EXIT_LOBBY:
                             plugin.getUtils().sendMessage(player,"&aSending you to Lobby..");
