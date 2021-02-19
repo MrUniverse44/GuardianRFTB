@@ -17,6 +17,8 @@ public class KitLoader {
         plugin = main;
         beastKits = new HashMap<>();
         runnerKits = new HashMap<>();
+        beastKitsUsingID = new HashMap<>();
+        runnerKitsUsingID = new HashMap<>();
         loadKits(KitType.BEAST);
         plugin.getLogs().info(beastKits.keySet().size() + " Beast(s) Kit(s) loaded!");
         loadKits(KitType.RUNNER);
@@ -101,6 +103,8 @@ public class KitLoader {
     public void updateKits() {
         beastKits = new HashMap<>();
         runnerKits = new HashMap<>();
+        beastKitsUsingID = new HashMap<>();
+        runnerKitsUsingID = new HashMap<>();
         loadKits(KitType.BEAST);
         plugin.getLogs().info(beastKits.keySet().size() + " Beast(s) Kit(s) loaded!");
         loadKits(KitType.RUNNER);
