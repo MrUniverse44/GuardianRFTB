@@ -110,8 +110,11 @@ public class MainListener implements Listener {
                 plugin.getPlayerData(event.getPlayer().getUniqueId()).getGame().leave(player);
                 return;
             }
-
-            for(ItemStack item : plugin.getLobbyItems().keySet()) {
+            HashMap<ItemStack, Integer> itemToChecks = new HashMap<>(plugin.getLobbyItems());
+            itemToChecks.put(plugin.kitRunner,0);
+            itemToChecks.put(plugin.kitBeast,0);
+            itemToChecks.put(plugin.exitItem,8);
+            for(ItemStack item : itemToChecks.keySet()) {
                 if(event.getItem().getType().equals(item.getType()) && event.getItem().getItemMeta().equals(item.getItemMeta())) {
                     ItemFunction itemAction = plugin.getCurrent(item);
                     event.setCancelled(true);
@@ -135,6 +138,7 @@ public class MainListener implements Listener {
                         case PLAYER_SETTINGS:
                             plugin.getUtils().sendMessage(player,"&cCurrently in development");
                             return;
+                        case EXIT_GAME:
                         default:
                             if(plugin.getPlayerData(event.getPlayer().getUniqueId()).getGame() != null) {
                                 plugin.getPlayerData(event.getPlayer().getUniqueId()).getGame().leave(player);

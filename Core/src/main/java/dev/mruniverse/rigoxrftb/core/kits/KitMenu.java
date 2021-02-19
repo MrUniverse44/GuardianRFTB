@@ -57,13 +57,19 @@ public class KitMenu {
                 ItemStack kitItem = kitData.getValue().getKitItem();
                 kits.put(kitItem,kitData.getKey());
             } else {
-                ItemStack item = getItem(blockedMaterial,blockedName,getLore(blockedLore,kitData.getValue()));
+                ItemStack item = getItem(blockedMaterial,getKitName(blockedName,kitData.getValue()),getLore(blockedLore,kitData.getValue()));
                 if(item != null) {
                     kits.put(item,kitData.getKey());
                 }
             }
         }
         return kits;
+    }
+    public String getKitName(String name,KitInfo kitInfo) {
+        return name.replace("%kit_name%",kitInfo.getName())
+                .replace("%name%",kitInfo.getName())
+                .replace("%kit_price%",kitInfo.getPrice() + "")
+                .replace("%price%",kitInfo.getPrice() + "");
     }
     private void pasteItems() {
         chestInventory.clear();
