@@ -328,10 +328,8 @@ public final class RigoxRFTB extends JavaPlugin {
 
                 // * bStats
 
-                if (getStorage().getControl(RigoxFiles.SETTINGS).getBoolean("settings.bStats")) {
-                    BukkitMetrics bukkitMetrics = new BukkitMetrics(instance, 10282);
-                    getLogs().debug(String.format("Spigot metrics has been enabled &7(%s)", bukkitMetrics.isEnabled()));
-                }
+                BukkitMetrics bukkitMetrics = new BukkitMetrics(instance, 10282);
+                getLogs().debug(String.format("Spigot metrics has been enabled &7(%s)", bukkitMetrics.isEnabled()));
 
                 // * Rigox Updater
 
