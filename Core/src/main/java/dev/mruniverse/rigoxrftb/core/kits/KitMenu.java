@@ -86,7 +86,7 @@ public class KitMenu {
                     ItemStack kitItem = kitData.getValue().getKitItem();
                     chestInventory.setItem(slot, kitItem);
                 } else {
-                    ItemStack item = getItem(blockedMaterial,blockedName,getLore(blockedLore,kitData.getValue()));
+                    ItemStack item = getItem(blockedMaterial,getKitName(blockedName,kitData.getValue()),getLore(blockedLore,kitData.getValue()));
                     if(item != null) {
                         chestInventory.setItem(slot, item);
                     }
