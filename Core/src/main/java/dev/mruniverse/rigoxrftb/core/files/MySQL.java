@@ -57,6 +57,23 @@ public class MySQL {
             }
     }
 
+    public void pUpdate(String qry,String result,String ID) {
+        try {
+            PreparedStatement statement = con.prepareStatement(qry);
+            statement.setString(1,result);
+            statement.setString(2,ID);
+            statement.executeUpdate();
+            statement.close();
+        }catch (Throwable throwable) {
+            plugin.getLogs().error("Can't update query(s)!");
+            plugin.getLogs().error(throwable);
+        }
+    }
+
+    public Connection getConnection() {
+        return con;
+    }
+
     public void Update(String qry) {
         try {
             Statement stmt = con.createStatement();
@@ -65,6 +82,19 @@ public class MySQL {
             plugin.getLogs().error("Can't update query(s)!");
             plugin.getLogs().error(e);
         }
+    }
+
+    public ResultSet pQuery(String query) {
+        ResultSet rs = null;
+        try {
+            PreparedStatement statement = con.prepareStatement(query);
+            rs = statement.executeQuery();
+            statement.close();
+        }catch (Throwable throwable) {
+            plugin.getLogs().error("Can't execute query(s)!");
+            plugin.getLogs().error(throwable);
+        }
+        return rs;
     }
 
     public ResultSet Query(String qry) {

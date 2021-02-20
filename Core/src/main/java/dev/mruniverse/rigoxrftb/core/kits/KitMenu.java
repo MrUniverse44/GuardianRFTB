@@ -65,12 +65,6 @@ public class KitMenu {
         }
         return kits;
     }
-    public String getKitName(String name,KitInfo kitInfo) {
-        return name.replace("%kit_name%",kitInfo.getName())
-                .replace("%name%",kitInfo.getName())
-                .replace("%kit_price%",kitInfo.getPrice() + "")
-                .replace("%price%",kitInfo.getPrice() + "");
-    }
     private void pasteItems() {
         chestInventory.clear();
         int slot = 0;
@@ -84,6 +78,7 @@ public class KitMenu {
             if(slot != maxSlot) {
                 if(plugin.getPlayerData(player.getUniqueId()).getKits().contains(kitData.getValue().getID())) {
                     ItemStack kitItem = kitData.getValue().getKitItem();
+                    plugin.getLogs().debug(kitItem.toString());
                     chestInventory.setItem(slot, kitItem);
                 } else {
                     ItemStack item = getItem(blockedMaterial,getKitName(blockedName,kitData.getValue()),getLore(blockedLore,kitData.getValue()));
@@ -94,6 +89,13 @@ public class KitMenu {
             }
             slot++;
         }
+    }
+    public String getKitName(String name,KitInfo kitInfo) {
+        name = name.replace("%kit_name%",kitInfo.getName())
+                .replace("%name%",kitInfo.getName())
+                .replace("%kit_price%",kitInfo.getPrice() + "")
+                .replace("%price%",kitInfo.getPrice() + "");
+        return name;
     }
     public List<String> getLore(List<String> lore, KitInfo kitInfo) {
         List<String> newLore = new ArrayList<>();

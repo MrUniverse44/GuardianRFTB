@@ -164,15 +164,16 @@ public class MainListener implements Listener {
     public void onKitMenuClick(InventoryClickEvent event) {
         Player player = (Player)event.getWhoClicked();
         PlayerManager data = plugin.getPlayerData(player.getUniqueId());
-        if(data.getGame() != null) return;
-        if(event.getInventory() != data.getKitMenu(KitType.BEAST).getInventory() && event.getInventory() != data.getKitMenu(KitType.RUNNER).getInventory()) return;
-        if(event.getInventory() == data.getKitMenu(KitType.BEAST)) {
+        if(event.getCurrentItem() == null) return;
+        if(event.getInventory().equals(data.getKitMenu(KitType.BEAST).getInventory())) {
             HashMap<ItemStack, String> hash = data.getKitMenu(KitType.BEAST).getItems();
             ItemStack clickedItem = event.getCurrentItem();
             if (hash.containsKey(clickedItem)) {
-                plugin.getKitLoader().getToSelect(KitType.BEAST,player,hash.get(clickedItem));
+                plugin.getKitLoader().getToSelect(KitType.BEAST, player, hash.get(clickedItem));
             }
-        } else {
+            return;
+        }
+        if(event.getInventory().equals(data.getKitMenu(KitType.RUNNER).getInventory())) {
             HashMap<ItemStack, String> hash = data.getKitMenu(KitType.RUNNER).getItems();
             ItemStack clickedItem = event.getCurrentItem();
             if (hash.containsKey(clickedItem)) {

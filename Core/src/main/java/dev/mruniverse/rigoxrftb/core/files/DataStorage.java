@@ -1,5 +1,7 @@
 package dev.mruniverse.rigoxrftb.core.files;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.List;
 
@@ -24,24 +26,29 @@ public class DataStorage {
         StringBuilder vList = new StringBuilder();
         for (String string : sLists)
             vList.append(", ").append(string).append(" VARCHAR(255)");
-        mySQL.Update("CREATE TABLE IF NOT EXISTS " + tableName + " (id INT AUTO_INCREMENT PRIMARY KEY" + vList + intList + ")");
+        mySQL.Update("CREATE TABLE IF NOT EXISTS " + tableName + " (id INT AUTO_INCREMENT PRIMARY KEY" + vList.toString() + intList.toString() + ")");
     }
 
     public void setInt(String tableName, String column, String where, String what, int integer) {
+        what = what.replace("-","");
         mySQL.Update("UPDATE " + tableName + " SET " + column + "= '" + integer + "' WHERE " + where + "= '" + what + "';");
     }
 
-    public void setString(String tableName, String path, String where, String what, String integer) {
-        mySQL.Update("UPDATE " + tableName + " SET " + path + "= '" + integer + "' WHERE " + where + "= '" + what + "';");
+    public void setString(String tableName, String column, String where, String is, String result) {
+        is = is.replace("-","");
+        //mySQL.Update("UPDATE " + tableName + " SET " + column + "= '" + result + "' WHERE " + where + "= '" + is + "';");
+        mySQL.pUpdate("UPDATE `" + tableName + "` SET " + column + "=? WHERE " + where + "=?;",result,is);
     }
 
     public String getString(String tableName, String column, String where, String what) {
+        what = what.replace("-","");
         String string = "";
         try {
-            ResultSet rs = mySQL.Query("SELECT " + column + " FROM " + tableName + " WHERE " + where + "= '" + what + "';");
-            while (rs.next())
-                string = rs.getString(1);
-            rs.close();
+            String query = "SELECT " + column + " FROM " + tableName + " WHERE " + where + "= '" + what + "';";
+            Connection connection = mySQL.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet results = statement.executeQuery();
+            if (results.next()) return results.getString(column);
         } catch (Throwable throwable) {
             plugin.getLogs().error("Can't get a string from the database.");
             plugin.getLogs().error(throwable);
@@ -50,6 +57,7 @@ public class DataStorage {
     }
 
     public Integer getInt(String tableName, String column, String where, String what) {
+        what = what.replace("-","");
         int integer = 0;
         try {
             ResultSet rs = mySQL.Query("SELECT " + column + " FROM " + tableName + " WHERE " + where + "= '" + what + "';");
@@ -64,17 +72,16 @@ public class DataStorage {
     }
 
     public boolean isRegistered(String tableName, String where, String what) {
-        boolean is = false;
-        try {
-            ResultSet rs = mySQL.Query("SELECT id FROM " + tableName + " WHERE " + where + "= '" + what + "';");
-            while (rs.next())
-                is = true;
+        what = what.replace("-","");
+        try (ResultSet rs = mySQL.Query("SELECT id FROM " + tableName + " WHERE " + where + "= '" + what + "';")) {
+            boolean bol = rs.next();
             rs.close();
+            return bol;
         } catch (Throwable throwable) {
             plugin.getLogs().error("Can't check internal data in database.");
             plugin.getLogs().error(throwable);
         }
-        return is;
+        return false;
     }
 
     public void register(String tableName, List<String> values) {
@@ -87,7 +94,7 @@ public class DataStorage {
         }
         names = new StringBuilder(names.substring(0, names.length() - 2));
         names2 = new StringBuilder(names2.substring(0, names2.length() - 2));
-        mySQL.Update("INSERT INTO " + tableName + " (" + names + ") VALUES (" + names2 + ")");
+        mySQL.Update("INSERT INTO " + tableName + " (" + names.toString() + ") VALUES (" + names2.toString() + ")");
     }
 
     public void loadDatabase() {

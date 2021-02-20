@@ -72,7 +72,7 @@ public class PlayerManager {
     }
 
     public void setWins(int wins) {
-        String playerName = this.player.getUniqueId().toString();
+        String playerName = getID();
         if (plugin.getStorage().getControl(RigoxFiles.MYSQL).getBoolean("mysql.enabled")) {
             registerDefault();
             String table = plugin.getStorage().getControl(RigoxFiles.MYSQL).getString("mysql.table");
@@ -88,6 +88,7 @@ public class PlayerManager {
 
     public int getCoins() {
         if (plugin.getStorage().getControl(RigoxFiles.MYSQL).getBoolean("mysql.enabled")) {
+            registerDefault();
             String table = plugin.getStorage().getControl(RigoxFiles.MYSQL).getString("mysql.table");
             return plugin.getData().getInt(table, "Coins", "Player", player.getUniqueId().toString());
         }
@@ -97,7 +98,7 @@ public class PlayerManager {
         return 0;
     }
     public void setCoins(int coinCounter) {
-        String playerName = this.player.getUniqueId().toString();
+        String playerName = getID();
         if (plugin.getStorage().getControl(RigoxFiles.MYSQL).getBoolean("mysql.enabled")) {
             registerDefault();
             String table = plugin.getStorage().getControl(RigoxFiles.MYSQL).getString("mysql.table");
@@ -119,7 +120,7 @@ public class PlayerManager {
     }
 
     public void setKills(int kills) {
-        String playerName = this.player.getUniqueId().toString();
+        String playerName = getID();
         if (plugin.getStorage().getControl(RigoxFiles.MYSQL).getBoolean("mysql.enabled")) {
             registerDefault();
             String table = plugin.getStorage().getControl(RigoxFiles.MYSQL).getString("mysql.table");
@@ -130,7 +131,7 @@ public class PlayerManager {
     }
 
     public void setSelectedKit(String kitID) {
-        String playerName = this.player.getUniqueId().toString();
+        String playerName = getID();
         if (plugin.getStorage().getControl(RigoxFiles.MYSQL).getBoolean("mysql.enabled")) {
             registerDefault();
             String table = plugin.getStorage().getControl(RigoxFiles.MYSQL).getString("mysql.table");
@@ -142,12 +143,13 @@ public class PlayerManager {
 
     public String getSelectedKit() {
         if (plugin.getStorage().getControl(RigoxFiles.MYSQL).getBoolean("mysql.enabled")) {
+            registerDefault();
             String table = plugin.getStorage().getControl(RigoxFiles.MYSQL).getString("mysql.table");
-            String kitsBuy = plugin.getData().getString(table,"SelectedKit","Player",this.player.getUniqueId().toString());
+            String kitsBuy = plugin.getData().getString(table,"SelectedKit","Player",getID());
             return kitsBuy.replace(" ","");
         }
-        if(plugin.getData().getSQL().kits.get(this.player.getUniqueId().toString()) != null) {
-            String kitsBuy = plugin.getData().getSQL().selectedKits.get(this.player.getUniqueId().toString());
+        if(plugin.getData().getSQL().kits.get(getID()) != null) {
+            String kitsBuy = plugin.getData().getSQL().selectedKits.get(getID());
             return kitsBuy.replace(" ","");
         }
         return "NONE";
@@ -155,26 +157,38 @@ public class PlayerManager {
 
     public void addKit(String kitID) {
         if (plugin.getStorage().getControl(RigoxFiles.MYSQL).getBoolean("mysql.enabled")) {
+            registerDefault();
             String table = plugin.getStorage().getControl(RigoxFiles.MYSQL).getString("mysql.table");
-            String lastResult = plugin.getData().getString(table,"Kits","Player",this.player.getUniqueId().toString());
-            plugin.getData().setString(table, "Kits", "Player", this.player.getUniqueId().toString(),lastResult + "," + kitID);
+            String lastResult = plugin.getData().getString(table,"Kits","Player",getID());
+            if(!lastResult.equalsIgnoreCase("")) {
+                plugin.getData().setString(table, "Kits", "Player", getID(), lastResult + ",K" + kitID);
+            } else {
+                plugin.getData().setString(table, "Kits", "Player", getID(), "K"+kitID);
+            }
         }
-        if(plugin.getData().getSQL().kits.get(this.player.getUniqueId().toString()) != null) {
-            String lastResult = plugin.getData().getSQL().kits.get(this.player.getUniqueId().toString());
-            plugin.getData().getSQL().kits.put(this.player.getUniqueId().toString(),lastResult + "," + kitID);
+        if(plugin.getData().getSQL().kits.get(getID()) != null) {
+
+            String lastResult = plugin.getData().getSQL().kits.get(getID());
+            if(!lastResult.equalsIgnoreCase("")) {
+                plugin.getData().getSQL().kits.put(getID(), lastResult + ",K" + kitID);
+            } else {
+                plugin.getData().getSQL().kits.put(getID(), "K" + kitID);
+            }
         }
     }
 
     public List<String> getKits() {
         if (plugin.getStorage().getControl(RigoxFiles.MYSQL).getBoolean("mysql.enabled")) {
+            registerDefault();
             String table = plugin.getStorage().getControl(RigoxFiles.MYSQL).getString("mysql.table");
-            String kitsBuy = plugin.getData().getString(table,"Kits","Player",this.player.getUniqueId().toString());
-            kitsBuy = kitsBuy.replace(" ","");
+            String kitsBuy = plugin.getData().getString(table,"Kits","Player",getID());
+            kitsBuy = kitsBuy.replace(" ","").replace("K","");
             String[] kitShortList = kitsBuy.split(",");
             return Arrays.asList(kitShortList);
         }
-        if(plugin.getData().getSQL().kits.get(this.player.getUniqueId().toString()) != null) {
-            String kitsBuy = plugin.getData().getSQL().kits.get(this.player.getUniqueId().toString());
+        if(plugin.getData().getSQL().kits.get(getID()) != null) {
+            registerDefault();
+            String kitsBuy = plugin.getData().getSQL().kits.get(getID());
             kitsBuy = kitsBuy.replace(" ","");
             String[] kitShortList = kitsBuy.split(",");
             return Arrays.asList(kitShortList);
@@ -189,17 +203,18 @@ public class PlayerManager {
 
     public int getDeaths() {
         if (plugin.getStorage().getControl(RigoxFiles.MYSQL).getBoolean("mysql.enabled")) {
+            registerDefault();
             String table = plugin.getStorage().getControl(RigoxFiles.MYSQL).getString("mysql.table");
-            return plugin.getData().getInt(table, "Deaths", "Player", this.player.getUniqueId().toString());
+            return plugin.getData().getInt(table, "Deaths", "Player", getID());
         }
-        if(plugin.getData().getSQL().deaths.get(this.player.getUniqueId().toString()) != null) {
-            return plugin.getData().getSQL().deaths.get(this.player.getUniqueId().toString());
+        if(plugin.getData().getSQL().deaths.get(getID()) != null) {
+            return plugin.getData().getSQL().deaths.get(getID());
         }
         return 0;
     }
 
     public void setDeaths(int deaths) {
-        String playerName = this.player.getUniqueId().toString();
+        String playerName = getID();
         if (plugin.getStorage().getControl(RigoxFiles.MYSQL).getBoolean("mysql.enabled")) {
             registerDefault();
             String table = plugin.getStorage().getControl(RigoxFiles.MYSQL).getString("mysql.table");
@@ -208,20 +223,24 @@ public class PlayerManager {
             plugin.getData().getSQL().deaths.put(playerName, deaths);
         }
     }
+    
+    public String getID() {
+        return player.getUniqueId().toString().replace("-","");
+    }
 
     public void addDeaths() {
+        registerDefault();
         setDeaths(getDeaths() + 1);
     }
 
 
     public void registerDefault() {
-        String playerName = player.getUniqueId().toString();
         String table = plugin.getStorage().getControl(RigoxFiles.MYSQL).getString("mysql.table");
-        if (!plugin.getData().isRegistered(table, "Player", playerName)) {
+        if (!plugin.getData().isRegistered(table, "Player", getID())) {
             List<String> values = new ArrayList<>();
-            values.add("Player-" + playerName);
+            values.add("Player-" + getID());
             values.add("Coins-0");
-            values.add("Kits-" + plugin.getStorage().getControl(RigoxFiles.SETTINGS).getString("settings.defaultKitID"));
+            values.add("Kits-K" + plugin.getStorage().getControl(RigoxFiles.SETTINGS).getString("settings.defaultKitID"));
             values.add("SelectedKit-NONE");
             values.add("Kills-0");
             values.add("Deaths-0");
