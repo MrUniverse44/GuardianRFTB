@@ -211,6 +211,9 @@ public class MainListener implements Listener {
         Block b = e.getClickedBlock();
         if (b == null) { return; }
         if(falseChest(b.getType())) { return; }
+        if(b.getType() == Material.CHEST) e.setCancelled(true);
+        if(b.getType() == Material.TRAPPED_CHEST) e.setCancelled(true);
+        if(b.getType() == Material.ENDER_CHEST) e.setCancelled(true);
         Chest chest = (Chest)e.getClickedBlock().getState();
         InventoryHolder holder = chest.getInventory().getHolder();
         if (holder instanceof DoubleChest) {
@@ -685,7 +688,20 @@ public class MainListener implements Listener {
     @EventHandler
     public void lobbyClickInventory(InventoryClickEvent event) {
         if(plugin.getStorage().getControl(RigoxFiles.SETTINGS).getBoolean("settings.options.lobby-blockInventoryClick")) {
-            event.setCancelled(true);
+            FileConfiguration file = plugin.getStorage().getControl(RigoxFiles.SETTINGS);
+            String lC = file.getString("settings.lobbyLocation");
+            if(lC == null) lC = "notSet";
+            if (lC.equalsIgnoreCase("notSet")) {
+                plugin.getLogs().error("-----------------------------");
+                plugin.getLogs().error("Can't teleport player to lobby location, lobby location is not set");
+                plugin.getLogs().error("-----------------------------");
+            } else {
+                String[] loc = lC.split(",");
+                World w = Bukkit.getWorld(loc[0]);
+                if(event.getWhoClicked().getWorld() == w) {
+                    event.setCancelled(true);
+                }
+            }
         }
     }
     @EventHandler
