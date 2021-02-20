@@ -9,6 +9,7 @@ import dev.mruniverse.rigoxrftb.core.games.Game;
 import dev.mruniverse.rigoxrftb.core.games.GameStatus;
 import dev.mruniverse.rigoxrftb.core.games.GameType;
 import dev.mruniverse.rigoxrftb.core.kits.KitType;
+import dev.mruniverse.rigoxrftb.core.utils.ShopAction;
 import dev.mruniverse.rigoxrftb.core.utils.players.PlayerManager;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -120,7 +121,7 @@ public class MainListener implements Listener {
                     event.setCancelled(true);
                     switch(itemAction) {
                         case SHOP:
-                            plugin.getUtils().sendMessage(player,"&cShop currently is in development");
+                            player.openInventory(plugin.getUtils().getShopMenu().getInventory());
                             return;
                         case KIT_BEASTS:
                             player.openInventory(plugin.getPlayerData(player.getUniqueId()).getKitMenu(KitType.BEAST).getInventory());
@@ -150,12 +151,29 @@ public class MainListener implements Listener {
         }
     }
     @EventHandler
+    public void onShopMenuClick(InventoryClickEvent event) {
+        Player player = (Player)event.getWhoClicked();
+        if(plugin.getPlayerData(player.getUniqueId()).getGame() != null) return;
+        if(event.getCurrentItem() == null) return;
+        if(!event.getInventory().equals(plugin.getUtils().getShopMenu().getInventory())) return;
+        HashMap<ItemStack, ShopAction> hash = plugin.getUtils().getShopMenu().getItems();
+        ItemStack clickedItem = event.getCurrentItem();
+        event.setCancelled(true);
+        if(hash.containsKey(clickedItem)) {
+            if(hash.get(clickedItem) != ShopAction.CUSTOM && hash.get(clickedItem) != ShopAction.FILL) {
+                plugin.getUtils().getShopMenu().execute(player,hash.get(clickedItem));
+            }
+        }
+    }
+    @EventHandler
     public void onGameMenuClick(InventoryClickEvent event) {
         Player player = (Player)event.getWhoClicked();
         if(plugin.getPlayerData(player.getUniqueId()).getGame() != null) return;
+        if(event.getCurrentItem() == null) return;
         if(!event.getInventory().equals(plugin.getGameManager().gameMenu.getInventory())) return;
         HashMap<ItemStack,String> hash = plugin.getGameManager().gameMenu.getGameItems();
         ItemStack clickedItem = event.getCurrentItem();
+        event.setCancelled(true);
         if(hash.containsKey(clickedItem)) {
             plugin.getGameManager().joinGame(player,hash.get(clickedItem));
         }
@@ -167,6 +185,7 @@ public class MainListener implements Listener {
         if(event.getCurrentItem() == null) return;
         if(event.getInventory().equals(data.getKitMenu(KitType.BEAST).getInventory())) {
             HashMap<ItemStack, String> hash = data.getKitMenu(KitType.BEAST).getItems();
+            event.setCancelled(true);
             ItemStack clickedItem = event.getCurrentItem();
             if (hash.containsKey(clickedItem)) {
                 plugin.getKitLoader().getToSelect(KitType.BEAST, player, hash.get(clickedItem));
@@ -175,6 +194,7 @@ public class MainListener implements Listener {
         }
         if(event.getInventory().equals(data.getKitMenu(KitType.RUNNER).getInventory())) {
             HashMap<ItemStack, String> hash = data.getKitMenu(KitType.RUNNER).getItems();
+            event.setCancelled(true);
             ItemStack clickedItem = event.getCurrentItem();
             if (hash.containsKey(clickedItem)) {
                 plugin.getKitLoader().getToSelect(KitType.RUNNER,player,hash.get(clickedItem));
@@ -185,13 +205,12 @@ public class MainListener implements Listener {
     public void onChestClick(PlayerInteractEvent e) {
         Game game = plugin.getPlayerData(e.getPlayer().getUniqueId()).getGame();
         if(game == null) return;
-        if(game.gameStatus.equals(GameStatus.WAITING) || game.gameStatus.equals(GameStatus.STARTING) || game.gameStatus.equals(GameStatus.RESTARTING)) {
+        if(game.gameStatus == GameStatus.WAITING || game.gameStatus == GameStatus.STARTING || game.gameStatus == GameStatus.RESTARTING) {
             e.setCancelled(true);
         }
         Block b = e.getClickedBlock();
         if (b == null) { return; }
         if(falseChest(b.getType())) { return; }
-        e.setCancelled(true);
         Chest chest = (Chest)e.getClickedBlock().getState();
         InventoryHolder holder = chest.getInventory().getHolder();
         if (holder instanceof DoubleChest) {

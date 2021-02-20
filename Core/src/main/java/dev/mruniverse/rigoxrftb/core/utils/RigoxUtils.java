@@ -21,8 +21,13 @@ import java.util.List;
 
 public class RigoxUtils {
     private final RigoxRFTB plugin;
+    private final ShopMenu shopMenu;
     public RigoxUtils(RigoxRFTB main) {
         plugin = main;
+        shopMenu = new ShopMenu(main);
+    }
+    public ShopMenu getShopMenu() {
+        return shopMenu;
     }
     public void sendMessage(Player player,String message) {
         if(plugin.hasPAPI()) {
@@ -327,9 +332,11 @@ public class RigoxUtils {
         text = text.replace("<player_name>",player.getName());
         if(plugin.getPlayerData(player.getUniqueId()) != null) {
             text = text.replace("<player_coins>", "" + plugin.getPlayerData(player.getUniqueId()).getCoins())
+                    .replace("<player_kits>","" + plugin.getPlayerData(player.getUniqueId()).getKits().size())
                     .replace("<player_wins>","" + plugin.getPlayerData(player.getUniqueId()).getWins());
         } else {
             text = text.replace("<player_coins>", "0")
+                    .replace("<player_kits>", "1")
                     .replace("<player_wins>", "0");
         }
         text = text.replace("<player_beast_kit>","Not selected")

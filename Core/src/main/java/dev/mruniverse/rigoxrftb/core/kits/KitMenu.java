@@ -103,13 +103,6 @@ public class KitMenu {
         }
         return newLore;
     }
-    public void setSlots() {
-        int slot = 0;
-        for(Game game : plugin.getGameManager().getGames()) {
-            game.menuSlot = slot;
-            slot++;
-        }
-    }
     private ItemStack getItem(String material,String itemName,List<String> itemLore) {
         Optional<XMaterial> optionalXMaterial = XMaterial.matchXMaterial(material);
         XMaterial m;

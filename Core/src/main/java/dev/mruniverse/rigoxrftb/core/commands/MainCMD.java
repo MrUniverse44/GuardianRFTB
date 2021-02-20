@@ -112,6 +112,7 @@ public class MainCMD implements CommandExecutor {
                         plugin.getStorage().reloadFile(SaveMode.ALL);
                         plugin.getUtils().sendMessage(sender, "&8» &aReload completed!");
                         plugin.getGameManager().getGameMenu().reloadMenu();
+                        plugin.getUtils().getShopMenu().updateInv();
                         plugin.getRunnable().update();
                         if(plugin.getTitleRunnable() != null) {
                             plugin.getTitleRunnable().update();
