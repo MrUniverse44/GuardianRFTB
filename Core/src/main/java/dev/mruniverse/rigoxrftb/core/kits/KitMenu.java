@@ -78,7 +78,6 @@ public class KitMenu {
             if(slot != maxSlot) {
                 if(plugin.getPlayerData(player.getUniqueId()).getKits().contains(kitData.getValue().getID())) {
                     ItemStack kitItem = kitData.getValue().getKitItem();
-                    plugin.getLogs().debug(kitItem.toString());
                     chestInventory.setItem(slot, kitItem);
                 } else {
                     ItemStack item = getItem(blockedMaterial,getKitName(blockedName,kitData.getValue()),getLore(blockedLore,kitData.getValue()));

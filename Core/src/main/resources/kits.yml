@@ -15,11 +15,12 @@
 runnerKits:
   default:
     KitInfo:
+      item: BEACON
       name: '&e&lDEFAULT'
       kitID: '0'
       price: 0
       lore:
-        - '&7Kit Default:'
+        - '&7Kit Runner Default'
         - '&aClick to select'
     Armor:
       Helmet:
@@ -57,11 +58,12 @@ runnerKits:
 beastKits:
   default:
     KitInfo:
+      item: DIAMOND_SWORD
       name: '&e&lDEFAULT'
       kitID: '0'
       price: 0
       lore:
-        - '&7Kit Default:'
+        - '&7Kit Beast Default'
         - '&aClick to select'
     Armor:
       Helmet:

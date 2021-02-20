@@ -8,6 +8,7 @@ import dev.mruniverse.rigoxrftb.core.files.DataStorage;
 import dev.mruniverse.rigoxrftb.core.files.FileStorage;
 import dev.mruniverse.rigoxrftb.core.games.GameEquip;
 import dev.mruniverse.rigoxrftb.core.games.GameManager;
+import dev.mruniverse.rigoxrftb.core.kits.ArmorPart;
 import dev.mruniverse.rigoxrftb.core.kits.KitInfo;
 import dev.mruniverse.rigoxrftb.core.kits.KitLoader;
 import dev.mruniverse.rigoxrftb.core.kits.KitType;
@@ -487,6 +488,10 @@ public final class RigoxRFTB extends JavaPlugin {
                 for(Map.Entry<ItemStack,Integer> data : kitInfo.getInventoryItems().entrySet()) {
                     player.getInventory().setItem(data.getValue(),data.getKey());
                 }
+                if(kitInfo.getArmor(ArmorPart.HELMET) != null) player.getInventory().setHelmet(kitInfo.getArmor(ArmorPart.HELMET));
+                if(kitInfo.getArmor(ArmorPart.CHESTPLATE) != null) player.getInventory().setHelmet(kitInfo.getArmor(ArmorPart.CHESTPLATE));
+                if(kitInfo.getArmor(ArmorPart.LEGGINGS) != null) player.getInventory().setHelmet(kitInfo.getArmor(ArmorPart.LEGGINGS));
+                if(kitInfo.getArmor(ArmorPart.BOOTS) != null) player.getInventory().setHelmet(kitInfo.getArmor(ArmorPart.BOOTS));
                 return;
             case RUNNER_KIT:
             default:
@@ -497,6 +502,10 @@ public final class RigoxRFTB extends JavaPlugin {
                 for(Map.Entry<ItemStack,Integer> data : runnerInfo.getInventoryItems().entrySet()) {
                     player.getInventory().setItem(data.getValue(),data.getKey());
                 }
+                if(runnerInfo.getArmor(ArmorPart.HELMET) != null) player.getInventory().setHelmet(runnerInfo.getArmor(ArmorPart.HELMET));
+                if(runnerInfo.getArmor(ArmorPart.CHESTPLATE) != null) player.getInventory().setHelmet(runnerInfo.getArmor(ArmorPart.CHESTPLATE));
+                if(runnerInfo.getArmor(ArmorPart.LEGGINGS) != null) player.getInventory().setHelmet(runnerInfo.getArmor(ArmorPart.LEGGINGS));
+                if(runnerInfo.getArmor(ArmorPart.BOOTS) != null) player.getInventory().setHelmet(runnerInfo.getArmor(ArmorPart.BOOTS));
         }
     }
     public boolean existPlayer(Player player) { return rigoxPlayers.containsKey(player.getUniqueId()); }
