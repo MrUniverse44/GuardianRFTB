@@ -1,14 +1,14 @@
-name: RigoxRFTB
+name: GuardianRFTB
 version: ${project.version}
-main: dev.mruniverse.rigoxrftb.core.RigoxRFTB
+main: dev.mruniverse.guardianrftb.core.GuardianRFTB
 authors: [ MrUniverse44, Sebastnchan ]
 description: Run From the Beast Minigame but with new Features and Original systems.
-website: rigox.club
+website: play.servername.net
 load: POSTWORLD
 commands:
-  rRFTB:
+  gRFTB:
     description: Main command of the plugin
-  RigoxRFTB:
+  GuardianRFTB:
     description: Main command of the plugin
   rftb:
     description: Main command of the plugin

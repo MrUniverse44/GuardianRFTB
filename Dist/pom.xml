@@ -4,7 +4,7 @@
     <version>${project.parent.version}</version>
     <packaging>jar</packaging>
     <parent>
-        <groupId>dev.mruniverse.rigoxrftb</groupId>
+        <groupId>dev.mruniverse.guardianrftb</groupId>
         <artifactId>RigoxRFTB-Parent</artifactId>
         <version>1.0.4-SNAPSHOT</version>
     </parent>
@@ -25,8 +25,8 @@
                         <configuration>
                             <artifactSet>
                                 <includes>
-                                    <include>dev.mruniverse.rigoxrftb:RigoxRFTB-*</include>
-                                    <include>dev.mruniverse.rigoxrftb:compatibility</include>
+                                    <include>dev.mruniverse.guardianrftb:RigoxRFTB-*</include>
+                                    <include>dev.mruniverse.guardianrftb:compatibility</include>
                                 </includes>
                             </artifactSet>
                         </configuration>
@@ -37,57 +37,57 @@
     </build>
     <dependencies>
         <dependency>
-            <groupId>dev.mruniverse.rigoxrftb</groupId>
+            <groupId>dev.mruniverse.guardianrftb</groupId>
             <artifactId>RigoxRFTB-Core</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
-            <groupId>dev.mruniverse.rigoxrftb</groupId>
+            <groupId>dev.mruniverse.guardianrftb</groupId>
             <artifactId>RigoxRFTB-NMS-v1_13_R2</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
-            <groupId>dev.mruniverse.rigoxrftb</groupId>
+            <groupId>dev.mruniverse.guardianrftb</groupId>
             <artifactId>RigoxRFTB-NMS-v1_13_R1</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
-            <groupId>dev.mruniverse.rigoxrftb</groupId>
+            <groupId>dev.mruniverse.guardianrftb</groupId>
             <artifactId>RigoxRFTB-NMS-v1_12_R1</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
-            <groupId>dev.mruniverse.rigoxrftb</groupId>
+            <groupId>dev.mruniverse.guardianrftb</groupId>
             <artifactId>RigoxRFTB-NMS-v1_11_R1</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
-            <groupId>dev.mruniverse.rigoxrftb</groupId>
+            <groupId>dev.mruniverse.guardianrftb</groupId>
             <artifactId>RigoxRFTB-NMS-v1_10_R1</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
-            <groupId>dev.mruniverse.rigoxrftb</groupId>
+            <groupId>dev.mruniverse.guardianrftb</groupId>
             <artifactId>RigoxRFTB-NMS-v1_9_R2</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
-            <groupId>dev.mruniverse.rigoxrftb</groupId>
+            <groupId>dev.mruniverse.guardianrftb</groupId>
             <artifactId>RigoxRFTB-NMS-v1_9_R1</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
-            <groupId>dev.mruniverse.rigoxrftb</groupId>
+            <groupId>dev.mruniverse.guardianrftb</groupId>
             <artifactId>RigoxRFTB-NMS-v1_8_R3</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
-            <groupId>dev.mruniverse.rigoxrftb</groupId>
+            <groupId>dev.mruniverse.guardianrftb</groupId>
             <artifactId>RigoxRFTB-NMS-v1_8_R2</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
-            <groupId>dev.mruniverse.rigoxrftb</groupId>
+            <groupId>dev.mruniverse.guardianrftb</groupId>
             <artifactId>RigoxRFTB-NMS-v1_8_R1</artifactId>
             <version>${project.parent.version}</version>
         </dependency>

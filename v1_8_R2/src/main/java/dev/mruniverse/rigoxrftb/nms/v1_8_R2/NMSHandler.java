@@ -1,6 +1,6 @@
-package dev.mruniverse.rigoxrftb.nms.v1_8_R2;
+package dev.mruniverse.guardianrftb.nms.v1_8_R2;
 
-import dev.mruniverse.rigoxrftb.core.nms.NMS;
+import dev.mruniverse.guardianrftb.core.nms.NMS;
 import net.md_5.bungee.api.ChatColor;
 import net.minecraft.server.v1_8_R2.*;
 import org.bukkit.Location;
