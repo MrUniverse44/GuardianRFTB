@@ -34,7 +34,7 @@ public class KitLoader {
                 return;
             case BEAST:
                 for(String kit : plugin.getStorage().getContent(GuardianFiles.KITS,"beastKits",false)) {
-                    loadKit(KitType.RUNNER,kit);
+                    loadKit(KitType.BEAST,kit);
                 }
         }
     }
