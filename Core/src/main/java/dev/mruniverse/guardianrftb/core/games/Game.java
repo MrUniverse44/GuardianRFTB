@@ -854,8 +854,10 @@ public class Game {
             return;
         }
         if(this.ending == 50) {
+            boolean wtm = true;
+            if(winnerTeam == GameTeam.BEASTS) wtm = false;
             for(Player player : this.players) {
-                plugin.getUtils().sendList(player,messagesFile.getStringList("messages.inGame.infoList.rewardSummary"));
+                plugin.getUtils().rewardInfo(player,messagesFile.getStringList("messages.inGame.infoList.rewardSummary"),wtm);
             }
         }
         if (this.ending >= 50)

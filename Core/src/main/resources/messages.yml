@@ -40,6 +40,7 @@ messages:
         - ' '
         - ' &7You earned:'
         - '  &f[px] &3%game% Game Experience'
+        - '  &f[px] &a%coins% Coins'
         - ' '
         - '&a[bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx][bx]'
     deathMessages:

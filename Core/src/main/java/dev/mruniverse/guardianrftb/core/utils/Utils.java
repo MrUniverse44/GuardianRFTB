@@ -12,6 +12,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import java.text.SimpleDateFormat;
@@ -60,55 +61,38 @@ public class Utils {
     }
     public void sendGameList(Player player, List<String> list, GameTeam winnerTeam) {
         if(list == null) list = new ArrayList<>();
-        if(plugin.getPlayerData(player.getUniqueId()).getGame() != null) {
-            String runnerRole = plugin.getStorage().getControl(GuardianFiles.SETTINGS).getString("roles.runners");
-            String beastRole = plugin.getStorage().getControl(GuardianFiles.SETTINGS).getString("roles.beasts");
-            String wT,lT;
-            if(runnerRole == null) runnerRole = "Runners";
-            if(beastRole == null) beastRole = "Beasts";
-            if(winnerTeam.equals(GameTeam.RUNNERS)) {
-                wT = runnerRole;
-                lT = beastRole;
-            } else {
-                wT = beastRole;
-                lT = runnerRole;
-            }
-            if(plugin.getPlayerData(player.getUniqueId()).getGame().getBeasts().contains(player)) {
-                for(String line : list) {
-                    line = line.replace("<isBeast>","")
-                            .replace("<center>","             ")
-                            .replace("%gameType%",plugin.getPlayerData(player.getUniqueId()).getGame().getGameType().getType())
-                            .replace("%map_name%",plugin.getPlayerData(player.getUniqueId()).getGame().getName())
-                            .replace("[bx]","▄")
-                            .replace("%winner_team%",wT)
-                            .replace("[px]","⚫")
-                            .replace("%game%","+5")
-                            .replace("%looser_team%",lT);
-                    if(!line.contains("<isRunner>")) {
-                        sendMessage(player, line);
-                    }
-                }
-            } else {
-                for(String line : list) {
-                    line = line.replace("<isRunner>","")
-                            .replace("<center>","             ")
-                            .replace("%gameType%",plugin.getPlayerData(player.getUniqueId()).getGame().getGameType().getType())
-                            .replace("%map_name%",plugin.getPlayerData(player.getUniqueId()).getGame().getName())
-                            .replace("[bx]","▄")
-                            .replace("%winner_team%",wT)
-                            .replace("[px]","⚫")
-                            .replace("%game%","+5")
-                            .replace("%looser_team%",lT);
-                    if(!line.contains("<isBeast>")) {
-                        sendMessage(player, line);
-                    }
-                }
-            }
+        String runnerRole = plugin.getStorage().getControl(GuardianFiles.SETTINGS).getString("roles.runners");
+        String beastRole = plugin.getStorage().getControl(GuardianFiles.SETTINGS).getString("roles.beasts");
+        String wT,lT;
+        if(runnerRole == null) runnerRole = "Runners";
+        if(beastRole == null) beastRole = "Beasts";
+        if(winnerTeam.equals(GameTeam.RUNNERS)) {
+            wT = runnerRole;
+            lT = beastRole;
         } else {
-            for(String line : list) {
-                line = line.replace("[bx]","▄")
-                        .replace("[px]","⚫");
-                sendMessage(player,line);
+            wT = beastRole;
+            lT = runnerRole;
+        }
+        UUID uuid = player.getUniqueId();
+        Game game = plugin.getPlayerData(uuid).getGame();
+        String gameType = game.getGameType().getType();
+        String gameName = game.getName();
+        boolean playerBeast = game.getBeasts().contains(player);
+        for(String line : list) {
+            if(playerBeast) line = line.replace("<isBeast>","");
+            if(!playerBeast) line = line.replace("<isRunner>","");
+            line = line.replace("<center>","             ")
+                    .replace("%gameType%",gameType)
+                    .replace("%map_name%",gameName)
+                    .replace("%winner_team%",wT)
+                    .replace("looser_team",lT)
+                    .replace("[px]","⚫")
+                    .replace("%game%","+5")
+                    .replace("[bx]","▄");
+            if(playerBeast) {
+                if(!line.contains("<isRunner>")) sendMessage(player,line);
+            } else {
+                if(!line.contains("<isBeast>")) sendMessage(player,line);
             }
         }
     }
@@ -162,31 +146,24 @@ public class Utils {
     public void sendList(Player player,List<String> list) {
         if(list == null) list = new ArrayList<>();
         if(plugin.getPlayerData(player.getUniqueId()).getGame() != null) {
-            if(plugin.getPlayerData(player.getUniqueId()).getGame().getBeasts().contains(player)) {
-                for(String line : list) {
-                    line = line.replace("<isBeast>","")
-                            .replace("<center>","             ")
-                            .replace("%gameType%",plugin.getPlayerData(player.getUniqueId()).getGame().getGameType().getType())
-                            .replace("%map_name%",plugin.getPlayerData(player.getUniqueId()).getGame().getName())
-                            .replace("[px]","⚫")
-                            .replace("%game%","+5")
-                            .replace("[bx]","▄");
-                    if(!line.contains("<isRunner>")) {
-                        sendMessage(player, line);
-                    }
-                }
-            } else {
-                for(String line : list) {
-                    line = line.replace("<isRunner>","")
-                            .replace("<center>","             ")
-                            .replace("%gameType%",plugin.getPlayerData(player.getUniqueId()).getGame().getGameType().getType())
-                            .replace("%map_name%",plugin.getPlayerData(player.getUniqueId()).getGame().getName())
-                            .replace("[px]","⚫")
-                            .replace("%game%","+5")
-                            .replace("[bx]","▄");
-                    if(!line.contains("<isBeast>")) {
-                        sendMessage(player, line);
-                    }
+            UUID uuid = player.getUniqueId();
+            Game game = plugin.getPlayerData(uuid).getGame();
+            String gameType = game.getGameType().getType();
+            String gameName = game.getName();
+            boolean playerBeast = game.getBeasts().contains(player);
+            for(String line : list) {
+                if(playerBeast) line = line.replace("<isBeast>","");
+                if(!playerBeast) line = line.replace("<isRunner>","");
+                line = line.replace("<center>","             ")
+                        .replace("%gameType%",gameType)
+                        .replace("%map_name%",gameName)
+                        .replace("[px]","⚫")
+                        .replace("%game%","+5")
+                        .replace("[bx]","▄");
+                if(playerBeast) {
+                    if(!line.contains("<isRunner>")) sendMessage(player,line);
+                } else {
+                    if(!line.contains("<isBeast>")) sendMessage(player,line);
                 }
             }
         } else {
@@ -216,43 +193,44 @@ public class Utils {
     }
 
     public String getTitle(GuardianBoard board) {
+        FileConfiguration scoreboard = plugin.getStorage().getControl(GuardianFiles.SCOREBOARD);
         switch (board) {
             case LOBBY:
-                if (plugin.getStorage().getControl(GuardianFiles.SCOREBOARD).getString("scoreboards.lobby.title") != null) {
-                    return plugin.getStorage().getControl(GuardianFiles.SCOREBOARD).getString("scoreboards.lobby.title");
+                if (scoreboard.getString("scoreboards.lobby.title") != null) {
+                    return scoreboard.getString("scoreboards.lobby.title");
                 }
                 return "";
             case WAITING:
             case STARTING:
             case SELECTING:
             case BEAST_SPAWN:
-                if (plugin.getStorage().getControl(GuardianFiles.SCOREBOARD).getString("scoreboards.waiting.title") != null) {
-                    return plugin.getStorage().getControl(GuardianFiles.SCOREBOARD).getString("scoreboards.waiting.title");
+                if (scoreboard.getString("scoreboards.waiting.title") != null) {
+                    return scoreboard.getString("scoreboards.waiting.title");
                 }
                 return "";
             case PLAYING:
-                if (plugin.getStorage().getControl(GuardianFiles.SCOREBOARD).getString("scoreboards.playing.title") != null) {
-                    return plugin.getStorage().getControl(GuardianFiles.SCOREBOARD).getString("scoreboards.playing.title");
+                if (scoreboard.getString("scoreboards.playing.title") != null) {
+                    return scoreboard.getString("scoreboards.playing.title");
                 }
                 return "";
             case WIN_BEAST_FOR_BEAST:
-                if (plugin.getStorage().getControl(GuardianFiles.SCOREBOARD).getString("scoreboards.beastWin.forBeast.title") != null) {
-                    return plugin.getStorage().getControl(GuardianFiles.SCOREBOARD).getString("scoreboards.beastWin.forBeast.title");
+                if (scoreboard.getString("scoreboards.beastWin.forBeast.title") != null) {
+                    return scoreboard.getString("scoreboards.beastWin.forBeast.title");
                 }
                 return "";
             case WIN_BEAST_FOR_RUNNERS:
-                if (plugin.getStorage().getControl(GuardianFiles.SCOREBOARD).getString("scoreboards.beastWin.forRunners.title") != null) {
-                    return plugin.getStorage().getControl(GuardianFiles.SCOREBOARD).getString("scoreboards.beastWin.forRunners.title");
+                if (scoreboard.getString("scoreboards.beastWin.forRunners.title") != null) {
+                    return scoreboard.getString("scoreboards.beastWin.forRunners.title");
                 }
                 return "";
             case WIN_RUNNERS_FOR_BEAST:
-                if (plugin.getStorage().getControl(GuardianFiles.SCOREBOARD).getString("scoreboards.runnersWin.forBeast.title") != null) {
-                    return plugin.getStorage().getControl(GuardianFiles.SCOREBOARD).getString("scoreboards.runnersWin.forBeast.title");
+                if (scoreboard.getString("scoreboards.runnersWin.forBeast.title") != null) {
+                    return scoreboard.getString("scoreboards.runnersWin.forBeast.title");
                 }
                 return "";
             case WIN_RUNNERS_FOR_RUNNERS:
-                if (plugin.getStorage().getControl(GuardianFiles.SCOREBOARD).getString("scoreboards.runnersWin.forRunners.title") != null) {
-                    return plugin.getStorage().getControl(GuardianFiles.SCOREBOARD).getString("scoreboards.runnersWin.forRunners.title");
+                if (scoreboard.getString("scoreboards.runnersWin.forRunners.title") != null) {
+                    return scoreboard.getString("scoreboards.runnersWin.forRunners.title");
                 }
                 return "";
         }
@@ -263,16 +241,17 @@ public class Utils {
     }
     public List<String> getLines(GuardianBoard board, Player player) {
         List<String> lines = new ArrayList<>();
+        FileConfiguration scoreboard = plugin.getStorage().getControl(GuardianFiles.SCOREBOARD);
         switch(board) {
             case LOBBY:
             default:
-                for (String line : plugin.getStorage().getControl(GuardianFiles.SCOREBOARD).getStringList("scoreboards.lobby.lines")) {
+                for (String line : scoreboard.getStringList("scoreboards.lobby.lines")) {
                     line = replaceVariables(line, player);
                     lines.add(line);
                 }
                 return lines;
             case WAITING:
-                for (String line : plugin.getStorage().getControl(GuardianFiles.SCOREBOARD).getStringList("scoreboards.waiting.lines")) {
+                for (String line : scoreboard.getStringList("scoreboards.waiting.lines")) {
                     if (!line.contains("<isStarting>") && !line.contains("<isSelecting>") && !line.contains("<BeastAppear>")) {
                         if (line.contains("<isWaiting>")) line = line.replace("<isWaiting>", "");
                         line = replaceVariables(line, player);
@@ -281,7 +260,7 @@ public class Utils {
                 }
                 return lines;
             case SELECTING:
-                for (String line : plugin.getStorage().getControl(GuardianFiles.SCOREBOARD).getStringList("scoreboards.waiting.lines")) {
+                for (String line : scoreboard.getStringList("scoreboards.waiting.lines")) {
                     if (!line.contains("<isWaiting>") && !line.contains("<isStarting>") && !line.contains("<BeastAppear>")) {
                         if (line.contains("<isSelecting>")) line = line.replace("<isSelecting>", "");
                         line = replaceVariables(line, player);
@@ -290,7 +269,7 @@ public class Utils {
                 }
                 return lines;
             case STARTING:
-                for (String line : plugin.getStorage().getControl(GuardianFiles.SCOREBOARD).getStringList("scoreboards.waiting.lines")) {
+                for (String line : scoreboard.getStringList("scoreboards.waiting.lines")) {
                     if (!line.contains("<isWaiting>") && !line.contains("<isSelecting>") && !line.contains("<BeastAppear>")) {
                         if (line.contains("<isStarting>")) line = line.replace("<isStarting>", "");
                         line = replaceVariables(line, player);
@@ -299,7 +278,7 @@ public class Utils {
                 }
                 return lines;
             case BEAST_SPAWN:
-                for (String line : plugin.getStorage().getControl(GuardianFiles.SCOREBOARD).getStringList("scoreboards.waiting.lines")) {
+                for (String line : scoreboard.getStringList("scoreboards.waiting.lines")) {
                     if (!line.contains("<isWaiting>") && !line.contains("<isSelecting>") && !line.contains("<isStarting>")) {
                         if (line.contains("<BeastAppear>")) line = line.replace("<BeastAppear>", "");
                         line = replaceVariables(line, player);
@@ -308,31 +287,31 @@ public class Utils {
                 }
                 return lines;
             case PLAYING:
-                for (String line : plugin.getStorage().getControl(GuardianFiles.SCOREBOARD).getStringList("scoreboards.playing.lines")) {
+                for (String line : scoreboard.getStringList("scoreboards.playing.lines")) {
                     line = replaceVariables(line, player);
                     lines.add(line);
                 }
                 return lines;
             case WIN_BEAST_FOR_BEAST:
-                for (String line : plugin.getStorage().getControl(GuardianFiles.SCOREBOARD).getStringList("scoreboards.beastWin.forBeast.lines")) {
+                for (String line : scoreboard.getStringList("scoreboards.beastWin.forBeast.lines")) {
                     line = replaceVariables(line, player);
                     lines.add(line);
                 }
                 return lines;
             case WIN_BEAST_FOR_RUNNERS:
-                for (String line : plugin.getStorage().getControl(GuardianFiles.SCOREBOARD).getStringList("scoreboards.beastWin.forRunners.lines")) {
+                for (String line : scoreboard.getStringList("scoreboards.beastWin.forRunners.lines")) {
                     line = replaceVariables(line, player);
                     lines.add(line);
                 }
                 return lines;
             case WIN_RUNNERS_FOR_BEAST:
-                for (String line : plugin.getStorage().getControl(GuardianFiles.SCOREBOARD).getStringList("scoreboards.runnersWin.forBeast.lines")) {
+                for (String line : scoreboard.getStringList("scoreboards.runnersWin.forBeast.lines")) {
                     line = replaceVariables(line, player);
                     lines.add(line);
                 }
                 return lines;
             case WIN_RUNNERS_FOR_RUNNERS:
-                for (String line : plugin.getStorage().getControl(GuardianFiles.SCOREBOARD).getStringList("scoreboards.runnersWin.forRunners.lines")) {
+                for (String line : scoreboard.getStringList("scoreboards.runnersWin.forRunners.lines")) {
                     line = replaceVariables(line, player);
                     lines.add(line);
                 }
