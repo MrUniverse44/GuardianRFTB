@@ -24,7 +24,7 @@ scoreboards:
       - '&e&lRFTB'
   lobby:
     toggle: true
-    title: '&e&lRigoxRFTB'
+    title: '&e&lGuardianRFTB'
     lines:
       - ' '
       - '&fUser: &b<player_name>'
@@ -42,7 +42,7 @@ scoreboards:
   # - <isStarting> = This line only appear when the game is starting.
   # - <BeastAppear> = This line only appear when the beast is waiting to appear in the map.
   waiting:
-    title: '&e&lRigoxRFTB'
+    title: '&e&lGuardianRFTB'
     lines:
       - '&7<arena_mode> | <timeFormat>'
       - ' '
