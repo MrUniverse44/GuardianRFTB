@@ -316,14 +316,16 @@ public class MainListener implements Listener {
                 plugin.getLogs().error("Can't show lobby-scoreboard, lobby location is not set");
                 plugin.getLogs().error("-----------------------------");
             } else {
-                event.setCancelled(true);
                 plugin.getLogs().debug("CHAT | " + player.getName() + ": " + event.getMessage());
                 String[] loc = lC.split(",");
                 World w = Bukkit.getWorld(loc[0]);
                 if(w == null) return;
-                for(Player lPlayer : w.getPlayers()) {
-                    plugin.getUtils().sendMessage(lPlayer,lobbyChat.replace("<player_name>",player.getName())
-                    .replace("%message%",event.getMessage()));
+                if(player.getWorld() == w) {
+                    event.setCancelled(true);
+                    for (Player lPlayer : w.getPlayers()) {
+                        plugin.getUtils().sendMessage(lPlayer, lobbyChat.replace("<player_name>", player.getName())
+                                .replace("%message%", event.getMessage()));
+                    }
                 }
             }
             return;

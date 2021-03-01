@@ -283,6 +283,7 @@ public final class GuardianRFTB extends JavaPlugin {
                     ItemLore = items.getStringList("InGame.backCheckpointItem.lore");
                     if (ItemMaterial == null) ItemMaterial = "NETHER_STAR";
                     optionalXMaterial = XMaterial.matchXMaterial(ItemMaterial);
+                    if(ItemName == null) ItemName = "&b&lCHECKPOINT";
                     if (optionalXMaterial.isPresent()) {
                         m = optionalXMaterial.get();
                         if (m.parseMaterial() != null) {
