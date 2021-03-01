@@ -387,7 +387,7 @@ public final class GuardianRFTB extends JavaPlugin {
                             getLogs().info("&aYou are Running a Pre-Release version, please report bugs ;)");
                             break;
                         case "RED_PROBLEM":
-                            getLogs().info("&aRigoxRFTB can't connect to WiFi to check plugin version.");
+                            getLogs().info("&aGuardianRFTB can't connect to WiFi to check plugin version.");
                             break;
                         case "ALPHA_VERSION":
                             getLogs().info("&bYou are Running a &aAlpha version&b, it is normal to find several errors, please report these errors so that they can be solved.");
