@@ -537,6 +537,7 @@ public class Game {
                 }
                 if (starting == -10) {
                     playingStage = true;
+                    invincible = false;
                     gameStatus = GameStatus.PLAYING;
                     GameStartEvent event = new GameStartEvent(this);
                     plugin.getServer().getPluginManager().callEvent(event);

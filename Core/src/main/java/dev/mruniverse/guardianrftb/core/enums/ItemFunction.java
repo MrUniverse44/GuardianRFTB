@@ -8,5 +8,6 @@ public enum ItemFunction {
     EXIT_LOBBY,
     KIT_RUNNERS,
     KIT_BEASTS,
+    CHECKPOINT,
     EXIT_GAME
 }

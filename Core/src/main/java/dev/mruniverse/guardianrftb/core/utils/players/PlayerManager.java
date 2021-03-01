@@ -7,6 +7,7 @@ import dev.mruniverse.guardianrftb.core.kits.KitMenu;
 import dev.mruniverse.guardianrftb.core.kits.KitType;
 import dev.mruniverse.guardianrftb.core.enums.PlayerStatus;
 import dev.mruniverse.guardianrftb.core.enums.GuardianBoard;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -20,6 +21,8 @@ public class PlayerManager {
     private final KitMenu runnerMenu;
     private final Player player;
     private final GuardianRFTB plugin;
+    private boolean pointStatus;
+    private Location lastCheckpoint;
     private Game currentGame;
 
     public PlayerManager(Player p, GuardianRFTB main) {
@@ -27,6 +30,8 @@ public class PlayerManager {
         beastMenu = new KitMenu(main, KitType.BEAST,p);
         runnerMenu = new KitMenu(main, KitType.RUNNER,p);
         player = p;
+        pointStatus = false;
+        lastCheckpoint = null;
         guardianBoard = GuardianBoard.LOBBY;
         playerStatus = PlayerStatus.IN_LOBBY;
         currentGame = null;
@@ -84,6 +89,22 @@ public class PlayerManager {
 
     public void addWins() {
         setWins(getWins() + 1);
+    }
+
+    public boolean getPointStatus() {
+        return pointStatus;
+    }
+
+    public Location getLastCheckpoint() {
+        return lastCheckpoint;
+    }
+
+    public void setPointStatus(boolean bol) {
+        pointStatus = bol;
+    }
+
+    public void setLastCheckpoint(Location location) {
+        lastCheckpoint = location;
     }
 
     public int getCoins() {

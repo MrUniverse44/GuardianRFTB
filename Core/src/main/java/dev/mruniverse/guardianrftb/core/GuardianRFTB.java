@@ -48,6 +48,7 @@ public final class GuardianRFTB extends JavaPlugin {
     private KitLoader kitLoader;
 
     public ItemStack exitItem;
+    public ItemStack checkPoint;
     public ItemStack kitRunner;
     public ItemStack kitBeast;
     public ItemStack beastHelmet;
@@ -273,6 +274,24 @@ public final class GuardianRFTB extends JavaPlugin {
                             kitRunner = item;
                             RunnerSlot = ItemSlot;
                             currentItem.put(item, ItemFunction.KIT_RUNNERS);
+                        }
+                    } else {
+                        getLogs().error("Item: " + ItemMaterial + " doesn't exists.");
+                    }
+                    ItemMaterial = items.getString("InGame.backCheckpointItem.item");
+                    ItemName = items.getString("InGame.backCheckpointItem.name");
+                    ItemLore = items.getStringList("InGame.backCheckpointItem.lore");
+                    if (ItemMaterial == null) ItemMaterial = "NETHER_STAR";
+                    optionalXMaterial = XMaterial.matchXMaterial(ItemMaterial);
+                    if (optionalXMaterial.isPresent()) {
+                        m = optionalXMaterial.get();
+                        if (m.parseMaterial() != null) {
+                            item = getItem(m, ItemName, ItemLore);
+                            if (items.get("InGame.backCheckpointItem.enchantments") != null) {
+                                item = getEnchantmentList(item, GuardianFiles.ITEMS, "InGame.backCheckpointItem.enchantments");
+                            }
+                            checkPoint = item;
+                            currentItem.put(item, ItemFunction.CHECKPOINT);
                         }
                     } else {
                         getLogs().error("Item: " + ItemMaterial + " doesn't exists.");

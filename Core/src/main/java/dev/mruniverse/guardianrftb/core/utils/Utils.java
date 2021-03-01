@@ -85,7 +85,7 @@ public class Utils {
                     .replace("%gameType%",gameType)
                     .replace("%map_name%",gameName)
                     .replace("%winner_team%",wT)
-                    .replace("looser_team",lT)
+                    .replace("%looser_team%",lT)
                     .replace("[px]","⚫")
                     .replace("%game%","+5")
                     .replace("[bx]","▄");

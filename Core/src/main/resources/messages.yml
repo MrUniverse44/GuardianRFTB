@@ -99,6 +99,9 @@ messages:
       Classic: Classic
       Infected: Infected
       Double: Double Beast
+    checkpoint:
+      use: '&aYou has been teleported to your last checkpoint.'
+      already: '&7You already has an checkpoint in use.'
     no-perms: '&cYou need permission &7%permission% &cfor this action.'
     full: '&cThis game is full!'
     gamePlaying: '&cThis arena is in game.'

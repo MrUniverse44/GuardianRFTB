@@ -87,6 +87,12 @@ InGame:
       - '&7Here your lore'
       - '&eplay.servername.net'
     slot: 8
+  backCheckpointItem:
+    item: NETHER_STAR
+    name: '&b&lCheckpoint Back'
+    lore:
+      - '&8GuardianRFTB'
+      - '&eClick to back'
 Playing:
   BeastInventory:
     Sword:

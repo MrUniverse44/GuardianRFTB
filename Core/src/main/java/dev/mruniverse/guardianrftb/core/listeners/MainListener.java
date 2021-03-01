@@ -111,9 +111,11 @@ public class MainListener implements Listener {
                 plugin.getPlayerData(event.getPlayer().getUniqueId()).getGame().leave(player);
                 return;
             }
+            PlayerManager pm = plugin.getPlayerData(player.getUniqueId());
             HashMap<ItemStack, Integer> itemToChecks = new HashMap<>(plugin.getLobbyItems());
             itemToChecks.put(plugin.kitRunner,0);
             itemToChecks.put(plugin.kitBeast,0);
+            itemToChecks.put(plugin.checkPoint,0);
             itemToChecks.put(plugin.exitItem,8);
             for(ItemStack item : itemToChecks.keySet()) {
                 if(event.getItem().getType().equals(item.getType()) && event.getItem().getItemMeta().equals(item.getItemMeta())) {
@@ -124,13 +126,21 @@ public class MainListener implements Listener {
                             player.openInventory(plugin.getUtils().getShopMenu().getInventory());
                             return;
                         case KIT_BEASTS:
-                            player.openInventory(plugin.getPlayerData(player.getUniqueId()).getKitMenu(KitType.BEAST).getInventory());
+                            player.openInventory(pm.getKitMenu(KitType.BEAST).getInventory());
                             return;
                         case KIT_RUNNERS:
-                            player.openInventory(plugin.getPlayerData(player.getUniqueId()).getKitMenu(KitType.RUNNER).getInventory());
+                            player.openInventory(pm.getKitMenu(KitType.RUNNER).getInventory());
                             return;
                         case EXIT_LOBBY:
                             plugin.getUtils().sendMessage(player,"&aSending you to Lobby..");
+                            return;
+                        case CHECKPOINT:
+                            if(pm.getPointStatus() && pm.getLastCheckpoint() != null) {
+                                player.teleport(pm.getLastCheckpoint());
+                                plugin.getUtils().sendMessage(player, plugin.getStorage().getControl(GuardianFiles.MESSAGES).getString("messages.others.checkpoint.use"));
+                                pm.setLastCheckpoint(null);
+                                pm.setPointStatus(false);
+                            }
                             return;
                         case GAME_SELECTOR:
                             player.openInventory(plugin.getGameManager().gameMenu.getInventory());
@@ -407,9 +417,9 @@ public class MainListener implements Listener {
         if(plugin.getPlayerData(player.getUniqueId()) == null) return;
         if(plugin.getPlayerData(player.getUniqueId()).getGame() == null) return;
         Game game = plugin.getPlayerData(player.getUniqueId()).getGame();
-        if(game.gameStatus.equals(GameStatus.WAITING) || game.gameStatus.equals(GameStatus.STARTING)) {
+        if(game.gameStatus == GameStatus.WAITING || game.gameStatus == GameStatus.STARTING || game.invincible) {
             event.setCancelled(true);
-            if(event.getCause().equals(EntityDamageEvent.DamageCause.VOID)) {
+            if(event.getCause() == EntityDamageEvent.DamageCause.VOID) {
                 player.teleport(game.waiting);
                 player.setHealth(20);
                 player.setFoodLevel(20);
@@ -514,27 +524,31 @@ public class MainListener implements Listener {
             if(event.getDamager().getType().equals(EntityType.PLAYER)) {
                 Player victim = (Player)event.getEntity();
                 Player attacker = (Player)event.getDamager();
-                if(plugin.getPlayerData(victim.getUniqueId()).getGame() != null) {
-                    if(plugin.getPlayerData(attacker.getUniqueId()).getGame() == null) {
-                        event.setCancelled(true);
-                    } else {
-                        Game game = plugin.getPlayerData(victim.getUniqueId()).getGame();
-                        if(game.getRunners().contains(victim) && game.getRunners().contains(attacker)) {
-                            event.setCancelled(true);
-                        } else {
-                            if((victim.getHealth() - event.getFinalDamage()) <= 0) {
-                                String deathMessage;
-                                deathMessage = plugin.getStorage().getControl(GuardianFiles.MESSAGES).getString("messages.inGame.deathMessages.pvp");
-                                if(deathMessage == null) deathMessage = "&7%victim% was killed by %attacker%";
-                                deathMessage = deathMessage.replace("%victim%",victim.getName()).replace("%attacker%",attacker.getName());
-                                for(Player inGamePlayer : game.getPlayers()) {
-                                    plugin.getUtils().sendMessage(inGamePlayer,deathMessage);
-                                }
-                            }
-                        }
-                    }
+                PlayerManager mng = plugin.getPlayerData(victim.getUniqueId());
+                if(mng.getGame() != null) {
+                    Game game = mng.getGame();
+                    if (game.getRunners().contains(victim) && game.getBeasts().contains(attacker) && !game.invincible) return;
+                    event.setCancelled(true);
                 }
-
+            }
+        }
+    }
+    @EventHandler
+    public void checkpointAdd(BlockPlaceEvent event) {
+        Player player = event.getPlayer();
+        PlayerManager data = plugin.getPlayerData(player.getUniqueId());
+        if(data.getGame() == null) return;
+        if(event.getBlockPlaced().getType() == Material.BEACON) {
+            if(!data.getPointStatus()) {
+                if(event.isCancelled()) {
+                    //player.getInventory(). <- remove from player inv - 1 item
+                    data.setLastCheckpoint(event.getBlock().getLocation());
+                    data.setPointStatus(true);
+                }
+            } else {
+                if (event.isCancelled()) {
+                    plugin.getUtils().sendMessage(player, plugin.getStorage().getControl(GuardianFiles.MESSAGES).getString("messages.others.checkpoint.already"));
+                }
             }
         }
     }
