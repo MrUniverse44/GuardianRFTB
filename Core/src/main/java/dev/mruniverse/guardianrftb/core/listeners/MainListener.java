@@ -140,6 +140,7 @@ public class MainListener implements Listener {
                                 plugin.getUtils().sendMessage(player, plugin.getStorage().getControl(GuardianFiles.MESSAGES).getString("messages.others.checkpoint.use"));
                                 pm.setLastCheckpoint(null);
                                 pm.setPointStatus(false);
+                                plugin.getUtils().consumeItem(player,1,plugin.checkPoint);
                             }
                             return;
                         case GAME_SELECTOR:
@@ -541,9 +542,9 @@ public class MainListener implements Listener {
         if(event.getBlockPlaced().getType() == Material.BEACON) {
             if(!data.getPointStatus()) {
                 if(event.isCancelled()) {
-                    //player.getInventory(). <- remove from player inv - 1 item
                     data.setLastCheckpoint(event.getBlock().getLocation());
                     data.setPointStatus(true);
+                    plugin.getUtils().consumeItem(player,1,event.getBlockPlaced().getType());
                 }
             } else {
                 if (event.isCancelled()) {

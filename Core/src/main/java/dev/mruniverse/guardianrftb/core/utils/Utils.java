@@ -7,19 +7,14 @@ import dev.mruniverse.guardianrftb.core.games.Game;
 import dev.mruniverse.guardianrftb.core.games.GameTeam;
 import dev.mruniverse.guardianrftb.core.games.GameType;
 import me.clip.placeholderapi.PlaceholderAPI;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class Utils {
     private final GuardianRFTB plugin;
@@ -141,6 +136,58 @@ public class Utils {
                 if(!line.contains("<isBeast>")) sendMessage(player,line);
             }
         }
+    }
+
+    public void consumeItem(Player player, int count,ItemStack itemToGet) {
+        Map<Integer, ? extends ItemStack> ammo = player.getInventory().all(itemToGet);
+        int found = 0;
+        for (ItemStack stack : ammo.values())
+            found += stack.getAmount();
+        if (count > found)
+            return;
+
+        for (Integer index : ammo.keySet()) {
+            ItemStack stack = ammo.get(index);
+
+            int removed = Math.min(count, stack.getAmount());
+            count -= removed;
+
+            if (stack.getAmount() == removed)
+                player.getInventory().setItem(index, null);
+            else
+                stack.setAmount(stack.getAmount() - removed);
+
+            if (count <= 0)
+                break;
+        }
+
+        player.updateInventory();
+    }
+
+    public void consumeItem(Player player, int count, Material material) {
+        Map<Integer, ? extends ItemStack> ammo = player.getInventory().all(material);
+        int found = 0;
+        for (ItemStack stack : ammo.values())
+            found += stack.getAmount();
+        if (count > found)
+            return;
+
+        for (Integer index : ammo.keySet()) {
+            ItemStack stack = ammo.get(index);
+
+            int removed = Math.min(count, stack.getAmount());
+            count -= removed;
+
+            if (stack.getAmount() == removed)
+                player.getInventory().setItem(index, null);
+            else
+                stack.setAmount(stack.getAmount() - removed);
+
+            if (count <= 0)
+                break;
+        }
+
+        player.updateInventory();
     }
 
     public void sendList(Player player,List<String> list) {
