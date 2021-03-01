@@ -665,19 +665,32 @@ public class MainListener implements Listener {
     public void perWorldTab(PlayerChangedWorldEvent event) {
         Player player = event.getPlayer();
         World world = player.getWorld();
+        boolean lobbyWorld = false;
+        boolean showInGamePlayers = plugin.getStorage().getControl(GuardianFiles.SETTINGS).getBoolean("settings.options.showInTabLobby-GamePlayers");
+        String lC = plugin.getStorage().getControl(GuardianFiles.SETTINGS).getString("settings.lobbyLocation");
+        if(lC == null) lC = "notSet";
+        if (!lC.equalsIgnoreCase("notSet")) {
+            String[] loc = lC.split(",");
+            World w = Bukkit.getWorld(loc[0]);
+            if(world == w) {
+                lobbyWorld = true;
+            }
+        }
         if(plugin.getStorage().getControl(GuardianFiles.SETTINGS).getBoolean("settings.options.PerWorldTab")) {
             for (Player players : Bukkit.getServer().getOnlinePlayers()) {
                 if (players.getWorld() == world) {
-                    if(!player.getGameMode().equals(GameMode.SPECTATOR)) {
+                    if(player.getGameMode() != GameMode.SPECTATOR) {
                         players.showPlayer(player);
                     }
-                    if(!players.getGameMode().equals(GameMode.SPECTATOR)) {
+                    if(players.getGameMode() != GameMode.SPECTATOR) {
                         player.showPlayer(players);
                     }
-                    continue;
+                } else {
+                    players.hidePlayer(player);
+                    if(!lobbyWorld && !showInGamePlayers) {
+                        player.hidePlayer(players);
+                    }
                 }
-                players.hidePlayer(player);
-                player.hidePlayer(players);
             }
         }
     }
