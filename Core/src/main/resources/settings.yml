@@ -51,6 +51,10 @@ settings:
     lobby-noHunger: true
     # Toggle Weather in Lobby
     lobby-disableWeather: true
+    # Cancel BlockPlaceEvent in LobbyWorld
+    lobby-cancelBlockPlace: true
+    # Cancel BlockBreakEvent in LobbyWorld
+    lobby-cancelBlockBreak: true
     # Clear Inventory On Join
     clearInventory-onJoin: true
     # Teleport to the lobby when the player is in the void of the lobby world.

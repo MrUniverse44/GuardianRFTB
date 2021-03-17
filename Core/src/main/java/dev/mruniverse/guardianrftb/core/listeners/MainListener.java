@@ -782,6 +782,44 @@ public class MainListener implements Listener {
         }
     }
     @EventHandler
+    public void lobbyPlaceEvent(BlockPlaceEvent event) {
+        if(plugin.getStorage().getControl(GuardianFiles.SETTINGS).getBoolean("settings.options.lobby-cancelBlockPlace")) {
+            FileConfiguration file = plugin.getStorage().getControl(GuardianFiles.SETTINGS);
+            String lC = file.getString("settings.lobbyLocation");
+            if(lC == null) lC = "notSet";
+            if (lC.equalsIgnoreCase("notSet")) {
+                plugin.getLogs().error("-----------------------------");
+                plugin.getLogs().error("Can't teleport player to lobby location, lobby location is not set");
+                plugin.getLogs().error("-----------------------------");
+            } else {
+                String[] loc = lC.split(",");
+                World w = Bukkit.getWorld(loc[0]);
+                if(event.getPlayer().getWorld() == w) {
+                    event.setCancelled(true);
+                }
+            }
+        }
+    }
+    @EventHandler
+    public void lobbyBreakEvent(BlockBreakEvent event) {
+        if(plugin.getStorage().getControl(GuardianFiles.SETTINGS).getBoolean("settings.options.lobby-cancelBlockBreak")) {
+            FileConfiguration file = plugin.getStorage().getControl(GuardianFiles.SETTINGS);
+            String lC = file.getString("settings.lobbyLocation");
+            if(lC == null) lC = "notSet";
+            if (lC.equalsIgnoreCase("notSet")) {
+                plugin.getLogs().error("-----------------------------");
+                plugin.getLogs().error("Can't teleport player to lobby location, lobby location is not set");
+                plugin.getLogs().error("-----------------------------");
+            } else {
+                String[] loc = lC.split(",");
+                World w = Bukkit.getWorld(loc[0]);
+                if(event.getPlayer().getWorld() == w) {
+                    event.setCancelled(true);
+                }
+            }
+        }
+    }
+    @EventHandler
     public void SignInteract(PlayerInteractEvent e) {
         if (e.getAction() != Action.RIGHT_CLICK_BLOCK)
             return;
