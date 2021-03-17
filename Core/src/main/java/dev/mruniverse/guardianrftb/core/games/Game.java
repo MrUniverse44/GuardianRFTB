@@ -420,6 +420,13 @@ public class Game {
                         }
                     }
                 }
+                if(starting == -19 || starting == -18 || starting == -17 || starting == -16 || starting == -15) {
+                    if(this.starting == -19) fakeStarting = 6;
+                    if(this.starting == -18) fakeStarting = 7;
+                    if(this.starting == -17) fakeStarting = 8;
+                    if(this.starting == -16) fakeStarting = 9;
+                    if(this.starting == -15) fakeStarting = 10;
+                }
                 if(starting == -24 || starting == -23 || starting == -22 || starting == -21 || starting == -20) {
                     for(Player player : players) {
                         int s = 5;

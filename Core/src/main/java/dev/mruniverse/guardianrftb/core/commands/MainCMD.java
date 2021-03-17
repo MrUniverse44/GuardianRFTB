@@ -70,7 +70,7 @@ public class MainCMD implements CommandExecutor {
             if(args[0].equalsIgnoreCase("join")) {
                 if(sender instanceof Player) {
                     if(args.length == 1) {
-                        if(hasPermission(sender,"GuardianRFTB.menu.join")) ((Player)sender).openInventory(plugin.getGameManager().gameMenu.getInventory());
+                        if(hasPermission(sender,"GuardianRFTB.menu.join")) ((Player)sender).openInventory(plugin.getGameManager().getGameMainMenu().getInventory());
                         return true;
                     }
                     plugin.getGameManager().joinGame((Player)sender,args[1]);
@@ -110,7 +110,13 @@ public class MainCMD implements CommandExecutor {
                     if(hasPermission(sender,"GuardianRFTB.admin.reload")) {
                         plugin.getStorage().reloadFile(SaveMode.ALL);
                         plugin.getUtils().sendMessage(sender, "&8» &aReload completed!");
-                        plugin.getGameManager().getGameMenu().reloadMenu();
+                        plugin.getGameManager().getGameMenu(GameType.CLASSIC).reloadMenu();
+                        plugin.getGameManager().getGameMenu(GameType.ISLAND_OF_THE_BEAST_KILLER).reloadMenu();
+                        plugin.getGameManager().getGameMenu(GameType.KILLER).reloadMenu();
+                        plugin.getGameManager().getGameMenu(GameType.ISLAND_OF_THE_BEAST).reloadMenu();
+                        plugin.getGameManager().getGameMenu(GameType.ISLAND_OF_THE_BEAST_DOUBLE_BEAST).reloadMenu();
+                        plugin.getGameManager().getGameMenu(GameType.INFECTED).reloadMenu();
+                        plugin.getGameManager().getGameMenu(GameType.DOUBLE_BEAST).reloadMenu();
                         plugin.getUtils().getShopMenu().updateInv();
                         plugin.getRunnable().update();
                         if(plugin.getTitleRunnable() != null) {

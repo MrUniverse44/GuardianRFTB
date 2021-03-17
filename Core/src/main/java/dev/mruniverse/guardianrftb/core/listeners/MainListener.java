@@ -1,16 +1,12 @@
 package dev.mruniverse.guardianrftb.core.listeners;
 
 import dev.mruniverse.guardianrftb.core.GuardianRFTB;
-import dev.mruniverse.guardianrftb.core.enums.GuardianFiles;
-import dev.mruniverse.guardianrftb.core.enums.ItemFunction;
-import dev.mruniverse.guardianrftb.core.enums.GuardianBoard;
+import dev.mruniverse.guardianrftb.core.enums.*;
 import dev.mruniverse.guardianrftb.core.games.Game;
 import dev.mruniverse.guardianrftb.core.games.GameStatus;
 import dev.mruniverse.guardianrftb.core.games.GameType;
 import dev.mruniverse.guardianrftb.core.kits.KitType;
-import dev.mruniverse.guardianrftb.core.utils.ShopAction;
 import dev.mruniverse.guardianrftb.core.utils.players.PlayerManager;
-import dev.mruniverse.guardianrftb.core.enums.SaveMode;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
@@ -144,7 +140,8 @@ public class MainListener implements Listener {
                             }
                             return;
                         case GAME_SELECTOR:
-                            player.openInventory(plugin.getGameManager().gameMenu.getInventory());
+                            player.openInventory(plugin.getGameManager().getGameMainMenu().getInventory());
+                            //player.openInventory(plugin.getGameManager().gameMenu.getInventory());
                             return;
                         case LOBBY_SELECTOR:
                         case PLAYER_SETTINGS:
@@ -177,12 +174,32 @@ public class MainListener implements Listener {
         }
     }
     @EventHandler
+    public void onGameMainClick(InventoryClickEvent event) {
+        Player player = (Player)event.getWhoClicked();
+        if(plugin.getPlayerData(player.getUniqueId()).getGame() != null) return;
+        if(event.getCurrentItem() == null) return;
+        if(!event.getInventory().equals(plugin.getGameManager().getGameMainMenu().getInventory())) return;
+        HashMap<ItemStack, MainAction> hash = plugin.getGameManager().getGameMainMenu().getItems();
+        ItemStack clickedItem = event.getCurrentItem();
+        event.setCancelled(true);
+        if(hash.containsKey(clickedItem)) {
+            if(hash.get(clickedItem) != MainAction.CUSTOM && hash.get(clickedItem) != MainAction.FILL) {
+                plugin.getGameManager().getGameMainMenu().execute(player,hash.get(clickedItem));
+            }
+        }
+
+    }
+    @EventHandler
     public void onGameMenuClick(InventoryClickEvent event) {
         Player player = (Player)event.getWhoClicked();
         if(plugin.getPlayerData(player.getUniqueId()).getGame() != null) return;
         if(event.getCurrentItem() == null) return;
-        if(!event.getInventory().equals(plugin.getGameManager().gameMenu.getInventory())) return;
-        HashMap<ItemStack,String> hash = plugin.getGameManager().gameMenu.getGameItems();
+        GameType gameType = null;
+        for(GameType gameType1 : GameType.values()) {
+            if (event.getInventory().equals(plugin.getGameManager().getGameMenu(gameType1).getInventory())) gameType = gameType1;
+        }
+        if(gameType == null) return;
+        HashMap<ItemStack,String> hash = plugin.getGameManager().getGameMenu(gameType).getGameItems();
         ItemStack clickedItem = event.getCurrentItem();
         event.setCancelled(true);
         if(hash.containsKey(clickedItem)) {

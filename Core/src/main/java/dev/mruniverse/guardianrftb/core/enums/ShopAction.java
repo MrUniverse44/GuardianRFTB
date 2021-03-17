@@ -1,4 +1,4 @@
-package dev.mruniverse.guardianrftb.core.utils;
+package dev.mruniverse.guardianrftb.core.enums;
 
 public enum ShopAction {
     KIT_RUNNERS,

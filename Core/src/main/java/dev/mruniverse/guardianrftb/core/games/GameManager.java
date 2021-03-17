@@ -17,10 +17,12 @@ public class GameManager {
     private final ArrayList<Game> games = new ArrayList<>();
     private final HashMap<World,Game> gamesWorlds = new HashMap<>();
     public HashMap<String,GameChests> gameChests = new HashMap<>();
-    public GameMenu gameMenu;
+    public HashMap<GameType,GameMenu> gameMenu = new HashMap<>();
+    private final GameMainMenu gameMainMenu;
     private final GuardianRFTB plugin;
-    public GameManager(GuardianRFTB main) {
-        plugin = main;
+    public GameManager(GuardianRFTB plugin) {
+        this.plugin = plugin;
+        gameMainMenu = new GameMainMenu(plugin);
     }
     public void loadChests() {
         ConfigurationSection section = plugin.getStorage().getControl(GuardianFiles.CHESTS).getConfigurationSection("chests");
@@ -59,7 +61,14 @@ public class GameManager {
                 plugin.getLogs().info("You don't have games created yet.");
             }
             plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin,new GameRunnable(plugin),0L,20L);
-            gameMenu = new GameMenu(plugin);
+            gameMenu.put(GameType.CLASSIC,new GameMenu(plugin,GameType.CLASSIC));
+            gameMenu.put(GameType.DOUBLE_BEAST,new GameMenu(plugin,GameType.DOUBLE_BEAST));
+            gameMenu.put(GameType.INFECTED,new GameMenu(plugin,GameType.INFECTED));
+            gameMenu.put(GameType.KILLER,new GameMenu(plugin,GameType.KILLER));
+            gameMenu.put(GameType.ISLAND_OF_THE_BEAST,new GameMenu(plugin,GameType.ISLAND_OF_THE_BEAST));
+            gameMenu.put(GameType.ISLAND_OF_THE_BEAST_DOUBLE_BEAST,new GameMenu(plugin,GameType.ISLAND_OF_THE_BEAST_DOUBLE_BEAST));
+            gameMenu.put(GameType.ISLAND_OF_THE_BEAST_KILLER,new GameMenu(plugin,GameType.ISLAND_OF_THE_BEAST_KILLER));
+            //gameMenu = new GameMenu(plugin);
             loadGameWorlds();
         }catch (Throwable throwable) {
             plugin.getLogs().error("Can't load games plugin games :(");
@@ -71,8 +80,9 @@ public class GameManager {
             gamesWorlds.put(game.runnersLocation.getWorld(),game);
         }
     }
-    public GameMenu getGameMenu() {
-        return gameMenu;
+    public GameMainMenu getGameMainMenu() { return gameMainMenu; }
+    public GameMenu getGameMenu(GameType gameType) {
+        return gameMenu.get(gameType);
     }
     public void addGame(String gameName) {
         if(getGame(gameName) != null) {

@@ -17,25 +17,26 @@ import java.util.Optional;
 
 public class GameMenu {
     private final GuardianRFTB plugin;
+    private final GameType gameType;
     private String name;
     private Inventory chestInventory;
-
     private String waiting;
     private String starting;
     private String playing;
     private String ending;
     private List<String> lore;
     private String iName;
-    public GameMenu(GuardianRFTB main) {
-        plugin = main;
+    public GameMenu(GuardianRFTB plugin,GameType gameType) {
+        this.plugin = plugin;
+        this.gameType = gameType;
         createInv();
         loadItems();
     }
     private void createInv() {
         String invName = plugin.getStorage().getControl(GuardianFiles.MENUS).getString("menus.game.inventoryName");
 
-        if(invName == null) invName = "&8Games";
-
+        if(invName == null) invName = "&8Games of " + gameType.getType();
+        invName = invName.replace("%gameType%",gameType.getType());
         invName = ChatColor.translateAlternateColorCodes('&',invName);
 
         int rows = getRows(plugin.getStorage().getControl(GuardianFiles.MENUS).getInt("menus.game.inventoryRows"));
@@ -55,18 +56,22 @@ public class GameMenu {
         int slot = 0;
         int maxSlot = chestInventory.getSize();
         for(Game game : plugin.getGameManager().getGames()) {
-            if(slot != maxSlot) {
-                ItemStack gameItem = getGameItem(game);
-                chestInventory.setItem(slot,gameItem);
+            if(game.getGameType() == gameType) {
+                if (slot != maxSlot) {
+                    ItemStack gameItem = getGameItem(game);
+                    chestInventory.setItem(slot, gameItem);
+                }
+                slot++;
             }
-            slot++;
         }
     }
     public void setSlots() {
         int slot = 0;
         for(Game game : plugin.getGameManager().getGames()) {
-            game.menuSlot = slot;
-            slot++;
+            if(game.getGameType() == gameType) {
+                game.menuSlot = slot;
+                slot++;
+            }
         }
     }
     public void updateSlot(int slot,Game game) {
@@ -80,8 +85,10 @@ public class GameMenu {
     public HashMap<ItemStack,String> getGameItems() {
         HashMap<ItemStack,String> hash = new HashMap<>();
         for(Game game : plugin.getGameManager().getGames()) {
-            ItemStack gameItem = getGameItem(game);
-            hash.put(gameItem,game.getName());
+            if(game.getGameType() == gameType) {
+                ItemStack gameItem = getGameItem(game);
+                hash.put(gameItem, game.getName());
+            }
         }
         return hash;
     }

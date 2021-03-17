@@ -1,7 +1,8 @@
-package dev.mruniverse.guardianrftb.core.utils;
+package dev.mruniverse.guardianrftb.core.games;
 
 import dev.mruniverse.guardianrftb.core.enums.GuardianFiles;
-import dev.mruniverse.guardianrftb.core.enums.ShopAction;
+import dev.mruniverse.guardianrftb.core.enums.MainAction;
+import dev.mruniverse.guardianrftb.core.utils.TextUtilities;
 import dev.mruniverse.guardianrftb.core.xseries.XMaterial;
 import dev.mruniverse.guardianrftb.core.GuardianRFTB;
 import dev.mruniverse.guardianrftb.core.kits.KitType;
@@ -14,36 +15,36 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
 
-public class ShopMenu {
+public class GameMainMenu {
     private final GuardianRFTB plugin;
     private String name;
-    private HashMap<ItemStack,Integer> shopItems;
-    private HashMap<ItemStack, ShopAction> shopAction;
+    private HashMap<ItemStack,Integer> gameItems;
+    private HashMap<ItemStack, MainAction> gameAction;
     private HashMap<Integer,ItemStack> fills;
     private Inventory chestInventory;
-    public ShopMenu(GuardianRFTB main) {
+    public GameMainMenu(GuardianRFTB main) {
         plugin = main;
-        shopItems = new HashMap<>();
-        shopAction = new HashMap<>();
+        gameItems = new HashMap<>();
+        gameAction = new HashMap<>();
         fills = new HashMap<>();
         createInv();
         loadItems();
     }
     public void updateInv(){
-        shopItems = new HashMap<>();
-        shopAction = new HashMap<>();
+        gameItems = new HashMap<>();
+        gameAction = new HashMap<>();
         fills = new HashMap<>();
         createInv();
         loadItems();
     }
     private void createInv() {
-        String invName = plugin.getStorage().getControl(GuardianFiles.MENUS).getString("menus.shop.inventoryName");
+        String invName = plugin.getStorage().getControl(GuardianFiles.MENUS).getString("menus.gameMain.inventoryName");
 
-        if(invName == null) invName = "&8Shop Menu";
+        if(invName == null) invName = "&8Game Selector";
 
         invName = ChatColor.translateAlternateColorCodes('&',invName);
 
-        int rows = getRows(plugin.getStorage().getControl(GuardianFiles.MENUS).getInt("menus.shop.inventoryRows"));
+        int rows = getRows(plugin.getStorage().getControl(GuardianFiles.MENUS).getInt("menus.gameMain.inventoryRows"));
 
         chestInventory = plugin.getServer().createInventory(null,rows,invName);
     }
@@ -56,23 +57,38 @@ public class ShopMenu {
         return 54;
     }
     private void addOnlyFill(ItemStack itemFill,String fillPath) {
-        for(int slot : plugin.getStorage().getControl(GuardianFiles.MENUS).getIntegerList(ShopAction.FILL.getPath() + "." + fillPath + ".list.values")) {
+        for(int slot : plugin.getStorage().getControl(GuardianFiles.MENUS).getIntegerList(MainAction.FILL.getPath() + "." + fillPath + ".list.values")) {
             fills.put(slot,itemFill);
         }
     }
     private void addIgnoreFill(ItemStack itemFill,String fillPath) {
-        List<Integer> ignoreSlots = plugin.getStorage().getControl(GuardianFiles.MENUS).getIntegerList(ShopAction.FILL.getPath() + "." + fillPath + ".list.values");
+        List<Integer> ignoreSlots = plugin.getStorage().getControl(GuardianFiles.MENUS).getIntegerList(MainAction.FILL.getPath() + "." + fillPath + ".list.values");
         for(int i = 0; i < chestInventory.getSize(); i++) {
             if(!ignoreSlots.contains(i)) fills.put(i,itemFill);
         }
     }
-    public void execute(Player player,ShopAction action) {
+    public void execute(Player player,MainAction action) {
         switch (action) {
-            case KIT_BEASTS:
-                player.openInventory(plugin.getPlayerData(player.getUniqueId()).getKitMenu(KitType.BEAST).getInventory());
+            case CLASSIC:
+                player.openInventory(plugin.getGameManager().getGameMenu(GameType.CLASSIC).getInventory());
                 return;
-            case KIT_RUNNERS:
-                player.openInventory(plugin.getPlayerData(player.getUniqueId()).getKitMenu(KitType.RUNNER).getInventory());
+            case KILLER:
+                player.openInventory(plugin.getGameManager().getGameMenu(GameType.KILLER).getInventory());
+                return;
+            case ISLAND_OF_THE_BEAST:
+                player.openInventory(plugin.getGameManager().getGameMenu(GameType.ISLAND_OF_THE_BEAST).getInventory());
+                return;
+            case ISLAND_OF_THE_BEAST_DOUBLE_BEAST:
+                player.openInventory(plugin.getGameManager().getGameMenu(GameType.ISLAND_OF_THE_BEAST_DOUBLE_BEAST).getInventory());
+                return;
+            case ISLAND_OF_THE_BEAST_KILLER:
+                player.openInventory(plugin.getGameManager().getGameMenu(GameType.ISLAND_OF_THE_BEAST_KILLER).getInventory());
+                return;
+            case DOUBLE_BEAST:
+                player.openInventory(plugin.getGameManager().getGameMenu(GameType.DOUBLE_BEAST).getInventory());
+                return;
+            case INFECTED:
+                player.openInventory(plugin.getGameManager().getGameMenu(GameType.INFECTED).getInventory());
                 return;
             default:
                 plugin.getUtils().sendMessage(player,"&cSoon..");
@@ -80,14 +96,14 @@ public class ShopMenu {
     }
     private void loadFills() {
         FileConfiguration menu = plugin.getStorage().getControl(GuardianFiles.MENUS);
-        for(String fills : plugin.getStorage().getContent(GuardianFiles.MENUS,ShopAction.FILL.getPath(),false)) {
-            String name = menu.getString(ShopAction.FILL.getPath() + "." + fills + ".name");
-            String material = menu.getString(ShopAction.FILL.getPath() + "." + fills + ".item");
-            List<String> lore = menu.getStringList(ShopAction.FILL.getPath() + "." + fills + ".lore");
+        for(String fills : plugin.getStorage().getContent(GuardianFiles.MENUS,MainAction.FILL.getPath(),false)) {
+            String name = menu.getString(MainAction.FILL.getPath() + "." + fills + ".name");
+            String material = menu.getString(MainAction.FILL.getPath() + "." + fills + ".item");
+            List<String> lore = menu.getStringList(MainAction.FILL.getPath() + "." + fills + ".lore");
             ItemStack item = getItem(material,name,lore);
-            if(menu.get(ShopAction.FILL.getPath() + "." + fills + ".list.type") == null) return;
-            String check = menu.getString(ShopAction.FILL.getPath() + "." + fills + ".list.type");
-            shopAction.put(item,ShopAction.FILL);
+            if(menu.get(MainAction.FILL.getPath() + "." + fills + ".list.type") == null) return;
+            String check = menu.getString(MainAction.FILL.getPath() + "." + fills + ".list.type");
+            gameAction.put(item,MainAction.FILL);
             if(check == null) check = "ONLY";
             if(check.equalsIgnoreCase("ONLY")) {
                 addOnlyFill(item,fills);
@@ -98,51 +114,30 @@ public class ShopMenu {
     }
     private void loadItems() {
         FileConfiguration menu = plugin.getStorage().getControl(GuardianFiles.MENUS);
-        String name = menu.getString(ShopAction.KIT_RUNNERS.getPath() + ".name");
-        String material = menu.getString(ShopAction.KIT_RUNNERS.getPath() + ".item");
-        List<String> lore = menu.getStringList(ShopAction.KIT_RUNNERS.getPath() + ".lore");
-        int slot = menu.getInt(ShopAction.KIT_RUNNERS.getPath() + ".slot");
-        ItemStack item = getItem(material,name,lore);
-        shopItems.put(item,slot);
-        shopAction.put(item,ShopAction.KIT_RUNNERS);
-
-        name = menu.getString(ShopAction.KIT_BEASTS.getPath() + ".name");
-        material = menu.getString(ShopAction.KIT_BEASTS.getPath() + ".item");
-        lore = menu.getStringList(ShopAction.KIT_BEASTS.getPath() + ".lore");
-        slot = menu.getInt(ShopAction.KIT_BEASTS.getPath() + ".slot");
-        item = getItem(material,name,lore);
-        shopItems.put(item,slot);
-        shopAction.put(item,ShopAction.KIT_BEASTS);
-
-        name = menu.getString(ShopAction.CRAFT.getPath() + ".name");
-        material = menu.getString(ShopAction.CRAFT.getPath() + ".item");
-        lore = menu.getStringList(ShopAction.CRAFT.getPath() + ".lore");
-        slot = menu.getInt(ShopAction.CRAFT.getPath() + ".slot");
-        item = getItem(material,name,lore);
-        shopItems.put(item,slot);
-        shopAction.put(item,ShopAction.CRAFT);
-
-        name = menu.getString(ShopAction.BOOST.getPath() + ".name");
-        material = menu.getString(ShopAction.BOOST.getPath() + ".item");
-        lore = menu.getStringList(ShopAction.BOOST.getPath() + ".lore");
-        slot = menu.getInt(ShopAction.BOOST.getPath() + ".slot");
-        item = getItem(material,name,lore);
-        shopItems.put(item,slot);
-        shopAction.put(item,ShopAction.BOOST);
-
+        for(MainAction mainAction : MainAction.values()) {
+            if(mainAction != MainAction.FILL && mainAction != MainAction.CUSTOM) {
+                String name = menu.getString(mainAction.getPath() + ".name");
+                String material = menu.getString(mainAction.getPath() + ".item");
+                List<String> lore = menu.getStringList(mainAction.getPath() + ".lore");
+                int slot = menu.getInt(mainAction.getPath() + ".slot");
+                ItemStack item = getItem(material, name, lore);
+                gameItems.put(item, slot);
+                gameAction.put(item, mainAction);
+            }
+        }
         loadFills();
     }
     private void pasteItems() {
         chestInventory.clear();
-        for(Map.Entry<ItemStack,Integer> data : shopItems.entrySet()) {
+        for(Map.Entry<ItemStack,Integer> data : gameItems.entrySet()) {
             chestInventory.setItem(data.getValue(),data.getKey());
         }
         for(Map.Entry<Integer,ItemStack> fills : fills.entrySet()) {
             chestInventory.setItem(fills.getKey(),fills.getValue());
         }
     }
-    public HashMap<ItemStack,ShopAction> getItems() {
-        return shopAction;
+    public HashMap<ItemStack,MainAction> getItems() {
+        return gameAction;
     }
     private ItemStack getItem(String material,String itemName,List<String> itemLore) {
         Optional<XMaterial> optionalXMaterial = XMaterial.matchXMaterial(material);
@@ -175,3 +170,4 @@ public class ShopMenu {
     public void setName(String newName) { name = newName; }
     public String getName() { return name; }
 }
+
