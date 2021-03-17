@@ -35,8 +35,8 @@ public class GameMenu {
     private void createInv() {
         String invName = plugin.getStorage().getControl(GuardianFiles.MENUS).getString("menus.game.inventoryName");
 
-        if(invName == null) invName = "&8Games of " + gameType.getType();
-        invName = invName.replace("%gameType%",gameType.getType());
+        if(invName == null) invName = "&8Games";
+
         invName = ChatColor.translateAlternateColorCodes('&',invName);
 
         int rows = getRows(plugin.getStorage().getControl(GuardianFiles.MENUS).getInt("menus.game.inventoryRows"));

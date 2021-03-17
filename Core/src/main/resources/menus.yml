@@ -114,7 +114,7 @@ menus:
         - ' '
         - '&eplay.servername.net'
   game:
-    inventoryName: '&8Games of %gameType%'
+    inventoryName: '&8Games'
     inventoryRows: 3
     inventorySounds:
       - ORB_PICKUP
