@@ -232,14 +232,19 @@ public class Game {
             plugin.getGameManager().getGameMenu(this.gameType).updateSlot(menuSlot, this);
         }
         for(Location signLocation : this.signs) {
-            if(signLocation.isWorldLoaded() && signLocation.getChunk().isLoaded()) {
-                if(signLocation.getBlock().getState() instanceof Sign) {
-                    Sign currentSign = (Sign) signLocation.getBlock().getState();
-                    currentSign.setLine(0, replaceGameVariable(line1));
-                    currentSign.setLine(1, replaceGameVariable(line2));
-                    currentSign.setLine(2, replaceGameVariable(line3));
-                    currentSign.setLine(3, replaceGameVariable(line4));
-                    currentSign.update();
+            boolean worldLoaded = true;
+            World signWorld = signLocation.getWorld();
+            if(signWorld != null) {
+                if (Bukkit.getWorld(signWorld.getName()) == null) worldLoaded = false;
+                if (worldLoaded && signWorld.getChunkAt(signLocation).isLoaded()) {
+                    if (signLocation.getBlock().getState() instanceof Sign) {
+                        Sign currentSign = (Sign) signLocation.getBlock().getState();
+                        currentSign.setLine(0, replaceGameVariable(line1));
+                        currentSign.setLine(1, replaceGameVariable(line2));
+                        currentSign.setLine(2, replaceGameVariable(line3));
+                        currentSign.setLine(3, replaceGameVariable(line4));
+                        currentSign.update();
+                    }
                 }
             }
         }
