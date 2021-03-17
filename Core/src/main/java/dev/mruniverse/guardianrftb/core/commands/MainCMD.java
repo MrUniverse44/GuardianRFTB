@@ -85,12 +85,14 @@ public class MainCMD implements CommandExecutor {
                         plugin.getUtils().sendMessage(sender, "&8» &7/" + command + " &cadmin setlobby &b- &eset lobby location.");
                         plugin.getUtils().sendMessage(sender, "&8» &7/" + command + " &cadmin create (gameName) &b- &eCreate arena.");
                         plugin.getUtils().sendMessage(sender, "&8» &7/" + command + " &cadmin delete (gameName) &b- &eDelete arena.");
+                        plugin.getUtils().sendMessage(sender, "&8» &7/" + command + " &cadmin setName (gameName) (gameShowName) &b- &eChange game name. &bOPTIONAL");
                         plugin.getUtils().sendMessage(sender, "&8» &7/" + command + " &cadmin setWaiting (gameName) &b- &eSet waitingLocation.");
                         plugin.getUtils().sendMessage(sender, "&8» &7/" + command + " &cadmin setSelectedBeast (gameName) &b- &eSet selected Beast Location.");
                         plugin.getUtils().sendMessage(sender, "&8» &7/" + command + " &cadmin setBeastSpawn (gameName) &b- &eSet Beast Spawn Location.");
                         plugin.getUtils().sendMessage(sender, "&8» &7/" + command + " &cadmin setRunnerSpawn (gameName) &b- &eSet Runner Spawn Location.");
                         plugin.getUtils().sendMessage(sender, "&8» &7/" + command + " &cadmin setMin (gameName) (min) &b- &eSet min players.");
                         plugin.getUtils().sendMessage(sender, "&8» &7/" + command + " &cadmin setMax (gameName) (max) &b- &eSet max players.");
+                        plugin.getUtils().sendMessage(sender, "&8» &7/" + command + " &cadmin setName (gameName) (gameShowName) &b- &eChange game name. &bOPTIONAL");
                         plugin.getUtils().sendMessage(sender, "&8» &7/" + command + " &cadmin setMode (gameName) (gameType) &b- &eSet gameType. &bOPTIONAL");
                         plugin.getUtils().sendMessage(sender, "&8» &7/" + command + " &cadmin addChest (gameName) (chestName) &b- &eAdd a chest to your game &bOPTIONAL");
                         plugin.getUtils().sendMessage(sender, "&8» &7/" + command + " &cadmin delChest (gameName) (chestName) &b- &eRemove a chest from your game &bOPTIONAL");
