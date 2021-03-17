@@ -530,8 +530,9 @@ public class MainListener implements Listener {
                 PlayerManager mng = plugin.getPlayerData(victim.getUniqueId());
                 if(mng.getGame() != null) {
                     Game game = mng.getGame();
-                    if (game.getRunners().contains(victim) && game.getBeasts().contains(attacker) && !game.invincible) return;
-                    event.setCancelled(true);
+                    if(game.invincible) event.setCancelled(true);
+                    if(game.getRunners().contains(victim) && game.getRunners().contains(attacker)) event.setCancelled(true);
+                    if(game.getBeasts().contains(victim) && game.getBeasts().contains(attacker)) event.setCancelled(true);
                 }
             }
         }
@@ -566,13 +567,9 @@ public class MainListener implements Listener {
                 Game game = plugin.getPlayerData(victim.getUniqueId()).getGame();
                 if (game.getRunners().contains(victim) && game.getRunners().contains(shooter)) {
                     event.setCancelled(true);
-                } else {
-                    if (!game.getPlayers().contains(shooter)) {
-                        event.setCancelled(true);
-                    }
-                    if (game.getBeasts().contains(victim) && game.getBeasts().contains(shooter)) {
-                        event.setCancelled(true);
-                    }
+                }
+                if (game.getBeasts().contains(victim) && game.getBeasts().contains(shooter)) {
+                    event.setCancelled(true);
                 }
                 if(!event.isCancelled()) {
                     if((victim.getHealth() - event.getFinalDamage()) <= 0) {

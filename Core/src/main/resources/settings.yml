@@ -64,6 +64,8 @@ settings:
     onBeastWin: 4
     onKillBeast: 4
     onBeastKill: 1
+    onKillerKill: 1
+    onKillKiller: -4
   leaveCMDs:
     - /leave
     - /quit
@@ -76,6 +78,9 @@ settings:
     beasts:
       toggle: true
       tag: '&c&lBEAST'
+    killer:
+      toggle: true
+      tag: '&a&lKILLER'
   signs:
     line1: '&l%arena%'
     line2: '%gameStatus%'
@@ -102,8 +107,11 @@ settings:
 roles:
   beast: Beast
   runner: Runner
+  killer: Killer
   beasts: Beasts
   runners: Runners
+  killers: Killers
+
 # Here you can edit timing
 times:
   minutes: minutes
@@ -115,3 +123,9 @@ gameType:
   DOUBLE_BEAST: Double Beast
   CLASSIC: Classic
   INFECTED: Infected
+  KILLER: Killer Mode
+  ISLAND_OF_THE_BEAST: Island of the beast
+  ISLAND_OF_THE_BEAST_DOUBLE: Island of the beast Double
+  ISLAND_OF_THE_BEAST_KILLER: Island of the beast Killer
+  HISTORY_MODE: History Mode
+

@@ -14,7 +14,7 @@ messages:
     join: '&7%player% &ehas joined &e(&b%online%&e/&b%max%&e)!'
     quit: '&7%player% &ehas quit!'
     already: '&cYou''re already in an arena!'
-    selectingBeast: '&eThe beast will be selected in &c%time% &e%seconds%!'
+    selectingBeast: '&eThe beast will be selected in &c%time%&e %seconds%!'
     starting: '&eThe game starts in &c%time% &e%seconds%!'
     beastsAppear: '&eThe beasts spawns in &c%time% &e%seconds%!'
     chosenBeast: '&eThe player &b%player% &enow is a beast!'

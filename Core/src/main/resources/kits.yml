@@ -96,3 +96,46 @@ beastKits:
         lore:
           - '&7Here your lore'
           - '&eplay.servername.net'
+killerKits:
+  default:
+    KitInfo:
+      item: IRON_SWORD
+      name: '&e&lDEFAULT'
+      kitID: '0'
+      price: 0
+      lore:
+        - '&7Kit Killer Default'
+        - '&aClick to select'
+    Armor:
+      Helmet:
+        item: DISABLED
+        name: '&eKiller Helmet'
+        lore:
+          - '&7Here your lore'
+          - '&eplay.servername.net'
+      Chestplate:
+        item: DISABLED
+        name: '&eKiller Helmet'
+        lore:
+          - '&7Here your lore'
+          - '&eplay.servername.net'
+      Leggings:
+        item: DISABLED
+        name: '&eKiller Leggings'
+        lore:
+          - '&7Here your lore'
+          - '&eplay.servername.net'
+      Boots:
+        item: DISABLED
+        name: '&eKiller Boots'
+        lore:
+          - '&7Here your lore'
+          - '&eplay.servername.net'
+    Inventory:
+      Sword:
+        item: IRON_SWORD
+        name: '&cKiller Sword'
+        slot: 0
+        lore:
+          - '&7Here your lore'
+          - '&eplay.servername.net'

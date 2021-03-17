@@ -80,6 +80,13 @@ InGame:
       - '&7Here your lore'
       - '&eplay.servername.net'
     slot: 0
+  KillerKit:
+    item: PAPER
+    name: '&aKit Selector (&lKiller&a)'
+    lore:
+      - '&7Here your lore'
+      - '&eplay.servername.net'
+    slot: 0
   Exit:
     item: RED_BED
     name: '&aLeave'

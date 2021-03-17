@@ -59,7 +59,6 @@ public class Game {
 
     public GameStatus gameStatus;
     public boolean invincible = true;
-    //"games." + gameName + ".disableRain"
     public boolean preparingStage;
     public boolean startingStage;
     public boolean selectingStage;
@@ -271,7 +270,7 @@ public class Game {
     }
     public int getNeedPlayers() {
         int RealMin = min;
-        if(gameType.equals(GameType.DOUBLE_BEAST) && min == 2) {
+        if((gameType == GameType.DOUBLE_BEAST || gameType == GameType.ISLAND_OF_THE_BEAST_DOUBLE_BEAST) && min == 2) {
             RealMin = 3;
         }
         if((RealMin - players.size()) <= 0 && gameStatus.equals(GameStatus.WAITING)) {
