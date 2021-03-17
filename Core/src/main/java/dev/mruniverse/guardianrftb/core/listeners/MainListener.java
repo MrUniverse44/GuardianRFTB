@@ -686,6 +686,7 @@ public class MainListener implements Listener {
                 signs.add(plugin.getUtils().getStringFromLocation(event.getBlock().getLocation()));
                 plugin.getStorage().getControl(GuardianFiles.GAMES).set("games." + name + ".signs",signs);
                 plugin.getStorage().save(SaveMode.GAMES_FILES);
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&',"&aSign added!"));
                 game.loadSigns();
             }
         }catch (Throwable throwable) {
