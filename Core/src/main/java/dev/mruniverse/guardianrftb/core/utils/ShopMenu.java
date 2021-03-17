@@ -98,37 +98,17 @@ public class ShopMenu {
     }
     private void loadItems() {
         FileConfiguration menu = plugin.getStorage().getControl(GuardianFiles.MENUS);
-        String name = menu.getString(ShopAction.KIT_RUNNERS.getPath() + ".name");
-        String material = menu.getString(ShopAction.KIT_RUNNERS.getPath() + ".item");
-        List<String> lore = menu.getStringList(ShopAction.KIT_RUNNERS.getPath() + ".lore");
-        int slot = menu.getInt(ShopAction.KIT_RUNNERS.getPath() + ".slot");
-        ItemStack item = getItem(material,name,lore);
-        shopItems.put(item,slot);
-        shopAction.put(item,ShopAction.KIT_RUNNERS);
-
-        name = menu.getString(ShopAction.KIT_BEASTS.getPath() + ".name");
-        material = menu.getString(ShopAction.KIT_BEASTS.getPath() + ".item");
-        lore = menu.getStringList(ShopAction.KIT_BEASTS.getPath() + ".lore");
-        slot = menu.getInt(ShopAction.KIT_BEASTS.getPath() + ".slot");
-        item = getItem(material,name,lore);
-        shopItems.put(item,slot);
-        shopAction.put(item,ShopAction.KIT_BEASTS);
-
-        name = menu.getString(ShopAction.CRAFT.getPath() + ".name");
-        material = menu.getString(ShopAction.CRAFT.getPath() + ".item");
-        lore = menu.getStringList(ShopAction.CRAFT.getPath() + ".lore");
-        slot = menu.getInt(ShopAction.CRAFT.getPath() + ".slot");
-        item = getItem(material,name,lore);
-        shopItems.put(item,slot);
-        shopAction.put(item,ShopAction.CRAFT);
-
-        name = menu.getString(ShopAction.BOOST.getPath() + ".name");
-        material = menu.getString(ShopAction.BOOST.getPath() + ".item");
-        lore = menu.getStringList(ShopAction.BOOST.getPath() + ".lore");
-        slot = menu.getInt(ShopAction.BOOST.getPath() + ".slot");
-        item = getItem(material,name,lore);
-        shopItems.put(item,slot);
-        shopAction.put(item,ShopAction.BOOST);
+        for(ShopAction shopAction : ShopAction.values()) {
+            if(shopAction != ShopAction.FILL && shopAction != ShopAction.CUSTOM) {
+                String name = menu.getString(shopAction.getPath() + ".name");
+                String material = menu.getString(shopAction.getPath() + ".item");
+                List<String> lore = menu.getStringList(shopAction.getPath() + ".lore");
+                int slot = menu.getInt(shopAction.getPath() + ".slot");
+                ItemStack item = getItem(material, name, lore);
+                shopItems.put(item, slot);
+                this.shopAction.put(item, shopAction);
+            }
+        }
 
         loadFills();
     }
