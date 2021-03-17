@@ -56,7 +56,13 @@ public class GameManager {
             if(plugin.getStorage().getControl(GuardianFiles.GAMES).contains("games")) {
                 for (String gameName : Objects.requireNonNull(plugin.getStorage().getControl(GuardianFiles.GAMES).getConfigurationSection("games")).getKeys(false)) {
                     if(plugin.getStorage().getControl(GuardianFiles.GAMES).getBoolean("games." + gameName + ".enabled")) {
-                        Game game = new Game(plugin, gameName);
+                        String mapName = plugin.getStorage().getControl(GuardianFiles.GAMES).getString("games." + gameName + ".gameName");
+                        if(mapName == null) {
+                            plugin.getStorage().getControl(GuardianFiles.GAMES).set("games." + gameName + ".gameName",gameName);
+                            mapName = gameName;
+                            plugin.getStorage().save(SaveMode.GAMES_FILES);
+                        }
+                        Game game = new Game(plugin, gameName, mapName);
                         this.games.add(game);
                         plugin.getLogs().debug("Game " + gameName + " loaded!");
                     } else {
@@ -87,11 +93,16 @@ public class GameManager {
         }
         return gameMenu.get(gameType);
     }
-    public void addGame(String gameName) {
+    public void addGame(String configName,String gameName) {
         if(getGame(gameName) != null) {
             return;
         }
-        Game game = new Game(plugin,gameName);
+        if(gameName == null) {
+            plugin.getStorage().getControl(GuardianFiles.GAMES).set("games." + configName + ".gameName",configName);
+            gameName = configName;
+            plugin.getStorage().save(SaveMode.GAMES_FILES);
+        }
+        Game game = new Game(plugin,configName,gameName);
         this.games.add(game);
         plugin.getLogs().debug("Game " + gameName + " loaded!");
     }
@@ -129,6 +140,7 @@ public class GameManager {
         FileConfiguration gameFiles = plugin.getStorage().getControl(GuardianFiles.GAMES);
         gameFiles.set("games." + gameName + ".enabled", false);
         gameFiles.set("games." + gameName + ".time", 500);
+        gameFiles.set("games." + gameName + ".gameName", gameName);
         gameFiles.set("games." + gameName + ".disableRain", true);
         gameFiles.set("games." + gameName + ".max", 10);
         gameFiles.set("games." + gameName + ".min", 2);
@@ -151,6 +163,15 @@ public class GameManager {
             plugin.getStorage().save(SaveMode.GAMES_FILES);
         }catch (Throwable throwable) {
             plugin.getLogs().error("Can't set waiting lobby for game: " + gameName);
+            plugin.getLogs().error(throwable);
+        }
+    }
+    public void setGameName(String configName, String gameName) {
+        try {
+            plugin.getStorage().getControl(GuardianFiles.GAMES).set("games." + configName + ".gameName", gameName);
+            plugin.getStorage().save(SaveMode.GAMES_FILES);
+        }catch (Throwable throwable) {
+            plugin.getLogs().error("Can't set game name for game: " + configName);
             plugin.getLogs().error(throwable);
         }
     }

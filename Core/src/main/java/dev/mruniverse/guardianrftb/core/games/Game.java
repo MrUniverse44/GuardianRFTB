@@ -22,6 +22,7 @@ import java.util.*;
 @SuppressWarnings("deprecation")
 public class Game {
     private final String gameName;
+    private final String configGameName;
     private final String gamePath;
     private GameType gameType;
     private final HashMap<String, List<Location>> gameChests;
@@ -66,7 +67,7 @@ public class Game {
     public boolean playingStage;
     public boolean endingStage;
 
-    public Game(GuardianRFTB main, String name) {
+    public Game(GuardianRFTB main, String configName, String gameName) {
         gameTimer = 0;
         gameFile = main.getStorage().getControl(GuardianFiles.GAMES);
         gameChestsTypes = new ArrayList<>();
@@ -97,8 +98,9 @@ public class Game {
         ending = 150;
         times = 0;
         inventoryNumber = -1;
-        gameName = name;
-        gamePath = "games." + name + ".";
+        this.gameName = gameName;
+        configGameName = configName;
+        gamePath = "games." + configName + ".";
         try {
             loadGame();
         } catch (Throwable throwable) {
@@ -298,6 +300,9 @@ public class Game {
             }
         }
         return 0;
+    }
+    public String getGameName() {
+        return configGameName;
     }
     public String getName() {
         return gameName;

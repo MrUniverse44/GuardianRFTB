@@ -154,11 +154,26 @@ public class MainCMD implements CommandExecutor {
                         if (plugin.getGameManager().getGame(args[2]) == null) {
                             if (plugin.getStorage().getControl(GuardianFiles.GAMES).contains("games." + args[2])) {
                                 plugin.getStorage().getControl(GuardianFiles.GAMES).set("games." + args[2] + ".enabled",true);
-                                plugin.getGameManager().addGame(args[2]);
+                                plugin.getGameManager().addGame(args[2],plugin.getStorage().getControl(GuardianFiles.GAMES).getString("games." + args[2] + ".gameName"));
                                 plugin.getStorage().save(SaveMode.GAMES_FILES);
                                 plugin.getUtils().sendMessage(sender,"&aGame &b" + args[2] + "&a enabled.");
                             }
                         }
+                    }
+                }
+                if(args[1].equalsIgnoreCase("setName")) {
+                    if(hasPermission(sender,"GuardianRFTB.admin.setName")) {
+                        if(args.length == 3) {
+                            plugin.getUtils().sendMessage(sender,"&7Bad usage");
+                            return true;
+                        }
+                        if (plugin.getStorage().getControl(GuardianFiles.GAMES).contains("games." + args[2])) {
+                            plugin.getGameManager().setGameName(args[2], args[3]);
+                            plugin.getUtils().sendMessage(sender,"&aGame name now is &b" + args[3]);
+                            return true;
+                        }
+                        plugin.getUtils().sendMessage(sender, plugin.getStorage().getControl(GuardianFiles.MESSAGES).getString("messages.admin.arenaError").replace("%arena_id%", args[2]));
+                        return true;
                     }
                 }
                 if(args[1].equalsIgnoreCase("disable")) {
