@@ -34,7 +34,6 @@ public class BoardManager {
             players.put(player.getUniqueId(), new PlayerManager(player));
         }
         PlayerManager scoreboard = getBoardOfPlayer(player);
-        title = plugin.getUtils().replaceVariables(title,player);
         scoreboard.setTitle(title);
     }
     public void updateScoreboard(GuardianBoard board, Player player) {
@@ -45,6 +44,12 @@ public class BoardManager {
             scoreboard.setTitle(title);
         }
         scoreboard.updateLines(plugin.getUtils().getLines(board,player));
+    }
+    @SuppressWarnings("unused")
+    public void deletePlayer(Player player) {
+        if(existPlayer(player)) {
+            players.remove(player.getUniqueId());
+        }
     }
     private boolean existPlayer(Player player) {
         return players.containsKey(player.getUniqueId());
