@@ -82,6 +82,9 @@ public class GameManager {
     }
     public GameMainMenu getGameMainMenu() { return gameMainMenu; }
     public GameMenu getGameMenu(GameType gameType) {
+        if(!gameMenu.containsKey(gameType)) {
+            gameMenu.put(gameType,new GameMenu(plugin,gameType));
+        }
         return gameMenu.get(gameType);
     }
     public void addGame(String gameName) {

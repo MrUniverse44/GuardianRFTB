@@ -63,7 +63,7 @@ settings:
   # if you want use the player name use <player>
   # if you want send the command by the console use [console]
   lobbySelectorCmds:
-    - [console]lobbySelector <player>
+    - '[console]lobbySelector <player>'
   # Lobby Scoreboard only in the lobby World
   lobbyScoreboard-only-in-lobby-world: false
   pointSystem:
