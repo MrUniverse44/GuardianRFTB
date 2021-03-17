@@ -173,6 +173,7 @@ public class MainCMD implements CommandExecutor {
                         }
                         if (plugin.getStorage().getControl(GuardianFiles.GAMES).contains("games." + args[2])) {
                             plugin.getGameManager().setGameName(args[2], args[3]);
+                            if(plugin.getGameManager().getConfigGame(args[2]) != null) plugin.getGameManager().getConfigGame(args[2]).setGameName(args[3]);
                             plugin.getUtils().sendMessage(sender,"&aGame name now is &b" + args[3]);
                             return true;
                         }

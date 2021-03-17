@@ -94,7 +94,7 @@ public class GameManager {
         return gameMenu.get(gameType);
     }
     public void addGame(String configName,String gameName) {
-        if(getGame(gameName) != null) {
+        if(getConfigGame(configName) != null) {
             return;
         }
         if(gameName == null) {
@@ -121,8 +121,18 @@ public class GameManager {
         return plugin.getPlayerData(player.getUniqueId()).getGame();
     }
 
+    public Game getConfigGame(String name) {
+        if (this.games.size() < 1)
+            return null;
+        for (Game game : this.games) {
+            if (game.getConfigName().equalsIgnoreCase(name))
+                return game;
+        }
+        return null;
+    }
+
     public boolean existGame(String name) {
-        return (getGame(name) != null);
+        return (getConfigGame(name) != null);
     }
 
     //public boolean isPlaying(Player player) {

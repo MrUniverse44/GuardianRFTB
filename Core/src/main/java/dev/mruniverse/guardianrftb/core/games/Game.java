@@ -21,7 +21,7 @@ import org.bukkit.potion.PotionEffect;
 import java.util.*;
 @SuppressWarnings("deprecation")
 public class Game {
-    private final String gameName;
+    private String gameName;
     private final String configGameName;
     private final String gamePath;
     private GameType gameType;
@@ -176,6 +176,14 @@ public class Game {
         }catch (Throwable throwable) {
             plugin.getLogs().error("Can't load game Sounds! Please verify if the sound works in your current version!");
         }
+    }
+
+    public void setGameName(String gameName) {
+        this.gameName = gameName;
+    }
+
+    public String getConfigName() {
+        return configGameName;
     }
 
     public void loadChestType(String chestName) {
