@@ -857,13 +857,13 @@ public class MainListener implements Listener {
                     float yaw = Float.parseFloat(loc[4]);
                     float pitch = Float.parseFloat(loc[5]);
                     Location location = new Location(w, x, y, z, yaw, pitch);
-                    plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin,() -> {
+                    Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin, () -> {
                         try {
                             event.getPlayer().teleport(location);
                         } catch (Exception ex) {
                             plugin.getLogs().error("Can't teleport player to lobby on join");
                         }
-                    });
+                    }, 4L);
                     if(plugin.getStorage().getControl(GuardianFiles.SCOREBOARD).getBoolean("scoreboards.lobby.toggle")) {
                         plugin.getScoreboards().setScoreboard(GuardianBoard.LOBBY,event.getPlayer());
                     }
