@@ -32,11 +32,14 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 public class MainListener implements Listener {
     private final GuardianRFTB plugin;
+    private final Random random;
     public MainListener(GuardianRFTB main) {
         plugin = main;
+        random = new Random();
         main.getLogs().info("PlayerListener registered!");
     }
     @EventHandler
@@ -128,7 +131,9 @@ public class MainListener implements Listener {
                             player.openInventory(pm.getKitMenu(KitType.RUNNER).getInventory());
                             return;
                         case EXIT_LOBBY:
-                            plugin.getUtils().sendMessage(player,"&aSending you to Lobby..");
+                            List<String> servers = plugin.getStorage().getControl(GuardianFiles.SETTINGS).getStringList("settings.hubServers");
+                            String server = servers.get(random.nextInt(servers.size()));
+                            plugin.getUtils().sendServer(player,server);
                             return;
                         case CHECKPOINT:
                             if(pm.getPointStatus() && pm.getLastCheckpoint() != null) {
@@ -141,9 +146,23 @@ public class MainListener implements Listener {
                             return;
                         case GAME_SELECTOR:
                             player.openInventory(plugin.getGameManager().getGameMainMenu().getInventory());
-                            //player.openInventory(plugin.getGameManager().gameMenu.getInventory());
                             return;
                         case LOBBY_SELECTOR:
+                            List<String> commands = plugin.getStorage().getControl(GuardianFiles.SETTINGS).getStringList("settings.lobbySelectorCmds");
+                            for(String command : commands) {
+                                boolean commandByConsole = false;
+                                command = command.replace("<player>",player.getName());
+                                if(command.contains("[console]")) {
+                                    commandByConsole = true;
+                                    command = command.replace("[console] ","")
+                                            .replace("[console]","");
+                                }
+                                if(!commandByConsole) {
+                                    player.performCommand(command);
+                                } else {
+                                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(),command);
+                                }
+                            }
                         case PLAYER_SETTINGS:
                             plugin.getUtils().sendMessage(player,"&cCurrently in development");
                             return;

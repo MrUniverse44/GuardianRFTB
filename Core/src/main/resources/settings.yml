@@ -55,6 +55,15 @@ settings:
     clearInventory-onJoin: true
     # Teleport to the lobby when the player is in the void of the lobby world.
     lobby-voidSpawnTP: true
+  # Hub Server
+  hubServers:
+    - Hub1
+    - Hub2
+  # Lobby Selector item - Commands:
+  # if you want use the player name use <player>
+  # if you want send the command by the console use [console]
+  lobbySelectorCmds:
+    - [console]lobbySelector <player>
   # Lobby Scoreboard only in the lobby World
   lobbyScoreboard-only-in-lobby-world: false
   pointSystem:

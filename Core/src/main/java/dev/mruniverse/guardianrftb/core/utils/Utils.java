@@ -13,6 +13,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -467,6 +469,15 @@ public class Utils {
             return player;
         }
         return player;
+    }
+    public void sendServer(Player player,String server) {
+        ByteArrayOutputStream b = new ByteArrayOutputStream();
+        DataOutputStream out = new DataOutputStream(b);
+        try {
+            out.writeUTF("Connect");
+            out.writeUTF(server);
+        } catch (Throwable ignored) { }
+        player.sendPluginMessage(plugin, "BungeeCord", b.toByteArray());
     }
     public boolean isBeast(Player player) {
         if(plugin.getPlayerData(player.getUniqueId()) == null) return false;
