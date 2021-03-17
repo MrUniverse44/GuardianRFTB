@@ -163,6 +163,10 @@ public class MainCMD implements CommandExecutor {
                 }
                 if(args[1].equalsIgnoreCase("setName")) {
                     if(hasPermission(sender,"GuardianRFTB.admin.setName")) {
+                        if(args.length == 2) {
+                            plugin.getUtils().sendMessage(sender,"&7Bad Usage");
+                            return true;
+                        }
                         if(args.length == 3) {
                             plugin.getUtils().sendMessage(sender,"&7Bad usage");
                             return true;
@@ -227,6 +231,10 @@ public class MainCMD implements CommandExecutor {
                 }
                 if(args[1].equalsIgnoreCase("setMax")) {
                     if(hasPermission(sender,"GuardianRFTB.admin.setMax")) {
+                        if(args.length == 2) {
+                            plugin.getUtils().sendMessage(sender,"&7Bad Usage");
+                            return true;
+                        }
                         if(args.length == 3) {
                             plugin.getUtils().sendMessage(sender,"&7Bad usage");
                             return true;
@@ -242,6 +250,10 @@ public class MainCMD implements CommandExecutor {
                 }
                 if(args[1].equalsIgnoreCase("addChest")) {
                     if(hasPermission(sender,"GuardianRFTB.admin.addChest")) {
+                        if(args.length == 2) {
+                            plugin.getUtils().sendMessage(sender,"&7Bad Usage");
+                            return true;
+                        }
                         if(args.length == 3) {
                             plugin.getUtils().sendMessage(sender,"&7Bad usage");
                             return true;
@@ -272,6 +284,10 @@ public class MainCMD implements CommandExecutor {
                 }
                 if(args[1].equalsIgnoreCase("delChest")) {
                     if(hasPermission(sender,"GuardianRFTB.admin.delChest")) {
+                        if(args.length == 2) {
+                            plugin.getUtils().sendMessage(sender,"&7Bad Usage");
+                            return true;
+                        }
                         if(args.length == 3) {
                             plugin.getUtils().sendMessage(sender,"&7Bad usage");
                             return true;
@@ -300,6 +316,10 @@ public class MainCMD implements CommandExecutor {
                 }
                 if(args[1].equalsIgnoreCase("setMode")) {
                     if(hasPermission(sender,"GuardianRFTB.admin.setMode")) {
+                        if(args.length == 2) {
+                            plugin.getUtils().sendMessage(sender,"&7Bad Usage");
+                            return true;
+                        }
                         if(args.length == 3) {
                             plugin.getUtils().sendMessage(sender,"&7Bad usage");
                             return true;
@@ -318,6 +338,10 @@ public class MainCMD implements CommandExecutor {
                 }
                 if(args[1].equalsIgnoreCase("setMin")) {
                     if(hasPermission(sender,"GuardianRFTB.admin.setMax")) {
+                        if(args.length == 2) {
+                            plugin.getUtils().sendMessage(sender,"&7Bad Usage");
+                            return true;
+                        }
                         if(args.length == 3) {
                             plugin.getUtils().sendMessage(sender,"&7Bad usage");
                             return true;
@@ -354,6 +378,10 @@ public class MainCMD implements CommandExecutor {
                     }
                     if(args[1].equalsIgnoreCase("addChestLocation")) {
                         if(hasPermission(sender,"GuardianRFTB.admin.addChestLocation")) {
+                            if(args.length == 2) {
+                                plugin.getUtils().sendMessage(sender,"&7Bad Usage");
+                                return true;
+                            }
                             if(args.length == 3) {
                                 plugin.getUtils().sendMessage(sender,"&7Bad usage");
                                 return true;
@@ -398,6 +426,10 @@ public class MainCMD implements CommandExecutor {
                     }
                     if(args[1].equalsIgnoreCase("delChestLocation")) {
                         if(hasPermission(sender,"GuardianRFTB.admin.delChestLocation")) {
+                            if(args.length == 2) {
+                                plugin.getUtils().sendMessage(sender,"&7Bad Usage");
+                                return true;
+                            }
                             if(args.length == 3) {
                                 plugin.getUtils().sendMessage(sender,"&7Bad usage");
                                 return true;
