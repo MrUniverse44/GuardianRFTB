@@ -76,14 +76,16 @@ public class Utils {
         for(String line : list) {
             if(playerBeast) line = line.replace("<isBeast>","");
             if(!playerBeast) line = line.replace("<isRunner>","");
-            line = line.replace("<center>","             ")
-                    .replace("%gameType%",gameType)
+            line = line.replace("%gameType%",gameType)
                     .replace("%map_name%",gameName)
                     .replace("%winner_team%",wT)
                     .replace("%looser_team%",lT)
                     .replace("[px]","⚫")
                     .replace("%game%","+5")
                     .replace("[bx]","▄");
+            if(line.contains("<center>")) {
+                line = CenterText.sendToCenter(line.replace("<center>",""));
+            }
             if(playerBeast) {
                 if(!line.contains("<isRunner>")) sendMessage(player,line);
             } else {
@@ -123,13 +125,15 @@ public class Utils {
         for(String line : list) {
             if(playerBeast) line = line.replace("<isBeast>","");
             if(!playerBeast) line = line.replace("<isRunner>","");
-            line = line.replace("<center>","             ")
-                    .replace("%gameType%",gameType)
+            line = line.replace("%gameType%",gameType)
                     .replace("%map_name%",gameName)
                     .replace("%coins%",coins)
                     .replace("[px]","⚫")
                     .replace("%game%","+5")
                     .replace("[bx]","▄");
+            if(line.contains("<center>")) {
+                line = CenterText.sendToCenter(line.replace("<center>",""));
+            }
             if(playerBeast) {
                 if(!line.contains("<isRunner>")) sendMessage(player,line);
             } else {
@@ -201,12 +205,14 @@ public class Utils {
             for(String line : list) {
                 if(playerBeast) line = line.replace("<isBeast>","");
                 if(!playerBeast) line = line.replace("<isRunner>","");
-                line = line.replace("<center>","             ")
-                        .replace("%gameType%",gameType)
+                line = line.replace("%gameType%",gameType)
                         .replace("%map_name%",gameName)
                         .replace("[px]","⚫")
                         .replace("%game%","+5")
                         .replace("[bx]","▄");
+                if(line.contains("<center>")) {
+                    line = CenterText.sendToCenter(line.replace("<center>",""));
+                }
                 if(playerBeast) {
                     if(!line.contains("<isRunner>")) sendMessage(player,line);
                 } else {
