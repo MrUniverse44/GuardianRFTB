@@ -27,7 +27,7 @@ public enum MainAction {
             case ISLAND_OF_THE_BEAST_KILLER:
                 return "menus.gameMain.items.IslandKiller";
             case FILL:
-                return "fill-inventory.shop";
+                return "fill-inventory.gameMain";
             case CUSTOM:
             default:
                 return "none";

@@ -228,8 +228,8 @@ public class Game {
         if(line2 == null) line2 = "%gameStatus%";
         if(line3 == null) line3 = "%on%/%max%";
         if(line4 == null) line4 = "&nClick to join";
-        if(plugin.getGameManager().gameMenu != null) {
-            plugin.getGameManager().gameMenu.updateSlot(menuSlot, this);
+        if(plugin.getGameManager().getGameMenu(this.gameType) != null) {
+            plugin.getGameManager().getGameMenu(this.gameType).updateSlot(menuSlot, this);
         }
         for(Location signLocation : this.signs) {
             if(signLocation.getBlock().getState() instanceof Sign) {

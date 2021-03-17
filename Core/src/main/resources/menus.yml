@@ -45,6 +45,61 @@ menus:
           - '&8RigoxRFTB'
           - '&eClick to open boost menu'
         item: EXPERIENCE_BOTTLE
+  gameMain:
+    inventoryName: '&8Game Selector'
+    inventoryRows: 6
+    inventorySounds:
+      - ORB_PICKUP
+    items:
+      Classic:
+        name: '&aMode: Classic'
+        slot: 21
+        lore:
+          - '&8RigoxRFTB'
+          - '&eClick to see classic maps'
+        item: LIME_BANNER
+      Infected:
+        name: '&aMode: Infected'
+        slot: 22
+        lore:
+          - '&8RigoxRFTB'
+          - '&eClick to see infected maps'
+        item: PINK_BANNER
+      Double:
+        name: '&aMode: Double Beast'
+        slot: 23
+        lore:
+          - '&8RigoxRFTB'
+          - '&eClick to see infected maps'
+        item: CYAN_BANNER
+      Killer:
+        name: '&aMode: Killer'
+        slot: 30
+        lore:
+          - '&8RigoxRFTB'
+          - '&eClick to see infected maps'
+        item: RED_BANNER
+      Island:
+        name: '&aMode: Island'
+        slot: 31
+        lore:
+          - '&8RigoxRFTB'
+          - '&eClick to see island maps'
+        item: YELLOW_BANNER
+      IslandDouble:
+        name: '&aMode: Island Double'
+        slot: 32
+        lore:
+          - '&8RigoxRFTB'
+          - '&eClick to see island double maps'
+        item: GREEN_BANNER
+      IslandKiller:
+        name: '&aMode: Island Killer'
+        slot: 40
+        lore:
+          - '&8RigoxRFTB'
+          - '&eClick to see island killer maps'
+        item: ORANGE_BANNER
   kits:
     inventoryName: '&8Kit Menu'
     inventoryRows: 3
@@ -59,7 +114,7 @@ menus:
         - ' '
         - '&eplay.servername.net'
   game:
-    inventoryName: '&8Game Menu'
+    inventoryName: '&8Games of %gameType%'
     inventoryRows: 3
     inventorySounds:
       - ORB_PICKUP
@@ -78,6 +133,56 @@ menus:
         - ' '
         - '&eplay.servername.net'
 fill-inventory:
+  gameMain:
+    fillOne:
+      item: STAINED_GLASS_PANE:53
+      name: '&aRFTB Shop'
+      lore:
+        - '&8RigoxRFTB &7F-1'
+        - '&eplay.servername.net'
+      list:
+        type: ONLY
+        values:
+          - 0
+          - 1
+          - 7
+          - 8
+          - 9
+          - 17
+          - 36
+          - 44
+          - 45
+          - 46
+          - 52
+          - 53
+    fillTwo:
+      item: STAINED_GLASS_PANE:15
+      name: '&aRFTB Shop'
+      lore:
+        - '&8RigoxRFTB &7F-2'
+        - '&eplay.servername.net'
+      list:
+        type: IGNORE
+        values:
+          - 0
+          - 1
+          - 7
+          - 8
+          - 9
+          - 17
+          - 36
+          - 44
+          - 45
+          - 46
+          - 52
+          - 53
+          - 21
+          - 22
+          - 30
+          - 32
+          - 40
+          - 23
+          - 31
   shop:
     fillOne:
       item: STAINED_GLASS_PANE:5
