@@ -79,7 +79,13 @@ public final class GuardianRFTB extends JavaPlugin {
         public void run() {
             instance.logger = new Logger(instance);
 
+            // * Register Bungee
+
+            getServer().getMessenger().registerOutgoingPluginChannel(instance, "BungeeCord");
+
             // * GuardianFiles Setup
+
+
 
             instance.fileStorage = new FileStorage(instance);
             instance.fileStorage.save(SaveMode.ALL);

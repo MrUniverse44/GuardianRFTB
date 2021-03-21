@@ -24,12 +24,14 @@ public class PlayerManager {
     private boolean pointStatus;
     private Location lastCheckpoint;
     private Game currentGame;
+    private int leaveDelay;
 
     public PlayerManager(Player p, GuardianRFTB main) {
         plugin = main;
         beastMenu = new KitMenu(main, KitType.BEAST,p);
         runnerMenu = new KitMenu(main, KitType.RUNNER,p);
         player = p;
+        leaveDelay = 0;
         pointStatus = false;
         lastCheckpoint = null;
         guardianBoard = GuardianBoard.LOBBY;
@@ -45,6 +47,8 @@ public class PlayerManager {
                 return runnerMenu;
         }
     }
+
+    public void setLeaveDelay(int delay) { leaveDelay = delay; }
     public void setStatus(PlayerStatus status) {
         playerStatus = status;
     }
@@ -65,6 +69,7 @@ public class PlayerManager {
     public Player getPlayer() {
         return player;
     }
+    public int getLeaveDelay() { return leaveDelay; }
     public int getWins() {
         if (plugin.getStorage().getControl(GuardianFiles.MYSQL).getBoolean("mysql.enabled")) {
             String table = plugin.getStorage().getControl(GuardianFiles.MYSQL).getString("mysql.table");

@@ -91,6 +91,8 @@ messages:
     actionBar: '&bYou are playing &e&lRFTB &bwith &e&lGuardianRFTB'
     bossBar: '&bYou are playing on &e&nServerName Network&b.'
   others:
+    leaveConfirm: '&a&lTeleporting you to the lobby in <leaveCancelTime> seconds...[new line]&a&lRight-Click again to cancel the teleport!'
+    leaveCancelled: '&c&lTeleport cancelled!'
     topFormat:
       top: '&b================[&lTOP 10&b]================'
       format: '&a%number% &6%player% &7- Score: &b%score%'

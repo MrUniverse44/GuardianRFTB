@@ -919,6 +919,11 @@ public class Game {
                 for (ItemStack item : plugin.getLobbyItems().keySet()) {
                     player.getInventory().setItem(plugin.getSlot(item), item);
                 }
+                PlayerManager playerManager = plugin.getPlayerData(player.getUniqueId());
+                if (playerManager.getLeaveDelay() != 0) {
+                    plugin.getServer().getScheduler().cancelTask(playerManager.getLeaveDelay());
+                    playerManager.setLeaveDelay(0);
+                }
                 player.updateInventory();
             }
             restart();

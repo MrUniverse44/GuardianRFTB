@@ -107,7 +107,20 @@ public class MainListener implements Listener {
             if(event.getItem().getItemMeta() == null) return;
             if(event.getItem().getType().equals(plugin.exitItem.getType()) && event.getItem().getItemMeta().equals(plugin.exitItem.getItemMeta())) {
                 event.setCancelled(true);
-                plugin.getPlayerData(event.getPlayer().getUniqueId()).getGame().leave(player);
+                PlayerManager playerManager = plugin.getPlayerData(player.getUniqueId());
+                String message;
+                int leaveInt = plugin.getStorage().getControl(GuardianFiles.SETTINGS).getInt("settings.leaveCancelTime");
+                if(playerManager.getLeaveDelay() != 0) {
+                    plugin.getServer().getScheduler().cancelTask(plugin.getPlayerData(event.getPlayer().getUniqueId()).getLeaveDelay());
+                    message = plugin.getStorage().getControl(GuardianFiles.MESSAGES).getString("messages.others.leaveCancelled");
+                    if(message == null) message = "&c&lTeleport cancelled!";
+                    plugin.getUtils().sendMessage(player, message.replace("<leaveCancelTime>",""+leaveInt));
+                    return;
+                }
+                message = plugin.getStorage().getControl(GuardianFiles.MESSAGES).getString("messages.others.leaveConfirm");
+                if(message == null) message = "&a&lTeleporting you to the lobby in <leaveCancelTime> seconds...[new line]&a&lRight-Click again to cancel the teleport!";
+                plugin.getUtils().sendMessage(player, message.replace("<leaveCancelTime>",""+leaveInt));
+                plugin.getUtils().sendLeaveCountdown(player,leaveInt);
                 return;
             }
             PlayerManager pm = plugin.getPlayerData(player.getUniqueId());
@@ -168,8 +181,22 @@ public class MainListener implements Listener {
                             return;
                         case EXIT_GAME:
                         default:
-                            if(plugin.getPlayerData(event.getPlayer().getUniqueId()).getGame() != null) {
-                                plugin.getPlayerData(event.getPlayer().getUniqueId()).getGame().leave(player);
+                            if(plugin.getPlayerData(player.getUniqueId()).getGame() != null) {
+                                PlayerManager playerManager = plugin.getPlayerData(player.getUniqueId());
+                                String message;
+                                int leaveInt = plugin.getStorage().getControl(GuardianFiles.SETTINGS).getInt("settings.leaveCancelTime");
+                                if (playerManager.getLeaveDelay() != 0) {
+                                    plugin.getServer().getScheduler().cancelTask(plugin.getPlayerData(event.getPlayer().getUniqueId()).getLeaveDelay());
+                                    message = plugin.getStorage().getControl(GuardianFiles.MESSAGES).getString("messages.others.leaveCancelled");
+                                    if (message == null) message = "&c&lTeleport cancelled!";
+                                    plugin.getUtils().sendMessage(player, message.replace("<leaveCancelTime>", "" + leaveInt));
+                                    return;
+                                }
+                                message = plugin.getStorage().getControl(GuardianFiles.MESSAGES).getString("messages.others.leaveConfirm");
+                                if (message == null)
+                                    message = "&a&lTeleporting you to the lobby in <leaveCancelTime> seconds...[new line]&a&lRight-Click again to cancel the teleport!";
+                                plugin.getUtils().sendMessage(player, message.replace("<leaveCancelTime>", "" + leaveInt));
+                                plugin.getUtils().sendLeaveCountdown(player, leaveInt);
                                 return;
                             }
                     }

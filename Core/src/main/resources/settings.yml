@@ -11,12 +11,14 @@
 # SpigotMC Link: https://www.spigotmc.org/resources/88817/
 #
 settings:
-  #enable Check update when the plugin load
+  # Enable Check update when the plugin load
   update-check: true
   # Default Max Time for play in a Game
   maxTime: 500
   # Default Free Kit for players, WARNING: you can't disable for now.
   defaultKitID: 0
+  # Leave Cancel Time (In Seconds)
+  leaveCancelTime: 3
   # Modes: MULTI_ARENA - BUNGEE_MODE(SOON)
   pluginMode: MULTI_ARENA
   # Lobby Location ("notSet" by default)

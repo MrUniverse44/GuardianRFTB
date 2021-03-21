@@ -6,6 +6,7 @@ import dev.mruniverse.guardianrftb.core.enums.GuardianFiles;
 import dev.mruniverse.guardianrftb.core.games.Game;
 import dev.mruniverse.guardianrftb.core.games.GameTeam;
 import dev.mruniverse.guardianrftb.core.games.GameType;
+import dev.mruniverse.guardianrftb.core.utils.players.PlayerManager;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
@@ -32,11 +33,11 @@ public class Utils {
         if(plugin.hasPAPI()) {
             message = PlaceholderAPI.setPlaceholders(player,message);
         }
-        message = ChatColor.translateAlternateColorCodes('&',message);
+        message = ChatColor.translateAlternateColorCodes('&',message.replace("[new line]","\n"));
         player.sendMessage(message);
     }
     public void sendMessage(CommandSender sender, String message) {
-        message = ChatColor.translateAlternateColorCodes('&',message);
+        message = ChatColor.translateAlternateColorCodes('&',message.replace("[new line]","\n"));
         sender.sendMessage(message);
     }
     public void sendTitle(Player player, int fadeInTime, int showTime, int fadeOutTime, String title, String subtitle) {
@@ -448,6 +449,40 @@ public class Utils {
         }
         if(plugin.hasPAPI()) { text = PlaceholderAPI.setPlaceholders(player,text); }
         return text;
+    }
+    //sendLeaveCountdown
+    public void sendCountdown(final Player player, final int delay) {
+        PlayerManager playerManager = plugin.getPlayerData(player.getUniqueId());
+        int delayValue = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
+            int countdown = delay;
+            public void run() {
+                if (this.countdown == 0) {
+                    plugin.getServer().getScheduler().cancelTask(playerManager.getLeaveDelay());
+                    playerManager.setLeaveDelay(0);
+                } else {
+                    this.countdown--;
+                }
+            }
+        }, 0L, 20L);
+        plugin.getPlayerData(player.getUniqueId()).setLeaveDelay(delayValue);
+    }
+    public void sendLeaveCountdown(final Player player, final int delay) {
+        PlayerManager playerManager = plugin.getPlayerData(player.getUniqueId());
+        int delayValue = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
+            int countdown = delay;
+            public void run() {
+                if (this.countdown == 0) {
+                    plugin.getServer().getScheduler().cancelTask(playerManager.getLeaveDelay());
+                    playerManager.setLeaveDelay(0);
+                    if(playerManager.getGame() != null) {
+                        playerManager.getGame().leave(player);
+                    }
+                } else {
+                    this.countdown--;
+                }
+            }
+        }, 0L, 20L);
+        plugin.getPlayerData(player.getUniqueId()).setLeaveDelay(delayValue);
     }
     private String getRole(Game game,Player player) {
         if(game.getBeasts().contains(player)) {
