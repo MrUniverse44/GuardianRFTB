@@ -225,7 +225,7 @@ public class MainListener implements Listener {
         Player player = (Player)event.getWhoClicked();
         if(plugin.getPlayerData(player.getUniqueId()).getGame() != null) return;
         if(event.getCurrentItem() == null) return;
-        if(!event.getInventory().equals(plugin.getGameManager().getGameMainMenu().getInventory())) return;
+        if(event.getInventory() != plugin.getGameManager().getGameMainMenu().getInventory()) return;
         HashMap<ItemStack, MainAction> hash = plugin.getGameManager().getGameMainMenu().getItems();
         ItemStack clickedItem = event.getCurrentItem();
         event.setCancelled(true);
@@ -243,7 +243,7 @@ public class MainListener implements Listener {
         if(event.getCurrentItem() == null) return;
         GameType gameType = null;
         for(GameType gameType1 : GameType.values()) {
-            if (event.getInventory().equals(plugin.getGameManager().getGameMenu(gameType1).getInventory())) gameType = gameType1;
+            if (event.getInventory() == plugin.getGameManager().getGameMenu(gameType1).getInventory()) gameType = gameType1;
         }
         if(gameType == null) return;
         HashMap<ItemStack,String> hash = plugin.getGameManager().getGameMenu(gameType).getGameItems();
@@ -258,7 +258,7 @@ public class MainListener implements Listener {
         Player player = (Player)event.getWhoClicked();
         PlayerManager data = plugin.getPlayerData(player.getUniqueId());
         if(event.getCurrentItem() == null) return;
-        if(event.getInventory().equals(data.getKitMenu(KitType.BEAST).getInventory())) {
+        if(event.getInventory() == data.getKitMenu(KitType.BEAST).getInventory()) {
             HashMap<ItemStack, String> hash = data.getKitMenu(KitType.BEAST).getItems();
             event.setCancelled(true);
             ItemStack clickedItem = event.getCurrentItem();
@@ -267,7 +267,7 @@ public class MainListener implements Listener {
             }
             return;
         }
-        if(event.getInventory().equals(data.getKitMenu(KitType.RUNNER).getInventory())) {
+        if(event.getInventory() == data.getKitMenu(KitType.RUNNER).getInventory()) {
             HashMap<ItemStack, String> hash = data.getKitMenu(KitType.RUNNER).getItems();
             event.setCancelled(true);
             ItemStack clickedItem = event.getCurrentItem();
@@ -331,9 +331,9 @@ public class MainListener implements Listener {
         return false;
     }
     private boolean falseChest(Material evalMaterial) {
-        if(evalMaterial.equals(Material.CHEST)) return false;
-        if(evalMaterial.equals(Material.TRAPPED_CHEST)) return false;
-        return (!evalMaterial.equals(Material.ENDER_CHEST));
+        if(evalMaterial == Material.CHEST) return false;
+        if(evalMaterial == Material.TRAPPED_CHEST) return false;
+        return (evalMaterial != Material.ENDER_CHEST);
     }
     @EventHandler
     public void joinScoreboard(PlayerJoinEvent event) {
@@ -348,7 +348,7 @@ public class MainListener implements Listener {
                     plugin.getLogs().error("-----------------------------");
                 } else {
                     Location location = plugin.getUtils().getLocationFromString(lC);
-                    if (event.getPlayer().getWorld().equals(location.getWorld())) {
+                    if (event.getPlayer().getWorld() == location.getWorld()) {
                         if(plugin.getStorage().getControl(GuardianFiles.SCOREBOARD).getBoolean("scoreboards.lobby.toggle")) {
                             plugin.getScoreboards().setScoreboard(GuardianBoard.LOBBY,event.getPlayer());
                         }
@@ -469,7 +469,7 @@ public class MainListener implements Listener {
             } else {
                 player.spigot().respawn();
                 game.deathRunner(player);
-                if(!game.getGameType().equals(GameType.INFECTED)) {
+                if(game.getGameType() != GameType.INFECTED) {
                     player.teleport(game.runnersLocation);
                     player.setGameMode(GameMode.SPECTATOR);
                 }
@@ -479,7 +479,7 @@ public class MainListener implements Listener {
     }
     @EventHandler
     public void inGameDamage(EntityDamageEvent event) {
-        if(!event.getEntity().getType().equals(EntityType.PLAYER)) return;
+        if(event.getEntity().getType() != EntityType.PLAYER) return;
         Player player = (Player)event.getEntity();
         if(plugin.getPlayerData(player.getUniqueId()) == null) return;
         if(plugin.getPlayerData(player.getUniqueId()).getGame() == null) return;
@@ -513,7 +513,7 @@ public class MainListener implements Listener {
                 player.teleport(game.beastLocation);
             } else {
                 game.deathRunner(player);
-                if(!game.getGameType().equals(GameType.INFECTED)) {
+                if(game.getGameType() != GameType.INFECTED) {
                     player.setGameMode(GameMode.SPECTATOR);
                     player.teleport(game.runnersLocation);
                 }
@@ -549,23 +549,23 @@ public class MainListener implements Listener {
             } else {
                 player.teleport(game.runnersLocation);
             }
-            if(!game.getGameType().equals(GameType.INFECTED)) {
+            if(game.getGameType() != GameType.INFECTED) {
                 player.setGameMode(GameMode.SPECTATOR);
             }
         }
     }
     @EventHandler
     public void lobbyDamage(EntityDamageEvent event) {
-        if(event.getEntity().getType().equals(EntityType.PLAYER)) {
+        if(event.getEntity().getType() == EntityType.PLAYER) {
             String lC = plugin.getStorage().getControl(GuardianFiles.SETTINGS).getString("settings.lobbyLocation");
             if(lC == null) lC = "notSet";
             if (!lC.equalsIgnoreCase("notSet")) {
                 String[] loc = lC.split(",");
                 World w = Bukkit.getWorld(loc[0]);
-                if (event.getEntity().getWorld().equals(w)) {
+                if (event.getEntity().getWorld() == w) {
                     event.setCancelled(true);
                     if(plugin.getStorage().getControl(GuardianFiles.SETTINGS).getBoolean("settings.options.lobby-voidSpawnTP")) {
-                        if (event.getCause().equals(EntityDamageEvent.DamageCause.VOID)) {
+                        if (event.getCause() == EntityDamageEvent.DamageCause.VOID) {
                             Location location = plugin.getUtils().getLocationFromString(lC);
                             event.getEntity().teleport(location);
                         }
