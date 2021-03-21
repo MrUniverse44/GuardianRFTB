@@ -38,7 +38,7 @@ public class GameManager {
         if (this.games.size() < 1)
             return null;
         for (Game game : this.games) {
-            if (game.getName().equalsIgnoreCase(gameName))
+            if (game.getConfigName().equalsIgnoreCase(gameName))
                 return game;
         }
         return null;
@@ -74,7 +74,6 @@ public class GameManager {
                 plugin.getLogs().info("You don't have games created yet.");
             }
             plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin,new GameRunnable(plugin),0L,20L);
-            //gameMenu = new GameMenu(plugin);
             loadGameWorlds();
         }catch (Throwable throwable) {
             plugin.getLogs().error("Can't load games plugin games :(");
@@ -132,16 +131,15 @@ public class GameManager {
     }
 
     public boolean existGame(String name) {
-        return (getConfigGame(name) != null);
+        boolean exist = false;
+        if(getConfigGame(name) != null) exist = true;
+        return exist;
     }
-
-    //public boolean isPlaying(Player player) {
-    //    return (getGame(player) != null);
-    //}
 
     public void joinGame(Player player,String gameName) {
         if(!existGame(gameName)) {
             plugin.getUtils().sendMessage(player, Objects.requireNonNull(plugin.getStorage().getControl(GuardianFiles.MESSAGES).getString("messages.admin.arenaError")).replace("%arena_id%",gameName));
+            return;
         }
         Game game = getGame(gameName);
         game.join(player);

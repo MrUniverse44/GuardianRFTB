@@ -101,6 +101,11 @@ messages:
       Classic: Classic
       Infected: Infected
       Double: Double Beast
+      Killer: Killer Mode
+      ISLAND_OF_THE_BEAST: Island of the beast
+      ISLAND_OF_THE_BEAST_DOUBLE: Island of the beast Double
+      ISLAND_OF_THE_BEAST_KILLER: Island of the beast Killer
+      HISTORY_MODE: History Mode
     checkpoint:
       use: '&aYou has been teleported to your last checkpoint.'
       already: '&7You already has an checkpoint in use.'
