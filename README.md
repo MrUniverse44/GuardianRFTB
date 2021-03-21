@@ -1,16 +1,16 @@
-## RIGOX RUN FROM THE BEAST
-
-<img align="left" alt="RigoxRFTB Image" src="https://i.imgur.com/OCNLyP3.png" />
+## GUARDIAN RUN FROM THE BEAST
 
 ---
 
 # FEATURES:
 
 * Spigot 1.8 - 1.16
-* Customizable Scoreboards
 * PlaceholderAPI Support
 * Developer API
+* Customizable Scoreboards
 * Customizable Messages
+* Customizable Sounds per game
+* Customizable Game Names (to get the same name in different modes)
 * BossBar,Titles,ActionBar System
 * Free & Open-Source
 * Maven-Support
