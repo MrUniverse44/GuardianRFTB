@@ -183,6 +183,7 @@ public class MainListener implements Listener {
                         default:
                             if(plugin.getPlayerData(player.getUniqueId()).getGame() != null) {
                                 PlayerManager playerManager = plugin.getPlayerData(player.getUniqueId());
+
                                 String message;
                                 int leaveInt = plugin.getStorage().getControl(GuardianFiles.SETTINGS).getInt("settings.leaveCancelTime");
                                 if (playerManager.getLeaveDelay() != 0) {
