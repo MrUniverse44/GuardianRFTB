@@ -121,6 +121,7 @@ public class MainCMD implements CommandExecutor {
                         plugin.getGameManager().getGameMenu(GameType.DOUBLE_BEAST).reloadMenu();
                         plugin.getUtils().getShopMenu().updateInv();
                         plugin.getRunnable().update();
+                        plugin.getKitLoader().updateKits();
                         if(plugin.getTitleRunnable() != null) {
                             plugin.getTitleRunnable().update();
                         }

@@ -34,7 +34,7 @@ public class GameChests {
 
         invName = ChatColor.translateAlternateColorCodes('&',invName);
 
-        int rows = getRows(plugin.getStorage().getControl(GuardianFiles.CHESTS).getInt("chests.armor.inventoryRows"));
+        int rows = getRows(plugin.getStorage().getControl(GuardianFiles.CHESTS).getInt("chests." + chestID + ".inventoryRows"));
 
         chestInventory = plugin.getServer().createInventory(null,rows,invName);
     }
@@ -60,6 +60,7 @@ public class GameChests {
             if(section == null) throw new Throwable("Can't found beast inventory section in chests.yml");
             for (String item : section.getKeys(false)) {
                 String material = loadConfig.getString(path + item + ".item");
+                int amount = getAmount(loadConfig,path + item + ".amount");
                 if(material == null) material = "BEDROCK";
                 Optional<XMaterial> optionalXMaterial = XMaterial.matchXMaterial(material);
                 XMaterial m;
@@ -72,6 +73,7 @@ public class GameChests {
                         if(itemName == null) itemName = "&e<Unknown Name>";
                         ItemStack itLoad = m.parseItem();
                         if(itLoad != null) {
+                            itLoad.setAmount(amount);
                             ItemMeta ReturnMeta = itLoad.getItemMeta();
                             if(ReturnMeta != null) {
                                 ReturnMeta.setDisplayName(TextUtilities.recolor(itemName));
@@ -100,6 +102,12 @@ public class GameChests {
     public Inventory getInventory() {
         pasteItems();
         return chestInventory;
+    }
+    public int getAmount(FileConfiguration fileConfiguration,String path) {
+        if(fileConfiguration.contains(path)) {
+            return fileConfiguration.getInt(path);
+        }
+        return 1;
     }
     public void setName(String newName) { name = newName; }
     public String getName() { return name; }

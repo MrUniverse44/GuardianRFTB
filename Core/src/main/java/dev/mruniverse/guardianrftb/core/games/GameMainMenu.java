@@ -2,10 +2,10 @@ package dev.mruniverse.guardianrftb.core.games;
 
 import dev.mruniverse.guardianrftb.core.enums.GuardianFiles;
 import dev.mruniverse.guardianrftb.core.enums.MainAction;
+import dev.mruniverse.guardianrftb.core.enums.SaveMode;
 import dev.mruniverse.guardianrftb.core.utils.TextUtilities;
 import dev.mruniverse.guardianrftb.core.xseries.XMaterial;
 import dev.mruniverse.guardianrftb.core.GuardianRFTB;
-import dev.mruniverse.guardianrftb.core.kits.KitType;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -22,11 +22,15 @@ public class GameMainMenu {
     private HashMap<ItemStack, MainAction> gameAction;
     private HashMap<Integer,ItemStack> fills;
     private Inventory chestInventory;
+    private GameType openGameType;
+    private boolean directGameType;
     public GameMainMenu(GuardianRFTB main) {
         plugin = main;
         gameItems = new HashMap<>();
         gameAction = new HashMap<>();
         fills = new HashMap<>();
+        directGameType = getDirectStatus();
+        openGameType = getGameType();
         createInv();
         loadItems();
     }
@@ -116,16 +120,45 @@ public class GameMainMenu {
         FileConfiguration menu = plugin.getStorage().getControl(GuardianFiles.MENUS);
         for(MainAction mainAction : MainAction.values()) {
             if(mainAction != MainAction.FILL && mainAction != MainAction.CUSTOM) {
-                String name = menu.getString(mainAction.getPath() + ".name");
-                String material = menu.getString(mainAction.getPath() + ".item");
-                List<String> lore = menu.getStringList(mainAction.getPath() + ".lore");
-                int slot = menu.getInt(mainAction.getPath() + ".slot");
-                ItemStack item = getItem(material, name, lore);
-                gameItems.put(item, slot);
-                gameAction.put(item, mainAction);
+                if(getMinigameStatus(menu,GuardianFiles.MENUS,SaveMode.MENUS,mainAction.getPath() + ".toggle")) {
+                    String name = menu.getString(mainAction.getPath() + ".name");
+                    String material = menu.getString(mainAction.getPath() + ".item");
+                    List<String> lore = menu.getStringList(mainAction.getPath() + ".lore");
+                    int slot = menu.getInt(mainAction.getPath() + ".slot");
+                    ItemStack item = getItem(material, name, lore);
+                    gameItems.put(item, slot);
+                    gameAction.put(item, mainAction);
+                }
             }
         }
         loadFills();
+    }
+    private boolean getMinigameStatus(FileConfiguration configuration, GuardianFiles CurrentGuardianFile, SaveMode CurrentSaveMode, String path) {
+        if(configuration.contains(path)) {
+            return configuration.getBoolean(path);
+        } else {
+            plugin.getStorage().getControl(CurrentGuardianFile).set(path,true);
+            plugin.getStorage().save(CurrentSaveMode);
+        }
+        return true;
+    }
+    private boolean getDirectStatus() {
+        FileConfiguration menu = plugin.getStorage().getControl(GuardianFiles.MENUS);
+        if(!menu.contains("menus.gameMain.directOpen.toggle")) {
+            plugin.getStorage().getControl(GuardianFiles.MENUS).set("menus.gameMain.directOpen.toggle",false);
+            plugin.getStorage().save(CurrentSaveMode);
+        }
+        return false;
+    }
+    private GameType getGameType() {
+        FileConfiguration menu = plugin.getStorage().getControl(GuardianFiles.MENUS);
+        if(!menu.contains("menus.gameMain.directOpen.gameType")) {
+            plugin.getStorage().getControl(GuardianFiles.MENUS).set("menus.gameMain.directOpen.gameType",GameType.CLASSIC.toString().toUpperCase());
+            plugin.getStorage().save(CurrentSaveMode);
+        } else {
+            return GameType.valueOf(menu.getString("menus.gameMain.directOpen.gameType"));
+        }
+        return GameType.CLASSIC;
     }
     private void pasteItems() {
         chestInventory.clear();
@@ -164,6 +197,9 @@ public class GameMainMenu {
         return null;
     }
     public Inventory getInventory() {
+        if(directGameType) {
+            return plugin.getGameManager().getGameMenu(openGameType).getInventory();
+        }
         pasteItems();
         return chestInventory;
     }

@@ -47,6 +47,8 @@ public class KitInfo {
         List<String> lore = items.getStringList(getPath() + ".KitInfo.lore");
         ItemStack returnItem = plugin.getItem(m,itemName,lore);
         if(items.get(getPath() + ".KitInfo.enchantments") == null) kitItem = returnItem;
+        int amount = getAmount(items,getPath() + ".KitInfo.amount");
+        returnItem.setAmount(amount);
         kitItem = plugin.getEnchantmentList(returnItem, GuardianFiles.KITS,getPath() + ".KitInfo.enchantments");
     }
     public void loadInventory() {
@@ -57,6 +59,7 @@ public class KitInfo {
             if (section == null) return;
             for (String itemInfo : section.getKeys(false)) {
                 String material = items.getString(getPath() + ".Inventory." + itemInfo + ".item");
+                int amount = getAmount(items,getPath() + ".Inventory." + itemInfo + ".amount");
                 if (material == null) material = "BEDROCK";
                 Optional<XMaterial> optionalXMaterial = XMaterial.matchXMaterial(material);
                 if (optionalXMaterial.isPresent()) {
@@ -66,7 +69,8 @@ public class KitInfo {
                         Integer slot = items.getInt(getPath() + ".Inventory." + itemInfo + ".slot");
                         List<String> lore = items.getStringList(getPath() + ".Inventory." + itemInfo + ".lore");
                         ItemStack item = plugin.getItem(m, itemName, lore);
-                        if (items.get(getPath() + ".Inventory." + itemInfo + ".lore") != null) {
+                        item.setAmount(amount);
+                        if (items.get(getPath() + ".Inventory." + itemInfo + ".enchantments") != null) {
                             item = plugin.getEnchantmentList(item, GuardianFiles.KITS, getPath() + ".Inventory." + itemInfo + ".enchantments");
                         }
                         inventoryItems.put(item, slot);
@@ -128,6 +132,13 @@ public class KitInfo {
             case CHESTPLATE:
                 return chestplate;
         }
+    }
+
+    public int getAmount(FileConfiguration fileConfiguration,String path) {
+        if(fileConfiguration.contains(path)) {
+            return fileConfiguration.getInt(path);
+        }
+        return 1;
     }
 
     public ItemStack getKitItem() {
