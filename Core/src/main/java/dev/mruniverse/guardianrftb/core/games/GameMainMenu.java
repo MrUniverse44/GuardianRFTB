@@ -146,7 +146,7 @@ public class GameMainMenu {
         FileConfiguration menu = plugin.getStorage().getControl(GuardianFiles.MENUS);
         if(!menu.contains("menus.gameMain.directOpen.toggle")) {
             plugin.getStorage().getControl(GuardianFiles.MENUS).set("menus.gameMain.directOpen.toggle",false);
-            plugin.getStorage().save(CurrentSaveMode);
+            plugin.getStorage().save(SaveMode.MENUS);
         }
         return false;
     }
@@ -154,7 +154,7 @@ public class GameMainMenu {
         FileConfiguration menu = plugin.getStorage().getControl(GuardianFiles.MENUS);
         if(!menu.contains("menus.gameMain.directOpen.gameType")) {
             plugin.getStorage().getControl(GuardianFiles.MENUS).set("menus.gameMain.directOpen.gameType",GameType.CLASSIC.toString().toUpperCase());
-            plugin.getStorage().save(CurrentSaveMode);
+            plugin.getStorage().save(SaveMode.MENUS);
         } else {
             return GameType.valueOf(menu.getString("menus.gameMain.directOpen.gameType"));
         }
