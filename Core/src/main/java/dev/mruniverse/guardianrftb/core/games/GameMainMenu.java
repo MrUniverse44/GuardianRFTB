@@ -22,8 +22,8 @@ public class GameMainMenu {
     private HashMap<ItemStack, MainAction> gameAction;
     private HashMap<Integer,ItemStack> fills;
     private Inventory chestInventory;
-    private GameType openGameType;
-    private boolean directGameType;
+    private final GameType openGameType;
+    private final boolean directGameType;
     public GameMainMenu(GuardianRFTB main) {
         plugin = main;
         gameItems = new HashMap<>();
