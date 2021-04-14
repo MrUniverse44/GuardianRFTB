@@ -147,6 +147,8 @@ public class GameMainMenu {
         if(!menu.contains("menus.gameMain.directOpen.toggle")) {
             plugin.getStorage().getControl(GuardianFiles.MENUS).set("menus.gameMain.directOpen.toggle",false);
             plugin.getStorage().save(SaveMode.MENUS);
+        } else {
+            return menu.getBoolean("menus.gameMain.directOpen.toggle");
         }
         return false;
     }

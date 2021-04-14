@@ -87,7 +87,7 @@ public class GameMenu {
         for(Game game : plugin.getGameManager().getGames()) {
             if(game.getGameType() == gameType) {
                 ItemStack gameItem = getGameItem(game);
-                hash.put(gameItem, game.getName());
+                hash.put(gameItem, game.getConfigName());
             }
         }
         return hash;
