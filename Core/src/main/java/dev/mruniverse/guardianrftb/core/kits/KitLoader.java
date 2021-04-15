@@ -76,6 +76,7 @@ public class KitLoader {
                         plugin.getUtils().sendMessage(player,buyKit);
                         plugin.getUtils().sendMessage(player,selected);
                         if(player.getInventory() == plugin.getPlayerData(player.getUniqueId()).getKitMenu(kitType).getInventory()) player.closeInventory();
+                        return;
                     } else {
                         String cantBuy = plugin.getStorage().getControl(GuardianFiles.MESSAGES).getString("messages.inGame.kits.cantSelect");
                         if(cantBuy == null) cantBuy = "&cYou need &6%price% &cto buy this kit.";
