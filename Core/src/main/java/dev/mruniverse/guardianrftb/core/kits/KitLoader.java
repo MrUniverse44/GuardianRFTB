@@ -54,6 +54,7 @@ public class KitLoader {
                             .replace("%price%",kitInfo.getPrice() + "")
                             .replace("%kit_price%",kitInfo.getPrice() + "");
                     plugin.getUtils().sendMessage(player,selected);
+                    return;
                 } else {
                     if(data.getCoins() >= kitInfo.getPrice()) {
                         int coins = data.getCoins() - kitInfo.getPrice();
@@ -76,13 +77,14 @@ public class KitLoader {
                         plugin.getUtils().sendMessage(player,selected);
                         if(player.getInventory() == plugin.getPlayerData(player.getUniqueId()).getKitMenu(kitType).getInventory()) player.closeInventory();
                     } else {
-                        String cantBuy = plugin.getStorage().getControl(GuardianFiles.MESSAGES).getString("messages.inGame.kits.selectedKit");
-                        if(cantBuy == null) cantBuy = "&aNow you selected kit &b%kit_name%";
+                        String cantBuy = plugin.getStorage().getControl(GuardianFiles.MESSAGES).getString("messages.inGame.kits.cantSelect");
+                        if(cantBuy == null) cantBuy = "&cYou need &6%price% &cto buy this kit.";
                         cantBuy = cantBuy.replace("%kit_name%",kitName)
                                 .replace("%name%",kitName)
                                 .replace("%price%",kitInfo.getPrice() + "")
                                 .replace("%kit_price%",kitInfo.getPrice() + "");
                         plugin.getUtils().sendMessage(player,cantBuy);
+                        return;
                     }
                 }
             default:
@@ -119,8 +121,8 @@ public class KitLoader {
                         plugin.getUtils().sendMessage(player,selected);
                         if(player.getInventory() == plugin.getPlayerData(player.getUniqueId()).getKitMenu(kitType).getInventory()) player.closeInventory();
                     } else {
-                        String cantBuy = plugin.getStorage().getControl(GuardianFiles.MESSAGES).getString("messages.inGame.kits.selectedKit");
-                        if(cantBuy == null) cantBuy = "&aNow you selected kit &b%kit_name%";
+                        String cantBuy = plugin.getStorage().getControl(GuardianFiles.MESSAGES).getString("messages.inGame.kits.cantSelect");
+                        if(cantBuy == null) cantBuy = "&cYou need &6%price% &cto buy this kit.";
                         cantBuy = cantBuy.replace("%kit_name%",kitName)
                                 .replace("%name%",kitName)
                                 .replace("%price%",kitInfo.getPrice() + "")
@@ -153,6 +155,7 @@ public class KitLoader {
                 beastKits.put(kitName,kitInfo);
         }
     }
+    @SuppressWarnings("unused")
     public void unloadKit(KitType kitType,String kitName) {
         switch (kitType) {
             case RUNNER:

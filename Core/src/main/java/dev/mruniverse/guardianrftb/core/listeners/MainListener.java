@@ -495,6 +495,10 @@ public class MainListener implements Listener {
             }
             return;
         }
+        if(event.getCause() == EntityDamageEvent.DamageCause.FALL) {
+            event.setCancelled(true);
+            return;
+        }
         if((player.getHealth() - event.getFinalDamage()) <= 0) {
             event.setCancelled(true);
             player.getInventory().clear();
